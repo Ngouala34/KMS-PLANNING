@@ -1,8 +1,8 @@
 header {
-  text-align: center;
-  background-color: #EEE;
+  background-color: #e33333;
   margin-bottom: 20px;
   padding: 10px;
+  display: flex;
 }
 a {
   margin: 0 10px;
@@ -16,4 +16,31 @@ a {
 .active {
   color: #666;
   text-decoration: underline;
+}
+.topnav{
+  display: flex;
+
+  .nav_search{
+    display: inline-block;
+    border-radius: 10px, solid black;
+    background: #ffffff;
+  
+    input {
+      padding: 5px;
+      border: none;
+      border-radius: 10px;}
+  }
+
+} 
+.topnav_logo{
+  display: flex;
+  background-color: #1b0101;
+
+}
+.logo{
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-size: cover;
+  background-image: url(https://mail.kms-entreprises.com/assets/img/branding/KMS%20logo.jpg);
 }

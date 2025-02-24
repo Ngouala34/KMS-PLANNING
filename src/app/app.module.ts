@@ -10,6 +10,10 @@ import { HeaderComponent } from './header/header.component';
 import { AppRoutingModule } from './app-routing.module';
 import { LandingPageComponent } from './landing-page/landing-page.component';
 import { SingleFaceSnapComponent } from './single-face-snap/single-face-snap.component';
+import { SidebarComponent } from './sidebar/sidebar.component';
+import { SignupComponent } from './signup/signup.component';
+import { UserLoginComponent } from './login/user-login/user-login.component';
+import { ExpertLoginComponent } from './login/expert-login/expert-login.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +22,11 @@ import { SingleFaceSnapComponent } from './single-face-snap/single-face-snap.com
     FaceSnapListComponent,
     HeaderComponent,
     LandingPageComponent,
-    SingleFaceSnapComponent
+    SingleFaceSnapComponent,
+    SidebarComponent,
+    SignupComponent,
+    UserLoginComponent,
+    ExpertLoginComponent,
   ],
   imports: [
     BrowserModule,
