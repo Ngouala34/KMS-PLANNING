@@ -1,6 +1,69 @@
-<div class="landing-block">
-  <img src="assets/snapface.png" alt="Snapface logo">
-  <div class="landing-links">
-    <button (click)="onContinue()">Continuer vers Snapface</button>
+<header>
+  <nav class="topnav">
+    <section class="topnav-logo">
+      <div class="logo"></div>
+       <p class="planning">PLANNING</p> 
+    </section>
+  </nav>
+  <button class="btn-connexion">Connexion</button>
+  <button class="btn-inscription">S'inscrire</button>
+  <i class="fa-solid fa-language fa-2x" style="color: #000000;margin-left: 150px;"></i>
+</header>
+
+<div class="container">
+
+  <div class="landing-container">
+    <div class="aim-container">
+      <h1><span>Apprenez</span> et <span>enseignez</span> sans limites</h1>
+      <h3>Inscrivez-vous, accédez à des formations exclusives et échangez en direct avec des experts !</h3><br><br>
+      <div class="landing-content">
+        <button  class="btn-commencer" (click)="onContinue()"><i class="fa-solid fa-user" style="padding-right: 10px;"></i>Commencer</button>
+      </div>
+    </div>  
+    <div class="landing-image">
+    </div>
+  </div><br><br><br><br>
+
+  <div class="landing-container2">
+    <p ><u>Nos <span>Fonctionnalités</span></u></p><br><br>
+    <div id="class">
+      <div class="landing-box">
+        <div class="img1"></div>
+          <p id="p1">Accepter les réservations en ligne.</p>
+      </div>
+      <div class="landing-box">
+        <div class="img2"></div>
+        <p id="p2">Notifications via SMS/Email.</p>
+      </div>
+       <div class="landing-box">
+        <div class="img3"></div>
+          <p id="p3">Application client et expert.</p>
+      </div>
+      <div class="landing-box">
+        <div class="img4"></div>
+        <p id="p4">Gestion des rendez-vous.</p>
+    </div>
+  </div><br><br /><br /><br />
+
+  <div class="landing-container3">
+    <p >Ce que disent nos utilisateurs</p><br><br>
+    <div id="class">
+       <div class="landing-box">
+        <div class="avis-client">
+          <div class="img3"></div>
+          David K<span>Formateur en développement web</span>
+        </div>
+        <p id="p3">En tant qu'expert, cette application m’a permis de proposer mes formations sans me soucier de la gestion des rendez-vous. Les paiements sont sécurisés, les liens de visioconférence sont générés automatiquement, et mes clients apprécient la simplicité du processus. Je recommande à 100 % ! 💡💰</p>
+      </div>
+      <div class="landing-box">
+        <div class="avis-client">
+          <div class="img4"></div>
+          Sarah Ngouffo<span>Etudiante en marketing digital</span>
+        </div>
+        <p id="p4">Une plateforme ultra-intuitive ! J’ai pu réserver une formation en quelques clics et échanger directement avec un expert de mon domaine. Plus besoin d’envoyer des dizaines d’emails pour fixer un rendez-vous, tout est automatisé ! Un vrai gain de temps! Vraiment👏</p>
+
+    </div>
+  </div>
+  
   </div>
 </div>

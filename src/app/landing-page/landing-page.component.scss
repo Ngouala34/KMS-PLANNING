@@ -1,15 +1,213 @@
-.landing-block {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
 
-.landing-links {
-  width: 100%;
-  text-align: center;
-}
 
 button {
   font-size: 20px;
 }
+
+
+header {
+  background-color: #e4e3e3;
+  margin-bottom: 20px;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+}
+.topnav-logo{
+  display: flex;
+  align-items: center;
+margin-left: 85px;  
+
+.planning{
+  font-size: 18px;
+  font-weight: bold;
+  color:#000000;
+  padding-left: 10px;
+}
+}
+.logo{
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-size: cover;
+  background-image: url(https://mail.kms-entreprises.com/assets/img/branding/KMS%20logo.jpg);
+}
+.btn-connexion{
+  margin-left: 700px;
+  background-color: #d52727;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  padding: 8px;
+  font-size: 17px;
+  width: 150px;
+}
+.btn-connexion:hover{
+  background-color: #ff0000;
+  font-size: large;
+}
+.btn-inscription{
+  margin-left: 10px;
+  background-color: #74C0FC;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 8px;
+  font-size: 17px;
+  width:150px ;
+  border-radius: 25px;
+}
+.btn-inscription:hover{
+  background-color: #0d6efd;
+  font-size: large;
+
+}
+.btn-commencer{
+  background-color: #d52727;
+  color: rgb(255, 255, 255);
+  border: none;
+  border-radius: 25px;
+  padding: 8px;
+  font-size: 20px;
+  width: 200px;
+}
+.btn-commencer:hover{
+  background-color: #ff0000;
+  font-size: large;
+}
+.aim-container h1 span {
+  color:#74C0FC;
+
+}
+.aim-container{
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  padding: 20px;
+}
+h3{
+  color: rgb(0, 0, 0);
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+}
+.container{
+  display: block;
+  justify-content: center;
+  padding: 20px;
+}
+
+.landing-container{
+  width: 200vh;
+  display: flex;
+  justify-content: space-between;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1),  
+  0 6px 6px rgba(0, 0, 0, 0.1);
+}
+.landing-image{
+  padding-top: 0px;
+  width: 50%;
+  height: 50vh;
+  background-image: url(https://i.pinimg.com/736x/b5/f4/f2/b5f4f2fac7ae22f8c590fb010e512c0a.jpg);
+}
+.landing-container2{
+  
+}
+
+.landing-container2 p{
+  text-align: center;
+  font-size: 25px;
+  font-weight: bold;
+}
+
+#class{
+  display:flex;
+  justify-content:space-around;
+}
+.img1{
+  height: 150px;
+  width: 150px;
+  background-size: contain;
+  background-image: url(https://simplybook.me/build/images/icons/features/icon_bookings.6e5806e6.gif);
+}
+.img2{
+  height: 150px;
+  width: 150px;
+  background-size: contain;
+  background-image: url(https://simplybook.me/build/images/icons/features/icon_sms.fe026585.gif);
+}
+.img3{
+  height: 150px;
+  width: 150px;
+  background-size: contain;
+  background-image: url(https://simplybook.me/build/images/icons/features/icon_two-apps.b28140c4.gif);
+}
+.img4{
+  height: 150px;
+  width: 150px;
+  background-size: contain;
+  background-image: url(https://simplybook.me/build/images/icons/features/static/icon_google-calendar-sync.166ade60.svg);
+}
+
+
+.landing-box{
+  border: 1px solid black;
+  border-radius: 10px;
+  width: 20vh;
+  height: 30vh;
+  text-align:center;
+  box-shadow: 3px 2px 2px 2px;
+  padding-bottom: 20px;
+}
+.landing-box {
+  background: #fff; /* Fond blanc pour un bon contraste */
+  padding: 15px;
+  border-radius: 10px; /* Coins arrondis */
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1),  
+              0 6px 6px rgba(0, 0, 0, 0.1); 
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+/* Effet au survol */
+.landing-box:hover {
+  transform: translateY(-5px); /* Léger effet de levitation */
+  box-shadow: 0 15px 25px rgba(0, 0, 0, 0.2),  
+              0 10px 10px rgba(0, 0, 0, 0.15);
+}
+.landing-container2 .landing-box p{
+  font-size: 18px;
+  font-weight: bold;
+}
+.landing-container3 #class .landing-box{
+  width: 75vh;
+  height: 35vh;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+.landing-container3 #class .landing-box .img3{
+  background-image: url(https://i.pinimg.com/736x/96/66/54/966654a89b772408cf4000f3f4ca7eab.jpg);
+  background-repeat: no-repeat;
+  background-size: contain;
+  border-radius: 100px;
+}
+.landing-container3 #class .landing-box .img4{
+  background-image: url(  https://i.pinimg.com/474x/9e/d3/ea/9ed3eaea3214a8d50c60aeef00c22c62.jpg);
+  background-repeat: no-repeat;
+  background-size: contain;
+  border-radius: 100px;
+}
+.landing-container3 #class .landing-box P{
+  font-weight: normal;
+  width: 50%;
+  text-align: justify;
+}
+.landing-container3 #class .landing-box P{
+  font-weight: normal;
+  width: 50%;
+  text-align: justify;
+}
+.avis-client{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+width: 40%;}

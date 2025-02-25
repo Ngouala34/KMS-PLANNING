@@ -1,21 +1,18 @@
 <header>
 <nav class="topnav">
-  <i class="fa-solid fa-bars"></i>
-  <div class="topnav-logo">
+  <i id="fa-bars" class="fa-solid fa-bars fa-2x"></i>
+  <section class="topnav-logo">
     <div class="logo"></div>
-     <p>PLANNING</p> 
+     <p class="planning">PLANNING</p> 
+  </section>
+  <div class="nav-search">
+    <input class="top-input" type="text" placeholder="Rechercher..." />
+    <i id="iconrechercher" class="fas fa-search " style="margin-left:110px; "></i>
   </div>
-  <div class="nav__search">
-    <input 
-      type="text" 
-      placeholder="Rechercher..." 
-    />
-    <i class="fas fa-search"></i>
-  </div>
-  <i class="fa-solid fa-bell"></i>
+  <i class="fa-solid fa-bell fa-2x" style="margin-left: 550px;"></i>
 </nav>
-  <nav>
-    <a routerLink="" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Home</a>
-    <a routerLink="facesnaps" routerLinkActive="active">FaceSnaps</a>
-  </nav>
 </header>
+<nav>
+  <a routerLink="" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Home</a>
+  <a routerLink="facesnaps" routerLinkActive="active">FaceSnaps</a>
+</nav>

@@ -1,8 +1,12 @@
 header {
-  background-color: #e33333;
+  background-color: #e4e3e3;
   margin-bottom: 20px;
   padding: 10px;
   display: flex;
+  align-items: center;
+}
+.fa-bars{
+  padding-left: 20px;
 }
 a {
   margin: 0 10px;
@@ -19,27 +23,55 @@ a {
 }
 .topnav{
   display: flex;
+  align-items: center;
 
-  .nav_search{
+  .nav-search{
     display: inline-block;
-    border-radius: 10px, solid black;
-    background: #ffffff;
+    background-color: #fcfcfc;
+    padding: 5px;
+    margin-left: 300px;
+    width: 300px;
+    border-radius: 15px;
+    border: solid 1px #000000;
   
-    input {
-      padding: 5px;
+    .top-input {
+     width: 50%;
+      box-shadow: none;
       border: none;
-      border-radius: 10px;}
+      outline: none;
+      border-radius: 8px;
+      padding: 3px;
+      color: rgb(0, 0, 0);
+    }
+    .top-input:focus{
+      border: none;
+      box-shadow: none;
+      outline: none;
+    }
+  }
+  #iconrechecher{
+background-color: #00025b;
   }
 
 } 
-.topnav_logo{
+.topnav-logo{
   display: flex;
-  background-color: #1b0101;
+  align-items: center;
+margin-left: 85px;  
+
+.planning{
+  font-size: 18px;
+  font-weight: bold;
+  color: rgb(0, 0, 0);
+  padding-left: 10px;
+}
+
 
 }
+
 .logo{
-  width: 30px;
-  height: 30px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   background-size: cover;
   background-image: url(https://mail.kms-entreprises.com/assets/img/branding/KMS%20logo.jpg);
