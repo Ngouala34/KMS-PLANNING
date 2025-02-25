@@ -7,6 +7,7 @@ import { SidebarComponent } from './sidebar/sidebar.component';
 import { SignupComponent } from './signup/signup.component';
 import { UserLoginComponent } from './login/user-login/user-login.component';
 import { ExpertLoginComponent } from './login/expert-login/expert-login.component';
+import { ChooseFunctionPageComponent } from './choose-function-page/choose-function-page.component';
 
 const routes: Routes = [
   { path: 'facesnaps/:id', component: SingleFaceSnapComponent },
@@ -15,7 +16,9 @@ const routes: Routes = [
   { path: 'sidebar', component: SidebarComponent },
   { path: 'signup', component: SignupComponent },
   { path: 'user-login', component: UserLoginComponent },
-  { path: 'expert-login', component: ExpertLoginComponent }
+  { path: 'expert-login', component: ExpertLoginComponent },
+  { path: 'choose-function-page', component: ChooseFunctionPageComponent }
+
 
 
 

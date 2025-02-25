@@ -177,6 +177,12 @@ h3{
   font-size: 18px;
   font-weight: bold;
 }
+.landing-container3{
+  width: 200vh;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1),  
+  0 6px 6px rgba(0, 0, 0, 0.1);
+  padding-bottom: 50px;
+}
 .landing-container3 #class .landing-box{
   width: 75vh;
   height: 35vh;
@@ -211,3 +217,14 @@ h3{
   flex-direction: column;
   align-items: center;
 width: 40%;}
+
+#landing-container4{
+  align-items: center;
+  display: flex;
+  justify-self: center;
+  padding: 20px;
+  color: black;
+}
+#landing-container4 span{
+  color: rgb(0, 0, 0);
+}

@@ -5,8 +5,8 @@
        <p class="planning">PLANNING</p> 
     </section>
   </nav>
-  <button class="btn-connexion">Connexion</button>
-  <button class="btn-inscription">S'inscrire</button>
+  <button class="btn-connexion" (click)="OnConnexion()">Connexion</button>
+  <button class="btn-inscription" (click)="OnInscription()">S'inscrire</button>
   <i class="fa-solid fa-language fa-2x" style="color: #000000;margin-left: 150px;"></i>
 </header>
 
@@ -17,7 +17,7 @@
       <h1><span>Apprenez</span> et <span>enseignez</span> sans limites</h1>
       <h3>Inscrivez-vous, accédez à des formations exclusives et échangez en direct avec des experts !</h3><br><br>
       <div class="landing-content">
-        <button  class="btn-commencer" (click)="onContinue()"><i class="fa-solid fa-user" style="padding-right: 10px;"></i>Commencer</button>
+        <button  class="btn-commencer" (click)="OnInscription()"><i class="fa-solid fa-user" style="padding-right: 10px;"></i>Commencer</button>
       </div>
     </div>  
     <div class="landing-image">
@@ -61,9 +61,14 @@
           Sarah Ngouffo<span>Etudiante en marketing digital</span>
         </div>
         <p id="p4">Une plateforme ultra-intuitive ! J’ai pu réserver une formation en quelques clics et échanger directement avec un expert de mon domaine. Plus besoin d’envoyer des dizaines d’emails pour fixer un rendez-vous, tout est automatisé ! Un vrai gain de temps! Vraiment👏</p>
-
     </div>
-  </div>
   
+  </div><br><br><br><br>
+  <div id="landing-container4">
+    <span >Rejoignez-nous dès maintenant !</span><br><br>
+    <button class="btn-inscription" (click)="OnInscription()">S'inscrire</button>
   </div>
-</div>
+ 
+  </div>
+</div><br>
+<app-footer></app-footer>
