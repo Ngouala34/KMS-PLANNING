@@ -1,0 +1,43 @@
+<app-sidebar></app-sidebar>
+
+<section class="services-container">
+    <h2 class="title">Découvrez des services sur mesure, adaptés à vos besoins !</h2>
+
+    <!-- Barre de recherche -->
+    <div class="search-bar">
+        <input type="text" placeholder="Rechercher un service..." />
+        <button class="btn-search">🔍</button>
+    </div>
+
+    <!-- Filtres -->
+    <div class="filters">
+        <select>
+            <option value="all">Toutes les catégories</option>
+            <option value="sante">Santé</option>
+            <option value="education">Éducation</option>
+            <option value="finance">Finance</option>
+            <option value="finance">Sport</option>
+            <option value="finance">Art</option>
+            <option value="finance">Culture</option>
+            <option value="finance">Loisirs</option>
+            <option value="finance">Autres</option>
+        </select>
+        <select>
+            <option value="popular">Populaires</option>
+            <option value="price">Prix croissant</option>
+            <option value="rating">Mieux notés</option>
+        </select>
+    </div>
+
+    <!-- Grille des services avec animation -->
+    <div class="services-grid" *ngIf="showServices">
+        <div class="service-card" *ngFor="let service of services">
+            <img src="assets/service-placeholder.jpg" alt="Service">
+            <h3>{{ service.nom }}</h3>
+            <p>Par <strong>{{ service.expert }}</strong></p>
+            <p class="price">{{ service.prix }}fcfa</p>
+            <div class="rating">★★★★★ ({{ service.note }})</div>
+            <button class="btn-book">Réserver</button>
+        </div>
+    </div>
+</section>

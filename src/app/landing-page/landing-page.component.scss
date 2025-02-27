@@ -7,10 +7,12 @@ button {
 
 header {
   background-color: #e4e3e3;
-  margin-bottom: 20px;
   padding: 10px;
   display: flex;
   align-items: center;
+  position: fixed;
+  width: 100%;
+  padding: 5px;
 }
 .topnav-logo{
   display: flex;
@@ -32,7 +34,7 @@ margin-left: 85px;
   background-image: url(https://mail.kms-entreprises.com/assets/img/branding/KMS%20logo.jpg);
 }
 .btn-connexion{
-  margin-left: 700px;
+  margin-left: 800px;
   background-color: #d52727;
   color: white;
   border: none;
@@ -97,6 +99,7 @@ h3{
 }
 
 .landing-container{
+  padding-top:80px ;
   width: 200vh;
   display: flex;
   justify-content: space-between;

@@ -23,4 +23,5 @@ export class LandingPageComponent implements OnInit {
     this.router.navigateByUrl('choose-function-page');
   }
 
+
 }

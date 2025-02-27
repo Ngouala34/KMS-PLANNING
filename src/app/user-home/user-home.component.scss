@@ -1,0 +1,78 @@
+/* Conteneur principal */
+.home-container {
+    margin-left: 300px; /* Largeur de la sidebar */
+    margin-top: 60px; /* Hauteur de la navbar */
+    padding: 20px;
+    background-color: #f8f9fa;
+    min-height: 100vh;
+  }
+  
+  /* Bannière d'accueil */
+  .banner {
+    background: linear-gradient(135deg, #74C0FC, #0e0f49);
+    color: white;
+    padding: 20px;
+    border-radius: 12px;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .banner h1 span {
+    font-weight: bold;
+  }
+  
+  /* Contenu principal */
+  .main-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+  }
+  
+  /* Cartes */
+  .card {
+    background: white;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  .card:hover {
+    transform: translateY(-5px);
+  }
+  
+  /* Boutons */
+  .btn-primary {
+    background-color: #74C0FC;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out;
+  }
+  
+  .btn-primary:hover {
+    background-color: #0e0f49;
+  }
+  
+  .btn-secondary {
+    background-color: #0e0f49;
+    color: white;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out;
+  }
+  
+  .btn-secondary:hover {
+    background-color: #74C0FC;
+  }
+  
+  /* Ajustement si la sidebar est réduite */
+  .sidebar.collapsed + .home-container {
+    margin-left: 80px;
+  }
+  

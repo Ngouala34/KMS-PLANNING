@@ -1,6 +1,6 @@
 import { NgModule, LOCALE_ID } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { registerLocaleData } from '@angular/common';
+import { CommonModule, registerLocaleData } from '@angular/common';
 import * as fr from '@angular/common/locales/fr';
 
 import { AppComponent } from './app.component';
@@ -11,11 +11,13 @@ import { AppRoutingModule } from './app-routing.module';
 import { LandingPageComponent } from './landing-page/landing-page.component';
 import { SingleFaceSnapComponent } from './single-face-snap/single-face-snap.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
-import { SignupComponent } from './signup/signup.component';
-import { UserLoginComponent } from './login/user-login/user-login.component';
-import { ExpertLoginComponent } from './login/expert-login/expert-login.component';
+import { SignupComponent } from './login/signup/signup.component';
+import { UserLoginComponent } from './user-login/user-login.component';
+import { ExpertLoginComponent } from './expert-login/expert-login.component';
 import { FooterComponent } from './footer/footer.component';
 import { ChooseFunctionPageComponent } from './choose-function-page/choose-function-page.component';
+import { UserHomeComponent } from './user-home/user-home.component';
+import { UserServComponent } from './user-serv/user-serv.component';
 
 @NgModule({
   declarations: [
@@ -31,10 +33,12 @@ import { ChooseFunctionPageComponent } from './choose-function-page/choose-funct
     ExpertLoginComponent,
     FooterComponent,
     ChooseFunctionPageComponent,
+    UserHomeComponent,
+    UserServComponent,
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
   ],
   providers: [
     { provide: LOCALE_ID, useValue: 'fr-FR' }

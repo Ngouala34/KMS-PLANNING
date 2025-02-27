@@ -1,4 +1,6 @@
+
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-sidebar',
@@ -7,9 +9,19 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SidebarComponent implements OnInit {
 
-  constructor() { }
+  isCollapsed: boolean = false; // État initial de la sidebar
 
-  ngOnInit(): void {
+  constructor(private router: Router) { }
+
+  ngOnInit(): void { }
+
+  toggleSidebar(): void {
+    this.isCollapsed = !this.isCollapsed;
   }
-
+  OnUserConnexion(): void {
+    this.router.navigateByUrl('user-home');
+  }
+  OnUserService(): void {    
+    this.router.navigateByUrl('user-serv');
+  }
 }

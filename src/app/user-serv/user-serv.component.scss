@@ -1,0 +1,163 @@
+/* Conteneur principal */
+.services-container {
+    margin-left: 300px; /* Espace pour la sidebar */
+    margin-top: 60px; /* Espace pour la navbar */
+    padding: 20px;
+    background-color: #f8f9fa;
+}
+
+/* Animation d'apparition */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Barre de recherche */
+.search-bar {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.search-bar input {
+    width: 300px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.btn-search {
+    padding: 8px 12px;
+    margin-left: 5px;
+    background: #74C0FC;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+/* Filtres */
+.filters {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 20px;
+    
+}
+
+.filters select {
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Grille des services */
+.services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    animation: fadeIn 0.8s ease-in-out;
+}
+
+/* Carte d'un service */
+.service-card {
+    background: white;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    opacity: 0;
+    animation: fadeIn 0.8s ease-in-out forwards;
+}
+
+.service-card:nth-child(1) { animation-delay: 0.2s; }
+.service-card:nth-child(2) { animation-delay: 0.4s; }
+.service-card:nth-child(3) { animation-delay: 0.6s; }
+
+.service-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.service-card img {
+    width: 100%;
+    height: 150px;
+    border-radius: 8px;
+    object-fit: cover;
+}
+
+.price {
+    font-size: 18px;
+    font-weight: bold;
+    color: #0e0f49;
+}
+
+.rating {
+    color: #ffcc00;
+}
+
+/* Bouton de réservation */
+.btn-book {
+    background-color: #0e0f49;
+    color: white;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out;
+}
+
+.btn-book:hover {
+    background-color: #74C0FC;
+}
+
+/* Ajustement si la sidebar est réduite */
+.sidebar.collapsed + .services-container {
+    margin-left: 80px;
+}
+
+
+
+
+
+
+
+
+
+
+
+.title {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #0e0f49;
+    text-align: center;
+    margin: 30px 0;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    position: relative;
+    opacity: 0;
+    animation: fadeInUp 1s ease-out forwards, slideIn 1s ease-in-out forwards;
+}
+
+/* Animation de fade-in et slide-up */
+@keyframes fadeInUp {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+/* Effet de survol */
+.title:hover {
+    color: #74C0FC; /* Couleur au survol */
+    transform: scale(1.05);
+    transition: all 0.3s ease;
+}
+

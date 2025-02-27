@@ -1,9 +1,11 @@
 header {
-  background-color: #e4e3e3;
+  background-color: #ffffff;
   margin-bottom: 20px;
-  padding: 10px;
   display: flex;
   align-items: center;
+  position: fixed;
+  width: 100%;
+  box-shadow: inset 0 -1px 0 0 #e5e5e5;
 }
 .fa-bars{
   padding-left: 20px;
@@ -49,6 +51,21 @@ a {
       outline: none;
     }
   }
+  .nav-user{
+    display: flex;
+    justify-content: space-around;
+    border-radius: 100px;
+    height: 50px;
+    width:200px;
+    margin-left: 300px;
+    background-color: #b40c0c;
+  }
+  .nav-user img{
+    width: 50px;
+    height: 50px;
+    background-color: #fff;
+    border-radius: 50%;
+  }
   #iconrechecher{
 background-color: #00025b;
   }
@@ -70,8 +87,8 @@ margin-left: 85px;
 }
 
 .logo{
-  width: 40px;
-  height: 40px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
   background-size: cover;
   background-image: url(https://mail.kms-entreprises.com/assets/img/branding/KMS%20logo.jpg);
