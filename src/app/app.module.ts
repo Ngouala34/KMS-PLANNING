@@ -18,6 +18,9 @@ import { FooterComponent } from './footer/footer.component';
 import { ChooseFunctionPageComponent } from './choose-function-page/choose-function-page.component';
 import { UserHomeComponent } from './user-home/user-home.component';
 import { UserServComponent } from './user-serv/user-serv.component';
+import { FormsModule } from '@angular/forms';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { PaymentComponent } from './payment/payment.component';
 
 @NgModule({
   declarations: [
@@ -35,13 +38,17 @@ import { UserServComponent } from './user-serv/user-serv.component';
     ChooseFunctionPageComponent,
     UserHomeComponent,
     UserServComponent,
+    PaymentComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
+    FormsModule,
+    HttpClientModule,
   ],
   providers: [
-    { provide: LOCALE_ID, useValue: 'fr-FR' }
+    { provide: LOCALE_ID, useValue: 'fr-FR' },
+    
   ],
   bootstrap: [AppComponent]
 })

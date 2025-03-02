@@ -37,7 +37,7 @@
             <p>Par <strong>{{ service.expert }}</strong></p>
             <p class="price">{{ service.prix }}fcfa</p>
             <div class="rating">★★★★★ ({{ service.note }})</div>
-            <button class="btn-book">Réserver</button>
+            <button class="btn-book" (click)="OnPayment()">Réserver</button>
         </div>
     </div>
 </section>

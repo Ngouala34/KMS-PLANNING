@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-user-serv',
@@ -10,7 +11,7 @@ export class UserServComponent implements OnInit {
   services: any[] = [];
   showServices = false; // Contrôle l'animation d'affichage
 
-  constructor() { }
+  constructor(private router:Router) { }
 
   ngOnInit(): void {
     // Simule un chargement des services avec un léger délai
@@ -25,5 +26,8 @@ export class UserServComponent implements OnInit {
       ];
       this.showServices = true; // Active l’animation
     }, 500);
+  }
+  OnPayment(): void {
+    this.router.navigateByUrl('payment')// Redirige vers la page de paiement
   }
 }

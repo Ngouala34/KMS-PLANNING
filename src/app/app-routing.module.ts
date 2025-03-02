@@ -11,6 +11,7 @@ import { ChooseFunctionPageComponent } from './choose-function-page/choose-funct
 import { UserHomeComponent } from './user-home/user-home.component';
 import { UserServComponent } from './user-serv/user-serv.component';
 import { UserSouscriptionsComponent } from './user-souscription/user-souscription.component';
+import { PaymentComponent } from './payment/payment.component';
 
 const routes: Routes = [
   { path: 'facesnaps/:id', component: SingleFaceSnapComponent },
@@ -18,10 +19,11 @@ const routes: Routes = [
   { path: '', component: LandingPageComponent },
   { path: 'sidebar', component: SidebarComponent },
   { path: 'signup', component: SignupComponent },
-  { path: 'user-login', component: UserLoginComponent },
   { path: 'user-home', component: UserHomeComponent },
+  { path: 'user-login', component: UserLoginComponent },
   { path: 'user-serv', component: UserServComponent },
   { path: 'user-souscriptions', component: UserSouscriptionsComponent },
+  { path: 'payment', component: PaymentComponent },
 
   { path: 'expert-login', component: ExpertLoginComponent },
   { path: 'choose-function-page', component: ChooseFunctionPageComponent }

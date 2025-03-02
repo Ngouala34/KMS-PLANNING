@@ -75,4 +75,35 @@
   .sidebar.collapsed + .home-container {
     margin-left: 80px;
   }
+
+
+
+
+
+
+  /* Animation fade-in simple */
+@keyframes fadeInUp {
+  from {
+      opacity: 0;
+      transform: translateY(30px);
+  }
+  to {
+      opacity: 1;
+      transform: translateY(0);
+  }
+}
+
+/* Appliquer l'animation sur toute la page */
+#card1 {
+  animation: fadeInUp 0.15s ease-out;
+}
+#card2 {
+  animation: fadeInUp 0.30s ease-out;
+}
+#card3 {
+  animation: fadeInUp 0.45s ease-out;
+}
+#card4 {
+  animation: fadeInUp 1s ease-out;
+}
   
