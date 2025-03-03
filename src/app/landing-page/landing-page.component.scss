@@ -4,31 +4,103 @@ button {
   font-size: 20px;
 }
 
-
-header {
-  background-color: #e4e3e3;
+.nav-navbar {
   padding: 10px;
   display: flex;
   align-items: center;
-  position: fixed;
   width: 100%;
   padding: 5px;
 }
+/* Style général de la navbar */
+.navbar {
+  padding: 15px 0;
+  text-align: center;
+  margin-left: 600px;
+}
+
+.navbar ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+}
+
+.navbar li {
+  margin: 0 15px;
+}
+
+.navbar a {
+  text-decoration: none;
+  color: white;
+  font-size: 18px;
+  padding: 10px 15px;
+  transition: 0.3s ease;
+  border-radius: 13px;
+}
+
+/* Effet au survol */
+.navbar a:hover {
+  background:#d527273c;
+  font-style: italic;
+}
+
+/* Effet au clic (élément actif) */
+.navbar a.active {
+  background: #d52727;
+  font-weight: bold;
+  transform: scale(1.1);
+}
+
+
+
+header {
+  background-image: url(https://media.istockphoto.com/id/628506984/fr/photo/travailler-intelligemment-travailler-dur.jpg?s=1024x1024&w=is&k=20&c=Lech64nBZbdvEVq-Qci0Res7mYXFDRDdFR7WDhaTSxs=);
+  background-repeat: no-repeat;
+  background-size: cover;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  height: 90vh;
+}
+
+.aim-container h1 span {
+  color:#74C0FC;
+  font-size: 60px;
+
+}
+.aim-container h3 {
+  color : #ffffff;
+  font-size: 40px;
+  width: 40%;
+
+}
+.aim-container{
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  padding: 20px;
+  color: white;
+  font-size: 30px;
+
+ 
+}
+
 .topnav-logo{
   display: flex;
   align-items: center;
 margin-left: 85px;  
 
 .planning{
-  font-size: 18px;
+  font-size: 30px;
   font-weight: bold;
-  color:#000000;
+  color:#ffffff;
   padding-left: 10px;
 }
 }
 .logo{
-  width: 40px;
-  height: 40px;
+  width: 80px;
+  height: 80px;
   border-radius: 50%;
   background-size: cover;
   background-image: url(https://mail.kms-entreprises.com/assets/img/branding/KMS%20logo.jpg);
@@ -76,16 +148,7 @@ margin-left: 85px;
   background-color: #ff0000;
   font-size: large;
 }
-.aim-container h1 span {
-  color:#74C0FC;
 
-}
-.aim-container{
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  padding: 20px;
-}
 h3{
   color: rgb(0, 0, 0);
   font-size: 20px;
@@ -101,8 +164,6 @@ h3{
 .landing-container{
   padding-top:80px ;
   width: 200vh;
-  display: flex;
-  justify-content: space-between;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1),  
   0 6px 6px rgba(0, 0, 0, 0.1);
 }

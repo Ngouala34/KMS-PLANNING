@@ -1,33 +1,42 @@
 <header>
-  <nav class="topnav">
-    <section class="topnav-logo">
-      <div class="logo"></div>
-       <p class="planning">PLANNING</p> 
-    </section>
+  <nav class="nav-navbar">
+    <nav class="topnav">
+      <section class="topnav-logo">
+        <div class="logo"></div>
+        <p class="planning">PLANNING</p>
+      </section>
+    </nav>
+    <nav class="navbar">
+      <ul>
+        <li><a href="#" class="active">Home</a></li>
+        <li><a href="#">Service</a></li>
+        <li><a href="#">Catégorie</a></li>
+        <li><a href="#">About</a></li>
+      </ul>
+    </nav>
+    <i class="fa-solid fa-language fa-2x" style="color:#74C0FC"></i>
   </nav>
-  <button class="btn-connexion" (click)="OnConnexion()">Connexion</button>
-  <button class="btn-inscription" (click)="OnInscription()">S'inscrire</button>
-  <i class="fa-solid fa-language fa-2x" style="color: #000000;margin-left: 75px;"></i>
+
+  <div class="aim-container">
+    <h1><span>Enseignez</span> ou <span>Apprenez</span> sans limites</h1>
+    <h3>Inscrivez-vous, accédez aux services et formations en exclusivité et échangez en direct avec des experts !</h3>
+    <div class="landing-content">
+      <button class="btn-commencer"><i class="fa-solid fa-user"></i> Commencer</button>
+    </div>
+  </div>
 </header>
 
 <div class="container">
 
   <div class="landing-container">
-    <div class="aim-container">
-      <h1><span>Apprenez</span> et <span>enseignez</span> sans limites</h1>
-      <h3>Inscrivez-vous, accédez à des formations exclusives et échangez en direct avec des experts !</h3><br><br>
-      <div class="landing-content">
-        <button  class="btn-commencer" (click)="OnInscription()"><i class="fa-solid fa-user" style="padding-right: 10px;"></i>Commencer</button>
-      </div>
-  </div><br><br><br><br>
 
-  <div class="landing-container2">
-    <p ><u>Nos <span>Fonctionnalités</span></u></p><br><br>
-    <div id="class">
-      <div class="landing-box">
-        <div class="img1"></div>
+    <div class="landing-container2">
+        <p ><u>Nos <span>Fonctionnalités</span></u></p><br><br>
+        <div id="class">
+        <div class="landing-box">
+          <div class="img1"></div>
           <p id="p1">Accepter les réservations en ligne.</p>
-      </div>
+        </div>
       <div class="landing-box">
         <div class="img2"></div>
         <p id="p2">Notifications via SMS/Email.</p>
@@ -68,4 +77,5 @@
  
   </div>
 </div><br>
+
 <app-footer></app-footer>

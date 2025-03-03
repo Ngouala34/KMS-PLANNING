@@ -19,7 +19,7 @@ import { ChooseFunctionPageComponent } from './choose-function-page/choose-funct
 import { UserHomeComponent } from './user-home/user-home.component';
 import { UserServComponent } from './user-serv/user-serv.component';
 import { FormsModule } from '@angular/forms';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import { PaymentComponent } from './payment/payment.component';
 
 @NgModule({
