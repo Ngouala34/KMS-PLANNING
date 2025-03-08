@@ -1,7 +1,7 @@
 <div class="login-container">
     <div class="container">
         <form class="container1">
-            <div class="logo">            
+            <div class="logo">
                 <img src="https://kms-entreprises.com/assets/img/branding/KMS%20logo.jpg" alt="Logo">
                 <p>PLANNING</p>
             </div><br>
@@ -9,23 +9,23 @@
             <!-- Email avec icône -->
             <div class="input-group">
                 <i class="fas fa-envelope"></i>
-                <input type="text" class="email" name="email" [(ngModel)]="loginData.email" placeholder="email@gmail.com">
+                <input type="text" class="email" name="email" placeholder="email@gmail.com" [(ngModel)]="loginData.email">
             </div><br>
             
             <!-- Mot de passe avec icône -->
             <div class="input-group">
                 <i class="fas fa-lock"></i>
-                <input type="password" class="password" name="password" [(ngModel)]="loginData.password" placeholder="Password">
+                <input type="password" class="password" name="password" placeholder="Password" [(ngModel)]="loginData.password">
             </div><br>
-
+            
             <!-- Message d'erreur -->
             <p *ngIf="errorMessage" class="error-message">{{ errorMessage }}</p>
-
+            
             <!-- Lien mot de passe oublié -->
             <a href="#" class="forgot-password">Mot de passe oublié ?</a><br><br>
             
             <!-- Bouton de connexion -->
             <button type="button" (click)="OnUserConnexion()">Connexion</button>
         </form>
-    </div> 
+    </div>
 </div>
