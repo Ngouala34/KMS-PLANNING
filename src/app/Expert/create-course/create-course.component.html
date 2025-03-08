@@ -1,0 +1,49 @@
+<!-- ✅ Formulaire de création de formation -->
+<div class="create-course-container">
+    <h3>Créer une nouvelle formation</h3>
+    <form (ngSubmit)="onSubmit()" #courseForm="ngForm">
+      
+      <!-- Nom de la formation -->
+      <div class="form-group">
+        <label for="title">Nom de la formation</label>
+        <input type="text" id="title" [(ngModel)]="course.title" name="title" required class="form-control">
+      </div>
+  
+      <!-- Catégorie -->
+      <div class="form-group">
+        <label for="category">Catégorie</label>
+        <select id="category" [(ngModel)]="course.category" name="category" required class="form-control">
+          <option value="" disabled selected>Choisissez une catégorie</option>
+          <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
+        </select>
+      </div>
+  
+      <!-- Prix -->
+      <div class="form-group">
+        <label for="price">Prix (€)</label>
+        <input type="number" id="price" [(ngModel)]="course.price" name="price" required class="form-control">
+      </div>
+  
+      <!-- Durée -->
+      <div class="form-group">
+        <label for="duration">Durée (heures)</label>
+        <input type="number" id="duration" [(ngModel)]="course.duration" name="duration" required class="form-control">
+      </div>
+  
+      <!-- Description -->
+      <div class="form-group">
+        <label for="description">Description</label>
+        <textarea id="description" [(ngModel)]="course.description" name="description" required class="form-control"></textarea>
+      </div>
+  
+      <!-- Image de couverture -->
+      <div class="form-group">
+        <label for="cover">Image de couverture</label>
+        <input type="file" id="cover" (change)="onFileSelected($event)" class="form-control">
+      </div>
+  
+      <!-- Bouton d'enregistrement -->
+      <button type="submit" class="btn-save" [disabled]="!courseForm.valid">Enregistrer</button>
+    </form>
+  </div>
+  

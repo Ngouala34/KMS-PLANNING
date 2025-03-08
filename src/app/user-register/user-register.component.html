@@ -1,0 +1,66 @@
+<div class="login-container">
+    <div class="container">
+        <form class="container1" (ngSubmit)="OnUserRegister()" #registerForm="ngForm">
+            <div class="logo">            
+                <img src="https://kms-entreprises.com/assets/img/branding/KMS%20logo.jpg" alt="Logo">
+                <p>PLANNING</p>
+            </div>
+            <p>Veuillez remplir le formulaire d'inscription</p>
+
+            <!-- Nom d'utilisateur -->
+            <div class="input-group">
+                <i class="fas fa-user"></i>
+                <input type="text" [(ngModel)]="user.username" placeholder="Nom d'utilisateur" name="username" required>
+            </div>
+  
+            
+            <!-- Nom -->
+            <div class="input-group">
+                <i class="fas fa-user"></i>
+                <input type="text" [(ngModel)]="user.nom" placeholder="Nom" name="nom" required>
+            </div>
+            
+            <!-- Prénom -->
+            <div class="input-group">
+                <i class="fas fa-user"></i>
+                <input type="text" [(ngModel)]="user.prenom" placeholder="Prénom" name="prenom" required>
+            </div>
+            
+            <!-- Numéro de téléphone -->
+            <div class="input-group">
+                <i class="fas fa-phone-alt"></i>
+                <input type="text" [(ngModel)]="user.telephone" placeholder="N° Téléphone" name="telephone" required>
+            </div>
+            
+            <!-- Email -->
+            <div class="input-group">
+                <i class="fas fa-envelope"></i>
+                <input type="email" [(ngModel)]="user.email" placeholder="email@gmail.com" name="email" required>
+            </div>
+            
+            <!-- Mot de passe -->
+            <div class="input-group">
+                <i class="fas fa-lock"></i>
+                <input type="password" [(ngModel)]="user.password" placeholder="Mot de passe" name="password"
+                pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" required>
+         
+            </div>
+         <small style="color: aliceblue;">Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule et un chiffre.</small>
+
+            
+            <!-- Confirmer le mot de passe -->
+            <div class="input-group">
+                <i class="fas fa-lock"></i>
+                <input type="password" [(ngModel)]="user.confirmPassword" placeholder="Confirmez votre mot de passe" name="confirmPassword" required>
+            </div>
+            
+            <!-- Termes et conditions -->
+            <div class="terms">
+                <input type="checkbox" id="terms" name="terms" value="terms" required>
+                <label for="terms">J'accepte <a class="conditions" href="">les termes et conditions d'utilisation</a></label>
+            </div>
+            
+            <button type="submit" [disabled]="registerForm.invalid" (click)="OnUserRegister()">S'inscrire</button>
+        </form>
+    </div> 
+</div>

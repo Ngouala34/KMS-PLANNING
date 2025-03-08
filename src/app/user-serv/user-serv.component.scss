@@ -4,7 +4,12 @@
     margin-top: 60px; /* Espace pour la navbar */
     padding: 20px;
     background-color: #f8f9fa;
+    transition: margin-left 0.3s ease-in-out;
+
 }
+.services-container.expanded {
+    margin-left: 80px;
+  }
 
 /* Animation d'apparition */
 @keyframes fadeIn {

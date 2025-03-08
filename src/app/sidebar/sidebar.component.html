@@ -6,29 +6,29 @@
             <h3 *ngIf="!isCollapsed"></h3>
         </div>
         <ul class="list-unstyled components">
-            <li (click)="OnUserConnexion()">
+            <li routerLink="/user-home" routerLinkActive="active" (click)="OnUserConnexion()">
                 <i class="fa-solid fa-house"></i>
-                <a routerLink="/home" *ngIf="!isCollapsed" >Home</a>
+                <a routerLink="/user-home">Home</a>
             </li>
-            <li (click)="OnUserService()">
+            <li routerLink="/user-serv" routerLinkActive="active" (click)="OnUserService()">
                 <i class="fa-solid fa-globe"></i>
-                <a routerLink="/services" *ngIf="!isCollapsed" >Services</a>
+                <a routerLink="/user-serv">Services</a>
             </li>
-            <li>
+            <li routerLink="/souscription" routerLinkActive="active">
                 <i class="fa-solid fa-money-bill-wave"></i>
-                <a routerLink="/Souscription" *ngIf="!isCollapsed">Souscription</a>
+                <a routerLink="/souscription">Souscription</a>
             </li>
-            <li>
+            <li routerLink="/parametres" routerLinkActive="active">
                 <i class="fa-solid fa-cog"></i>
-                <a routerLink="/Parametres" *ngIf="!isCollapsed">Paramètres</a>
+                <a routerLink="/parametres" *ngIf="!isCollapsed">Paramètres</a>
             </li>
-            <li>
+            <li routerLink="/historique" routerLinkActive="active">
                 <i class="fa-solid fa-history"></i>
-                <a routerLink="/Historique" *ngIf="!isCollapsed">Historique des paiements</a>
+                <a routerLink="/historique" *ngIf="!isCollapsed">Historique des paiements</a>
             </li>
-            <li>
+            <li routerLink="/calendar" routerLinkActive="active">
                 <i class="fa-solid fa-calendar"></i>
-                <a routerLink="/Calendar" *ngIf="!isCollapsed">Calendrier</a>
+                <a routerLink="/calendar" *ngIf="!isCollapsed">Calendrier</a>
             </li>
         </ul>
     </div>

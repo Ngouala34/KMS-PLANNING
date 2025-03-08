@@ -1,5 +1,4 @@
-
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
@@ -9,19 +8,27 @@ import { Router } from '@angular/router';
 })
 export class SidebarComponent implements OnInit {
 
-  isCollapsed: boolean = false; // État initial de la sidebar
+  @Input() collapsedByDefault = false; // ✅ Indique si la sidebar est réduite au départ
+  @Output() sidebarToggle = new EventEmitter<boolean>(); // ✅ Envoie l’état de la sidebar au parent
+
+  isCollapsed = false; // État de la sidebar
 
   constructor(private router: Router) { }
 
-  ngOnInit(): void { }
-
-  toggleSidebar(): void {
-    this.isCollapsed = !this.isCollapsed;
+  ngOnInit(): void {
+    this.isCollapsed = this.collapsedByDefault; // ✅ Applique la configuration initiale
   }
+
+  toggleSidebar() {
+    this.isCollapsed = !this.isCollapsed; // ✅ Change l'état de la sidebar
+    this.sidebarToggle.emit(this.isCollapsed); // ✅ Envoie l'état au parent
+  }
+
   OnUserConnexion(): void {
     this.router.navigateByUrl('user-home');
   }
-  OnUserService(): void {    
+
+  OnUserService(): void {
     this.router.navigateByUrl('user-serv');
   }
 }

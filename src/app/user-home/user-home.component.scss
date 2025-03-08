@@ -5,6 +5,8 @@
     padding: 20px;
     background-color: #f8f9fa;
     min-height: 100vh;
+    transition: margin-left 0.3s ease-in-out;
+
   }
   
   /* Bannière d'accueil */
@@ -71,8 +73,8 @@
     background-color: #74C0FC;
   }
   
-  /* Ajustement si la sidebar est réduite */
-  .sidebar.collapsed + .home-container {
+  //ajustement de la largeur de la page lorsque la side bar est réduite
+  .home-container.expanded {
     margin-left: 80px;
   }
 

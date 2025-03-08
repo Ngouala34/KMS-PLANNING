@@ -1,0 +1,37 @@
+.chart {
+    display: flex;
+    justify-content: space-around;   
+    flex-wrap: wrap; 
+    width: 235%
+
+  }
+  .chart-container {
+    width: 45%;
+    margin: 20px auto;
+    padding-top: 20px;
+    padding-bottom: 20px;
+
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  }
+  
+  canvas {
+    display: block;
+    margin: 0 auto;
+  }
+  
+  .chart-container .title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  @media (max-width: 768px) {
+    .chart-container {
+      padding: 15px;
+    }
+  }
+  

@@ -8,6 +8,8 @@ import { Router } from '@angular/router';
 })
 export class UserServComponent implements OnInit {
 
+  isSidebarCollapsed = false;
+
   services: any[] = [];
   showServices = false; // Contrôle l'animation d'affichage
 

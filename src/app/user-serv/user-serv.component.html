@@ -1,6 +1,6 @@
-<app-sidebar></app-sidebar>
+<app-sidebar (sidebarToggle)="isSidebarCollapsed = $event"></app-sidebar>
 
-<section class="services-container">
+<section class="services-container" [ngClass]="{ 'expanded': isSidebarCollapsed }">
     <h2 class="title">Découvrez des services sur mesure, adaptés à vos besoins !</h2>
 
     <!-- Barre de recherche -->

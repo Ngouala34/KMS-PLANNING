@@ -15,8 +15,94 @@ button {
 .navbar {
   padding: 15px 0;
   text-align: center;
-  margin-left: 600px;
+  margin-left: 400px;
 }
+
+
+
+/* Animation d'apparition */
+@keyframes fadeIn {
+  from {
+      opacity: 0;
+      transform: translateY(10px);
+  }
+  to {
+      opacity: 1;
+      transform: translateY(0);
+  }
+}
+
+/* Style du bouton */
+.btn-voir-plus {
+  display: inline-block;
+  padding: 12px 30px;
+  text-transform: uppercase;
+  color: white;
+  font-weight: bold;
+  background: #74C0FC;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  margin-left: 1150px;
+  transition: all 0.3s ease-in-out;
+  animation: fadeIn 0.5s ease-in-out;
+  box-shadow: 2px 2px 10px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* Effet de hover */
+.btn-voir-plus:hover {
+  background: #0d6efd;
+  box-shadow: 0px 10px 20px rgba(0, 123, 255, 0.3);
+  transform: translateY(-3px);
+}
+
+/* Effet d'ombre dynamique */
+.btn-voir-plus:hover::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 10%, transparent 50%);
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.btn-voir-plus:hover::before {
+  opacity: 1;
+}
+
+/* Effet de clic avec onde */
+.btn-voir-plus:active {
+  transform: scale(0.95);
+}
+
+.btn-voir-plus::after {
+  content: "";
+  position: absolute;
+  width: 300%;
+  height: 300%;
+  top: 50%;
+  left: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transition: width 0.4s ease-out, height 0.4s ease-out, opacity 0.4s ease-out;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+}
+
+.btn-voir-plus:active::after {
+  width: 0;
+  height: 0;
+  opacity: 1;
+}
+
+
+
+
 
 .navbar ul {
   list-style: none;

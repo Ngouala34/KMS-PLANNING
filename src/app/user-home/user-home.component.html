@@ -1,9 +1,9 @@
-<app-sidebar></app-sidebar>
+<app-sidebar [collapsedByDefault]="false" (sidebarToggle)="isSidebarCollapsed = $event"></app-sidebar>
 
-<section class="home-container">
+<section class="home-container" [ngClass]="{ 'expanded': isSidebarCollapsed }">
   <!-- Bannière d'accueil -->
   <div class="banner">
-    <h1>Bonjour, <span>Utilisateur</span> 👋</h1>
+    <h1>Bonjour, <span>{{ username }}</span> 👋</h1>
     <p>Prêt à réserver votre prochain rendez-vous ?</p>
     <button class="btn-primary">Prendre un Rendez-vous</button>
   </div>

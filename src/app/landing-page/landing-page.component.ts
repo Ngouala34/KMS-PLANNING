@@ -17,7 +17,7 @@ export class LandingPageComponent implements OnInit {
     this.router.navigateByUrl('facesnaps');
   }
   OnConnexion(): void {
-    this.router.navigateByUrl('signup');
+    this.router.navigateByUrl('login');
   }
   OnInscription(): void {
     this.router.navigateByUrl('choose-function-page');

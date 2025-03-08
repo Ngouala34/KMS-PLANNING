@@ -9,15 +9,18 @@
             <!-- Email avec icône -->
             <div class="input-group">
                 <i class="fas fa-envelope"></i>
-                <input type="text" class="email" placeholder="email@gmail.com">
+                <input type="text" class="email" name="email" [(ngModel)]="loginData.email" placeholder="email@gmail.com">
             </div><br>
             
             <!-- Mot de passe avec icône -->
             <div class="input-group">
                 <i class="fas fa-lock"></i>
-                <input type="password" class="password" placeholder="Password">
+                <input type="password" class="password" name="password" [(ngModel)]="loginData.password" placeholder="Password">
             </div><br>
-            
+
+            <!-- Message d'erreur -->
+            <p *ngIf="errorMessage" class="error-message">{{ errorMessage }}</p>
+
             <!-- Lien mot de passe oublié -->
             <a href="#" class="forgot-password">Mot de passe oublié ?</a><br><br>
             

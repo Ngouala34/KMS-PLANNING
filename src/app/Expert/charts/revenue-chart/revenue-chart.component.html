@@ -1,0 +1,23 @@
+<div class="chart">
+    <div class="chart-container">
+      <div class="title">Graphique des Revenus</div>
+      <canvas baseChart
+              [datasets]="lineChartData.datasets"
+              [labels]="lineChartData.labels"
+              [options]="lineChartOptions"
+              [type]="'line'">
+      </canvas>
+    </div>
+  
+    <div class="chart-container">
+      <div class="title">Évaluations des Services</div>
+      <canvas baseChart
+              [datasets]="barChartData.datasets"
+              [labels]="barChartData.labels"
+              [options]="barChartOptions"
+              [type]="'bar'">
+      </canvas>
+    </div>
+
+  </div>
+  

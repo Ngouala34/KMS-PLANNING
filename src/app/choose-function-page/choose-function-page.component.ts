@@ -17,7 +17,7 @@ export class ChooseFunctionPageComponent implements OnInit {
     this.router.navigateByUrl('expert-login');
   }
   OnUserLogIn(): void {
-    this.router.navigateByUrl('user-login');
+    this.router.navigateByUrl('user-register');
   }
 
 }

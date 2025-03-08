@@ -1,0 +1,198 @@
+
+<app-sidebar  [collapsedByDefault]="true"  (sidebarToggle)="isSidebarCollapsed = $event"></app-sidebar>
+
+    <div class="dashboard-container" [ngClass]="{ 'expanded': isSidebarCollapsed }">      
+
+        <!-- ✅ Section Résumé -->
+        <div class="summary-cards">
+          <div class="card">
+            <i class="fa-solid fa-book"></i>
+            <div class="info">
+              <h3>12</h3>
+              <p>Formations créées</p>
+            </div>
+          </div>
+          <div class="card">
+            <i class="fa-solid fa-users"></i>
+            <div class="info">
+              <h3>150</h3>
+              <p>Participants inscrits</p>
+            </div>
+          </div>
+          <div class="card">
+            <i class="fa-solid fa-dollar-sign"></i>
+            <div class="info">
+              <h3>$2,500</h3>
+              <p>Revenus générés</p>
+            </div>
+          </div>
+          <div class="card">
+            <i class="fa-solid fa-calendar"></i>
+            <div class="info">
+              <h3>8</h3>
+              <p>Sessions à venir</p>
+            </div>
+          </div>
+        </div>
+      
+        <!-- ✅ Section Graphiques -->
+        <div class="charts-container">
+        
+              <app-revenue-chart></app-revenue-chart>
+         
+        </div>
+      
+        <!-- ✅ Section Liste des Formations -->
+        <div class="trainings-section">
+          <h3>Mes Formations</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>Formation</th>
+                <th>Participants</th>
+                <th>Date</th>
+                <th id="Actions">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Angular Avancé</td>
+                <td>45</td>
+                <td>12 Mars 2025</td>
+                <td>
+                  <button class="edit-btn"><i class="fa-solid fa-pen"></i></button>
+                  <button class="delete-btn"><i class="fa-solid fa-trash"></i></button>
+                </td>
+              </tr>
+              <tr>
+                <td>Python pour Débutants</td>
+                <td>30</td>
+                <td>20 Mars 2025</td>
+                <td class="actions">
+                  <button class="edit-btn"><i class="fa-solid fa-pen"></i></button>
+                  <button class="delete-btn"><i class="fa-solid fa-trash"></i></button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- ✅ Section Prochains Rendez-vous -->
+        <div class="appointments-section">
+            <h3>Prochains Rendez-vous</h3>
+            <table>
+            <thead>
+                <tr>
+                <th>Client</th>
+                <th>Date & Heure</th>
+                <th>Statut</th>
+                <th id="Actions">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                <td>Nkamla roger/td>
+                <td>15 Mars 2025 - 10:00</td>
+                <td class="status confirmed">Confirmé</td>
+                <td class="actions">
+                    <button class="video-btn"><i class="fa-solid fa-video"></i></button>
+                    <button class="cancel-btn"><i class="fa-solid fa-xmark"></i></button>
+                </td>
+                </tr>
+                <tr>
+                <td>Teta Martin</td>
+                <td>16 Mars 2025 - 14:00</td>
+                <td class="status pending">En attente</td>
+                <td>
+                    <button class="video-btn"><i class="fa-solid fa-video"></i></button>
+                    <button class="cancel-btn"><i class="fa-solid fa-xmark"></i></button>
+                </td>
+                </tr>
+            </tbody>
+            </table>
+        </div>
+
+        <!-- ✅ Section Avis & Évaluations -->
+        <div class="reviews-section">
+            <h3>Avis des Clients</h3>
+            <div class="reviews-list">
+            <div class="review">
+                <i class="fa-solid fa-user"></i>
+                <div class="review-content">
+                <p><strong>Ondoa Luc</strong> - "Super formation sur Angular ! Très bien expliqué."</p>
+                <div class="stars">
+                    ★★★★★
+                </div>
+                </div>
+            </div>
+        
+            <div class="review">
+                <i class="fa-solid fa-user"></i>
+                <div class="review-content">
+                <p><strong>Tata tati.</strong> - "Très utile, mais j’aurais aimé plus d'exemples pratiques."</p>
+                <div class="stars">
+                    ★★★★☆
+                </div>
+                </div>
+            </div>
+            </div>
+        </div>
+        
+        <!-- ✅ Section Notifications -->
+        <div class="notifications-section">
+            <h3>Notifications</h3>
+            <ul>
+            <li><i class="fa-solid fa-bell"></i> Nouveau participant inscrit à "Angular Avancé".</li>
+            <li><i class="fa-solid fa-bell"></i> Vous avez un rendez-vous aujourd’hui à 10h.</li>
+            <li><i class="fa-solid fa-bell"></i> Un nouveau message de Sophie Martin.</li>
+            </ul>
+        </div>
+
+
+        <!-- ✅ Section Revenus -->
+        <div class="revenues-section">
+            <h3>Revenus</h3>
+            <div class="revenues-header">
+            <p>Total : <span class="total-income">250000 fcfa</span></p>
+            <select>
+                <option value="mois">Ce mois</option>
+                <option value="trimestre">Ce trimestre</option>
+                <option value="annee">Cette année</option>
+            </select>
+            </div>
+            
+            <div class="revenues-list">
+            <div class="revenue-item">
+                <p><strong>Formation Angular</strong></p>
+                <p>10 ventes - <span class="income">30000f</span></p>
+            </div>
+            <div class="revenue-item">
+                <p><strong>Formation Django</strong></p>
+                <p>15 ventes - <span class="income">75000</span></p>
+            </div>
+            <div class="revenue-item">
+                <p><strong>Coaching individuel</strong></p>
+                <p>5 sessions - <span class="income">125 000</span></p>
+            </div>
+            </div>
+        </div>
+
+        <!-- ✅ Bouton flottant pour ajouter une formation -->
+        <button class="add-course-btn"  (click)="onCreateCourse()">
+            <i class="fa-solid fa-plus"></i> Nouvelle Formation
+        </button>
+  
+  
+        
+        
+        
+  
+  
+    </div>
+      
+    
+
+
+
+
+
