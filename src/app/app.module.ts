@@ -24,6 +24,8 @@ import { RevenueChartComponent } from './Expert/charts/revenue-chart/revenue-cha
 import { SidebarExpertComponent } from './sidebar-expert/sidebar-expert.component';
 import { UserRegisterComponent } from './user-register/user-register.component';
 import { AuthService } from './services/auth.service';
+import { UserDashboardComponent } from './user-dashboard/user-dashboard.component';
+import { UserHistoriqueComponent } from './user-historique/user-historique.component';
 
 
 
@@ -45,6 +47,8 @@ import { AuthService } from './services/auth.service';
     RevenueChartComponent,
     SidebarExpertComponent,
     UserRegisterComponent,
+    UserDashboardComponent,
+    UserHistoriqueComponent,
     
     
     

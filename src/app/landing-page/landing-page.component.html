@@ -12,74 +12,109 @@
         <li><a href="#">Service</a></li>
         <li><a href="#">Catégorie</a></li>
         <li><a href="#">About</a></li>
-        <input type="button" value="SignUp" class="btn-inscription" (click)="OnConnexion()">
-
       </ul>
+      <button class="btn-inscription" (click)="OnConnexion()">Login</button>
+      <i class="fa-solid fa-language fa-2x" 
+         style="color:#74C0FC; margin-left: 50px; margin-top:5px;">
+      </i>
     </nav>
-    <i class="fa-solid fa-language fa-2x" style="color:#74C0FC; margin-left: 15px;"></i>
   </nav>
 
   <div class="aim-container">
-    <h1><span>Enseignez</span> ou <span>Apprenez</span> sans limites</h1>
-    <h3>Inscrivez-vous, accédez aux services et formations en exclusivité et échangez en direct avec des experts !</h3>
+    <h1>
+      <span>Enseignez</span> ou <span>Apprenez</span> sans limites
+    </h1>
+    <h3>
+      Inscrivez-vous, accédez aux services et formations en exclusivité et échangez en direct avec des experts !
+    </h3>
     <div class="landing-content">
-      <button class="btn-commencer" (click)="OnInscription()"><i class="fa-solid fa-user"></i> Commencer</button>
+      <button class="btn-commencer" (click)="OnInscription()">
+         Commencer
+      </button>
     </div>
   </div>
-</header>
+</header><br><br><br>
+
+
+<div class="service-title">Découvrez des services <span>sur mesure</span>, adaptés à <span>vos besoins </span>!</div><br><br>
+ 
+<div class="services-grid" *ngIf="showServices">
+  <div class="service-card" *ngFor="let service of services">
+      <img [src]="service.source" alt="Service" class="service-image">
+      <h3>{{ service.nom }}</h3>
+      <p> <strong>{{ service.expert }}</strong></p>
+      <p class="price">{{ service.prix }}fcfa</p>
+      <div class="rating">★★★★★ ({{ service.note }})</div>
+      <button class="btn-book" (click)="OnPayment()">Réserver</button>
+  </div>
+  <input type="button" value="Voir plus ..."id="btn-voir-plus" class="btn-voir-plus" />
+
+</div>
+
 
 <div class="container">
-
   <div class="landing-container">
-
     <div class="landing-container2">
-        <p ><u>Nos <span>Fonctionnalités</span></u></p><br><br>
-        <div id="class">
+      <p>
+        <u>Nos <span>Fonctionnalités</span></u>
+      </p>
+      <br /><br />
+      <div id="class">
         <div class="landing-box">
           <div class="img1"></div>
           <p id="p1">Accepter les réservations en ligne.</p>
         </div>
-      <div class="landing-box">
-        <div class="img2"></div>
-        <p id="p2">Notifications via SMS/Email.</p>
-      </div>
-       <div class="landing-box">
-        <div class="img3"></div>
-          <p id="p3">Application client et expert.</p>
-      </div>
-      <div class="landing-box">
-        <div class="img4"></div>
-        <p id="p4">Gestion des rendez-vous.</p>
-      </div>
-  </div><br><br /><br /><br />
-  <input type="button" value="Voir plus ..." class="btn-voir-plus" >
-
-
-  <div class="landing-container3">
-    <p >Ce que disent nos utilisateurs</p><br><br>
-    <div id="class">
-       <div class="landing-box">
-        <div class="avis-client">
+        <div class="landing-box">
+          <div class="img2"></div>
+          <p id="p2">Notifications via SMS/Email.</p>
+        </div>
+        <div class="landing-box">
           <div class="img3"></div>
-          David K<span>Formateur en développement web</span>
+          <p id="p3">Application client et expert.</p>
         </div>
-        <p id="p3">En tant qu'expert, cette application m’a permis de proposer mes formations sans me soucier de la gestion des rendez-vous. Les paiements sont sécurisés, les liens de visioconférence sont générés automatiquement, et mes clients apprécient la simplicité du processus. Je recommande à 100 % ! 💡💰</p>
-      </div>
-      <div class="landing-box">
-        <div class="avis-client">
+        <div class="landing-box">
           <div class="img4"></div>
-          Sarah Ngouffo<span>Etudiante en marketing digital</span>
+          <p id="p4">Gestion des rendez-vous.</p>
         </div>
-        <p id="p4">Une plateforme ultra-intuitive ! J’ai pu réserver une formation en quelques clics et échanger directement avec un expert de mon domaine. Plus besoin d’envoyer des dizaines d’emails pour fixer un rendez-vous, tout est automatisé ! Un vrai gain de temps! Vraiment👏</p>
+      </div>
+      <br /><br /><br /><br />
+      <input type="button" value="Voir plus ..." class="btn-voir-plus" />
+      
+      <div class="landing-container3">
+        <p>Ce que disent nos utilisateurs</p>
+        <br /><br />
+        <div id="class">
+          <div class="landing-box">
+            <div class="avis-client">
+              <div class="img3"></div>
+              David K<span>Formateur en développement web</span>
+            </div>
+            <p id="p3">
+              En tant qu'expert, cette application m’a permis de proposer mes formations sans me soucier de la gestion des rendez-vous. 
+              Les paiements sont sécurisés, les liens de visioconférence sont générés automatiquement, et mes clients apprécient la simplicité du processus. 
+              Je recommande à 100 % ! 💡💰
+            </p>
+          </div>
+          <div class="landing-box">
+            <div class="avis-client">
+              <div class="img4"></div>
+              Sarah Ngouffo<span>Etudiante en marketing digital</span>
+            </div>
+            <p id="p4">
+              Une plateforme ultra-intuitive ! J’ai pu réserver une formation en quelques clics et échanger directement avec un expert de mon domaine. 
+              Plus besoin d’envoyer des dizaines d’emails pour fixer un rendez-vous, tout est automatisé ! Un vrai gain de temps! Vraiment👏
+            </p>
+          </div>
+        </div>
+        <br /><br /><br /><br />
+        <div id="landing-container4">
+          <span>Rejoignez-nous dès maintenant !</span>
+          <br /><br />
+          <button class="btn-inscription" (click)="OnInscription()">S'inscrire</button>
+        </div>
+      </div>
     </div>
-  
-  </div><br><br><br><br>
-  <div id="landing-container4">
-    <span >Rejoignez-nous dès maintenant !</span><br><br>
-    <button class="btn-inscription" (click)="OnInscription()">S'inscrire</button>
   </div>
- 
-  </div>
-</div><br>
-
+</div>
+<br />
 <app-footer></app-footer>

@@ -1,0 +1,74 @@
+<app-sidebar [collapsedByDefault]="false" (sidebarToggle)="isSidebarCollapsed = $event"></app-sidebar>
+
+<!-- user-dashboard.component.html -->
+<div class="user-dashboard" [ngClass]="{ 'expanded': isSidebarCollapsed }">
+  <h1 class="dashboard-title">Mes Statistiques</h1>
+
+  <!-- Section Statistiques -->
+  <div class="stats-container">
+    <div class="stat-card fade-in">
+      <i class="fas fa-book"></i>
+      <h3>Formations souscrites</h3>
+      <p>12</p>
+    </div>
+    <div class="stat-card fade-in">
+      <i class="fas fa-check-circle" style="color: green;"></i>
+      <h3>Formations terminées</h3>
+      <p>8</p>
+    </div>
+    <div class="stat-card fade-in">
+      <i class="fas fa-clock"></i>
+      <h3>Heures totales</h3>
+      <p>35h</p>
+    </div>
+    <div class="stat-card fade-in">
+      <i class="fas fa-money-bill-wave"></i>
+      <h3>Montant dépensé</h3>
+      <p>120 000 XAF</p>
+    </div>
+    <div class="stat-card fade-in">
+      <i class="fas fa-users" style="color: orangered;"></i>
+      <h3>Experts consultés</h3>
+      <p>5</p>
+    </div>
+    <div class="stat-card fade-in">
+      <i class="fas fa-calendar-check" style="color:yellow"></i>
+      <h3>Rendez-vous réservés</h3>
+      <p>10</p>
+    </div>
+  </div>
+
+  <!-- Section Formations en cours -->
+  <div class="formations-container">
+  <h1 class="dashboard-title">Mes Souscriptions </h1>
+    <div class="formation-grid">
+      <div class="formation-card slide-up">
+        <h3>Formation : Développement Web</h3>
+        <p>Expert : Jean Dupont</p>
+        <p>Progression : 70%</p>
+        <div class="progress-bar">
+          <div class="progress1" style="width: 70%;"></div>
+        </div>
+        <button class="btn-annuler">Plus</button>
+      </div>
+      
+
+      <div class="formation-card slide-up">
+        <div class="formation-card-content">
+            <div>
+                <img class="formation-card-image" src="https://i.pinimg.com/474x/63/4d/e7/634de7333549f91cf13cabead18f0a6f.jpg" alt="">
+            </div>
+            <div class="formation-card">
+                <h3>Formation : Marketing Digital</h3>
+                <p>Expert : Sarah Ndiaye</p>
+                <p>Progression : 40%</p>
+                <div class="progress-bar">
+                <div class="progress2" style="width: 40%;"></div>
+                </div>
+                <button class="btn-annuler">Plus</button>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

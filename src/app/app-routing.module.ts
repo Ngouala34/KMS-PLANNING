@@ -13,6 +13,8 @@ import { CreateCourseComponent } from './Expert/create-course/create-course.comp
 import { RevenueChartComponent } from './Expert/charts/revenue-chart/revenue-chart.component';
 import { UserRegisterComponent } from './user-register/user-register.component';
 import { LoginComponent } from './login/login/login.component';
+import { UserDashboardComponent } from './user-dashboard/user-dashboard.component';
+import { UserHistoriqueComponent } from './user-historique/user-historique.component';
 
 const routes: Routes = [
   { path: '', component: LandingPageComponent },
@@ -22,6 +24,8 @@ const routes: Routes = [
   { path: 'user-serv', component: UserServComponent },
   { path: 'user-register', component: UserRegisterComponent },
   { path: 'user-souscriptions', component: UserSouscriptionsComponent },
+  { path: 'user-dashboard', component: UserDashboardComponent },
+  { path: 'user-historique', component: UserHistoriqueComponent },
  
  
   { path: 'payment', component: PaymentComponent },

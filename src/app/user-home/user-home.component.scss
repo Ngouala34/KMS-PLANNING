@@ -8,6 +8,11 @@
     transition: margin-left 0.3s ease-in-out;
 
   }
+    //ajustement de la largeur de la page lorsque la side bar est réduite
+    .home-container.expanded {
+      margin-left: 80px;
+    }
+  
   
   /* Bannière d'accueil */
   .banner {
@@ -73,14 +78,6 @@
     background-color: #74C0FC;
   }
   
-  //ajustement de la largeur de la page lorsque la side bar est réduite
-  .home-container.expanded {
-    margin-left: 80px;
-  }
-
-
-
-
 
 
   /* Animation fade-in simple */

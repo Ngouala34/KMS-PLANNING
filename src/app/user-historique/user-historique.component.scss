@@ -1,0 +1,93 @@
+.user-historique {
+
+    margin-left: 300px;
+    margin-top: 60px;
+    transition: margin-left 0.3s ease-in-out;
+}
+
+.user-historique.expanded {
+    margin-left: 80px;
+
+}
+.filters-container {
+    display: flex;
+    gap: 15px;
+    margin: 20px 0;
+}
+
+.filters-container input, 
+.filters-container select, 
+.filters-container button {
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    font-size: 14px;
+}
+
+.filters-container input, 
+.filters-container select {
+    background: #0e0f49;
+    color: white;
+}
+
+.btn-filter {
+    background: #74C0FC;
+    color: white;
+    cursor: pointer;
+}
+
+.btn-filter:hover {
+    background: #5ca6e3;
+}
+
+.charts-container {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 10px;
+}
+
+.chart-card {
+    background: #ffffff;
+    padding-top: 20px;
+    width: 35%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.payment-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #ffffff;
+    color: rgb(0, 0, 0);
+    margin-top: 20px;
+}
+
+.payment-table th, .payment-table td {
+    padding: 12px;
+    text-align: center;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.payment-table th {
+    background: #74C0FC;
+    color: white;
+}
+
+.status.success { color: green; font-weight: bold; }
+.status.pending { color: orange; font-weight: bold; }
+.status.failed { color: red; font-weight: bold; }
+
+.btn-details {
+    background: #74C0FC;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn-details:hover {
+    background: #5ca6e3;
+}

@@ -31,4 +31,12 @@ export class SidebarComponent implements OnInit {
   OnUserService(): void {
     this.router.navigateByUrl('user-serv');
   }
+  OnUserdashboard(): void {
+    this.router.navigateByUrl('user-dashboard');
+  }
+  OnUserprofile(): void {
+    this.router.navigateByUrl('user-profile');
+  }  OnUserHistorique(): void {
+    this.router.navigateByUrl('user-historique');
+  }
 }

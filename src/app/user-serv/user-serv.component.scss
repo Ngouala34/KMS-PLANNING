@@ -9,7 +9,7 @@
 }
 .services-container.expanded {
     margin-left: 80px;
-  }
+}
 
 /* Animation d'apparition */
 @keyframes fadeIn {
@@ -118,10 +118,7 @@
     background-color: #74C0FC;
 }
 
-/* Ajustement si la sidebar est réduite */
-.sidebar.collapsed + .services-container {
-    margin-left: 80px;
-}
+
 
 
 

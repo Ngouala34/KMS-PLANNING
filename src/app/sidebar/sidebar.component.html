@@ -8,21 +8,21 @@
         <ul class="list-unstyled components">
             <li routerLink="/user-home" routerLinkActive="active" (click)="OnUserConnexion()">
                 <i class="fa-solid fa-house"></i>
-                <a routerLink="/user-home">Home</a>
+                <a routerLink="/user-home">accueil</a>
+            </li>
+            <li routerLink="/user-dashboard" routerLinkActive="active" (click)="OnUserdashboard()">
+                <i class="fa-solid fa-money-bill-wave"></i>
+                <a routerLink="/user-dashboard">Dashboard</a>
             </li>
             <li routerLink="/user-serv" routerLinkActive="active" (click)="OnUserService()">
                 <i class="fa-solid fa-globe"></i>
                 <a routerLink="/user-serv">Services</a>
             </li>
-            <li routerLink="/souscription" routerLinkActive="active">
-                <i class="fa-solid fa-money-bill-wave"></i>
-                <a routerLink="/souscription">Souscription</a>
-            </li>
             <li routerLink="/parametres" routerLinkActive="active">
                 <i class="fa-solid fa-cog"></i>
                 <a routerLink="/parametres" *ngIf="!isCollapsed">Paramètres</a>
             </li>
-            <li routerLink="/historique" routerLinkActive="active">
+            <li routerLink="/user-historique" routerLinkActive="active" (click)="OnUserHistorique()">
                 <i class="fa-solid fa-history"></i>
                 <a routerLink="/historique" *ngIf="!isCollapsed">Historique des paiements</a>
             </li>

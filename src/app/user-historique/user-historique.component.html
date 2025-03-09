@@ -1,0 +1,75 @@
+<app-sidebar [collapsedByDefault]="false" (sidebarToggle)="isSidebarCollapsed = $event"></app-sidebar>
+<div [ngClass]="{ expanded : isSidebarCollapsed}" class="user-historique">
+
+
+    <div class="filters-container">
+    
+        <select id="statusFilter">
+            <option value="">Tous les statuts</option>
+            <option value="success"> Réussi</option>
+            <option value="pending"> En attente</option>
+            <option value="failed"> Échoué</option>
+        </select>
+    
+        <select id="paymentMethodFilter">
+            <option value="">Tous les moyens de paiement</option>
+            <option value="card"> Carte Bancaire</option>
+            <option value="mobile"> Mobile Money</option>
+            <option value="paypal"> PayPal</option>
+        </select>
+    
+        <button class="btn-filter">Filtrer</button>
+    </div>
+    
+    
+    <div class="charts-container">
+        <div class="chart-card">
+            <canvas id="paymentsByMonth"></canvas>
+        </div>
+        <div class="chart-card">
+            <canvas id="paymentMethods"></canvas>
+        </div>
+    </div>
+    
+    
+    <table class="payment-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Date</th>
+                <th>Montant</th>
+                <th>Méthode</th>
+                <th>Statut</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>#TXN12345</td>
+                <td>05/03/2025</td>
+                <td>50 000 XAF</td>
+                <td> Mobile Money</td>
+                <td><span class="status success">Réussi</span></td>
+                <td><button class="btn-details">Voir</button></td>
+            </tr>
+            <tr>
+                <td>#TXN67890</td>
+                <td>02/03/2025</td>
+                <td>30 000 XAF</td>
+                <td>Carte Bancaire</td>
+                <td><span class="status pending">En attente</span></td>
+                <td><button class="btn-details">Voir</button></td>
+            </tr>
+            <tr>
+                <td>#TXN12345</td>
+                <td>05/03/2025</td>
+                <td>50 000 XAF</td>
+                <td> Mobile Money</td>
+                <td><span class="status failed">Echoué</span></td>
+                <td><button class="btn-details">Voir</button></td>
+            </tr>
+        </tbody>
+    </table>
+    
+
+</div>
