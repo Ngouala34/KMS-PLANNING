@@ -3,11 +3,11 @@ import { Router } from '@angular/router';
 import { CourseService } from 'src/app/services/course.service';
 
 @Component({
-  selector: 'app-dashbord',
-  templateUrl: './dashbord.component.html',
-  styleUrls: ['./dashbord.component.scss']
+  selector: 'app-expert-dashboard',
+  templateUrl: './dashboard-expert.component.html',
+  styleUrls: ['./dashboard-expert.component.scss']
 })
-export class DashbordComponent implements OnInit {
+export class DashboardExpertComponent implements OnInit {
 
   collapsedByDefault = true;
   isSidebarCollapsed = true;
@@ -28,12 +28,6 @@ export class DashbordComponent implements OnInit {
   constructor(private router : Router, private courseService: CourseService) { }
   ngOnInit(): void {
     this.isSidebarCollapsed = this.collapsedByDefault;
-  }
-
-
-
-  OnUserConnexion(): void {
-    this.router.navigateByUrl('dashboard');
   }
 
 

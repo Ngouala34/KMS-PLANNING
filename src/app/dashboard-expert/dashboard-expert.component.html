@@ -1,9 +1,9 @@
 
-<app-sidebar  [collapsedByDefault]="true"  (sidebarToggle)="isSidebarCollapsed = $event"></app-sidebar>
+<app-sidebar-expert  [collapsedByDefault]="true"  (sidebarToggle)="isSidebarCollapsed = $event" ></app-sidebar-expert>
 
     <div class="dashboard-container" [ngClass]="{ 'expanded': isSidebarCollapsed }">      
 
-        <!-- ✅ Section Résumé -->
+        <!--  Section Résumé -->
         <div class="summary-cards">
           <div class="card">
             <i class="fa-solid fa-book"></i>
@@ -35,14 +35,14 @@
           </div>
         </div>
       
-        <!-- ✅ Section Graphiques -->
+        <!--  Section Graphiques -->
         <div class="charts-container">
         
               <app-revenue-chart></app-revenue-chart>
          
         </div>
       
-        <!-- ✅ Section Liste des Formations -->
+        <!--  Section Liste des Formations -->
         <div class="trainings-section">
           <h3>Mes Formations</h3>
           <table>
@@ -77,7 +77,7 @@
           </table>
         </div>
 
-        <!-- ✅ Section Prochains Rendez-vous -->
+        <!--  Section Prochains Rendez-vous -->
         <div class="appointments-section">
             <h3>Prochains Rendez-vous</h3>
             <table>
@@ -112,7 +112,7 @@
             </table>
         </div>
 
-        <!-- ✅ Section Avis & Évaluations -->
+        <!--  Section Avis & Évaluations -->
         <div class="reviews-section">
             <h3>Avis des Clients</h3>
             <div class="reviews-list">
@@ -138,7 +138,7 @@
             </div>
         </div>
         
-        <!-- ✅ Section Notifications -->
+        <!--  Section Notifications -->
         <div class="notifications-section">
             <h3>Notifications</h3>
             <ul>
@@ -149,7 +149,7 @@
         </div>
 
 
-        <!-- ✅ Section Revenus -->
+        <!--  Section Revenus -->
         <div class="revenues-section">
             <h3>Revenus</h3>
             <div class="revenues-header">
@@ -177,7 +177,7 @@
             </div>
         </div>
 
-        <!-- ✅ Bouton flottant pour ajouter une formation -->
+        <!--  Bouton flottant pour ajouter une formation -->
         <button class="add-course-btn"  (click)="onCreateCourse()">
             <i class="fa-solid fa-plus"></i> Nouvelle Formation
         </button>

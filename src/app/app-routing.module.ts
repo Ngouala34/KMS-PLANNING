@@ -8,13 +8,15 @@ import { UserHomeComponent } from './user-home/user-home.component';
 import { UserServComponent } from './user-serv/user-serv.component';
 import { UserSouscriptionsComponent } from './user-souscription/user-souscription.component';
 import { PaymentComponent } from './payment/payment.component';
-import { DashbordComponent } from './Expert/dashbord/dashbord.component';
 import { CreateCourseComponent } from './Expert/create-course/create-course.component';
 import { RevenueChartComponent } from './Expert/charts/revenue-chart/revenue-chart.component';
 import { UserRegisterComponent } from './user-register/user-register.component';
 import { LoginComponent } from './login/login/login.component';
 import { UserDashboardComponent } from './user-dashboard/user-dashboard.component';
 import { UserHistoriqueComponent } from './user-historique/user-historique.component';
+import { UserCalendrierComponent } from './user-calendrier/user-calendrier.component';
+import { DashboardExpertComponent } from './dashboard-expert/dashboard-expert.component';
+import { ExpertServiceComponent } from './expert-service/expert-service.component';
 
 const routes: Routes = [
   { path: '', component: LandingPageComponent },
@@ -26,12 +28,14 @@ const routes: Routes = [
   { path: 'user-souscriptions', component: UserSouscriptionsComponent },
   { path: 'user-dashboard', component: UserDashboardComponent },
   { path: 'user-historique', component: UserHistoriqueComponent },
+  { path: 'user-calendrier', component: UserCalendrierComponent },
  
+  { path: 'dashboard-expert', component: DashboardExpertComponent },
+  { path: 'expert-service', component: ExpertServiceComponent },
  
   { path: 'payment', component: PaymentComponent },
   { path: 'expert-login', component: ExpertLoginComponent },
   { path: 'choose-function-page', component: ChooseFunctionPageComponent },
-  { path: 'dashboard', component: DashbordComponent },
   { path: 'create-course', component: CreateCourseComponent },
   { path: 'revenue-chart', component: RevenueChartComponent },
   { path: 'sidebar-expert', component: SidebarComponent },

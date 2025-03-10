@@ -14,6 +14,6 @@ export class ExpertLoginComponent implements OnInit {
   }
 
   onConnexion(): void {
-    this.router.navigateByUrl('dashboard');
+    this.router.navigateByUrl('dashboard-expert');
   }
 }

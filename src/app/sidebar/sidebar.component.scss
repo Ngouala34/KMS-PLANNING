@@ -71,6 +71,7 @@
     padding: 15px;
     cursor: pointer;
     border-radius: 5px;
+    height: 15px;
     transition: background 0.3s ease-in-out;
 }
 
@@ -137,3 +138,9 @@ margin-top: 20px;
     background-color: #3498db; /* Couleur lorsqu'un élément est actif */
   
   }
+
+.bar-horizontale{
+    margin-top: 250px;
+    border-bottom: solid 1px rgba(255, 255, 255, 0.384);
+
+}

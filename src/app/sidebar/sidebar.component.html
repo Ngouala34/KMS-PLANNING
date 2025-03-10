@@ -8,28 +8,40 @@
         <ul class="list-unstyled components">
             <li routerLink="/user-home" routerLinkActive="active" (click)="OnUserConnexion()">
                 <i class="fa-solid fa-house"></i>
-                <a routerLink="/user-home">accueil</a>
+                <a  >accueil</a>
             </li>
             <li routerLink="/user-dashboard" routerLinkActive="active" (click)="OnUserdashboard()">
                 <i class="fa-solid fa-money-bill-wave"></i>
-                <a routerLink="/user-dashboard">Dashboard</a>
+                <a >Dashboard</a>
             </li>
             <li routerLink="/user-serv" routerLinkActive="active" (click)="OnUserService()">
                 <i class="fa-solid fa-globe"></i>
-                <a routerLink="/user-serv">Services</a>
+                <a >Services</a>
+            </li>
+            <li routerLink="/user-historique" routerLinkActive="active" (click)="OnUserHistorique()">
+                <i class="fa-solid fa-history"></i>
+                <a  >Historique des paiements</a>
+            </li>
+            <li routerLink="/user-calendrier" routerLinkActive="active" (click)="OnUserCalendrier()">
+                <i class="fa-solid fa-calendar"></i>
+                <a  >Calendrier</a>
             </li>
             <li routerLink="/parametres" routerLinkActive="active">
                 <i class="fa-solid fa-cog"></i>
                 <a routerLink="/parametres" *ngIf="!isCollapsed">Paramètres</a>
             </li>
-            <li routerLink="/user-historique" routerLinkActive="active" (click)="OnUserHistorique()">
-                <i class="fa-solid fa-history"></i>
-                <a routerLink="/historique" *ngIf="!isCollapsed">Historique des paiements</a>
+
+            <div class="bar-horizontale"></div>
+            <li routerLink="/user-profile" routerLinkActive="active" class="profile">
+                <i class="fa-solid fa-user"></i>
+                <a >Profil</a>
             </li>
-            <li routerLink="/calendar" routerLinkActive="active">
-                <i class="fa-solid fa-calendar"></i>
-                <a routerLink="/calendar" *ngIf="!isCollapsed">Calendrier</a>
+            <li routerLink="/user-Deconnexion" routerLinkActive="active">
+                <i class="fa-solid fa-right-from-bracket"></i>
+                <a >Deconnexion</a>
             </li>
+
+
         </ul>
     </div>
 </section>

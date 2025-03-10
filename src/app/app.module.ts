@@ -17,7 +17,6 @@ import { UserServComponent } from './user-serv/user-serv.component';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { PaymentComponent } from './payment/payment.component';
-import { DashbordComponent } from './Expert/dashbord/dashbord.component';
 import { CreateCourseComponent } from './Expert/create-course/create-course.component';
 import { NgChartsModule } from 'ng2-charts';
 import { RevenueChartComponent } from './Expert/charts/revenue-chart/revenue-chart.component';
@@ -26,6 +25,10 @@ import { UserRegisterComponent } from './user-register/user-register.component';
 import { AuthService } from './services/auth.service';
 import { UserDashboardComponent } from './user-dashboard/user-dashboard.component';
 import { UserHistoriqueComponent } from './user-historique/user-historique.component';
+import { UserCalendrierComponent } from './user-calendrier/user-calendrier.component';
+import { FullCalendarModule } from '@fullcalendar/angular';
+import { DashboardExpertComponent } from './dashboard-expert/dashboard-expert.component';
+import { ExpertServiceComponent } from './expert-service/expert-service.component';
 
 
 
@@ -42,13 +45,15 @@ import { UserHistoriqueComponent } from './user-historique/user-historique.compo
     UserHomeComponent,
     UserServComponent,
     PaymentComponent,
-    DashbordComponent,
     CreateCourseComponent,
     RevenueChartComponent,
     SidebarExpertComponent,
     UserRegisterComponent,
     UserDashboardComponent,
     UserHistoriqueComponent,
+    UserCalendrierComponent,
+    DashboardExpertComponent,
+    ExpertServiceComponent,
     
     
     
@@ -59,6 +64,7 @@ import { UserHistoriqueComponent } from './user-historique/user-historique.compo
     HttpClientModule,
     NgChartsModule,
     FormsModule,
+    FullCalendarModule
 
   ],
   exports: [HeaderComponent],

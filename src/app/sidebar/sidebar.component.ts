@@ -8,20 +8,21 @@ import { Router } from '@angular/router';
 })
 export class SidebarComponent implements OnInit {
 
-  @Input() collapsedByDefault = false; // ✅ Indique si la sidebar est réduite au départ
-  @Output() sidebarToggle = new EventEmitter<boolean>(); // ✅ Envoie l’état de la sidebar au parent
+  @Input() collapsedByDefault = false; // Indique si la sidebar est réduite au départ
+  @Output() sidebarToggle = new EventEmitter<boolean>(); //  Envoie l’état de la sidebar au parent
+
 
   isCollapsed = false; // État de la sidebar
 
   constructor(private router: Router) { }
 
   ngOnInit(): void {
-    this.isCollapsed = this.collapsedByDefault; // ✅ Applique la configuration initiale
+    this.isCollapsed = this.collapsedByDefault; //  Applique la configuration initiale
   }
 
   toggleSidebar() {
-    this.isCollapsed = !this.isCollapsed; // ✅ Change l'état de la sidebar
-    this.sidebarToggle.emit(this.isCollapsed); // ✅ Envoie l'état au parent
+    this.isCollapsed = !this.isCollapsed; //  Change l'état de la sidebar
+    this.sidebarToggle.emit(this.isCollapsed); //  Envoie l'état au parent
   }
 
   OnUserConnexion(): void {
@@ -36,7 +37,13 @@ export class SidebarComponent implements OnInit {
   }
   OnUserprofile(): void {
     this.router.navigateByUrl('user-profile');
-  }  OnUserHistorique(): void {
+  } 
+   OnUserHistorique(): void {
     this.router.navigateByUrl('user-historique');
   }
-}
+  OnUserCalendrier(): void {
+    this.router.navigateByUrl('user-calendrier');
+   }
+} 
+
+

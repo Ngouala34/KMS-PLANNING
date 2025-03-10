@@ -1,3 +1,44 @@
-<app-sidebar [collapsedByDefault]="false" (sidebarToggle)="isSidebarCollapsed = $event"></app-sidebar>
+<app-header></app-header>
+<section class="sidebar-container">
+    <div class="sidebar" [class.collapsed]="isCollapsed">
+        <div class="sidebar-header">
+            <i id="fa-bars" class="fa-solid fa-right-left" (click)="toggleSidebar()"></i>
+            <h3 *ngIf="!isCollapsed"></h3>
+        </div>
+        <ul class="list-unstyled components">
+            <li routerLink="/dashboard-expert" routerLinkActive="active" (click)="OnExpertdashboard()">
+                <i class="fa-solid fa-money-bill-wave"></i>
+                <a >Dashboard</a>
+            </li>
+            <li routerLink="/user-serv" routerLinkActive="active" (click)="OnExpertService()">
+                <i class="fa-solid fa-globe"></i>
+                <a >Services</a>
+            </li>
+            <li routerLink="/user-historique" routerLinkActive="active" (click)="OnExpertHistorique()">
+                <i class="fa-solid fa-history"></i>
+                <a  >Historique</a>
+            </li>
+            <li routerLink="/user-calendrier" routerLinkActive="active" (click)="OnExpertCalendrier()">
+                <i class="fa-solid fa-calendar"></i>
+                <a  >Calendrier</a>
+            </li>
+            <li routerLink="/parametres" routerLinkActive="active">
+                <i class="fa-solid fa-cog"></i>
+                <a routerLink="/parametres" *ngIf="!isCollapsed">Paramètres</a>
+            </li>
+
+            <div class="bar-horizontale"></div>
+            <li routerLink="/user-profile" routerLinkActive="active" class="profile">
+                <i class="fa-solid fa-user"></i>
+                <a >Profil</a>
+            </li>
+            <li routerLink="/user-Deconnexion" routerLinkActive="active">
+                <i class="fa-solid fa-right-from-bracket"></i>
+                <a >Deconnexion</a>
+            </li>
 
 
+        </ul>
+    </div>
+
+</section>
