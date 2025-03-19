@@ -1,4 +1,4 @@
-
+<app-header-expert></app-header-expert>
 <app-sidebar-expert  [collapsedByDefault]="true"  (sidebarToggle)="isSidebarCollapsed = $event" ></app-sidebar-expert>
 
     <div class="dashboard-container" [ngClass]="{ 'expanded': isSidebarCollapsed }">      
@@ -8,28 +8,28 @@
           <div class="card">
             <i class="fa-solid fa-book"></i>
             <div class="info">
-              <h3>12</h3>
+              <h3>0</h3>
               <p>Formations créées</p>
             </div>
           </div>
           <div class="card">
-            <i class="fa-solid fa-users"></i>
+            <i class="fa-solid fa-users" style="color: orangered;"></i>
             <div class="info">
-              <h3>150</h3>
+              <h3>0</h3>
               <p>Participants inscrits</p>
             </div>
           </div>
           <div class="card">
             <i class="fa-solid fa-dollar-sign"></i>
             <div class="info">
-              <h3>$2,500</h3>
+              <h3>0</h3>
               <p>Revenus générés</p>
             </div>
           </div>
           <div class="card">
-            <i class="fa-solid fa-calendar"></i>
+            <i class="fa-solid fa-calendar" style="color: green;"></i>
             <div class="info">
-              <h3>8</h3>
+              <h3>0</h3>
               <p>Sessions à venir</p>
             </div>
           </div>
@@ -91,7 +91,7 @@
             </thead>
             <tbody>
                 <tr>
-                <td>Nkamla roger/td>
+                <td>Nkamla roger</td>
                 <td>15 Mars 2025 - 10:00</td>
                 <td class="status confirmed">Confirmé</td>
                 <td class="actions">
@@ -112,48 +112,14 @@
             </table>
         </div>
 
-        <!--  Section Avis & Évaluations -->
-        <div class="reviews-section">
-            <h3>Avis des Clients</h3>
-            <div class="reviews-list">
-            <div class="review">
-                <i class="fa-solid fa-user"></i>
-                <div class="review-content">
-                <p><strong>Ondoa Luc</strong> - "Super formation sur Angular ! Très bien expliqué."</p>
-                <div class="stars">
-                    ★★★★★
-                </div>
-                </div>
-            </div>
-        
-            <div class="review">
-                <i class="fa-solid fa-user"></i>
-                <div class="review-content">
-                <p><strong>Tata tati.</strong> - "Très utile, mais j’aurais aimé plus d'exemples pratiques."</p>
-                <div class="stars">
-                    ★★★★☆
-                </div>
-                </div>
-            </div>
-            </div>
-        </div>
-        
-        <!--  Section Notifications -->
-        <div class="notifications-section">
-            <h3>Notifications</h3>
-            <ul>
-            <li><i class="fa-solid fa-bell"></i> Nouveau participant inscrit à "Angular Avancé".</li>
-            <li><i class="fa-solid fa-bell"></i> Vous avez un rendez-vous aujourd’hui à 10h.</li>
-            <li><i class="fa-solid fa-bell"></i> Un nouveau message de Sophie Martin.</li>
-            </ul>
-        </div>
+     
 
 
         <!--  Section Revenus -->
         <div class="revenues-section">
             <h3>Revenus</h3>
             <div class="revenues-header">
-            <p>Total : <span class="total-income">250000 fcfa</span></p>
+            <p>Total : <span class="total-income">0 fcfa</span></p>
             <select>
                 <option value="mois">Ce mois</option>
                 <option value="trimestre">Ce trimestre</option>
@@ -164,22 +130,22 @@
             <div class="revenues-list">
             <div class="revenue-item">
                 <p><strong>Formation Angular</strong></p>
-                <p>10 ventes - <span class="income">30000f</span></p>
+                <p>0 sessions  - <span class="income">0fcfa</span></p>
             </div>
             <div class="revenue-item">
                 <p><strong>Formation Django</strong></p>
-                <p>15 ventes - <span class="income">75000</span></p>
+                <p>0 sessions - <span class="income">0fcfa</span></p>
             </div>
             <div class="revenue-item">
                 <p><strong>Coaching individuel</strong></p>
-                <p>5 sessions - <span class="income">125 000</span></p>
+                <p>0 sessions - <span class="income">0fcfa</span></p>
             </div>
             </div>
         </div>
 
         <!--  Bouton flottant pour ajouter une formation -->
         <button class="add-course-btn"  (click)="onCreateCourse()">
-            <i class="fa-solid fa-plus"></i> Nouvelle Formation
+            <i class="fa-solid fa-plus"></i> Nouveau Service
         </button>
   
   

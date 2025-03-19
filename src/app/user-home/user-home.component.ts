@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-user-home',
@@ -7,18 +8,25 @@ import { AuthService } from '../services/auth.service';
   styleUrls: ['./user-home.component.scss']
 })
 export class UserHomeComponent implements OnInit {
-  username: string = '';  // Initialise le nom d'utilisateur à une chaîne vide
+  username: string = '';// Initialise le nom d'utilisateur à une chaîne vide
+  email: string = '';  
+  userId: any;
+  
   collapsedByDefault = false;
   isSidebarCollapsed = false;
 
-  constructor(private authService: AuthService) { }
+  constructor(private router : Router, private authService: AuthService) { }
 
   ngOnInit(): void {
-    const user = this.authService.currentUserValue;
-    if (user) {
-      this.username = user.username || 'Utilisateur'; // Si l'utilisateur est connecté, afficher son username
-    } else {
-      this.username = 'Utilisateur'; // Si aucun utilisateur n'est connecté, afficher "Utilisateur"
-    }
+ 
   }
+
+  loadUserData(user: any): void {
+    // Récupérer les informations utilisateur à partir de l'ID
+    this.userId = user.id;
+    this.username = user.username;
+    this.email = user.email;
+    // Vous pouvez aussi charger d'autres informations en fonction de l'ID
+  }
+
 }

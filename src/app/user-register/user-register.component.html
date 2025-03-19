@@ -5,25 +5,18 @@
                 <img src="https://kms-entreprises.com/assets/img/branding/KMS%20logo.jpg" alt="Logo">
                 <p>PLANNING</p>
             </div>
+
+            <!-- Message d'alerte -->
+            <div *ngIf="message" [ngClass]="{'success-message': messageType === 'success', 'error-message': messageType === 'error'}">
+                {{ message }}
+              </div>
+
             <p>Veuillez remplir le formulaire d'inscription</p>
 
             <!-- Nom d'utilisateur -->
             <div class="input-group">
                 <i class="fas fa-user"></i>
                 <input type="text" [(ngModel)]="user.username" placeholder="Nom d'utilisateur" name="username" required>
-            </div>
-  
-            
-            <!-- Nom -->
-            <div class="input-group">
-                <i class="fas fa-user"></i>
-                <input type="text" [(ngModel)]="user.nom" placeholder="Nom" name="nom" required>
-            </div>
-            
-            <!-- Prénom -->
-            <div class="input-group">
-                <i class="fas fa-user"></i>
-                <input type="text" [(ngModel)]="user.prenom" placeholder="Prénom" name="prenom" required>
             </div>
             
             <!-- Numéro de téléphone -->
@@ -37,7 +30,12 @@
                 <i class="fas fa-envelope"></i>
                 <input type="email" [(ngModel)]="user.email" placeholder="email@gmail.com" name="email" required>
             </div>
-            
+
+            <select  class="input-group" [(ngModel)]="user.role" name="role" required>
+                <option  value="" disabled selected>Choisissez un rôle</option>
+                <option value="CLIENT">Client</option>
+                <option value="EXPERT">Expert</option>
+            </select>
             <!-- Mot de passe -->
             <div class="input-group">
                 <i class="fas fa-lock"></i>
@@ -45,7 +43,7 @@
                 pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" required>
          
             </div>
-         <small style="color: aliceblue;">Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule et un chiffre.</small>
+         <small style="color: rgb(0, 0, 0); text-align: center;">Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule et un chiffre.</small>
 
             
             <!-- Confirmer le mot de passe -->

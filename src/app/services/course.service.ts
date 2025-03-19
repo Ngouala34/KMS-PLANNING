@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class CourseService {
 
-  private apiUrl = 'http://localhost:8000/api/courses/'; // URL de l'API (à modifier selon ton backend)
+  private apiUrl = 'http://127.0.0.1:8000/api/services/'; // URL de l'API (à modifier selon ton backend)
 
   constructor(private http: HttpClient) { }
 

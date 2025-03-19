@@ -29,6 +29,7 @@ import { UserCalendrierComponent } from './user-calendrier/user-calendrier.compo
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { DashboardExpertComponent } from './dashboard-expert/dashboard-expert.component';
 import { ExpertServiceComponent } from './expert-service/expert-service.component';
+import { HeaderExpertComponent } from './header-expert/header-expert.component';
 
 
 
@@ -54,6 +55,7 @@ import { ExpertServiceComponent } from './expert-service/expert-service.componen
     UserCalendrierComponent,
     DashboardExpertComponent,
     ExpertServiceComponent,
+    HeaderExpertComponent,
     
     
     
@@ -64,7 +66,7 @@ import { ExpertServiceComponent } from './expert-service/expert-service.componen
     HttpClientModule,
     NgChartsModule,
     FormsModule,
-    FullCalendarModule
+    FullCalendarModule,
 
   ],
   exports: [HeaderComponent],

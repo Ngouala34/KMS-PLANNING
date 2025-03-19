@@ -9,6 +9,7 @@
     justify-content: space-around;
     align-items: center;
   }
+
   
   h1 {
     font-size: 36px;
@@ -42,7 +43,7 @@
   
   .role-info i {
     font-size: 50px;
-    color:  #74C0FC;
+    color:  #0e0f49;
     margin-bottom: 20px;
   }
   
@@ -74,7 +75,8 @@
   }
   
   .role-button.client {
-    background-color: #d52727;
+    background-color: #74C0FC;
+    width: 30%;
   }
   
   .role-button:hover {
@@ -83,7 +85,7 @@
   }
   
   .role-button.client:hover {
-    background-color: #ff0000;
+    background-color:  #0e0f49;
     transform: scale(1.05);
   }
   

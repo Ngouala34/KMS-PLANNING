@@ -1,18 +1,33 @@
 <header>
-<nav class="topnav">
-  <section class="topnav-logo">
-    <div class="logo"></div>
-     <p class="planning">PLANNING</p> 
-  </section>
-  <div class="nav-search">
-    <input class="top-input" type="text" placeholder="Rechercher..." />
-    <i id="iconrechercher" class="fas fa-search " style="margin-left:110px; "></i>
-  </div>
-  <i class="fa-solid fa-user fa-2x" style="margin-left: 550px;"></i>
-  <i class="fa-solid fa-bell fa-1x" style="margin-left: 40px;font-size: 25px;"></i>
-</nav>
+  <nav class="topnav">
+    <section class="topnav-logo">
+      <div class="logo"></div>
+      <p class="planning">PLANNING</p> 
+    </section>
+    
+    <div class="nav-search">
+      <input class="top-input" type="text" placeholder="Rechercher..." />
+      <button id="iconrechercher">
+        <i class="fas fa-search"></i>
+      </button>
+    </div>
+    
+    <!-- Toggle Menu pour petits écrans -->
+    <div class="toggle-menu" (click)="toggleMenu()">
+      <i class="fas fa-bars"></i>
+    </div>
+    
+    <div *ngIf="toggleMenuVisible" class="mobile-menu">
+      <a href="#">Home</a>
+      <a href="#">Services</a>
+      <a href="#">About</a>
+      <a href="#">Contact</a>
+    </div>
+    
+
+    <div class="nav-icons">
+      <i class="fa-solid fa-user fa-2x"></i>
+      <i class="fa-solid fa-bell fa-2x"></i>
+    </div>
+  </nav>
 </header>
-<nav>
-  <a routerLink="" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Home</a>
-  <a routerLink="facesnaps" routerLinkActive="active">FaceSnaps</a>
-</nav>

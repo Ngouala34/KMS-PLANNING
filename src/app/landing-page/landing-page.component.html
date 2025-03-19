@@ -11,13 +11,22 @@
         <li><a href="#" class="active">Home</a></li>
         <li><a href="#">Service</a></li>
         <li><a href="#">Catégorie</a></li>
-        <li><a href="#">About</a></li>
       </ul>
       <button class="btn-inscription" (click)="OnConnexion()">Login</button>
       <i class="fa-solid fa-language fa-2x" 
          style="color:#74C0FC; margin-left: 50px; margin-top:5px;">
       </i>
     </nav>
+    <div class="toggle-menu" (click)="toggleMenu()">
+      <i class="fas fa-bars"></i>
+    </div>
+    
+    <div *ngIf="toggleMenuVisible" class="mobile-menu">
+        <a href="">Home</a>
+        <a href="">Service</a>
+        <a href="">Cathégorie</a>
+        <a href="">About</a>
+    </div>
   </nav>
 
   <div class="aim-container">
@@ -43,14 +52,13 @@
       <img [src]="service.source" alt="Service" class="service-image">
       <h3>{{ service.nom }}</h3>
       <p> <strong>{{ service.expert }}</strong></p>
-      <p class="price">{{ service.prix }}fcfa</p>
+      <p class="price">{{ service.prix }}</p>
       <div class="rating">★★★★★ ({{ service.note }})</div>
       <button class="btn-book" (click)="OnPayment()">Réserver</button>
   </div>
   <input type="button" value="Voir plus ..."id="btn-voir-plus" class="btn-voir-plus" />
 
 </div>
-
 
 <div class="container">
   <div class="landing-container">
@@ -84,7 +92,7 @@
         <p>Ce que disent nos utilisateurs</p>
         <br /><br />
         <div id="class">
-          <div class="landing-box">
+          <div id="landing-box" class="landing-box">
             <div class="avis-client">
               <div class="img3"></div>
               David K<span>Formateur en développement web</span>
@@ -92,10 +100,9 @@
             <p id="p3">
               En tant qu'expert, cette application m’a permis de proposer mes formations sans me soucier de la gestion des rendez-vous. 
               Les paiements sont sécurisés, les liens de visioconférence sont générés automatiquement, et mes clients apprécient la simplicité du processus. 
-              Je recommande à 100 % ! 💡💰
             </p>
           </div>
-          <div class="landing-box">
+          <div id="landing-box" class="landing-box">
             <div class="avis-client">
               <div class="img4"></div>
               Sarah Ngouffo<span>Etudiante en marketing digital</span>

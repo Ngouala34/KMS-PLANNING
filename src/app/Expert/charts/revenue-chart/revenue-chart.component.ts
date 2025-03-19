@@ -78,7 +78,7 @@ export class RevenueChartComponent {
         max: 3000,
         title: {
           display: true,
-          text: 'Montant en $',
+          text: 'Montant en xaf',
         }
       }
     },

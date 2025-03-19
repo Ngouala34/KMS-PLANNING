@@ -17,7 +17,7 @@ export class CreateCourseComponent {
     coverImage: ''
   };
 
-  categories = ['Développement Web', 'Marketing Digital', 'Design', 'Business', 'Photographie'];
+  categories = ['Développement Web', 'Marketing Digital', 'Design', 'Business', 'Photographie', 'Banque et finances', 'autres'];
 
   constructor(private courseService: CourseService) {}
 

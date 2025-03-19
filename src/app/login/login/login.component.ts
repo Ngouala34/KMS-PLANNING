@@ -8,9 +8,8 @@ import { AuthService } from 'src/app/services/auth.service';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
-  // Objet pour stocker les données du formulaire
   loginData = { email: '', password: '' };
-  errorMessage: string = '';
+  message: string = '';
 
   constructor(private authService: AuthService, private router: Router) {}
 
@@ -19,16 +18,29 @@ export class LoginComponent implements OnInit {
   OnUserConnexion(): void {
     this.authService.login(this.loginData.email, this.loginData.password).subscribe({
       next: (response) => {
-        console.log('Connexion réussie :', response);
-        console.log(response)
-        // Redirection vers le dashboard de l'utilisateur
-        this.router.navigate(['/user-home']);
-
+        console.log('Réponse du backend:', response); // Affiche toute la réponse
+  
+        // Vérifiez si l'utilisateur existe et si le rôle est défini
+        const user = response?.user;
+        if (user && user.role) {
+          // Gérer la redirection en fonction du rôle
+          if (user.role === 'EXPERT') {
+            this.router.navigate(['/expert-dashboard']);
+          } else if (user.role === 'CLIENT') {
+            this.router.navigate(['/user-home']);
+          } else {
+            this.message = "Rôle inconnu. Veuillez contacter l'administrateur.";
+          }
+        } else {
+          this.message = "Informations utilisateur manquantes.";
+        }
       },
       error: (error) => {
         console.error('Erreur de connexion :', error);
-        this.errorMessage = "Email ou mot de passe incorrect !";
+        this.message = "Email ou mot de passe incorrect !";
       }
     });
   }
+  
+  
 }

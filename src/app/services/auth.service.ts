@@ -11,7 +11,10 @@ export class AuthService {
   public currentUser: Observable<any>;
 
   // URL de l'API de connexion (assurez-vous que l'endpoint correspond à votre backend)
-  private loginUrl = 'http://127.0.0.1:8000/api/users/login/';
+
+  //https://kms-planning-db.onrender.com/api/users/login/
+  private loginUrl = '';
+  message: string= '';
 
   constructor(private http: HttpClient) {
     const storedUser = localStorage.getItem('currentUser');
@@ -22,11 +25,13 @@ export class AuthService {
   }
 
   register(user: any) {
-    return this.http.post('http://127.0.0.1:8000/api/users/register/', user).pipe(
+
+    //https://kms-planning-db.onrender.com/api/users/register/
+    return this.http.post('', user).pipe(
       tap((response: any) => {
         // Sauvegarde des infos utilisateur dans le localStorage
         localStorage.setItem('currentUser', JSON.stringify(response));
-        this.currentUserSubject.next(response);
+        this.currentUserSubject.next(response.user);
       })
     );
   }
@@ -35,11 +40,20 @@ export class AuthService {
   login(email: string, password: string): Observable<any> {
     return this.http.post(this.loginUrl, { email, password }).pipe(
       tap((response: any) => {
-        // Supposons que la réponse contient : 
-        // { access: "token_string", user: { username: '...', ... } }
-        localStorage.setItem('access_token', response.access);
-        localStorage.setItem('currentUser', JSON.stringify(response.user));
-        this.currentUserSubject.next(response.user);
+        console.log('Réponse complète du backend:', response);  // Pour vérifier la structure
+  
+        // Vérifiez que `response.user` et `response.user_info.id` existent
+        if (response?.user_info?.id) {
+          // Sauvegarde le token et l'utilisateur dans le localStorage
+          localStorage.setItem('access_token', response.access);
+          localStorage.setItem('currentUser', JSON.stringify(response.user_info));
+  
+          // Met à jour le subject actuel avec les nouvelles informations de l'utilisateur
+          this.currentUserSubject.next(response.user_info);
+        } else {
+          console.error("L'ID est manquant dans la réponse du backend.");
+          this.message = "Erreur dans les informations utilisateur.";
+        }
       }),
       catchError(error => {
         console.error('Erreur de connexion dans AuthService:', error);
@@ -47,6 +61,9 @@ export class AuthService {
       })
     );
   }
+  
+  
+  
 
   /** Déconnexion */
   logout(): void {

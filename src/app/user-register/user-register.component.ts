@@ -15,8 +15,12 @@ export class UserRegisterComponent implements OnInit {
     telephone: '',
     email: '',
     password: '',
-    confirmPassword: ''
+    confirmPassword: '',
+    role: ''
   };
+
+  message: string = ''; // Message à afficher
+  messageType: 'success' | 'error' = 'success'; // Type du message (success ou error)
 
   constructor(private router: Router, private authService: AuthService) {}
 
@@ -24,24 +28,45 @@ export class UserRegisterComponent implements OnInit {
 
   OnUserRegister(): void {
     if (this.user.password !== this.user.confirmPassword) {
-      alert("Les mots de passe ne correspondent pas !");
+      this.showMessage("Les mots de passe ne correspondent pas !", 'error');
       return;
     }
-  
-    console.log("Données envoyées :", this.user); // Vérifie ce que tu envoies
-    
+
+    console.log("Données envoyées :", this.user);
+
     this.authService.register(this.user).subscribe(
       response => {
         console.log('Inscription réussie', response);
-        alert('Inscription réussie !');
-        this.router.navigateByUrl('user-home');
+
+        // Afficher un message de succès
+        this.showMessage("Inscription réussie ! Redirection en cours...", 'success');
+
+        // Rediriger après 2 secondes
+        setTimeout(() => {
+          if (this.user.role.toUpperCase() === 'EXPERT') {  // Correction ici
+            this.router.navigateByUrl('dashboard-expert');
+          } else if (this.user.role.toUpperCase() === 'CLIENT') {
+            this.router.navigateByUrl('user-home');
+          }
+        }, 2000);
       },
       error => {
-        console.error('Erreur détaillée du backend :', error.error); // Affiche l'erreur exacte
-        alert('Erreur lors de l\'inscription. Vérifiez vos informations.');
+        console.error('Erreur détaillée du backend :', error.error);
+
+        // Afficher un message d'erreur correct
+        this.showMessage("Erreur lors de l'inscription. Veuillez réessayer.", 'error');
       }
     );
   }
+
+  // Fonction pour afficher le message
+  showMessage(text: string, type: 'success' | 'error') {
+    this.message = text;
+    this.messageType = type;
+
+    // Effacer le message après 3 secondes
+    setTimeout(() => {
+      this.message = "";
+    }, 3000);
+  }
 }
-
-

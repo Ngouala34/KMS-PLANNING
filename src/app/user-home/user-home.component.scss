@@ -105,4 +105,18 @@
 #card4 {
   animation: fadeInUp 1s ease-out;
 }
+
+@media screen and (max-width: 768px){
+  app-sidebar{
+    display: none;
+  }
+  .home-container {
+    margin-left: 0px; /* Largeur de la sidebar */
+    margin-top: 60px; /* Hauteur de la navbar */
+    background-color: #f8f9fa;
+    min-height: 100vh;
+    transition: margin-left 0.3s ease-in-out;
+
+  }
+}
   

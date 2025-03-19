@@ -119,17 +119,6 @@
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
 .title {
     font-size: 2rem;
     font-weight: bold;
@@ -163,3 +152,12 @@
     transition: all 0.3s ease;
 }
 
+@media screen and (max-width: 768px){
+    .services-container{
+      margin-left: 0px; /* Espace pour la sidebar */
+      margin-top: 40px; /* Espace pour la navbar */
+    }
+    app-sidebar{
+      display: none;
+    }
+  }

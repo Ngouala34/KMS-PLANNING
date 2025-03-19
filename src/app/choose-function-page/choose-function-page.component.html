@@ -2,9 +2,11 @@
     <h1>Choisissez votre rôle</h1>
     <p class="description">
       Vous êtes à un clic de commencer votre aventure avec KMS Planning. 
-      Sélectionnez votre rôle pour bénéficier d'une expérience adaptée à vos besoins.
+      Sélectionnez votre rôle lors de l'inscription pour bénéficier d'une expérience adaptée à vos besoins.
     </p>
   
+    <div class="role-card-cont">
+   
     <div class="role-card-container">
         <div class="role-card">
             <div class="role-info">
@@ -15,7 +17,6 @@
                 aidez les autres à apprendre tout en générant des revenus.
               </p>
             </div>
-            <button class="role-button expert" (click)="OnExpertLogIn()" >Inscrivez-vous en tant qu'Expert</button>
           </div>
         
           <div class="role-card">
@@ -27,9 +28,11 @@
                 et progressez à votre rythme.
               </p>
             </div>
-            <button class="role-button client"(click)="OnUserLogIn()">Inscrivez-vous en tant que Client</button>
           </div>
     </div>
+    <button class="role-button client"(click)="OnUserLogIn()">Inscrivez-vous maintenant</button>
+
+  </div>
    
   </div>
   

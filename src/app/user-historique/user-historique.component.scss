@@ -91,3 +91,13 @@
 .btn-details:hover {
     background: #5ca6e3;
 }
+
+@media screen and (max-width: 768px){
+    .user-historique{
+      margin-left: 10px; /* Espace pour la sidebar */
+      margin-top: 70px; /* Espace pour la navbar */
+    }
+    app-sidebar{
+      display: none;
+    }
+  }

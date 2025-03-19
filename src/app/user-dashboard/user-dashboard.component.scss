@@ -1,7 +1,7 @@
-/* Apparition fluide de la page */
-.fade-in {
-    animation: fadeIn 1s ease-in-out;
-  }
+  /* Apparition fluide de la page */
+  .fade-in {
+      animation: fadeIn 1s ease-in-out;
+    }
   
   @keyframes fadeIn {
     from { opacity: 0; transform: translateY(10px); }
@@ -150,4 +150,16 @@
   .btn-annuler:hover {
     background: #0c52a2;
   }
+
+  @media screen and (max-width: 768px){
+    .user-dashboard{
+      margin-left: 0px; /* Espace pour la sidebar */
+      margin-top: 40px; /* Espace pour la navbar */
+    }
+    app-sidebar{
+      display: none;
+    }
+  }
+
+
   

@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-header',
-  templateUrl: './header.component.html',
-  styleUrls: ['./header.component.scss']
+  selector: 'app-header-expert',
+  templateUrl: './header-expert.component.html',
+  styleUrls: ['./header-expert.component.scss']
 })
-export class HeaderComponent implements OnInit {
+export class HeaderExpertComponent implements OnInit {
   menuOpen = false;
   toggleMenuVisible = false;
 

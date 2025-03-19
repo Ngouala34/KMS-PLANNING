@@ -17,6 +17,7 @@ import { UserHistoriqueComponent } from './user-historique/user-historique.compo
 import { UserCalendrierComponent } from './user-calendrier/user-calendrier.component';
 import { DashboardExpertComponent } from './dashboard-expert/dashboard-expert.component';
 import { ExpertServiceComponent } from './expert-service/expert-service.component';
+import { HeaderExpertComponent } from './header-expert/header-expert.component';
 
 const routes: Routes = [
   { path: '', component: LandingPageComponent },
@@ -32,7 +33,9 @@ const routes: Routes = [
  
   { path: 'dashboard-expert', component: DashboardExpertComponent },
   { path: 'expert-service', component: ExpertServiceComponent },
- 
+  { path: 'header-expert', component: HeaderExpertComponent },
+  
+
   { path: 'payment', component: PaymentComponent },
   { path: 'expert-login', component: ExpertLoginComponent },
   { path: 'choose-function-page', component: ChooseFunctionPageComponent },
