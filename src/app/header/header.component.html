@@ -18,10 +18,15 @@
     </div>
     
     <div *ngIf="toggleMenuVisible" class="mobile-menu">
-      <a href="#">Home</a>
-      <a href="#">Services</a>
-      <a href="#">About</a>
-      <a href="#">Contact</a>
+      <button (click)="OnUserConnexion()">Accueil</button>
+      <button (click)="OnUserdashboard()">Dashboard</button>
+      <button (click)="OnUserService()">Services</button>
+      <button (click)="OnUserHistorique()">Histirique des paiements</button>
+      <button (click)="OnUserCalendrier()">Calendrier</button>
+      <button >Parametres</button>
+      <button >Deconnexion</button>
+
+
     </div>
     
 

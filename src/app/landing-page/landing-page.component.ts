@@ -27,7 +27,7 @@ export class LandingPageComponent implements OnInit {
   }
 
   onContinue(): void {
-    this.router.navigateByUrl('facesnaps');
+    this.router.navigateByUrl('dashboard-expert');
   }
   OnConnexion(): void {
     this.router.navigateByUrl('login');
@@ -35,10 +35,11 @@ export class LandingPageComponent implements OnInit {
   OnInscription(): void {
     this.router.navigateByUrl('choose-function-page');
   }
-  OnPayment(): void {
-    this.router.navigateByUrl('payment')// Redirige vers la page de paiement
+  Onuser(): void {
+    this.router.navigateByUrl('user-home')// Redirige vers la page de paiement
   }
   toggleMenu() {
     this.toggleMenuVisible = !this.toggleMenuVisible;
   }
+
 }

@@ -17,6 +17,16 @@ body {
   }
 }
 
+.canvas{
+  display: flex;
+}
+
+.canvas button{
+  border-radius: 15px;
+  background: #fc0505;
+  color: white;
+}
+
 /* Appliquer l'animation à l'ensemble du header */
 header {
   animation: fadeIn 1s ease-out;
@@ -592,19 +602,19 @@ width: 40%;}
   .topnav-logo{
     margin-left: 10px;
   .planning{
-    font-size: 20px;
+    font-size: 15px;
   }
 }
   .aim-container h1{
-    font-size: 40px;
+    font-size: 20px;
     
   }
   .aim-container h3{
-    font-size: 30px;
-    width:100%;
+    font-size: 15px;
+    width:auto;
   }
   .aim-container h1 span{
-    font-size: 40px;
+    font-size: 20px;
   }
   .landing-container3{
     width: 100%;
@@ -619,7 +629,6 @@ width: 40%;}
 
   #landing-box{
     width: 2000PX;
-    background-color: red;
   }
   .landing-box {
     flex: 1 1 200px; /* Permet aux éléments de s'agrandir et de se réduire avec un minimum de 200px */
@@ -640,7 +649,7 @@ width: 40%;}
     font-size: 24px;
     color: #ffffff;
     cursor: pointer;
-    margin-left: 55%;
+    margin-left: 45%;
   }
 
     .mobile-menu {
@@ -664,7 +673,17 @@ width: 40%;}
   .mobile-menu a:hover {
    background: #06033e;
   }
+  header {
+    background-image: url(https://media.istockphoto.com/id/628506984/fr/photo/travailler-intelligemment-travailler-dur.jpg?s=1024x1024&w=is&k=20&c=Lech64nBZbdvEVq-Qci0Res7mYXFDRDdFR7WDhaTSxs=);
+    background-repeat: no-repeat;
+    background-size: contain;
+    display: flex;
+    flex-direction: column;
+    height: 45vh;
+    position: relative;
+    z-index: 1;
   
+  }
 
 }
 

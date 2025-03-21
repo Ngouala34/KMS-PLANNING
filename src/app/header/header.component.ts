@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -10,7 +11,7 @@ export class HeaderComponent implements OnInit {
   toggleMenuVisible = false;
 
 
-  constructor() { }
+  constructor(private router : Router) { }
 
   ngOnInit(): void {
   }
@@ -19,7 +20,25 @@ export class HeaderComponent implements OnInit {
   toggleMenu() {
     this.toggleMenuVisible = !this.toggleMenuVisible;
   }
+  OnUserConnexion(): void {
+    this.router.navigateByUrl('user-home');
+  }
 
+  OnUserService(): void {
+    this.router.navigateByUrl('user-serv');
+  }
+  OnUserdashboard(): void {
+    this.router.navigateByUrl('user-dashboard');
+  }
+  OnUserprofile(): void {
+    this.router.navigateByUrl('user-profile');
+  } 
+   OnUserHistorique(): void {
+    this.router.navigateByUrl('user-historique');
+  }
+  OnUserCalendrier(): void {
+    this.router.navigateByUrl('user-calendrier');
+   }
 }
 
 

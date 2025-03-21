@@ -40,7 +40,13 @@
       <button class="btn-commencer" (click)="OnInscription()">
          Commencer
       </button>
+    </div><br>
+    <div class="canvas">
+      <button (click)="onContinue()">dashboard-admin</button>
+      <button (click)="Onuser()">dashboard-user</button>
     </div>
+   
+
   </div>
 </header><br><br><br>
 
@@ -54,7 +60,7 @@
       <p> <strong>{{ service.expert }}</strong></p>
       <p class="price">{{ service.prix }}</p>
       <div class="rating">★★★★★ ({{ service.note }})</div>
-      <button class="btn-book" (click)="OnPayment()">Réserver</button>
+      <button class="btn-book" (click)="OnConnexion()">Réserver</button>
   </div>
   <input type="button" value="Voir plus ..."id="btn-voir-plus" class="btn-voir-plus" />
 
@@ -99,7 +105,7 @@
             </div>
             <p id="p3">
               En tant qu'expert, cette application m’a permis de proposer mes formations sans me soucier de la gestion des rendez-vous. 
-              Les paiements sont sécurisés, les liens de visioconférence sont générés automatiquement, et mes clients apprécient la simplicité du processus. 
+              Les paiements sont sécurisés, les liens de visioconférence sont générés automatiquement.
             </p>
           </div>
           <div id="landing-box" class="landing-box">
@@ -108,12 +114,13 @@
               Sarah Ngouffo<span>Etudiante en marketing digital</span>
             </div>
             <p id="p4">
-              Une plateforme ultra-intuitive ! J’ai pu réserver une formation en quelques clics et échanger directement avec un expert de mon domaine. 
-              Plus besoin d’envoyer des dizaines d’emails pour fixer un rendez-vous, tout est automatisé ! Un vrai gain de temps! Vraiment👏
+              J’ai pu réserver une formation en quelques clics et échanger directement avec un expert de mon domaine. 
+              Plus besoin d’envoyer des dizaines d’emails pour fixer un rendez-vous, tout est automatisé !👏
             </p>
           </div>
         </div>
         <br /><br /><br /><br />
+        
         <div id="landing-container4">
           <span>Rejoignez-nous dès maintenant !</span>
           <br /><br />
