@@ -44,6 +44,9 @@ export class SidebarComponent implements OnInit {
   OnUserCalendrier(): void {
     this.router.navigateByUrl('user-calendrier');
    }
+   Ondeconnexion():void{
+    this.router.navigateByUrl('')
+   }
 } 
 
 

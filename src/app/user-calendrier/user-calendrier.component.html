@@ -1,6 +1,16 @@
+<app-header></app-header>
 <app-sidebar (sidebarToggle)="isSidebarCollapsed = $event"></app-sidebar>
 
-  <div class="calendar-container" (click)="handleEventClick($event)">
+
+<section class="calendar"  >
+
+  <div class="calendar-container" (click)="handleEventClick($event)" [ngClass]="{ 'expanded': isSidebarCollapsed }">
+    <div class="legend">
+      <button (click)="filterEvents('all')" class="legend-btn all">Tous</button>
+      <button (click)="filterEvents('past')" class="legend-btn past">Passés</button>
+      <button (click)="filterEvents('current')" class="legend-btn current">En cours</button>
+      <button (click)="filterEvents('upcoming')" class="legend-btn upcoming">À venir</button>
+    </div>
     <full-calendar [options]="calendarOptions"></full-calendar>
   </div>
   <!-- Détails de la formation sélectionnée -->
@@ -13,3 +23,4 @@
     <a (src)="[ selectedEvent.link ]"><strong>Lien: </strong>{{ selectedEvent.link }}</a>
   </div>
   
+</section>  

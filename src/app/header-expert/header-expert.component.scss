@@ -1,114 +1,114 @@
 .topnav {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background-color: #ffffff;
-    box-shadow: inset 0 -1px 0 0 #e5e5e5;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #ffffff;
+  box-shadow: inset 0 -1px 0 0 #e5e5e5;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  z-index: 1000;
+}
+
+.topnav-logo {
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  margin-left: 60px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-size: cover;
+  background-image: url(https://mail.kms-entreprises.com/assets/img/branding/KMS%20logo.jpg);
+}
+
+.planning {
+  margin-left: 10px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.nav-search {
+  display: flex;
+  align-items: center;
+  border: 1px solid #00000023;
+  border-radius: 15px;
+  background-color: #fcfcfc;
+}
+
+.top-input {
+  border: none;
+  outline: none;
+  padding: 8px 10px;
+  border-radius: 15px 0 0 15px;
+  font-size: 16px;
+}
+
+#iconrechercher {
+  color: rgb(2, 0, 0);
+  border: none;
+  box-shadow: none;
+  border-radius: 0 15px 15px 0;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+#iconrechercher:hover {
+  font-size: large;
+}
+.nav-icons{
+  margin-right: 25px;
+
+  .fa-bars{
+    display: none;
+
+  }
+}
+
+.nav-icons i {
+  margin-left: 20px;
+  color: #333;
+  cursor: pointer;
+  font-size: 23px;
+}
+
+  /* Par défaut, cacher le toggle menu */
+  .toggle-menu {
+    display: none;
+  }
+  .mobile-menu {
     position: fixed;
-    width: 100%;
-    top: 0;
-    z-index: 1000;
-  }
-  
-  .topnav-logo {
+    top: 60px;
+    right: 0;
+    background-color: white;
+    box-shadow: -2px 0 5px rgba(0,0,0,0.5);
+    padding: 20px;
     display: flex;
-    align-items: center;
+    flex-direction: column;
   }
   
-  .logo {
-    margin-left: 60px;
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    background-size: cover;
-    background-image: url(https://mail.kms-entreprises.com/assets/img/branding/KMS%20logo.jpg);
-  }
-  
-  .planning {
-    margin-left: 10px;
-    font-size: 18px;
-    font-weight: bold;
-  }
-  
-  .nav-search {
-    display: flex;
-    align-items: center;
-    border: 1px solid #00000023;
-    border-radius: 15px;
-    background-color: #fcfcfc;
-  }
-  
-  .top-input {
-    border: none;
-    outline: none;
-    padding: 8px 10px;
-    border-radius: 15px 0 0 15px;
-    font-size: 16px;
-  }
-  
-  #iconrechercher {
-    color: rgb(2, 0, 0);
-    border: none;
-    box-shadow: none;
-    border-radius: 0 15px 15px 0;
-    cursor: pointer;
-    transition: background 0.3s ease;
-  }
-  
-  #iconrechercher:hover {
-    font-size: large;
-  }
-  .nav-icons{
-    margin-right: 25px;
-  
-    .fa-bars{
+
+@media screen and (min-width: 300px) and (max-width: 450px) {
+    .nav-search {
       display: none;
-  
     }
-  }
   
-  .nav-icons i {
-    margin-left: 20px;
-    color: #333;
-    cursor: pointer;
-  }
+    .nav-icons {
+      display: none;
+    }
   
-    /* Par défaut, cacher le toggle menu */
     .toggle-menu {
-      display: none;
+      display: block;
+      margin-right: 25px;
+      font-size: 24px;
+      color: #333;
+      cursor: pointer;
     }
-    .mobile-menu {
-      position: fixed;
-      top: 60px;
-      right: 0;
-      background-color: white;
-      box-shadow: -2px 0 5px rgba(0,0,0,0.5);
-      padding: 20px;
-      display: flex;
-      flex-direction: column;
+    .logo {
+      margin-left: 20px;
+      
     }
-    
-  
-    @media screen and (max-width: 768px) {
-      .nav-search {
-        display: none;
-      }
-    
-      .nav-icons {
-        display: none;
-      }
-    
-      .toggle-menu {
-        display: block;
-        margin-right: 25px;
-        font-size: 24px;
-        color: #333;
-        cursor: pointer;
-      }
-      .logo {
-        margin-left: 20px;
-        
-      }
-    }
-  
-  
+  }
+

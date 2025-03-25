@@ -71,6 +71,7 @@
   margin-left: 20px;
   color: #333;
   cursor: pointer;
+  font-size: 23px;
 }
 
   /* Par défaut, cacher le toggle menu */
@@ -89,7 +90,7 @@
   }
   
 
-  @media screen and (max-width: 768px) {
+@media screen and (min-width: 300px) and (max-width: 450px) {
     .nav-search {
       display: none;
     }

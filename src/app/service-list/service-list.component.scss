@@ -1,7 +1,5 @@
 /* Conteneur principal */
 .services-container {
-    margin-left: 300px; /* Espace pour la sidebar */
-    margin-top: 60px; /* Espace pour la navbar */
     padding: 20px;
     background-color: #f8f9fa;
     transition: margin-left 0.3s ease-in-out;
@@ -67,7 +65,8 @@
 
 /* Carte d'un service */
 .service-card {
-    padding-bottom: 10px;
+    background: white;
+    padding: 15px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     text-align: center;
@@ -87,9 +86,8 @@
 
 .service-card img {
     width: 100%;
-    border-top-left-radius: 8px;
-    border-top-right-radius: 8px;
-
+    height: 150px;
+    border-radius: 8px;
     object-fit: cover;
 }
 
@@ -152,8 +150,7 @@
     transition: all 0.3s ease;
 }
 
-@media screen and (min-width: 300px) and (max-width: 450px) {
-
+@media screen and (max-width: 768px){
     .services-container{
       margin-left: 0px; /* Espace pour la sidebar */
       margin-top: 40px; /* Espace pour la navbar */
@@ -161,28 +158,4 @@
     app-sidebar{
       display: none;
     }
-    .search-bar {
-        padding-left: 20px;
-        gap: 0px;
-    }
-
-    .services-grid {
-        grid-template-columns: repeat(2, 1fr); /* Deux colonnes */
-        gap: 8px;
-      }
-    
-      .service-card img {
-        margin-bottom: -10px; /* Réduit l'espace sous l'image */
-      }
-      
-      .service-card h3, 
-      .service-card p, 
-      .service-card .price{
-        margin-bottom: -10px; /* Réduit l'espace entre les éléments */
-      }
-    
-      .btn-book {
-        font-size: 12px;
-        padding: 6px;
-      }
   }

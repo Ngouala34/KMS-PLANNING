@@ -14,15 +14,20 @@ button {
   padding: 5px 10px;
   cursor: pointer;
   border: none;
-  box-shadow: lightgray 3px 3px 7px;
   margin-right: 20px;
   outline: none;
   font-size: 14px;
   font-weight: 500;
+  border-radius: 15px;
   &:active {
     transform: translate(1px, 1px);
     box-shadow: lightgray 0 0 5px;
   }
+}
+button:hover{
+  box-shadow: 0px 10px 20px rgba(0, 123, 255, 0.374);
+
+ 
 }
 span {
   color:#74C0FC ;

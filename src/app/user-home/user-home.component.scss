@@ -33,6 +33,7 @@
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 20px;
+    flex-wrap: wrap;
   }
   
   /* Cartes */
@@ -67,7 +68,7 @@
   .btn-secondary {
     background-color: #0e0f49;
     color: white;
-    padding: 8px 12px;
+    padding: 8px ;
     border: none;
     border-radius: 6px;
     cursor: pointer;
@@ -106,17 +107,35 @@
   animation: fadeInUp 1s ease-out;
 }
 
-@media screen and (max-width: 768px){
+@media screen and (min-width: 300px) and (max-width: 450px) {
+
   app-sidebar{
     display: none;
   }
   .home-container {
-    margin-left: 0px; /* Largeur de la sidebar */
+    margin: 0px; /* Largeur de la sidebar */
     margin-top: 60px; /* Hauteur de la navbar */
     background-color: #f8f9fa;
     min-height: 100vh;
     transition: margin-left 0.3s ease-in-out;
 
+  }
+  .main-content {
+    grid-template-columns: repeat(2, 1fr); /* Deux colonnes */
+    gap: 10px;
+  }
+  
+  /* Cartes */
+  .card {
+    align-items: center;
+    padding: 10px;
+    padding-top: 5px;
+    background: white;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.3s ease-in-out;
   }
 }
   

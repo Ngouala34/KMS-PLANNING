@@ -41,5 +41,8 @@ export class LandingPageComponent implements OnInit {
   toggleMenu() {
     this.toggleMenuVisible = !this.toggleMenuVisible;
   }
+  onService(): void{
+    this.router.navigateByUrl('service-list')
+  }
 
 }

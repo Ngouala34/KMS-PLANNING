@@ -6,14 +6,14 @@
     <div class="filters-container">
     
         <select id="statusFilter">
-            <option value="">Tous les statuts</option>
+            <option value="">Statuts</option>
             <option value="success"> Réussi</option>
             <option value="pending"> En attente</option>
             <option value="failed"> Échoué</option>
         </select>
     
         <select id="paymentMethodFilter">
-            <option value="">Tous les moyens de paiement</option>
+            <option value="">Moyens de paiement</option>
             <option value="card"> Carte Bancaire</option>
             <option value="mobile"> Mobile Money</option>
             <option value="paypal"> PayPal</option>
@@ -27,7 +27,7 @@
         <div class="chart-card">
             <canvas id="paymentsByMonth"></canvas>
         </div>
-        <div class="chart-card">
+        <div class="chart-card" id="chart-card">
             <canvas id="paymentMethods"></canvas>
         </div>
     </div>

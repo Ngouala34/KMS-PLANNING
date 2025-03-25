@@ -42,6 +42,9 @@ export class SidebarExpertComponent implements OnInit {
   OnExpertCalendrier(): void {
     this.router.navigateByUrl('expert-calendrier');
    }
+   Ondeconnexion():void{
+    this.router.navigateByUrl('')
+   }
 } 
 
 

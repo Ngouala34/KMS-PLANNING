@@ -12,7 +12,6 @@
 .filters-container {
     display: flex;
     gap: 15px;
-    margin: 20px 0;
 }
 
 .filters-container input, 
@@ -44,6 +43,7 @@
     display: flex;
     justify-content: space-around;
     margin-top: 10px;
+    flex-wrap: wrap;
 }
 
 .chart-card {
@@ -92,12 +92,66 @@
     background: #5ca6e3;
 }
 
-@media screen and (max-width: 768px){
+@media screen and (min-width: 300px) and (max-width: 450px) {
+
     .user-historique{
-      margin-left: 10px; /* Espace pour la sidebar */
+      margin: 10px; /* Espace pour la sidebar */
       margin-top: 70px; /* Espace pour la navbar */
     }
     app-sidebar{
       display: none;
     }
-  }
+    .charts-container {
+        display: flex;
+        justify-content: space-around;
+        margin-top: 10px;
+        flex-wrap: wrap;
+    }
+    .filters-container{
+        display: flex;
+        justify-content:center;
+        padding-left: 20px;
+    }
+    
+    .chart-card {
+        padding-top: 20px;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    #chart-card{
+        height: 60%;
+        width: 60%;
+    }
+    table {
+        width: 100%; /* Le tableau occupe toute la largeur disponible */
+        font-size: 12px; /* Réduction de la taille du texte */
+        overflow-x: auto; /* Ajoute un scroll horizontal si nécessaire */
+        display: block; /* Permet l'affichage correct */
+      }
+    
+      th, td {
+        padding: 5px; /* Réduction des marges pour optimiser l'espace */
+        white-space: nowrap; /* Empêche le texte de se casser */
+      }
+    
+      .calendar-container {
+        padding: 5px; /* Ajoute un petit padding pour éviter que le tableau touche les bords */
+      }
+    
+      .legend {
+        flex-direction: column; /* Affichage vertical pour économiser de l'espace */
+        align-items: center;
+      }
+    
+      .legend-btn {
+        width: 80%; /* Ajuste la taille des boutons pour qu'ils restent lisibles */
+        margin-bottom: 5px;
+      }
+    
+      .event-details {
+        font-size: 12px; /* Ajuste la taille des détails des événements */
+        padding: 10px;
+      }
+    }

@@ -1,31 +1,35 @@
 <header>
-    <nav class="topnav">
-      <section class="topnav-logo">
-        <div class="logo"></div>
-        <p class="planning">PLANNING</p> 
-      </section>
-      
-      <div class="nav-search">
-        <input class="top-input" type="text" placeholder="Rechercher..." />
-        <button id="iconrechercher">
-          <i class="fas fa-search"></i>
-        </button>
-      </div>
-      
-      <!-- Toggle Menu pour petits écrans -->
-      <div class="toggle-menu" (click)="toggleMenu()">
-        <i class="fas fa-bars"></i>
-      </div>
-      
-      <div *ngIf="toggleMenuVisible" class="mobile-menu">
-        <app-sidebar-expert></app-sidebar-expert>
-      </div>
-      
-  
-      <div class="nav-icons">
-        <i class="fa-solid fa-user fa-2x"></i>
-        <i class="fa-solid fa-bell fa-2x"></i>
-      </div>
-    </nav>
-  </header>
-  
+  <nav class="topnav">
+    <section class="topnav-logo">
+      <div class="logo"></div>
+      <p class="planning">PLANNING</p> 
+    </section>
+    
+    <div class="nav-search">
+      <input class="top-input" type="text" placeholder="Rechercher..." />
+      <button id="iconrechercher">
+        <i class="fas fa-search"></i>
+      </button>
+    </div>
+    
+    <!-- Toggle Menu pour petits écrans -->
+    <div class="toggle-menu" (click)="toggleMenu()">
+      <i class="fas fa-bars"></i>
+    </div>
+    
+    <div *ngIf="toggleMenuVisible" class="mobile-menu">
+      <button (click)="OnUserdashboard()">Dashboard</button>
+      <button (click)="OnUserService()">Service</button>
+      <button (click)="OnUserHistorique()">Histirique</button>
+      <button (click)="OnUserCalendrier()">Calendrier</button>
+      <button >Parametres</button>
+      <button >Deconnexion</button>
+    </div>
+    
+
+    <div class="nav-icons">
+      <i class="fa-solid fa-user "></i>
+      <i class="fa-solid fa-bell "></i>
+    </div>
+  </nav>
+</header>

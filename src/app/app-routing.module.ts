@@ -18,6 +18,7 @@ import { UserCalendrierComponent } from './user-calendrier/user-calendrier.compo
 import { DashboardExpertComponent } from './dashboard-expert/dashboard-expert.component';
 import { ExpertServiceComponent } from './expert-service/expert-service.component';
 import { HeaderExpertComponent } from './header-expert/header-expert.component';
+import { ServiceListComponent } from './service-list/service-list.component';
 
 const routes: Routes = [
   { path: '', component: LandingPageComponent },
@@ -42,7 +43,7 @@ const routes: Routes = [
   { path: 'create-course', component: CreateCourseComponent },
   { path: 'revenue-chart', component: RevenueChartComponent },
   { path: 'sidebar-expert', component: SidebarComponent },
-
+  { path: 'service-list', component: ServiceListComponent}
 
 
 

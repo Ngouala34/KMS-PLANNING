@@ -39,6 +39,9 @@ export class HeaderComponent implements OnInit {
   OnUserCalendrier(): void {
     this.router.navigateByUrl('user-calendrier');
    }
+   OnUserDeconnexion(): void {
+    this.router.navigateByUrl('');
+   }
 }
 
 

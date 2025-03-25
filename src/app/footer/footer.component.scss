@@ -118,23 +118,32 @@
   .separator {
   display: none;
   }
-  .footer-section {
+  .footer-section { 
+    width: 100%;
+    flex: 12px;
+   justify-content: center;
+   display: flex;
+   flex-direction: column;
+   gap: 20px;
+
   }
   .footer-section h3{
    text-align: center;
   }
   .footer-section ul{
-    margin-left: 45px;
+    display: none;
+  }
+  .lien-util{
+    display: none;
   }
   .social-icons{
-    margin-left: 45px;
   }
-  .Contactez-nous{
-    margin-left: 15px;
+  .Contactez-nous p{
+    display: flex;
+    justify-content: center;
   }
   .footer-section .lien-util{
-    padding-left: 0px;
   }
 
 
-  }
+  } 
