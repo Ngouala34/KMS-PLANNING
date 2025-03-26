@@ -18,7 +18,7 @@
       <i class="fas fa-bars"></i>
     </div>
     
-    <div *ngIf="toggleMenuVisible" class="mobile-menu">
+    <div [ngClass]="{ 'mobile-menu': true, 'open': toggleMenuVisible, 'closed': !toggleMenuVisible }">
       <a href=""><i class="fa fa-home"></i>Accueil</a>
       <a (click)="onService()"><i class="fa fa-cogs"></i> Service</a>
       <a href=""><i class="fa fa-th-list"></i> Catégorie</a>

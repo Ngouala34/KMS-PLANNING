@@ -1,0 +1,31 @@
+<div class="overlay" *ngIf="isOpen">
+  <div class="modal">
+    <div class="modal-header">
+      <h2> Experts les mieux notés par les utilisateurs</h2>
+    </div>
+    <div class="modal-body">
+      <div *ngIf="experts.length === 0" class="no-experts">
+        Aucuestn expert recommandé pour le moment.
+      </div>
+      <div class="expert-list" *ngIf="experts.length > 0">
+        <div class="expert-card" *ngFor="let expert of experts">
+          <img class="expert-avatar" [src]="expert.photo || 'assets/default-avatar.png'" alt="Photo de {{ expert.nom }}">
+          <div class="expert-info">
+            <div class="nom-et-badge">
+              <h3>{{ expert.nom }}</h3>
+              <span class="badge">{{ expert.specialite }}</span>
+              <div class="rating">
+                <span *ngFor="let star of [1,2,3,4,5]; let i = index">
+                  <i class="fa" [ngClass]="{'fa-star': i < expert.note, 'fa-star-o': i >= expert.note}"></i>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" (click)="fermerPopup()">Fermer</button>
+    </div>
+  </div>
+</div>

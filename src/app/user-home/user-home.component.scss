@@ -34,6 +34,7 @@
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 20px;
     flex-wrap: wrap;
+    align-items: center;
   }
   
   /* Cartes */
@@ -44,10 +45,16 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     text-align: center;
     transition: transform 0.3s ease-in-out;
+    height: 200px ;
   }
+  .card .lien{
+    cursor: pointer;
+  }
+
   
-  .card:hover {
-    transform: translateY(-5px);
+  .card .lien:hover {
+    transform: translateY(1px);
+    color: #09538c;
   }
   
   /* Boutons */
@@ -106,6 +113,11 @@
 #card4 {
   animation: fadeInUp 1s ease-out;
 }
+.main-content h2 i {
+  margin-right: 10px;  /* Espacement entre l'icône et le texte */
+  font-size: 22px;     /* Taille de l'icône */
+}
+
 
 @media screen and (min-width: 300px) and (max-width: 450px) {
 
@@ -124,18 +136,31 @@
     grid-template-columns: repeat(2, 1fr); /* Deux colonnes */
     gap: 10px;
   }
+  .main-content h2 i {
+    margin-top: 0px;
+    margin-right: 8px;  /* Espacement entre l'icône et le texte */
+    font-size: 20px;     /* Taille de l'icône */
+  }
   
   /* Cartes */
   .card {
+    top: 0px;
     align-items: center;
-    padding: 10px;
-    padding-top: 5px;
-    background: white;
-    padding: 10px;
+    padding: 15px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     text-align: center;
     transition: transform 0.3s ease-in-out;
+    font-size: smaller;
+  }
+  .card h2{
+    font-size: 20px;
+  }
+
+  @media screen and (max-width: 360px){
+    .card{
+      width: 80%;
+    }
   }
 }
   

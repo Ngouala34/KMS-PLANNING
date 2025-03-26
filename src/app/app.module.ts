@@ -31,7 +31,9 @@ import { DashboardExpertComponent } from './dashboard-expert/dashboard-expert.co
 import { ExpertServiceComponent } from './expert-service/expert-service.component';
 import { HeaderExpertComponent } from './header-expert/header-expert.component';
 import { ServiceListComponent } from './service-list/service-list.component';
-
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { UserParameterComponent } from './user-parameter/user-parameter.component';
+import { PopupExpertsComponent } from './popup-experts/popup-experts.component';
 
 
 @NgModule({
@@ -58,6 +60,9 @@ import { ServiceListComponent } from './service-list/service-list.component';
     ExpertServiceComponent,
     HeaderExpertComponent,
     ServiceListComponent,
+    UserParameterComponent,
+    PopupExpertsComponent,
+    
     
     
     
@@ -69,6 +74,7 @@ import { ServiceListComponent } from './service-list/service-list.component';
     NgChartsModule,
     FormsModule,
     FullCalendarModule,
+    BrowserAnimationsModule,
 
   ],
   exports: [HeaderComponent],

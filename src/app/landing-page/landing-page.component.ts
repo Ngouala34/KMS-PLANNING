@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-landing-page',
   templateUrl: './landing-page.component.html',
-  styleUrls: ['./landing-page.component.scss']
+  styleUrls: ['./landing-page.component.scss'],
 })
 export class LandingPageComponent implements OnInit {
 
@@ -25,6 +25,26 @@ export class LandingPageComponent implements OnInit {
       this.showServices = true; // Active l’animation
     }, 500);
   }
+  
+
+
+  // Méthode pour basculer la visibilité du menu
+
+
+  // Méthode qui est appelée lorsque l'utilisateur clique n'importe où en dehors du menu
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent) {
+    const menu = document.querySelector('.mobile-menu');
+    const toggleButton = document.querySelector('.toggle-menu');
+
+    // Si le clic est en dehors du bouton du menu ou du menu lui-même, fermer le menu
+    if (this.toggleMenuVisible && menu && toggleButton &&
+        !menu.contains(event.target as Node) && !toggleButton.contains(event.target as Node)) {
+      this.toggleMenuVisible = false;
+    }
+  }
+
+
 
   onContinue(): void {
     this.router.navigateByUrl('dashboard-expert');

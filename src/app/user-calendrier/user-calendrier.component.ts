@@ -2,6 +2,7 @@ import { Component, HostListener, OnInit } from '@angular/core';
 import { CalendarOptions } from '@fullcalendar/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
+import { AllRoutesService } from '../services/all-routes.service';
 
 @Component({
   selector: 'app-user-calendrier',
@@ -66,12 +67,20 @@ export class UserCalendrierComponent implements OnInit {
     eventClick: this.handleEventClick.bind(this)
   };
 
-  constructor() {}
+  constructor(private allRoutesService : AllRoutesService) {}
 
   ngOnInit(): void {
     this.updateCalendarEvents();
   }
-
+  ngAfterViewInit() {
+    setTimeout(() => {
+      const bouton = document.querySelector('.legend-btn.current') as HTMLElement;
+      if (bouton) {
+        bouton.click();
+      }
+    }, 500); // Ajuste le délai si nécessaire
+  }
+  
   @HostListener('window:resize', ['$event'])
   onResize() {
   }

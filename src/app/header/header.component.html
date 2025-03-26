@@ -17,15 +17,30 @@
       <i class="fas fa-bars"></i>
     </div>
     
-    <div *ngIf="toggleMenuVisible" class="mobile-menu">
-      <button (click)="OnUserConnexion()">Accueil</button>
-      <button (click)="OnUserdashboard()">Dashboard</button>
-      <button (click)="OnUserService()">Mes favoris</button>
-      <button (click)="OnUserHistorique()">Histirique</button>
-      <button (click)="OnUserCalendrier()">Calendrier</button>
-      <button >Parametres</button>
-      <button >Deconnexion</button>
+    <div [ngClass]="{ 'mobile-menu': true, 'open': toggleMenuVisible, 'closed': !toggleMenuVisible }">
+      <button  routerLink="/user-home" routerLinkActive="active" (click)="OnUserConnexion()">
+        <i class="fa fa-home"></i> Accueil
+      </button>
+      <button  routerLink="/user-dashboard" routerLinkActive="active" (click)="OnUserdashboard()">
+        <i class="fa fa-tachometer-alt"></i> Dashboard
+      </button>
+      <button  routerLink="/user-serv" routerLinkActive="active" (click)="OnUserService()">
+        <i class="fa fa-heart"></i> Mes favoris
+      </button>
+      <button  routerLink="/user-historique" routerLinkActive="active" (click)="OnUserHistorique()">
+        <i class="fa fa-history"></i> Historique
+      </button>
+      <button  routerLink="/user-calendrier" routerLinkActive="active" (click)="OnUserCalendrier()">
+        <i class="fa fa-calendar-alt"></i> Calendrier
+      </button>
+      <button  routerLink="/user-parameter" routerLinkActive="active">
+        <i class="fa fa-cogs"></i> Parametres
+      </button>
+      <button  routerLink="/" routerLinkActive="active">
+        <i class="fa fa-sign-out-alt"></i> Deconnexion
+      </button>
     </div>
+    
     
 
     <div class="nav-icons">

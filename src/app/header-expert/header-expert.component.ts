@@ -19,9 +19,6 @@ export class HeaderExpertComponent implements OnInit { menuOpen = false;
   toggleMenu() {
     this.toggleMenuVisible = !this.toggleMenuVisible;
   }
-  OnUserConnexion(): void {
-    this.router.navigateByUrl('user-home');
-  }
 
   OnUserService(): void {
     this.router.navigateByUrl('#');

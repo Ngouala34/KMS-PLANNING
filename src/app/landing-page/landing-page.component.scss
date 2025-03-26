@@ -563,6 +563,42 @@ width: 40%;}
   width: 100%;
 }
 
+
+/* Animation du menu mobile */
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideOut {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}
+.mobile-menu{
+  display: none;
+}
+
+/* Animation pour ouvrir le menu */
+.mobile-menu.open {
+  animation: slideIn 0.3s forwards;
+}
+
+
+/* Animation pour fermer le menu */
+.mobile-menu.closed {
+  animation: slideOut 0.3s forwards;
+}
+
+
+
 @media screen and (min-width:300px ) and (max-width: 450px){
 
  
@@ -636,6 +672,8 @@ width: 40%;}
   }
   .service-title{
     font-size: 19px;
+    margin-top: 0px;
+    margin-bottom: 0px;
   }
   .services-grid{
     gap: 20px; 
@@ -680,16 +718,18 @@ width: 40%;}
     color: #ffffff;
     cursor: pointer;
     margin-left: 50%;
+
   }
   .mobile-menu {
       position: fixed;
       top: 48px;
       right: 0;
-      line-height: 20px;
+      line-height: 15px;
       background-color:#0000007b;
       display: flex;
       flex-direction: column;
       box-sizing: border-box;
+      padding: 10px;
 
 
      
@@ -701,10 +741,10 @@ width: 40%;}
     padding: 15px;
   }
   .mobile-menu a:hover {
-   background: #06033e;
+   background: #74C0FC;
   }
   .mobile-menu a i {
-    margin-right: 8px; /* Espacement entre l'icône et le texte */
+    margin-right: 10px; /* Espacement entre l'icône et le texte */
     font-size: 18px;   /* Taille de l'icône */
     color: white;
 }
@@ -741,6 +781,12 @@ width: 40%;}
   }
    
 
+}
+@media screen and (max-width: 360px){
+  .toggle-menu {
+    margin-left: 45%;
+
+  }
 }
 
 

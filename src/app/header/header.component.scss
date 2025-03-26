@@ -79,23 +79,55 @@
     display: none;
   }
   .mobile-menu {
-    position: fixed;
-    top: 60px;
-    right: 0;
-    background-color: white;
-    box-shadow: -2px 0 5px rgba(0,0,0,0.5);
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
+    display: none;
+
   }
   
 
-@media screen and (min-width: 300px) and (max-width: 450px) {
+
+    /* Animation du menu mobile */
+    @keyframes slideIn {
+      from {
+        transform: translateX(100%);
+      }
+      to {
+        transform: translateX(0);
+      }
+    }
+    
+    @keyframes slideOut {
+      from {
+        transform: translateX(0);
+      }
+      to {
+        transform: translateX(100%);
+      }
+    }
+    
+    /* Animation pour ouvrir le menu */
+    .mobile-menu.open {
+      animation: slideIn 0.3s forwards;
+    }
+    
+    /* Animation pour fermer le menu */
+    .mobile-menu.closed {
+      animation: slideOut 0.3s forwards;
+    }
+
+
+
+
+
+
+
+
+@media screen and (min-width: 200px) and (max-width: 450px) {
     .nav-search {
       display: none;
     }
   
     .nav-icons {
+
       display: none;
     }
   
@@ -105,10 +137,54 @@
       font-size: 24px;
       color: #333;
       cursor: pointer;
+      background: none;
+    }
+    .toggle-menu:hover {
+      background: none;
     }
     .logo {
       margin-left: 20px;
       
     }
+    .mobile-menu i {
+
+      margin-right: 10px; /* Espacement entre l'icône et le texte */
+      font-size: 16px;   /* Ajustez la taille de l'icône */
+      color: #fff;       /* Couleur de l'icône */
+    }
+
+  .mobile-menu button{
+    color: white;
+    top: 50px;
+    border-radius: 0px;
+    width: 100%;
+    padding: 15px; 
+    padding-left: 30px;
+    text-align:left;
+    box-shadow: none;
+  }
+
+  .mobile-menu button:active{
+    background-color: #3498db; /* Couleur lorsqu'un élément est actif */
+   } 
+  .mobile-menu button:hover{
+    background: #2f7fbd8d;
+  }
+  .mobile-menu{
+    right: 0;
+    display: flex;
+    position: fixed;
+    top: 48px;
+    line-height: 20px;
+    flex-direction: column;
+    box-sizing: border-box;
+    top: 57px;
+    background-color: #0e0f49;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    width: 170px;
+
+  }
+
   }
 
