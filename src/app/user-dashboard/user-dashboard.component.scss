@@ -88,6 +88,10 @@
     gap: 30px;
     flex-wrap: wrap;
   }
+  .formation-card{
+ 
+    background-color: #65e18a;
+  }
   
   .formation-card-info {
     padding: 10px;
@@ -154,7 +158,11 @@
     background: #0c52a2;
   }
 
-  @media screen and (max-width: 768px){
+  @media screen and (min-width: 300px) and (max-width: 500px) {
+
+    .dashboard-title {
+      font-size: 20px;
+    }
     .user-dashboard{
       margin-left: 0px; /* Espace pour la sidebar */
       margin-top: 40px; /* Espace pour la navbar */
@@ -168,6 +176,29 @@
       gap: 20px;
       flex-wrap: wrap;
     }
+    .stats-container {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .stat-card {
+      width: 45%;
+      font-size: smaller;
+      align-items: center;
+    }
+    .stat-card i {
+      font-size: 30px;
+      color: #74C0FC;
+      margin-bottom: 10px;
+    }
+    .stat-card h3{
+      width: 70%;
+      margin: 0 auto;
+    }
+    .stat-card p{
+      margin-top: -0.5px;
+    }
     
     .formation-card-info {
       padding-bottom: 10px;
@@ -178,12 +209,19 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      background-color: red;
+      width: 30%;
+    }
+    .formation-card{
+      display: flex;
+      flex-direction: row;
+      flex-wrap:wrap; ;
+      align-items: center;
       width: 100%;
+      background-color: #65e18a;
     }
     .formation-card-image{
       width: 100%;
-      height: 250px;
+      height: 150px;
     }
   }
 

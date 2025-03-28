@@ -29,7 +29,7 @@ export class UserHomeComponent implements OnInit {
      this.allRoutesService.OnUserCalendrier(); 
   }
   OnFavoris(): void {
-    this.allRoutesService.OnUserService
+    this.allRoutesService.OnUserService()
   }
   OnCalendrierEnCour(): void {
     this.allRoutesService.OnUserCalendrierEnCour().then(() => {

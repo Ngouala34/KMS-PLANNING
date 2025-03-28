@@ -13,7 +13,7 @@
           <div class="expert-info">
             <div class="nom-et-badge">
               <h3>{{ expert.nom }}</h3>
-              <span class="badge">{{ expert.specialite }}</span>
+              <div class="badge">{{ expert.specialite }}</div>
               <div class="rating">
                 <span *ngFor="let star of [1,2,3,4,5]; let i = index">
                   <i class="fa" [ngClass]="{'fa-star': i < expert.note, 'fa-star-o': i >= expert.note}"></i>

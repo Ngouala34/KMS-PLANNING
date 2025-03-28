@@ -13,7 +13,7 @@ import { ExpertLoginComponent } from './Expert/expert-login/expert-login.compone
 import { FooterComponent } from './footer/footer.component';
 import { ChooseFunctionPageComponent } from './choose-function-page/choose-function-page.component';
 import { UserHomeComponent } from './user-home/user-home.component';
-import { UserServComponent } from './user-serv/user-serv.component';
+import { UserServComponent } from './user-favoris/user-serv.component';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { PaymentComponent } from './payment/payment.component';

@@ -54,6 +54,7 @@
 }
 
 .expert-list {
+  margin-left: 80px;
   display: flex;
   flex-direction:row;
   flex-wrap: wrap;
@@ -69,7 +70,6 @@
   padding: 15px;
   border-radius: 10px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-  text-align: center;
   transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
 }
 
@@ -90,6 +90,7 @@
 
 .expert-info h3 {
   font-size: 18px;
+  text-align: center;
 }
 
 .badge {
@@ -103,11 +104,13 @@
 
 .rating {
   margin-top: 5px;
+  margin-left: 10px;
 }
 
 .rating i {
   color: #ffcc00;
   font-size: 10px;
+  margin: 2px;
 }
 
 .btn-view-services {
@@ -144,8 +147,8 @@
 }
 
 .btn-secondary:hover {
-  background-color: #f0e222;
-  color: #0e0f49;
+  background-color: #74C0FC;
+  color: #ffffff;
 }
 
 @media (max-width: 600px) {
@@ -161,6 +164,8 @@
     margin-left: -35px;
   }
   .expert-list {
+    box-sizing: border-box;
+    margin-left: 18px;
     display: flex;
     align-items: center;
     gap: 15px;
@@ -169,17 +174,12 @@
   }
 
   .expert-card {
-    margin-left:16px ;
     width: 40%;
+    padding-top: 2px;
     background: #ffffff;
-    padding: 10px;
     border-radius: 10px;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
     transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-    display: flex; /* Permet l'affichage en ligne */
-    flex-direction: row; /* Alignement horizontal */
-    align-items: center;
-    justify-content: space-between;
   }
   .expert-card img{
     display: none;
@@ -194,33 +194,36 @@
 
   .expert-info {
     display: flex;
+    width: 100%;
     flex-direction: row; /* Les éléments internes seront alignés en ligne */
-    margin: 0 auto;
+    height: auto;
     gap: 8px; /* Espace entre les éléments */
   }
 
   .expert-info h3 {
     font-size: 14px;
     margin: 0;
-    white-space: nowrap; /* Évite que le nom passe à la ligne */
   }
 
   .badge {
     padding: 5px ;
+    padding-left: 5px;
+    padding-right: 5px;
     border-radius: 15px;
     font-size: 12px;
   }
 
   .rating {
-    font-size: 14px;
+    font-size: 10px;
     display: flex;
-    align-items: center;
+    text-align: center;
   }
 
   .rating i {
     align-items: center;
     color: #f0e222;
     font-size: 10px;
+    margin: 1.5px;
   }
 
   .nom-et-badge{
@@ -229,8 +232,8 @@
     margin-left: 5px;
   }
   .nom-et-badge h3{
-    width: 100px;
     box-sizing: border-box;
+    text-align: center;
   }
   .overlay{
     left: 0;

@@ -5,7 +5,7 @@ import { SidebarComponent } from './sidebar/sidebar.component';
 import { ExpertLoginComponent } from './Expert/expert-login/expert-login.component';
 import { ChooseFunctionPageComponent } from './choose-function-page/choose-function-page.component';
 import { UserHomeComponent } from './user-home/user-home.component';
-import { UserServComponent } from './user-serv/user-serv.component';
+import { UserServComponent } from './user-favoris/user-serv.component';
 import { UserSouscriptionsComponent } from './user-souscription/user-souscription.component';
 import { PaymentComponent } from './payment/payment.component';
 import { CreateCourseComponent } from './Expert/create-course/create-course.component';

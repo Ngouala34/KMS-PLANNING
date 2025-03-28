@@ -41,21 +41,7 @@
     border-radius: 5px;
 }
 
-/* Filtres */
-.filters {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-    margin-bottom: 20px;
-    
-}
 
-.filters select {
-    padding: 8px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
-}
 
 /* Grille des services */
 .services-grid {
@@ -101,6 +87,8 @@
 
 .rating {
     color: #ffcc00;
+    padding-top: 7px;
+    padding-bottom: 5px;
 }
 
 /* Bouton de réservation */
@@ -129,7 +117,7 @@
     text-transform: uppercase;
     position: relative;
     opacity: 0;
-    animation: fadeInUp 1s ease-out forwards, slideIn 1s ease-in-out forwards;
+    animation: fadeInUp 1s ease-out forwards, 
 }
 
 /* Animation de fade-in et slide-up */
@@ -152,8 +140,11 @@
     transition: all 0.3s ease;
 }
 
-@media screen and (min-width: 300px) and (max-width: 450px) {
+@media screen and (min-width: 300px) and (max-width: 500px) {
 
+    .title {
+        font-size: 1.5rem;
+    }
     .services-container{
       margin-left: 0px; /* Espace pour la sidebar */
       margin-top: 40px; /* Espace pour la navbar */
@@ -168,7 +159,8 @@
 
     .services-grid {
         grid-template-columns: repeat(2, 1fr); /* Deux colonnes */
-        gap: 8px;
+        gap: 4%; 
+        font-size: smaller; 
       }
     
       .service-card img {
