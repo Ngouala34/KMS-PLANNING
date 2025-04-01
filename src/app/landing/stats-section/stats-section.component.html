@@ -1,0 +1,21 @@
+<section class="stats-section">
+    <div class="container">
+      <div class="stats-header">
+        <h2 class="stats-title">{{ title }}</h2>
+        <p class="stats-description">{{ description }}</p>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-card" *ngFor="let stat of stats">
+          <div class="stat-icon">
+            <i [class]="stat.icon"></i>
+          </div>
+          <div class="stat-content">
+            <div class="stat-value">
+              {{ stat.current | number:'1.0-0' }}<span class="stat-suffix">{{ stat.suffix }}</span>
+            </div>
+            <div class="stat-label">{{ stat.label }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>

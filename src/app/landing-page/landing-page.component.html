@@ -51,6 +51,7 @@
 
 
   <div class="service-title">Découvrez des services <span>sur mesure</span>, adaptés à <span>vos besoins </span>!</div>
+  <p class="description">Accélérez votre apprentissage ou développez votre activité de formation avec nos services premium conçus pour maximiser votre succès. Rejoignez-nous dès maintenant et faites passer votre expertise au niveau supérieur !</p>
   <div class="services-grid" *ngIf="showServices">
     <div class="service-card" *ngFor="let service of services">
         <img [src]="service.source" alt="Service" class="service-image">
@@ -65,7 +66,8 @@
 
 
   <div class="container">
-  <div class="service-title">Nos <span>Fonctionnalités</span></div><br>
+  <div class="service-title">Nos <span>Fonctionnalités</span></div>
+  <p class="description">Accédez à tous les outils indispensables pour des échanges efficaces et sans contraintes. Profitez d’une plateforme optimisée pour booster votre productivité et enrichir vos interactions</p><br>
       <div id="class">
           <div class="landing-box">
             <div class="img1"></div>
@@ -87,49 +89,21 @@
       <input type="button" value="Voir plus ..." class="btn-voir-plus" />
   </div><br>
 
+  <app-stats-section></app-stats-section><br><br>
     <div class="landing-container3">
       <div class="service-title">Quelques avis <span>utilisateurs</span></div>
-      <div class="avis-container">
-
-          <div class="avis-utilisateur">
-              <div class="avis-client">
-                  <img src="/assets/images/user1.jpg" alt="utilisateur">
-                  <div class="nom">
-                    <p class="p1"> David K ,<span> Formateur en développement web</span></p>
-                    <p class="p2"><strong>★★★★★ </strong> Il y a 1 mois</p>
-                  </div>
-              </div>
-              <p id="p3">
-                En tant qu'expert, cette application m’a permis de proposer mes formations sans me soucier de la gestion des rendez-vous. 
-                Les paiements sont sécurisés, les liens de visioconférence sont générés automatiquement.
-              </p>
-          </div>
-
-        <div class="avis-utilisateur">
-          <div class="avis-client">
-            <img src="assets\images\userStudent.jpg" alt="utilisateur">
-            <div class="nom">
-              <p class="p1"> Sarah Ngouffo ,<span> Etudiante en marketing digital</span></p>
-              <p class="p2"><strong>★★★★★ </strong> Il y a 2 semaines</p>
-
-            </div>
-          </div>
-          <p id="p3">
-            J’ai pu réserver une formation en quelques clics et échanger directement avec un expert de mon domaine. 
-            Plus besoin d’envoyer des dizaines d’emails pour fixer un rendez-vous, tout est automatisé !👏
-          </p>
-        </div>
-
-      </div>
-      <br /><br /> 
+      <p class="description">Découvrez ce que disent nos utilisateurs satisfaits et rejoignez notre communauté grandissante d'experts et d'apprenants !</p>
+      <app-avis-carousel></app-avis-carousel>
+      
       
       <div id="landing-container4">
-        <span>Rejoignez-nous dès maintenant !</span>
-        <br>
-        <button class="btn-inscription" (click)="OnInscription()">S'inscrire</button>
+        <span>Prêt à révolutionner votre façon d'apprendre ou d'enseigner ? Rejoignez-nous dès maintenant !</span>
+        <button class="btn-last-inscription" (click)="OnInscription()">S'inscrire</button>
       </div>
+
     </div>
 
 
 <app-footer></app-footer>
 </body>
+

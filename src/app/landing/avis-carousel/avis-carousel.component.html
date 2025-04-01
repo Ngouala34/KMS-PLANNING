@@ -1,0 +1,32 @@
+<div class="avis-carousel">
+  <div class="avis-container">
+    <button class="nav-arrow prev" (click)="prevAvis()" [style.top]="isMobileView() ? '50%' : 'calc(50%)'">
+      <i class="fas fa-chevron-left"></i>
+    </button>
+
+    <div class="avis-slider" [ngClass]="animationState">
+      <div *ngFor="let avis of avis; let i = index"
+           class="avis-item"
+           [ngClass]="{
+             'active': i === currentIndex,
+             'prev': i === prevIndex,
+             'next': i === nextIndex
+           }">
+        <div class="avis-utilisateur">
+          <div class="avis-client">
+            <img [src]="avis.avatar" [alt]="avis.nom">
+            <div class="nom">
+              <p class="p1">{{avis.nom}}, <span>{{avis.role}}</span></p>
+              <p class="p2"><strong>{{avis.note}}</strong> {{avis.date}}</p>
+            </div>
+          </div>
+          <p class="commentaire">{{avis.commentaire}}</p>
+        </div>
+      </div>
+    </div>
+
+    <button class="nav-arrow next" (click)="nextAvis()" [style.top]="isMobileView() ? '50%' : 'calc(50%)'">
+      <i class="fas fa-chevron-right"></i>
+    </button>
+  </div>
+</div>

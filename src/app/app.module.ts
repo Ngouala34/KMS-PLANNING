@@ -34,6 +34,8 @@ import { ServiceListComponent } from './service-list/service-list.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { UserParameterComponent } from './user-parameter/user-parameter.component';
 import { PopupExpertsComponent } from './popup-experts/popup-experts.component';
+import { StatsSectionComponent } from './landing/stats-section/stats-section.component';
+import { AvisCarouselComponent } from './landing/avis-carousel/avis-carousel.component';
 
 
 @NgModule({
@@ -62,6 +64,8 @@ import { PopupExpertsComponent } from './popup-experts/popup-experts.component';
     ServiceListComponent,
     UserParameterComponent,
     PopupExpertsComponent,
+    StatsSectionComponent,
+    AvisCarouselComponent,
     
     
     

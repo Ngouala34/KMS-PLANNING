@@ -20,6 +20,8 @@ import { ExpertServiceComponent } from './expert-service/expert-service.componen
 import { HeaderExpertComponent } from './header-expert/header-expert.component';
 import { ServiceListComponent } from './service-list/service-list.component';
 import { UserParameterComponent } from './user-parameter/user-parameter.component';
+import { StatsSectionComponent } from './landing/stats-section/stats-section.component';
+import { AvisCarouselComponent } from './landing/avis-carousel/avis-carousel.component';
 
 const routes: Routes = [
   { path: '', component: LandingPageComponent },
@@ -45,7 +47,9 @@ const routes: Routes = [
   { path: 'create-course', component: CreateCourseComponent },
   { path: 'revenue-chart', component: RevenueChartComponent },
   { path: 'sidebar-expert', component: SidebarComponent },
-  { path: 'service-list', component: ServiceListComponent}
+  { path: 'service-list', component: ServiceListComponent},
+  { path: 'stats-section', component: StatsSectionComponent },
+  { path: 'avis-carousel', component: AvisCarouselComponent },
 
 
 
