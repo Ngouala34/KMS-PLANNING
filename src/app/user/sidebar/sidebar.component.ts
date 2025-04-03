@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
 })
 export class SidebarComponent implements OnInit {
 
+
   @Input() collapsedByDefault = false; // Indique si la sidebar est réduite au départ
   @Output() sidebarToggle = new EventEmitter<boolean>(); //  Envoie l’état de la sidebar au parent
 
@@ -47,6 +48,10 @@ export class SidebarComponent implements OnInit {
    Ondeconnexion():void{
     this.router.navigateByUrl('')
    }
+   OnUserParameter(): void {
+    this.router.navigateByUrl('user-parameter');
+  }
 } 
+
 
 

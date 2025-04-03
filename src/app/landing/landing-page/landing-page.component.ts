@@ -17,10 +17,10 @@ export class LandingPageComponent implements OnInit {
   ngOnInit(): void {
     setTimeout(() => {
       this.services = [
-        { source:"https://i.pinimg.com/474x/4f/0b/43/4f0b439aedbc7ab60228488f32c3c965.jpg", nom: 'Consultation Médicale', expert: 'Dr.Ngouffo Aline',  note: 4.8 },
-        { source:"https://i.pinimg.com/474x/db/67/f0/db67f009d50c76bf87606520384eb1ab.jpg", nom: 'Cours de Mathématiques', expert: 'Prof. Atangana ',  note: 4.7 },
+        { source:"https://i.pinimg.com/474x/4f/0b/43/4f0b439aedbc7ab60228488f32c3c965.jpg", nom: 'Consultation Médicale ', expert: 'Dr.Ngouffo Aline',  note: 4.8 },
+        { source:"https://i.pinimg.com/474x/db/67/f0/db67f009d50c76bf87606520384eb1ab.jpg", nom: 'Cours Mathématiques', expert: 'Prof. Atangana ',  note: 4.7 },
         { source:"https://i.pinimg.com/474x/52/a2/99/52a2996379f04d614002c5efd87f35c1.jpg", nom: 'Coaching en Finances', expert: 'M. Kemkeu Albert',  note: 4.9 },
-        { source:"https://i.pinimg.com/736x/42/44/d2/4244d20b813d9ec43747d9ab8af6ac16.jpg", nom: 'Developpement Angular', expert: 'M. Ngoualadjo', note: 4 },
+        { source:"https://i.pinimg.com/736x/42/44/d2/4244d20b813d9ec43747d9ab8af6ac16.jpg", nom: 'Dev Angular 18', expert: 'M. Ngoualadjo', note: 4 },
       ];
       this.showServices = true; // Active l’animation
     }, 500);

@@ -1,0 +1,212 @@
+<body>
+  <nav class="nav-navbar">
+    <nav class="topnav">
+      <section class="topnav-logo">
+        <div class="logo"></div>
+        <p class="planning">PLANNING</p>
+      </section>
+    </nav>
+    <nav class="navbar">
+      <ul>
+        <li><a href="#" class="active">Accueil</a></li>
+        <li><a (click)="onService()">Service</a></li>
+        <li><a href="#">Catégorie</a></li>
+      </ul>
+      <button class="btn-login" (click)="OnConnexion()">Login</button>
+    </nav>
+    <div class="toggle-menu" (click)="toggleMenu()">
+      <i class="fas fa-bars"></i>
+    </div>
+    
+    <div [ngClass]="{ 'mobile-menu': true, 'open': toggleMenuVisible, 'closed': !toggleMenuVisible }">
+      <a href=""><i class="fa fa-home"></i>Accueil</a>
+      <a (click)="onService()"><i class="fa fa-cogs"></i> Service</a>
+      <a href=""><i class="fa fa-th-list"></i> Catégorie</a>
+      <a href=""><i class="fa fa-info-circle"></i> A propos</a>
+    </div>
+  
+  </nav>
+  
+<header>
+  <div class="aim-container">
+    <h1>
+      <span>Enseignez</span> ou <span>Apprenez</span> sans limites
+    </h1>
+    <h3>
+      Inscrivez-vous, accédez aux services et formations en exclusivité et échangez en direct avec des experts !
+    </h3>
+    <div class="landing-content">
+      <button class="btn-commencer" (click)="OnInscription()">
+         Commencer
+      </button>
+    </div><br>
+  
+    <div class="canvas"> 
+      <button (click)="onContinue()">dashboard-admin</button>
+      <button (click)="Onuser()">dashboard-user</button>
+    </div>
+    
+  </div>
+</header>
+
+  <div class="landing-container2">
+    <div class="service-title">Pourquoi choisir <span> KMS Planning</span> ?</div>
+    <p class="description">Notre plateforme vous offre une expérience unique et personnalisée pour répondre à vos besoins d'apprentissage et de formation. Découvrez comment nous pouvons vous aider à atteindre vos objectifs !</p><br>
+  </div>
+
+<div class="features-container">
+  <div class="feature-card">
+      <i class="fas fa-calendar-alt feature-icon"></i>
+      <h3>Réservation</h3>
+      <p>Prise de rendez-vous en ligne.</p>
+  </div>
+  <div class="feature-card">
+      <i class="fas fa-video feature-icon"></i>
+      <h3>Appels vidéo</h3>
+      <p>Via Zoom ou Google Meet.</p>
+  </div>
+  <div class="feature-card">
+      <i class="fas fa-credit-card feature-icon"></i>
+      <h3>Paiement sécurisé</h3>
+      <p>Via Flutterwave.</p>
+  </div>
+  <div class="feature-card">
+      <i class="fas fa-chart-bar feature-icon"></i>
+      <h3>Statistiques</h3>
+      <p>Analyse de votre activité.</p>
+  </div>
+  <div class="feature-card">
+      <i class="fas fa-bell feature-icon"></i>
+      <h3>Notifications</h3>
+      <p>Rappels automatiques.</p>
+  </div>
+  <div class="feature-card">
+      <i class="fas fa-shield-alt feature-icon"></i>
+      <h3>Sécurité</h3>
+      <p>Données protégées.</p>
+  </div>
+  <div class="feature-card">
+      <i class="fas fa-cogs feature-icon"></i>
+      <h3>Personnalisation</h3>
+      <p>Options adaptées à vos besoins.</p>
+  </div>
+  <div class="feature-card">
+      <i class="fas fa-sync-alt feature-icon"></i>
+      <h3>Synchronisation</h3>
+      <p>Avec votre agenda.</p>
+  </div>
+</div>
+
+
+
+
+  <div class="service-title">Découvrez des services <span>sur mesure</span>, adaptés à <span>vos besoins </span>!</div>
+  <p class="description">Accélérez votre apprentissage ou développez votre activité de formation avec nos services premium conçus pour maximiser votre succès. Rejoignez-nous dès maintenant et faites passer votre expertise au niveau supérieur !</p>
+  <div class="services-grid" *ngIf="showServices">
+    <div class="service-card" *ngFor="let service of services">
+        <img [src]="service.source" alt="Service" class="service-image">
+        <h3>{{ service.nom }}</h3>
+        <p> <strong>{{ service.expert }}</strong></p>
+        <div class="rating">★★★★★ ({{ service.note }})</div>
+        <button class="btn-book" (click)="OnConnexion()">Réserver</button>
+    </div>
+  </div>
+  <input type="button" value="Voir plus ..."id="btn-voir-plus" class="btn-voir-plus" /><br><br><br>
+
+
+  <div class="categories-section">
+    <div class="title"> Catégories Populaires</div>
+
+      <div class="category-container">
+        <div class="categories-left">
+          <div class="title">Que vous souhaitiez améliorer votre bien-être avec un expert en santé, enrichir vos connaissances grâce à l'éducation, propulser votre entreprise avec des conseils en business et entrepreneuriat, maîtriser les dernières avancées en tech et développement, optimiser votre gestion financière, libérer votre créativité dans le domaine artistique ou encore travailler sur votre épanouissement personnel, notre plateforme vous connecte aux meilleurs experts pour répondre à vos besoins et vous accompagner vers la réussite. Explorez nos catégories et trouvez l’accompagnement idéal dès maintenant !</div>
+          <div class="categories-list">
+            <div class="category"> Santé & Bien-être</div>
+            <div class="category"> Éducation</div>
+            <div class="category"> Developpement</div>
+            <div class="category"> Business</div>
+            <div class="category"> Technologie</div>
+            <div class="category"> Finance</div>
+            <div class="category"> Entrepreneuriat</div>
+            <div class="category"> Comptabilité</div>
+            <div class="category"> Créativité et Art</div>
+            <div class="category"> Développement Personnel</div>
+          </div>
+        </div>
+       
+      </div>
+  </div>
+  <!--
+  <div class="container">
+  <div class="service-title">Nos <span>Fonctionnalités</span></div>
+  <p class="description">Accédez à tous les outils indispensables pour des échanges efficaces et sans contraintes. Profitez d’une plateforme optimisée pour booster votre productivité et enrichir vos interactions</p><br>
+      <div id="class">
+          <div class="landing-box">
+            <div class="img1"></div>
+            <p id="p1">Accepter les réservations en ligne.</p>
+          </div>
+          <div class="landing-box">
+            <div class="img2"></div>
+            <p id="p2">Notifications via SMS/Email.</p>
+          </div>
+          <div class="landing-box">
+            <div class="img3"></div>
+            <p id="p3">Application client et expert.</p>
+          </div>
+          <div class="landing-box">
+            <div class="img4"></div>
+            <p id="p4">Gestion des rendez-vous.</p>
+          </div>
+      </div>
+      <input type="button" value="Voir plus ..." class="btn-voir-plus" />
+  </div><br>
+  -->
+
+
+  <div class="how-it-works">
+    <div class="title"> Comment ça marche ?</div>
+    <p class="description">Découvrez comment notre plateforme fonctionne et comment elle peut vous aider à atteindre vos objectifs d'apprentissage ou de formation. Suivez ces étapes simples pour commencer dès aujourd'hui !</p><br>
+
+    <div class="steps">
+        <div class="step">
+          <i class="fas fa-user-plus step-icon"></i>
+          <h3>Créer un compte</h3>
+          <p>Inscrivez-vous en quelques clics en tant qu'EXPERT si vous souhaitez offrir vos service ou en tant que simple UTILISATEUR si vous avez besoin de booster vos compétances ou la productivité de votre entreprise.</p>
+        </div>
+        <div class="step">
+            <i class="fas fa-search step-icon"></i>
+            <h3>Rechercher un service</h3>
+            <p>Trouver un service en consultant directement la liste des services ou en faisant une recherche par cathégorie "Ex : finances" </p>
+        </div>
+        <div class="step">
+            <i class="fas fa-calendar-check step-icon"></i>
+            <h3>Réserver un rendez-vous</h3>
+            <p>Clicquez le bouton "reserver" pour souscrire au service qui repond au mieux à vos besoins actuels .</p>
+        </div>
+        <div class="step">
+            <i class="fas fa-credit-card step-icon"></i>
+            <h3>Payment simple</h3>
+            <p>Effectuez un paiement sécurisé en choisissant l'une des multiples méthodes de payments disponibles sur notre plateforme. Et obtenez le lien du rendez-vous</p>
+        </div>
+    </div>
+    <p>Vous avez des questions ? rendez-vous <a href="">ICI</a> pour en savoir plus</p>
+  </div>
+    
+
+  <app-stats-section></app-stats-section><br><br>
+    <div class="landing-container3">
+      <div class="service-title">Quelques avis <span>utilisateurs</span></div>
+      <app-avis-carousel></app-avis-carousel>
+      
+      
+      <div id="landing-container4">
+        <span>Prêt à révolutionner votre façon d'apprendre ou d'enseigner ? Rejoignez-nous dès maintenant !</span>
+        <button class="btn-last-inscription" (click)="OnInscription()">S'inscrire</button>
+      </div>
+
+    </div>
+
+
+<app-footer></app-footer>
+</body>
+

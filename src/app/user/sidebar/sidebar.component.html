@@ -25,7 +25,7 @@
                 <i class="fa-solid fa-calendar"></i>
                 <a  >Calendrier</a>
             </li>
-            <li routerLink="/parametres" routerLinkActive="active">
+            <li routerLink="/user-parameter" routerLinkActive="active" (click)="OnUserParameter()">
                 <i class="fa-solid fa-cog"></i>
                 <a routerLink="/parametres" *ngIf="!isCollapsed">Paramètres</a>
             </li>

@@ -2,7 +2,7 @@ import { Component, HostListener, OnInit } from '@angular/core';
 import { CalendarOptions } from '@fullcalendar/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
-import { AllRoutesService } from '../services/all-routes.service';
+import { AllRoutesService } from '../../services/all-routes.service';
 
 @Component({
   selector: 'app-user-calendrier',

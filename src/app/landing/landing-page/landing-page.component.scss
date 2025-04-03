@@ -465,9 +465,10 @@ width: 40%;}
 
 /* Carte d'un service */
 .service-card {
+  overflow: hidden;
   align-items: center;
   background: white;
-  width: 250px;
+  width: 200px;
   padding-bottom: 15px;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -488,7 +489,7 @@ width: 40%;}
 
 .service-image {
   width: 100%;
-  height: 180px;
+  height: 120px;
   border-top-right-radius: 8px;
   border-top-left-radius: 8px;
   object-fit: cover;
@@ -500,6 +501,21 @@ width: 40%;}
   margin-bottom: -2px; /* Réduit l'espacement vertical */
   line-height: 1.2;   /* Ajuste la hauteur de ligne pour un texte plus serré */
 }
+
+.services-grid .service-card h3{
+padding: 5px;
+font-size: 18px;
+margin-top: -3px;
+
+}
+.services-grid .service-card p{
+  font-size: 15px;
+  color: #555;
+  margin-top: -5px;
+  padding: 5px;
+ 
+}
+
 
 
 .price {
@@ -521,7 +537,7 @@ width: 40%;}
   border: none;
   border-radius: 6px;
   cursor: pointer;
-  margin-left: 20px;
+  margin: 0 auto;
   font-size: 15px;
   transition: background 0.3s ease-in-out;
 }
@@ -615,11 +631,183 @@ width: 40%;}
   animation: slideOut 0.3s forwards;
 }
 
+.features-container {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding: 20px;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+
+.feature-card {
+  background: white;
+  border-radius: 10px;
+  padding: 15px;
+  width: 150px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+}
+
+.feature-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.feature-icon {
+  font-size: 30px;
+  color: #0a1f44;
+  margin-bottom: 10px;
+}
+
+.feature-card h3 {
+  font-size: 14px;
+  margin: 5px 0;
+}
+
+.feature-card p { 
+  font-size: 12px;
+  color: #666;
+}
+
+
+.how-it-works {
+  background: rgb(255, 255, 255);
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #0a1f44;
+}
+
+.steps {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  flex-wrap: wrap;
+
+}
+
+.step {
+  padding: 15px;
+  width: 300px;
+  text-align: center;
+}
+
+
+
+.step-icon {
+  font-size: 40px;
+  color: #74C0FC;
+  margin-bottom: 10px;
+}
+
+.step h3 {
+  font-size: 16px;
+  margin: 5px 0;
+}
+
+.step p {
+  font-size: 14px;
+  color: #666;
+}
+
+
+.categories-section {
+  margin: auto;
+  height: auto;
+  box-sizing: border-box;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+.category-container{
+  display: flex;
+  flex-direction: row;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 15px;
+  color: #0a1f44;
+}
+
+.categories-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 15px;
+  height: 150px;
+}
+.categories-left{
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.category-image{
+  height: 50%;
+  width: 50%;
+}
+.categories-left .title{
+  font-size: 20px;
+  font-weight: normal;
+  text-align: justify;
+}
+
+.category {
+  color: rgb(0, 0, 0);
+  padding: 12px;
+  border-radius: 25px;
+  align-items: center;
+  border: 1px solid rgba(0, 0, 0, 0.421);
+  height: 50px;
+  font-size: 16px;
+  transition: background 0.3s ease, transform 0.2s ease;
+  cursor: pointer;
+}
+
+.category:hover {
+  background: #2e87ed;
+  transform: translateY(-3px);
+  font-weight: bold;
+  color: white;
+
+}
+
+.category i {
+  font-size: 18px;
+}
 
 
 @media screen and (min-width:300px ) and (max-width: 450px){
 
  
+  //CSS pour les cartes de présentation des fonctionnalités
+  .feature-card {
+    width: 45%;  
+  }  
+  .feature-icon {
+    font-size: 20px;
+    margin-bottom: 5px;
+    background-color: #ffffff;
+  }
+  .feature-card p { 
+    font-size: 10px;
+  }
+  .feature-card h3 {
+    font-size: 12px;
+  }
+
   .navbar {
     display: none;
   }
@@ -668,7 +856,7 @@ width: 40%;}
   padding-right: 80px;
   padding-bottom: 0px;
 
-}
+  }
   .aim-container h1{
     font-size: 19px;
     
@@ -701,16 +889,14 @@ width: 40%;}
   .service-card {
     width: 45%;
     box-sizing: border-box;
+    height: 260px;
   }
   .service-card img{
     height: 110px;
      
   }
   .service-card h3 {
-    font-size: 19px;
-    
-  }
-  .service-card p{
+    font-size: smaller;
     
   }
 
@@ -748,9 +934,6 @@ width: 40%;}
       flex-direction: column;
       box-sizing: border-box;
       padding: 10px;
-
-
-     
   }
   .mobile-menu a {
     text-decoration: none;
@@ -765,13 +948,14 @@ width: 40%;}
     margin-right: 10px; /* Espacement entre l'icône et le texte */
     font-size: 18px;   /* Taille de l'icône */
     color: white;
-}
+  }
 
   header {
     background-image: url(https://media.istockphoto.com/id/628506984/fr/photo/travailler-intelligemment-travailler-dur.jpg?s=1024x1024&w=is&k=20&c=Lech64nBZbdvEVq-Qci0Res7mYXFDRDdFR7WDhaTSxs=);
     background-size: cover;
   
-  }.btn-commencer{
+  }
+  .btn-commencer{
     background-color: #d52727;
     color: rgb(255, 255, 255);
     border-radius: 10px;
@@ -806,7 +990,14 @@ width: 40%;}
     margin: 0 auto;
     margin-top: 10px;
   }
-   
+
+  .steps {
+    gap: 0px;
+    justify-content: space-around; 
+
+  }
+
+
 
 }
 @media screen and (max-width: 360px){
@@ -815,6 +1006,11 @@ width: 40%;}
 
   }
 }
+
+
+
+
+
 
 
 
