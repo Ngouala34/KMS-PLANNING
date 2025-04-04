@@ -682,10 +682,9 @@ margin-top: -3px;
 }
 
 .title {
-  font-size: 24px;
-  font-weight: bold;
+  font-size: 20px;
   margin-bottom: 20px;
-  color: #0a1f44;
+  color: black;
 }
 
 .steps {
@@ -732,27 +731,29 @@ margin-top: -3px;
 .category-container{
   display: flex;
   flex-direction: row;
+  height: auto;
 }
 
-.title {
-  font-size: 24px;
-  font-weight: bold;
-  margin-bottom: 15px;
-  color: #0a1f44;
-}
+
 
 .categories-list {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   gap: 15px;
-  height: 150px;
+  margin: 0 auto;
+
 }
 .categories-left{
   padding: 15px;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  width: 50%;
+}
+.catégory-right{
+ 
+background: #000;
 }
 .category-image{
   height: 50%;
@@ -766,11 +767,11 @@ margin-top: -3px;
 
 .category {
   color: rgb(0, 0, 0);
-  padding: 12px;
+  padding: 10px;
   border-radius: 25px;
   align-items: center;
   border: 1px solid rgba(0, 0, 0, 0.421);
-  height: 50px;
+  height: 40px;
   font-size: 16px;
   transition: background 0.3s ease, transform 0.2s ease;
   cursor: pointer;
@@ -787,10 +788,48 @@ margin-top: -3px;
 .category i {
   font-size: 18px;
 }
+video {
+  width: 50%;
+  height: 100%;
+  border-radius: 10px;
+}
 
 
 @media screen and (min-width:300px ) and (max-width: 450px){
 
+  // POUR LES CATEGORIES POPULAIRES 
+  
+  .category-container{
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    padding: 20px;
+
+  }
+  .categories-list {
+    width: 100%;
+  }
+  .categories-left{
+    width: 100%;
+    box-sizing: border-box;
+  }
+  .categories-left .title{
+    font-size: 15px;
+  }
+
+
+  .category-image{
+    display: none;
+  }
+  .categories-section .service-title{
+    margin-top: -35px;
+    margin-bottom: -20px;
+  }
+  video {
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+  }
  
   //CSS pour les cartes de présentation des fonctionnalités
   .feature-card {
@@ -950,6 +989,10 @@ margin-top: -3px;
     color: white;
   }
 
+  .container .service-title{
+    margin-top: 20px;
+    margin-bottom: 0px;
+  }
   header {
     background-image: url(https://media.istockphoto.com/id/628506984/fr/photo/travailler-intelligemment-travailler-dur.jpg?s=1024x1024&w=is&k=20&c=Lech64nBZbdvEVq-Qci0Res7mYXFDRDdFR7WDhaTSxs=);
     background-size: cover;
@@ -966,6 +1009,15 @@ margin-top: -3px;
   .avis-utilisateur #p3{
     text-align: justify;  
 
+  }
+  .landing-container2 .service-title{
+    margin-top: 15px;
+  }
+  .landing-container3 .service-title{
+    margin-bottom: -15px;
+  }
+  .landing-container3 {
+    margin-bottom: -70px;
   }
   #landing-container4{
     display: flex;
@@ -990,11 +1042,23 @@ margin-top: -3px;
     margin: 0 auto;
     margin-top: 10px;
   }
+  .title{
+    font-size: 15px;
+    color: black;
+  }
 
   .steps {
     gap: 0px;
     justify-content: space-around; 
 
+  }
+  .how-it-works .step {
+    width: 100%;
+    padding: 10px;
+  }
+  .how-it-works .service-title{
+    margin-top: -40px;
+    margin-bottom: 0px;
   }
 
 

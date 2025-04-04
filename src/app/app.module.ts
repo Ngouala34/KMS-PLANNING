@@ -36,6 +36,7 @@ import { UserParameterComponent } from './user/user-parameter/user-parameter.com
 import { PopupExpertsComponent } from './popup-experts/popup-experts.component';
 import { StatsSectionComponent } from './landing/stats-section/stats-section.component';
 import { AvisCarouselComponent } from './landing/avis-carousel/avis-carousel.component';
+import { FaqComponent } from './landing/faq/faq.component';
 
 @NgModule({
   declarations: [
@@ -65,6 +66,7 @@ import { AvisCarouselComponent } from './landing/avis-carousel/avis-carousel.com
     PopupExpertsComponent,
     StatsSectionComponent,
     AvisCarouselComponent,
+    FaqComponent,
     
     
     

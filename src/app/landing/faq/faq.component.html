@@ -1,0 +1,13 @@
+<div class="faq-container">
+    <h2>Questions fréquentes (FAQ)</h2>
+    
+    <div *ngFor="let faq of faqs">
+      <div class="faq-item">
+        <h3 (click)="toggleAnswer(faq)">
+          {{ faq.question }}
+        </h3>
+        <p *ngIf="faq.showAnswer">{{ faq.answer }}</p>
+      </div>
+    </div>
+  </div>
+  
