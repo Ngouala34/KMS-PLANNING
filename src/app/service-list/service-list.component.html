@@ -1,41 +1,122 @@
-<section class="services-container" [ngClass]="{ 'expanded': isSidebarCollapsed }">
-    <h2 class="title">Découvrez des services sur mesure, adaptés à vos besoins !</h2>
+<div class="container">
 
-    <!-- Barre de recherche -->
-    <div class="search-bar">
-        <input type="text" placeholder="Rechercher un service..." />
-        <button class="btn-search">🔍</button>
-    </div>
+    
 
-    <!-- Filtres -->
-    <div class="filters">
-        <select>
-            <option value="all">Toutes les catégories</option>
-            <option value="sante">Santé</option>
-            <option value="education">Éducation</option>
-            <option value="finance">Finance</option>
-            <option value="finance">Sport</option>
-            <option value="finance">Art</option>
-            <option value="finance">Culture</option>
-            <option value="finance">Loisirs</option>
-            <option value="finance">Autres</option>
-        </select>
-        <select>
-            <option value="popular">Populaires</option>
-            <option value="price">Prix croissant</option>
-            <option value="rating">Mieux notés</option>
-        </select>
-    </div>
+    <app-navlanding></app-navlanding>
 
-    <!-- Grille des services avec animation -->
-    <div class="services-grid" *ngIf="showServices">
-        <div class="service-card" *ngFor="let service of services">
-            <img src="assets/service-placeholder.jpg" alt="Service">
-            <h3>{{ service.nom }}</h3>
-            <p>Par <strong>{{ service.expert }}</strong></p>
-            <p class="price">{{ service.prix }}fcfa</p>
-            <div class="rating">★★★★★ ({{ service.note }})</div>
-            <button class="btn-book" (click)="OnPayment()">Réserver</button>
+    <nav class="navbar">
+
+        <div class="hamburger" (click)="toggleMobileMenu()">
+        &#9776;
         </div>
-    </div>
-</section>
+    
+        <div class="navbar-links desktop-only">
+        <div class="navbar-item" *ngFor="let category of categories" (mouseenter)="adjustDropdownPosition($event)" (mouseleave)="hideDropdown($event)">
+            <span class="navbar-link">{{ category.title }}</span>
+            <div class="dropdown">
+            <div *ngFor="let item of category.items">
+                <h4>{{ item.section }}</h4>
+                <a href="">
+                <p *ngFor="let sub of item.subitems">{{ sub }}</p>
+                </a>
+            </div>
+            </div>
+        </div>
+        </div>
+    
+        <!-- Menu mobile -->
+        <div class="mobile-menu" [class.open]="isMobileMenuOpen">
+        <div class="mobile-category" *ngFor="let category of categories">
+            <details>
+            <summary>{{ category.title }}</summary>
+            <div class="mobile-subsection" *ngFor="let item of category.items">
+                <strong>{{ item.section }}</strong>
+                <ul>
+                <li *ngFor="let sub of item.subitems">{{ sub }}</li>
+                </ul>
+            </div>
+            </details>
+        </div>
+        </div>
+    </nav>
+    
+
+
+    <section class="services-container" >
+
+        <div class="research">
+            <!-- Barre de recherche -->
+            <div class="search-bar">
+                <input type="text" placeholder="Rechercher un service..." />
+                <button class="btn-search">🔍</button>
+            </div>
+
+            <!-- Filtres -->
+            <div class="filters">
+                <select>
+                    <option value="all">Toutes les catégories</option>
+                    <option value="sante">Santé</option>
+                    <option value="education">Éducation</option>
+                    <option value="finance">Finance</option>
+                    <option value="finance">Sport</option>
+                    <option value="finance">Art</option>
+                    <option value="finance">Culture</option>
+                    <option value="finance">Loisirs</option>
+                    <option value="finance">Autres</option>
+                </select>
+                <select>
+                    <option value="popular">Populaires</option>
+                    <option value="price">Prix croissant</option>
+                    <option value="rating">Mieux notés</option>
+                </select>
+            </div>
+        </div>
+        <div class="title">Toutes les catégories</div>
+
+        <div class="services-grid" (click)="onServiceDetails()">
+            <div class="service-card">
+                <!-- Image + bouton favori -->
+                <div class="service-image-container">
+                <img [src]="service.imageUrl" [alt]="service.title" class="service-image" />
+                <button class="favorite-button" (click)="toggleFavorite()">
+                    <i class="fa-heart"
+                    [ngClass]="{
+                        'far': !isFavorite,
+                        'fas': isFavorite
+                    }"></i>
+                </button>
+                </div>
+            
+                <!-- Expert -->
+                <div class="expert">
+                    <div class="expert-profile">
+                        <img  [src]="service.expertProfil" class="expert-avatar">
+                        <span class="expert-name">{{ service.expertName }}</span>
+                    </div>
+                    <div class="rating">
+                        <span class="stars">
+                            <i class="fa fa-star"></i>
+                            <span class="avarage">{{service.avarage}}</span>
+                        </span >
+                        <span class="rating-count">({{ service.reviews }})</span>
+                    </div>
+                </div>
+                
+            
+                <!-- Détails service -->
+                <h3 class="service-title">{{ service.title }}</h3>
+                <p class="service-description">{{ service.description }}</p>
+            
+                <!-- Note + prix -->
+                <div class="service-footer">
+                
+                </div>
+                <div class="price">Prix : {{ service.price }} fcfa</div>
+                
+                <!-- Bouton commander -->
+            </div>
+        </div> 
+    </section>
+
+
+</div>

@@ -1,0 +1,43 @@
+<div class="notification-container">
+    <button mat-icon-button 
+    class="notification-button"
+    (click)="togglePanel($event)" 
+    aria-label="Notifications">
+<div class="notification-badge-wrapper">
+<span class="custom-badge" *ngIf="unreadCount > 0">{{unreadCount}}</span>
+<mat-icon class="icon"><i class="fa-solid fa-bell"></i></mat-icon>
+</div>
+</button>
+  
+    <div *ngIf="isPanelOpen" class="notification-panel mat-elevation-z8">
+      <div class="panel-header">
+        <h3>Notifications</h3>
+        <button mat-stroked-button 
+                color="primary" 
+                (click)="notificationService.markAllAsRead()">
+          Tout marquer comme lu
+        </button>
+      </div>
+  
+      <div *ngIf="notifications.length > 0; else emptyState" class="notification-list">
+        <div *ngFor="let notif of notifications" 
+             class="notification-item"
+             [class.unread]="!notif.read"
+             (click)="handleNotificationClick(notif)">
+          <mat-icon [class]="notif.type + '-icon'">{{ getNotificationIcon(notif.type) }}</mat-icon>
+          <div class="notification-content">
+            <h4>{{ notif.title }}</h4>
+            <p>{{ notif.message }}</p>
+            <span class="notification-time">{{ notif.date | date:'shortTime' }}</span>
+          </div>
+        </div>
+      </div>
+  
+      <ng-template #emptyState>
+        <div class="empty-state">
+          <mat-icon>notifications_off</mat-icon>
+          <p>Aucune notification</p>
+        </div>
+      </ng-template>
+    </div>
+  </div>

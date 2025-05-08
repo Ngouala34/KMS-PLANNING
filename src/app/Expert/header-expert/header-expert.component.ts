@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
 })
 export class HeaderExpertComponent implements OnInit { menuOpen = false;
   toggleMenuVisible = false;
-
+  @Input() showSearch: boolean = true;
 
   constructor(private router : Router) { }
 
@@ -37,6 +37,9 @@ export class HeaderExpertComponent implements OnInit { menuOpen = false;
    }
    OnUserDeconnexion(): void {
     this.router.navigateByUrl('');
+   }
+   onSettings(): void{
+    this.router.navigateByUrl('expert-settings');
    }
 
 }

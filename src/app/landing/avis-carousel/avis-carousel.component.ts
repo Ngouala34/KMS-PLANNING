@@ -70,7 +70,7 @@ export class AvisCarouselComponent {
     setTimeout(() => {
       this.currentIndex = this.nextIndex;
       this.animationState = 'ready';
-    }, 600); // temps pour l'animation
+    }, ); // temps pour l'animation
   }
 
   prevAvis() {
@@ -80,7 +80,7 @@ export class AvisCarouselComponent {
     setTimeout(() => {
       this.currentIndex = this.prevIndex;
       this.animationState = 'ready';
-    }, 600); // temps pour l'animation
+    }, ); // temps pour l'animation
   }
 
   isMobileView(): boolean {

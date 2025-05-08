@@ -6,28 +6,28 @@
         <!--  Section Résumé -->
         <div class="summary-cards">
           <div class="card">
-            <i class="fa-solid fa-book"></i>
+            <i class="fa-solid fa-book " id="book"></i>
             <div class="info">
               <h3>0</h3>
               <p>Formations créées</p>
             </div>
           </div>
           <div class="card">
-            <i class="fa-solid fa-users" style="color: orangered;"></i>
+            <i class="fa-solid fa-users" style="color: orangered;" id="users"></i>
             <div class="info">
               <h3>0</h3>
               <p>Participants inscrits</p>
             </div>
           </div>
           <div class="card">
-            <i class="fa-solid fa-dollar-sign"></i>
+            <i class="fa-solid fa-dollar-sign" id="dollar"></i>
             <div class="info">
               <h3>0</h3>
               <p>Revenus générés</p>
             </div>
           </div>
           <div class="card">
-            <i class="fa-solid fa-calendar" style="color: green;"></i>
+            <i class="fa-solid fa-calendar" style="color: green;" id="calendar"></i>
             <div class="info">
               <h3>0</h3>
               <p>Sessions à venir</p>
@@ -35,126 +35,61 @@
           </div>
         </div>
       
-        <!--  Section Graphiques -->
-      <!-- <div class="charts-container"> -->
-        
-            <!--   <app-revenue-chart></app-revenue-chart> -->
-         
-        <!-- </div> -->
-      
-        <!--  Section Liste des Formations -->
-        <div class="trainings-section">
-          <h3>Mes Formations</h3>
-          <table>
-            <thead>
-              <tr>
-                <th>Formation</th>
-                <th>Participants</th>
-                <th>Date</th>
-                <th id="Actions">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Angular Avancé</td>
-                <td>45</td>
-                <td>12 Mars 2025</td>
-                <td>
-                  <button class="edit-btn"><i class="fa-solid fa-pen"></i></button>
-                  <button class="delete-btn"><i class="fa-solid fa-trash"></i></button>
-                </td>
-              </tr>
-              <tr>
-                <td>Python pour Débutants</td>
-                <td>30</td>
-                <td>20 Mars 2025</td>
-                <td class="actions">
-                  <button class="edit-btn"><i class="fa-solid fa-pen"></i></button>
-                  <button class="delete-btn"><i class="fa-solid fa-trash"></i></button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+         <!-- Section Graphique -->
+         <div class="chart-container">
+          <app-revenue-chart></app-revenue-chart>
         </div>
 
-        <!--  Section Prochains Rendez-vous -->
-        <div class="appointments-section">
-            <h3>Prochains Rendez-vous</h3>
-            <table>
-            <thead>
-                <tr>
-                <th>Client</th>
-                <th>Date & Heure</th>
-                <th>Statut</th>
-                <th id="Actions">Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                <td>Nkamla roger</td>
-                <td>15 Mars 2025 - 10:00</td>
-                <td class="status confirmed">Confirmé</td>
-                <td class="actions">
-                    <button class="video-btn"><i class="fa-solid fa-video"></i></button>
-                    <button class="cancel-btn"><i class="fa-solid fa-xmark"></i></button>
-                </td>
-                </tr>
-                <tr>
-                <td>Teta Martin</td>
-                <td>16 Mars 2025 - 14:00</td>
-                <td class="status pending">En attente</td>
-                <td>
-                    <button class="video-btn"><i class="fa-solid fa-video"></i></button>
-                    <button class="cancel-btn"><i class="fa-solid fa-xmark"></i></button>
-                </td>
-                </tr>
-            </tbody>
-            </table>
-        </div>
+        <h1 class="h1">Mes formations </h1>
+        <div class="services-grid">
+          <div class="service-card">
+              <!-- Image -->
+              <div class="service-image-container">
+              <img [src]="service.imageUrl" [alt]="service.title" class="service-image" />
+              </div>
+          
+              <!-- Détails service -->
+              <h3 class="service-title">{{ service.title }}</h3>
+              
+              <div>
+                Date: {{service.date}}
+              </div>
+              <!-- Expert -->
+              <div class="">
+                <span class="rating-count">Souscriptions : {{ service.souscriptions }}</span>
+              </div>
+              
 
-     
-
-
-        <!--  Section Revenus -->
-        <div class="revenues-section">
-            <h3>Revenus</h3>
-            <div class="revenues-header">
-            <p>Total : <span class="total-income">0 fcfa</span></p>
-            <select>
-                <option value="mois">Ce mois</option>
-                <option value="trimestre">Ce trimestre</option>
-                <option value="annee">Cette année</option>
-            </select>
-            </div>
-            
-            <div class="revenues-list">
-            <div class="revenue-item">
-                <p><strong>Formation Angular</strong></p>
-                <p>0 sessions  - <span class="income">0fcfa</span></p>
-            </div>
-            <div class="revenue-item">
-                <p><strong>Formation Django</strong></p>
-                <p>0 sessions - <span class="income">0fcfa</span></p>
-            </div>
-            <div class="revenue-item">
-                <p><strong>Coaching individuel</strong></p>
-                <p>0 sessions - <span class="income">0fcfa</span></p>
-            </div>
+              <!--<p class="service-description">{{ service.description }}</p>-->
+          
+              <div class="price">Prix : {{ service.price }} fcfa</div>
+              
             </div>
         </div>
 
-        <!--  Bouton flottant pour ajouter une formation -->
-        <button class="add-course-btn"  (click)="onCreateCourse()">
-            <i class="fa-solid fa-plus"></i> Nouveau Service
-        </button>
+
+       
+
+        <!-- Section Prochains Rendez-vous - Version Cards -->
+<div class="dashboard-section">
+  <h3 class="section-title">Prochains Rendez-vous</h3>
   
+  <div class="appointments-grid">
+    <app-prochain-rendez-vous></app-prochain-rendez-vous>
+
+  </div>
+</div>
+
+
+
+<!-- Bouton flottant amélioré -->
+<button class="floating-action-btn" (click)="onCreateCourse()">
+  <i class="fa-solid fa-plus"></i>
+  <span>Nouveau Service</span>
+</button>
   
-        
-        
-        
-  
-  
-    </div>
+</div>
+<app-footer></app-footer>
       
     
 

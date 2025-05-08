@@ -1,0 +1,36 @@
+<nav class="nav-navbar" [class.sticky]="isSticky">
+    <div class="nav-content">
+      <div class="topnav-logo">
+        <div class="logo"></div>
+        <p class="planning">PLANNING</p>
+      </div>
+  
+      <div class="navul">
+        <ul class="navbar-links">
+            <li><a routerLink="/landing" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="onAccueil()">Accueil</a></li>
+            <li><a routerLink="/service-list" routerLinkActive="active" (click)="onService()">Services</a></li>
+            <li><a routerLink="/become-expert-page" routerLinkActive="active" (click)="OnBecomeExpert()">Devenir expert</a></li>
+          </ul>
+      </div>
+  
+      <div class="navbtn">
+        <div class="auth-buttons">
+            <button class="btn-login" (click)="OnConnexion()">Se connecter</button>
+            <button class="btn-register" (click)="OnInscription()">S'inscrire</button>
+        </div>
+      </div>
+  
+      <div class="toggle-menu" (click)="toggleMenu()">
+        <i class="fas fa-bars"></i>
+      </div>
+    </div>
+  
+    <div [ngClass]="{ 'mobile-menu': true, 'open': toggleMenuVisible, 'closed': !toggleMenuVisible }">
+      <a routerLink="/" routerLinkActive="active"><i class="fa fa-home"></i> Accueil</a>
+      <a (click)="onService()"><i class="fa fa-cogs"></i> Service</a>
+      <a (click)="OnBecomeExpert()"><i class="fa fa-user-plus"></i> Devenir expert</a>
+      <a (click)="OnConnexion()"><i class="fa fa-sign-in-alt"></i> Se connecter</a>
+      <a (click)="OnInscription()"><i class="fa fa-user-plus"></i> S’inscrire</a>
+    </div>
+  </nav>
+  

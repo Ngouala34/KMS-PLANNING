@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { AllRoutesService } from '../../services/all-routes.service';
-import { PopupExpertsComponent } from '../../popup-experts/popup-experts.component';
+import { PopupExpertsComponent } from '../../Expert/popup-experts/popup-experts.component';
 
 @Component({
   selector: 'app-user-home',

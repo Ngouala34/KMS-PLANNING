@@ -1,0 +1,239 @@
+.details-container {
+    width: 100%;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+}
+.page-title {
+    font-size: 3rem;
+    color: #000000;
+    font-weight: normal;
+    text-align: left;
+    width: 80%;
+    padding: 0rem;
+    
+}
+
+.page-header {
+    display: flex;
+    justify-content: left;
+    flex-direction: column;
+    font-weight: bold;
+    width: 80%;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    padding-top: 2rem;
+
+}
+/* Styles du contenu */
+.avis-client {
+    display: flex;
+    align-items: left;
+    margin-left: 2rem;
+  
+    img {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-right: 1.5rem;
+      transition: transform 0.3s ease;
+  
+      &:hover {
+        transform: scale(1.05);
+      }
+    }
+  
+    .nom {
+      .p1 {
+        margin: 0;
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #2c3e50;
+  
+        span {
+          font-weight: normal;
+          color: #74C0FC;
+        }
+      }
+  
+      .p2 {
+        margin: 0.3rem 0 0;
+        color: #7f8c8d;
+        font-size: 0.9rem;
+  
+        strong {
+          color: #f39c12;
+          font-size: 1.1rem;
+        }
+      }
+    }
+}
+  
+.details-card {
+    display: flex;
+    width: 100%;
+    gap: 2rem;
+    padding: 2rem;
+    padding-top: 1rem;
+    align-items: center;
+    flex-wrap: nowrap;
+    box-sizing: border-box;
+  
+    img {
+      width: 100%;
+      max-width: 400px;
+      height: auto;
+      border-radius: 8px;
+      object-fit: cover;
+    }
+  
+    .detail {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        background: white;
+        padding: 2rem;
+        gap: 1.5rem;
+        width: 100%;
+      
+        &-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 0.5rem;
+      
+          .title {
+            font-size: 1.8rem;
+            color: #0a1f44;
+            margin: 0;
+            font-weight: 700;
+          }
+      
+          .price-tag {
+            background: #f5f7fa;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-weight: 700;
+            color: #0a1f44;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.1rem;
+      
+            i {
+              color: #74C0FC;
+            }
+          }
+        }
+      
+        .description {
+          color: #333333;
+          line-height: 1.5;
+          font-size: 1rem;
+          text-align: justify;
+        }
+      
+        &-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+          gap: 1rem;
+          margin: 1rem 0;
+        }
+      
+        &-item {
+          display: flex;
+          gap: 1rem;
+          align-items: flex-start;
+          font-size: 35px;
+      
+          i {
+            color: #5a92ed;
+            font-size: 1.2rem;
+            margin-top: 0.2rem;
+          }
+      
+          .label {
+            display: block;
+            color: #333333;
+            font-size: 1rem;
+            margin-bottom: 0.25rem;
+          }
+      
+          .value {
+            display: block;
+            color: #2d3748;
+            font-weight: 500;
+            font-size: 1rem;
+          }
+      
+          &.platform-item {
+            grid-column: 1 / -1;
+            
+            .value {
+              color: #0a1f44;
+              font-weight: 600;
+            }
+          }
+        }
+      
+        .reserve-btn {
+          align-self: stretch;
+          background: #0a1f44;
+          color: white;
+          border: none;
+          padding: 1rem;
+          border-radius: 8px;
+          font-weight: 600;
+          font-size: 1rem;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 0.75rem;
+          margin-top: 1rem;
+      
+          &:hover {
+            background: #142e6e;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(10, 31, 68, 0.2);
+          }
+      
+          i {
+            font-size: 1.1rem;
+          }
+        }
+      }
+
+      
+      
+      /* Responsive adjustments */
+      @media (max-width: 768px) {
+        .detail {
+          padding: 1.5rem;
+      
+          &-header {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 1rem;
+      
+            .price-tag {
+              align-self: flex-start;
+            }
+          }
+      
+          &-grid {
+            grid-template-columns: 1fr;
+          }
+        }
+      }
+    }
+
+
+  
+
+

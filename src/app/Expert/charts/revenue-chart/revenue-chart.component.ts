@@ -1,163 +1,111 @@
-import { Component } from '@angular/core';
-import { ChartData, ChartOptions, ChartType } from 'chart.js';
+import { Component, OnInit } from '@angular/core';
+import { ChartConfiguration, ChartType, ChartData } from 'chart.js';
 
 @Component({
   selector: 'app-revenue-chart',
   templateUrl: './revenue-chart.component.html',
   styleUrls: ['./revenue-chart.component.scss']
 })
-export class RevenueChartComponent {
-  public lineChartData: ChartData<'line'> = {
-    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
-    datasets: [
-      {
-        data: [1200, 1500, 1800, 2000, 2300, 2500], // Revenus générés par mois
-        label: 'Revenus',
-        borderColor: '#4bc0c0',
-        backgroundColor: 'rgba(75, 192, 192, 0.2)',
-        fill: true,
-        tension: 0.4,
-        borderWidth: 3,
-        pointRadius: 5,
-        pointBackgroundColor: '#fff',
-        pointBorderColor: '#4bc0c0',
-        pointHoverRadius: 8,
-        pointHoverBackgroundColor: '#fff',
-        pointHoverBorderColor: '#4bc0c0',
-        cubicInterpolationMode: 'monotone', // Lissage des lignes pour un effet moderne
-      }
-    ]
-  };
-
-  public barChartData: ChartData<'bar'> = {
-    labels: ['Service 1', 'Service 2', 'Service 3', 'Service 4'],
-    datasets: [
-      {
-        data: [4.5, 3.8, 4.0, 4.7], // Évaluations des services
-        label: 'Évaluations',
-        backgroundColor: '#74C0FC',
-        borderColor: '#4bc0c0',
-        borderWidth: 1,
-        hoverBackgroundColor: '#3498db',
-        hoverBorderColor: '#2980b9',
-        borderRadius: 8,
-        categoryPercentage: 0.8,
-        barPercentage: 0.9,
-      }
-    ]
-  };
-
-  public doughnutChartData: ChartData<'doughnut'> = {
-    labels: ['Objectif Atteint', 'Objectif Restant'],
-    datasets: [
-      {
-        data: [80, 20], // Objectif atteint vs restant en pourcentage
-        backgroundColor: ['#28a745', '#e74c3c'],
-        hoverBackgroundColor: ['#2ecc71', '#c0392b'],
-        borderWidth: 0,
-      }
-    ]
-  };
-
-  public lineChartOptions: ChartOptions = {
+export class RevenueChartComponent implements OnInit {
+  // Options pour le graphique linéaire
+  public lineChartOptions: ChartConfiguration['options'] = {
     responsive: true,
-    scales: {
-      x: {
-        title: {
-          display: true,
-          text: 'Mois',
-          font: {
-            size: 14,
-            weight: 'bold',
-            family: 'Arial'
-          }
-        }
-      },
-      y: {
-        min: 0,
-        max: 3000,
-        title: {
-          display: true,
-          text: 'Montant en xaf',
-        }
-      }
-    },
     plugins: {
-      legend: {
+      title: {
         display: true,
-        position: 'top',
-        labels: {
-          font: {
-            size: 14,
-          }
-        }
+        text: 'Évolution des revenus',
+        font: { size: 16 }
       },
       tooltip: {
-        enabled: true,
-        mode: 'index',
-        intersect: false,
-        backgroundColor: 'rgba(0, 0, 0, 0.7)',
-        titleColor: '#fff',
-        bodyColor: '#fff',
-      }
-    }
-  };
-
-  public barChartOptions: ChartOptions = {
-    responsive: true,
-    scales: {
-      x: {
-        title: {
-          display: true,
-          text: 'Services',
-          font: {
-            size: 14,
-          }
-        }
-      },
-      y: {
-        min: 0,
-        max: 5,
-        title: {
-          display: true,
-          text: 'Évaluation',
-        }
-      }
-    },
-    plugins: {
-      legend: {
-        display: true,
-        position: 'top',
-      },
-      tooltip: {
-        enabled: true,
-        mode: 'index',
-        intersect: false,
-      }
-    }
-  };
-
-  public doughnutChartOptions: ChartOptions = {
-    responsive: true,
-    plugins: {
-      legend: {
-        position: 'top',
-        labels: {
-          font: {
-            size: 16,
-            weight: 'bold'
-          }
-        }
-      },
-      tooltip: {
-        enabled: true,
         callbacks: {
-          label: (tooltipItem) => {
-            const value = tooltipItem.raw;
-            return `Atteint: ${value}%`;
-          }
+          label: (context) => `${context.parsed.y.toLocaleString()} fcfa`
+        }
+      }
+    },
+    scales: {
+      y: {
+        ticks: {
+          callback: (value) => `${value.toLocaleString()} fcfa`
         }
       }
     }
   };
+
+  public lineChartType: ChartType = 'line';
+  public lineChartLegend = true;
+
+   getPeriodLabel(period: string): string {
+    const labels: { [key: string]: string } = {
+      'jour': 'Par jour',
+      'mois': 'Par mois',
+      'annee': 'Par année'
+    };
+    return labels[period] || period;
+  }
+
+  // Données pour le graphique linéaire
+  public lineChartData: ChartConfiguration['data'] = {
+    labels: ['lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'],
+    datasets: [
+      {
+        data: [1200000, 950000, 1400000, 1100000, 1750000, 1300000, 2000000],
+        label: 'Revenus totaux',
+        borderColor: '#3498db',
+        backgroundColor: 'rgba(52, 152, 219, 0.2)',
+        tension: 0.3,
+        fill: true
+        
+      },
+     
+    ]
+  };
+
+
+
+
+
+  // Sélecteur de période
+  public selectedPeriod: string = 'jour';
+
+  constructor() { }
+
+  ngOnInit(): void {
+    // Ici tu pourrais faire un appel API pour récupérer les vraies données
+  }
+
+  updateChartData(period: string): void {
+    this.selectedPeriod = period;
+    
+    // Créer un nouvel objet pour forcer la détection de changement
+    const newData: ChartConfiguration['data'] = { ...this.lineChartData };
+    
+    if (period === 'mois') {
+      newData.labels = ['Janvier', 'Fevrier', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Aout', 'Septembre', 'Octobre', 'Novembre', 'Decembre'];
+      newData.datasets = [
+        {
+          ...newData.datasets[0],
+          data: [3500000, 4200000, 3800000, 4500000, 5000000, 4800000, 5200000, 6000000, 5500000, 6200000, 7000000, 8000000]
+        }
+      ];
+    }
+    else if (period === 'annee') {
+      newData.labels = ['2021', '2022', '2023', '2024', '2025'];
+      newData.datasets = [
+        {
+          ...newData.datasets[0],
+          data: [5000000, 45000000, 40000000, 55000000, 35000000]
+        }
+      ];
+    } else {
+      newData.labels = ['lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'];
+      newData.datasets = [
+        {
+          ...newData.datasets[0],
+          data: [1200000, 950000, 1400000, 1100000, 1750000, 1300000, 2000000]
+        }
+      ];
+    }
+    
+    this.lineChartData = newData;
+  }
 }

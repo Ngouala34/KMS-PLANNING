@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
 })
 export class SidebarExpertComponent implements OnInit {
 
+
   @Input() collapsedByDefault = false; // Indique si la sidebar est réduite au départ
   @Output() sidebarToggle = new EventEmitter<boolean>(); //  Envoie l’état de la sidebar au parent
 
@@ -27,8 +28,8 @@ export class SidebarExpertComponent implements OnInit {
 
 
 
-  OnExpertService(): void {
-    this.router.navigateByUrl('expert-services');
+  OnExpertformation(): void {
+    this.router.navigateByUrl('expert-formation');
   }
   OnExpertdashboard(): void {
     this.router.navigateByUrl('dashboard-expert');
@@ -39,12 +40,20 @@ export class SidebarExpertComponent implements OnInit {
    OnExpertHistorique(): void {
     this.router.navigateByUrl('expert-historique');
   }
-  OnExpertCalendrier(): void {
-    this.router.navigateByUrl('expert-calendrier');
-   }
-   Ondeconnexion():void{
+  OnExpertrendezvous(): void {
+    this.router.navigateByUrl('expert-rendez-vous');
+  }
+
+  OnSettings(): void{
+    this.router.navigateByUrl('expert-settings');
+  }
+
+  Ondeconnexion():void{
     this.router.navigateByUrl('')
    }
+     onCreateCourse() : void {
+    this.router.navigateByUrl('create-course');
+  }
 } 
 
 

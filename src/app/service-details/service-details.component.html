@@ -1,0 +1,76 @@
+<app-navlanding></app-navlanding>
+
+<div class="details-container">
+  <div class="page-title">
+    <p class="details-title">Détails du service</p>
+  </div>
+
+  <div class="page-header">
+    <div class="avis-client">
+      <img [src]="avis.avatar" [alt]="avis.nom" />
+      <div class="nom">
+        <p class="p1">{{ avis.nom }}, <span>{{ avis.role }}</span></p>
+        <p class="p2"><strong>{{ avis.note }}</strong> {{ avis.moyenne }}</p>
+      </div>
+    </div>
+
+    <div class="details-card">
+      <img src="https://i.pinimg.com/736x/cf/f5/e1/cff5e1cba8964bcaeaee87cf0eaecb59.jpg" alt="Image du service" />
+      <div class="detail">
+        <div class="detail-header">
+          <h2 class="title">{{ details.title }}</h2>
+        </div>
+      
+        <div class="description">{{ details.description }}</div>
+      
+        <div class="detail-grid">
+          <div class="detail-item">
+            <i class="fa-regular fa-calendar-days"></i>
+            <div>
+              <span class="label">Date</span>
+              <span class="value">{{ details.date }}</span>
+            </div>
+          </div>
+      
+          <div class="detail-item">
+            <i class="fa-solid fa-clock"></i>
+            <div>
+              <span class="label">Horaire</span>
+              <span class="value">{{ details.startTime }}-{{ details.endTime }}</span>
+            </div>
+          </div>          
+      
+          <div class="detail-item ">
+            <i class="fa-solid fa-video"></i>
+            <div>
+              <span class="label">Plateforme</span>
+              <span class="value">{{ details.platform }}</span>
+            </div>
+          </div>
+
+          <div class="detail-item">
+            <div class="price-tag">
+                <i class="fa-solid fa-tag"></i>
+                {{ details.price }} FCFA
+              </div>
+          </div>
+        </div>
+      
+        <button class="reserve-btn">
+          <i class="fa-regular fa-calendar-check"></i>
+          Réserver maintenant
+        </button>
+      </div>
+      
+    </div>
+  </div>
+
+  <app-service-details-avis></app-service-details-avis>
+  <div class="similar">
+    <h2 class="section-title">Services similaires</h2>
+    <div class="similar-cards">
+        
+    </div>    
+  </div>
+
+</div>

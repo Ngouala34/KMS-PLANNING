@@ -11,6 +11,7 @@ export class LandingPageComponent implements OnInit {
   services: any[] = [];
   showServices = false; 
   toggleMenuVisible= false;
+  isSticky: boolean = false;
 
   constructor(private router: Router) { }
 
@@ -43,6 +44,11 @@ export class LandingPageComponent implements OnInit {
       this.toggleMenuVisible = false;
     }
   }
+  @HostListener('window:scroll', [])
+  onWindowScroll() {
+    const scrollY = window.scrollY || document.documentElement.scrollTop;
+    this.isSticky = scrollY > 0;
+  }
 
 
 
@@ -64,5 +70,6 @@ export class LandingPageComponent implements OnInit {
   onService(): void{
     this.router.navigateByUrl('service-list')
   }
+
 
 }

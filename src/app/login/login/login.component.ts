@@ -10,12 +10,14 @@ import { AuthService } from 'src/app/services/auth.service';
 export class LoginComponent implements OnInit {
   loginData = { email: '', password: '' };
   message: string = '';
+  loading: boolean = false; // Ajout de la propriété loading
 
   constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit(): void {}
 
   OnUserConnexion(): void {
+    this.loading = true; // Activer le spinner
     this.authService.login(this.loginData.email, this.loginData.password).subscribe({
       next: (response) => {
         console.log('Réponse du backend:', response); // Affiche toute la réponse
@@ -34,6 +36,7 @@ export class LoginComponent implements OnInit {
         } else {
           this.message = "Informations utilisateur manquantes.";
         }
+        this.loading = false;
       },
       error: (error) => {
         console.error('Erreur de connexion :', error);

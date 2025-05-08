@@ -1,0 +1,66 @@
+<app-header-expert [showSearch]="false"></app-header-expert>
+<app-sidebar-expert  [collapsedByDefault]="true"  (sidebarToggle)="isSidebarCollapsed = $event" ></app-sidebar-expert>
+
+
+<div class="rendez-vous-container" [ngClass]="{ 'expanded': isSidebarCollapsed }">
+    <h1 class="h1">Mes Rendez-vous</h1>
+    <section class="calendar-section">
+      <div class="calendar-wrapper">
+        <full-calendar [options]="calendarOptions"></full-calendar>
+      </div>
+  
+      <!-- Section Détails du Service -->
+      <div class="service-details-container">
+        <div *ngIf="selectedService; else noService" class="service-details-card">
+          <div class="service-header">
+            <h3>{{ selectedService.title }}</h3>
+            <span class="service-badge" [ngClass]="selectedService.platform">
+              {{ selectedService.platform === 'zoom' ? 'Zoom' : 'Google Meet' }}
+            </span>
+          </div>
+          <div *ngIf="selectedService" class="service-description">
+            <p [class.collapsed]="!isDescriptionExpanded">
+              {{ getDisplayDescription(selectedService.description) }}
+            </p>
+            <button 
+              *ngIf="selectedService.description.length > descriptionMaxLength"
+              class="description-toggle"
+              (click)="toggleDescription()">
+              {{ isDescriptionExpanded ? 'Voir moins' : 'Voir plus' }}
+            </button>
+          </div>
+          
+          <div class="service-meta">
+            <div class="meta-item">
+              <i class="fas fa-calendar-alt"></i>
+              <span>{{ selectedService.date | date:'fullDate':'':'fr' }}</span>
+            </div>
+            <div class="meta-item">
+              <i class="fas fa-clock"></i>
+              <span>{{ selectedService.heureDebut }}-{{ selectedService.heureFin }}</span>
+            </div>
+            <div class="meta-item">
+              <i class="fas fa-user-tie"></i>
+              <span> Souscriptions : {{ selectedService.nbreSouscriptions }}</span>
+            </div>
+          </div>
+  
+          <a [href]="selectedService.link" target="_blank" class="join-button">
+            <i class="fas fa-video"></i> Lancer la session
+          </a>
+        </div>
+  
+        <ng-template #noService>
+          <div class="no-service">
+            <i class="fas fa-calendar-times"></i>
+            <p *ngIf="selectedDate">
+              Vous n'avez aucun rendez-vous programmé pour le {{ selectedDate | date:'fullDate':'':'fr' }}
+            </p>
+            <p *ngIf="!selectedDate">
+              Sélectionnez une date pour voir les détails des services
+            </p>
+          </div>
+        </ng-template>
+      </div>
+    </section>
+  </div>

@@ -1,0 +1,180 @@
+.nav-navbar {
+    width: 100%;
+    background: #ffffff;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    z-index: 999; 
+    position: relative;
+    transition: top 0.3s ease;
+  
+    &.sticky {
+      position: fixed;
+      top: 0;
+      left: 0;
+    }
+  
+    .nav-content {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      padding: 10px 20px;
+    }
+  
+    .topnav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+  
+      .logo {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background-image: url('/assets/images/KmsLogo.jpg');
+        background-size: cover;
+      }
+  
+      .planning {
+        font-size: 22px;
+        font-weight: bold;
+        color: #0a1f44;
+      }
+    }
+  
+    .navbar-links {
+      list-style: none;
+      display: inline-flex;
+      flex-direction: row;
+      gap: 20px;
+  
+      li a {
+        text-decoration: none;
+        color: #0a1f44;
+        font-size: 18px;
+        padding: 8px 12px;
+        border-radius: 8px;
+        transition: 0.3s ease;
+  
+        &:hover {
+          background-color: #e9f4ff;
+          color: #2e87ed;
+        }
+  
+        &.active {
+          font-weight: bold;
+          color: #2e87ed;
+        }
+      }
+    }
+  
+    .auth-buttons {
+      display: flex;
+      gap: 10px;
+  
+      .btn-login {
+        background: none;
+        border: 2px solid #0a1f44;
+        padding: 6px 14px;
+        border-radius: 25px;
+        color: #0a1f44;
+        cursor: pointer;
+        font-size: 16px;
+  
+        &:hover {
+          background-color: #0a1f44;
+          color: white;
+        }
+      }
+  
+      .btn-register {
+        background-color: #0a1f44;
+        color: white;
+        padding: 6px 25px;
+        border-radius: 25px;
+        font-weight: normal;
+        font-size: 14px;
+        border: none;
+        cursor: pointer;
+  
+        &:hover {
+          background-color: #0a1f44b7;
+        }
+      }
+    }
+  
+   
+  
+    .mobile-menu {
+      display: none;
+      flex-direction: column;
+      background-color: #00000078;
+      position: fixed;
+      top: 60px;
+      right: 0;
+      width: 200px;
+      padding: 15px;
+      box-shadow: -3px 0 6px rgba(0, 0, 0, 0.2);
+  
+      a {
+        padding: 12px;
+        color: white;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+  
+        &:hover {
+          background-color: #2e87ed;
+        }
+      }
+    }
+  
+    .mobile-menu.open {
+      display: flex;
+      animation: slideIn 0.3s forwards;
+    }
+  
+    .mobile-menu.closed {
+      display: flex;
+      animation: slideOut 0.3s forwards;
+    }
+  }
+  
+  @keyframes slideIn {
+    from {
+      transform: translateX(100%);
+    }
+    to {
+      transform: translateX(0);
+    }
+  }
+  
+  @keyframes slideOut {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(100%);
+    }
+  }
+
+  .toggle-menu {
+    display: none; // caché par défaut
+  }
+  
+  
+  @media (max-width: 768px) {
+    .toggle-menu {
+      display: block;
+    }
+  
+    .navul,
+    .navbtn {
+      display: none;
+    }
+  
+    .toggle-menu i {
+      color: black;
+      font-size: 26px;
+    }
+  }
+  

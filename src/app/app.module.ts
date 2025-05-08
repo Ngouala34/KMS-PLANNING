@@ -9,12 +9,10 @@ import { AppRoutingModule } from './app-routing.module';
 import { LandingPageComponent } from './landing/landing-page/landing-page.component';
 import { SidebarComponent } from './user/sidebar/sidebar.component';
 import { LoginComponent } from './login/login/login.component';
-import { ExpertLoginComponent } from './Expert/expert-login/expert-login.component';
 import { FooterComponent } from './shared/footer/footer.component';
-import { ChooseFunctionPageComponent } from './choose-function-page/choose-function-page.component';
 import { UserHomeComponent } from './user/user-home/user-home.component';
 import { UserServComponent } from './user/user-favoris/user-serv.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { PaymentComponent } from './payment/payment.component';
 import { CreateCourseComponent } from './Expert/create-course/create-course.component';
@@ -33,10 +31,25 @@ import { HeaderExpertComponent } from './Expert/header-expert/header-expert.comp
 import { ServiceListComponent } from './service-list/service-list.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { UserParameterComponent } from './user/user-parameter/user-parameter.component';
-import { PopupExpertsComponent } from './popup-experts/popup-experts.component';
+import { PopupExpertsComponent } from './Expert/popup-experts/popup-experts.component';
 import { StatsSectionComponent } from './landing/stats-section/stats-section.component';
 import { AvisCarouselComponent } from './landing/avis-carousel/avis-carousel.component';
 import { FaqComponent } from './landing/faq/faq.component';
+import { HeroSectionComponent } from './landing/hero-section/hero-section.component';
+import { PopularServicesComponent } from './landing/popular-services/popular-services.component';
+import { AppearOnScrollDirective } from './directives/appear-on-scroll.directive';
+import { NavlandingComponent } from './landing/navlanding/navlanding.component';
+import { BecomeExpertPageComponent } from './Expert/become-expert-page/become-expert-page.component';
+import { ExpertRegisterComponent } from './Expert/expert-register/expert-register.component';
+import { ServiceDetailsComponent } from './service-details/service-details.component';
+import { ServiceDetailsAvisComponent } from './service-details-avis/service-details-avis.component';
+import { ProchainRendezVousComponent } from './Expert/prochain-rendez-vous/prochain-rendez-vous.component';
+import { ExpertFormationComponent } from './Expert/expert-formation/expert-formation.component';
+import { ExpertRendezVousComponent } from './Expert/expert-rendez-vous/expert-rendez-vous.component';
+import { MatIconModule } from '@angular/material/icon';
+import { NotificationIconComponent } from './shared/notification-icon/notification-icon.component';
+import { MatBadgeModule } from '@angular/material/badge';
+import { ExpertSettingsComponent } from './Expert/expert-settings/expert-settings.component';
 
 @NgModule({
   declarations: [
@@ -45,9 +58,7 @@ import { FaqComponent } from './landing/faq/faq.component';
     LandingPageComponent,
     SidebarComponent,
     LoginComponent,
-    ExpertLoginComponent,
     FooterComponent,
-    ChooseFunctionPageComponent,
     UserHomeComponent,
     UserServComponent,
     PaymentComponent,
@@ -67,6 +78,19 @@ import { FaqComponent } from './landing/faq/faq.component';
     StatsSectionComponent,
     AvisCarouselComponent,
     FaqComponent,
+    HeroSectionComponent,
+    PopularServicesComponent,
+    AppearOnScrollDirective,
+    NavlandingComponent,
+    BecomeExpertPageComponent,
+    ExpertRegisterComponent,
+    ServiceDetailsComponent,
+    ServiceDetailsAvisComponent,
+    ProchainRendezVousComponent,
+    ExpertFormationComponent,
+    ExpertRendezVousComponent,
+    NotificationIconComponent,
+    ExpertSettingsComponent,
     
     
     
@@ -78,8 +102,13 @@ import { FaqComponent } from './landing/faq/faq.component';
     HttpClientModule,
     NgChartsModule,
     FormsModule,
+    ReactiveFormsModule,
     FullCalendarModule,
     BrowserAnimationsModule,
+    MatIconModule, 
+    MatBadgeModule,
+    
+
 
   ],
   exports: [HeaderComponent],

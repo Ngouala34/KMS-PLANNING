@@ -5,7 +5,7 @@
       <p class="planning">PLANNING</p> 
     </section>
     
-    <div class="nav-search">
+    <div class="nav-search" *ngIf="showSearch" >
       <input class="top-input" type="text" placeholder="Rechercher..." />
       <button id="iconrechercher">
         <i class="fas fa-search"></i>
@@ -28,8 +28,8 @@
     
 
     <div class="nav-icons">
-      <i class="fa-solid fa-user "></i>
-      <i class="fa-solid fa-bell "></i>
+      <app-notification-icon></app-notification-icon>
+      <div class="user" (click)="onSettings()">Ad</div>
     </div>
   </nav>
 </header>

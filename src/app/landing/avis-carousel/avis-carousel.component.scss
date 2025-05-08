@@ -31,7 +31,7 @@
 
   p {
     color: #7f8c8d;
-    font-size: 1.1rem;
+    font-size: 1.3rem;
     margin-top: 1rem;
   }
 }
@@ -41,6 +41,7 @@
   position: relative;
   margin: 0 auto;
   display: flex;
+  height: 300px;
   justify-content: space-around;
 }
 
@@ -79,20 +80,16 @@
 
 /* Style des cartes */
 .avis-utilisateur {
-  background: white;
+  background: rgb(255, 255, 255);
   border-radius: 12px;
   padding: 2rem;
   width: 60%;
   margin: 0 auto;
 
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-  transition: all 0.3s ease;
   border: 1px solid rgba(0, 0, 0, 0.05);
 
-  &:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-  }
+
 }
 
 /* Styles du contenu */
@@ -144,7 +141,7 @@
   color: #555;
   line-height: 1.7;
   margin: 0;
-  font-size: 1rem;
+  font-size: 1.3rem;
   position: relative;
   padding-left: 1.5rem;
   font-style: italic;

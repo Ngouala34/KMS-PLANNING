@@ -3,7 +3,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background: rgb(233, 233, 233);
+    background: linear-gradient(to bottom right, #0e0f49, #74C0FC);
     width: auto;
     height: 100vh;
     margin: 0;
@@ -11,15 +11,14 @@
 
 
 .container1 {
-    box-shadow: 2px 2px 2px 2px;
-
+    box-shadow: 0px 0px 1px 0px;
     border: 1px solid rgba(9, 4, 67, 0.126);
     border-radius: 10px;
     height: auto;
     width: 400px;
     padding: 30px;
     color: black;
-    background-color: rgba(255, 255, 255, 0.885);
+    background-color: rgb(245, 245, 245);
     animation: fadeIn 1s ease-out;
 }
 
@@ -119,20 +118,73 @@ button {
     margin-top: 15px;
     border-radius: 10px;
     height: 43px;
-    background-color: rgb(9, 62, 198);
+    background-color: rgb(1, 17, 56);
     color: aliceblue;
     box-shadow: rgb(180, 180, 188) 0 0 5px;
     font-size: 18px;
     transition: background-color 0.3s ease;
+    span{
+        color: white;
+    }
 }
 
 button:hover {
-    background-color: rgb(22, 22, 98);
-    color: white;
+    background-color: rgb(3, 3, 74);
+   
 }
 
 button:focus {
     outline: none;
+}
+/* Styles ajoutés pour les labels et le spinner */
+.input-group {
+    position: relative;
+    margin-top: 20px; /* Ajout d'espace pour le label */
+
+    .input-label {
+        position: absolute;
+        top: -20px;
+        left: 0;
+        font-size: 14px;
+        color: #555;
+        transition: all 0.3s ease;
+    }
+}
+
+/* Style pour le spinner */
+button {
+    position: relative;
+    
+    .spinner {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        
+        i {
+            font-size: 18px;
+            margin-right: 8px;
+        }
+    }
+    
+    &[disabled] {
+        opacity: 0.8;
+        cursor: not-allowed;
+    }
+}
+
+/* Animation du spinner */
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.fa-spin {
+    animation: spin 1s linear infinite;
+}
+.error-message {
+    color: #ef4444;
+    font-size: 1rem;
+    margin-top: 0.25rem;
 }
 
 

@@ -1,0 +1,212 @@
+.rendez-vous-container.expanded  {
+    margin-left: 60px;
+    margin-top: 50px;
+  }
+  
+  .rendez-vous-container {
+      margin-left: 220px;
+      margin-top: 50px;
+      transition: 0.3s ease-in-out;
+      padding: 20px;
+      background-color: #f5f7fa;
+      min-height: 100vh;
+
+      h1{
+        font-weight: normal;
+      }
+  }
+
+
+
+  .calendar-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    align-items: start;
+  
+    @media (max-width: 992px) {
+      grid-template-columns: 1fr;
+    }
+  }
+  
+  .calendar-wrapper {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    padding: 20px;
+    
+    // Réduire la taille du calendrier
+    .fc {
+      width: 100%;
+      max-width: 800px;
+      background-color: #74c1fc0a;
+      margin: 0 auto;
+      
+    }
+  }
+  
+  .service-details-container {
+    position: sticky;
+    top: 20px;
+  }
+  
+  .service-details-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    padding: 25px;
+  }
+  
+  .service-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  
+    h3 {
+      margin: 0;
+      color: #1f1f20;
+      font-size: 1.2rem;
+    }
+  }
+  
+  .service-badge {
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: white;
+  
+    &.zoom {
+      background: #74C0FC;
+    }
+  
+    &.google-meet {
+      background: #00897b;
+    }
+  }
+  
+  .service-meta {
+    margin-bottom: 20px;
+  
+    .meta-item {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+      color: #555;
+  
+      i {
+        margin-right: 10px;
+        width: 20px;
+        color: #00000091;
+        background-color: rgba(0, 34, 255, 0.125);
+        height: 30px;
+        width: 30px;
+        border-radius: 50%;
+        display: flex;  
+        align-items: center;
+        justify-content: space-around;
+      }
+    }
+  }
+  
+  .service-description {
+    position: relative;
+    margin: 1rem 0;
+  }
+  
+  .service-description p {
+    line-height: 1.5;
+    transition: all 0.3s ease;
+  }
+  
+  .service-description p.collapsed {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  
+  .description-toggle {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.25rem 0;
+    padding: 4px;
+
+
+  }
+  
+  .description-toggle:hover {
+    background-color:rgba(0, 34, 255, 0.125);
+    padding: 5px;
+    transform: 0.3s ease-out;
+    border-radius: 10px;
+  }
+  
+  .join-button {
+    box-sizing: border-box;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 20px;
+    background: #74C0FC;
+    color: white;
+    text-decoration: none;
+    border-radius: 6px;
+    transition: all 0.3s;
+    font-weight: 500;
+    width: 100%;
+    text-align: center;
+  
+    i {
+      margin-right: 8px;
+    }
+  
+    &:hover {
+      background:#5fb5f7;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(58, 134, 255, 0.3);
+    }
+  }
+  
+  .no-service {
+    text-align: center;
+    padding: 40px 20px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  
+    i {
+      font-size: 3rem;
+      color: #ddd;
+      margin-bottom: 15px;
+    }
+  
+    p {
+      color: #888;
+      margin: 0;
+    }
+  }
+  
+  // Style pour la date actuelle dans le calendrier
+  .fc .fc-daygrid-day.fc-day-today {
+    background-color: rgba(58, 134, 255, 0.1) !important;
+  }
+
+
+
+@media screen and (min-width: 300px) and (max-width: 450px) {
+    app-sidebar{
+        display: none;
+    }
+    .calendar-container {
+        margin-left: 0px; /* Ajustement pour la sidebar */
+        margin-top: 60px; 
+    }
+    .legend {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+}
+ 

@@ -1,49 +1,98 @@
-<!-- ✅ Formulaire de création de formation -->
-<div class="create-course-container">
-    <h3>vueillez remplir le formulaire de creation de service !</h3>
-    <form (ngSubmit)="onSubmit()" #courseForm="ngForm">
-      
-      <!-- Nom de la formation -->
-      <div class="form-group">
-        <label for="title">Nom de la formation</label>
-        <input type="text" id="title" [(ngModel)]="course.title" name="title" required class="form-control">
-      </div>
+<!-- create-course.component.html -->
+<div class="form-container">
   
-      <!-- Catégorie -->
+  <form [formGroup]="courseForm" (ngSubmit)="onSubmit()" class="course-form">
+  <h2 class="form-title">Création du service</h2>
+    
+    <!-- Nom du service -->
+    <div class="form-group">
+      <label for="name">Nom du service *</label>
+      <input type="text" id="name" formControlName="name" placeholder="Ex: Consultation initiale">
+      <div *ngIf="courseForm.get('name')?.invalid && courseForm.get('name')?.touched" class="error-message">
+        Ce champ est obligatoire
+      </div>
+    </div>
+
+    <!-- Description -->
+    <div class="form-group">
+      <label for="description">Description *</label>
+      <textarea id="description" formControlName="description" rows="3" placeholder="Décrivez le service en détail..."></textarea>
+      <div *ngIf="courseForm.get('description')?.invalid && courseForm.get('description')?.touched" class="error-message">
+        Ce champ est obligatoire
+      </div>
+    </div>
+
+    <!-- Prix et Plateforme (même ligne) -->
+    <div class="form-row">
       <div class="form-group">
-        <label for="category">Catégorie</label>
-        <select id="category" [(ngModel)]="course.category" name="category" required class="form-control">
-          <option value="" disabled selected>Choisissez une catégorie</option>
-          <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
+        <label for="price">Prix (FCFA) *</label>
+        <div class="input-with-icon">
+          <input type="number" id="price" formControlName="price" min="0" placeholder="5000">
+          <span class="currency">FCFA</span>
+        </div>
+        <div *ngIf="courseForm.get('price')?.invalid && courseForm.get('price')?.touched" class="error-message">
+          Veuillez entrer un prix valide
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="platform">Plateforme *</label>
+        <select id="platform" formControlName="platform">
+          <option *ngFor="let platform of videoPlatforms" [value]="platform.value">{{ platform.label }}</option>
         </select>
       </div>
-  
-      <!-- Prix -->
+    </div>
+
+    <!-- Date et Heures -->
+    <div class="form-row">
       <div class="form-group">
-        <label for="price">Prix (Fcfa)</label>
-        <input type="number" id="price" [(ngModel)]="course.price" name="price" required class="form-control">
+        <label for="date">Date *</label>
+        <div class="input-with-icon">
+          <input type="date" id="date" formControlName="date">
+        </div>
+        <div *ngIf="courseForm.get('date')?.invalid && courseForm.get('date')?.touched" class="error-message">
+          Sélectionnez une date
+        </div>
       </div>
-  
-      <!-- Durée -->
+
       <div class="form-group">
-        <label for="duration">Durée (heures)</label>
-        <input type="number" id="duration" [(ngModel)]="course.duration" name="duration" required class="form-control">
+        <label for="startTime">Début *</label>
+        <input type="time" id="startTime" formControlName="startTime">
       </div>
-  
-      <!-- Description -->
+
       <div class="form-group">
-        <label for="description">Description</label>
-        <textarea id="description" [(ngModel)]="course.description" name="description" required class="form-control"></textarea>
+        <label for="endTime">Fin *</label>
+        <input type="time" id="endTime" formControlName="endTime">
       </div>
-  
-      <!-- Image de couverture -->
-      <div class="form-group">
-        <label for="cover">Image de couverture</label>
-        <input type="file" id="cover" (change)="onFileSelected($event)" class="form-control">
+    </div>
+
+    <!-- Image de couverture -->
+    <div class="form-group">
+      <label>Image de couverture</label>
+      <div class="image-upload-container">
+        <div *ngIf="!previewImage" class="upload-area" (click)="fileInput.click()">
+          <i class="fas fa-image"></i>
+          <p>Cliquez pour ajouter une image</p>
+          <small>Format JPG/PNG (max 2MB)</small>
+          <input #fileInput type="file" accept="image/jpeg, image/png" (change)="onFileSelected($event)" hidden>
+        </div>
+        <div *ngIf="previewImage" class="image-preview">
+          <img [src]="previewImage" alt="Aperçu de l'image">
+          <button type="button" class="remove-btn" (click)="removeImage()">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
       </div>
-  
-      <!-- Bouton d'enregistrement -->
-      <button type="submit" class="btn-save" [disabled]="!courseForm.valid">Enregistrer</button>
-    </form>
-  </div>
-  
+    </div>
+
+    <!-- Bouton de soumission -->
+    <div class="form-actions">
+      <button type="submit" [disabled]="isSubmitting || courseForm.invalid" class="submit-btn">
+        <span *ngIf="!isSubmitting">Créer le service</span>
+        <span *ngIf="isSubmitting" class="spinner-container">
+          <i class="fas fa-spinner fa-spin"></i> Création...
+        </span>
+      </button>
+    </div>
+  </form>
+</div>

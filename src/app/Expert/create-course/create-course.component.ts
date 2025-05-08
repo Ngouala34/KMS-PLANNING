@@ -1,5 +1,8 @@
+// create-course.component.ts
 import { Component } from '@angular/core';
-import { CourseService } from '../../services/course.service'; // Import du service
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-create-course',
@@ -7,47 +10,93 @@ import { CourseService } from '../../services/course.service'; // Import du serv
   styleUrls: ['./create-course.component.scss']
 })
 export class CreateCourseComponent {
+  courseForm: FormGroup;
+  isSubmitting = false;
+  coverImage: File | null = null;
+  previewImage: string | ArrayBuffer | null = null;
 
-  course = {
-    title: '',
-    category: '',
-    price: 0,
-    duration: 0,
-    description: '',
-    coverImage: ''
-  };
+  videoPlatforms = [
+    { value: 'google_meet', label: 'Google Meet' },
+    { value: 'zoom', label: 'Zoom' }
+  ];
 
-  categories = ['Développement Web', 'Marketing Digital', 'Design', 'Business', 'Photographie', 'Banque et finances', 'autres'];
+  constructor(private fb: FormBuilder, private http: HttpClient, private router: Router) {
+    this.courseForm = this.fb.group({
+      name: ['', [Validators.required, Validators.maxLength(100)]],
+      description: ['', [Validators.required, Validators.maxLength(500)]],
+      price: ['', [Validators.required, Validators.min(0)]],
+      platform: ['google_meet', Validators.required],
+      date: ['', Validators.required],
+      startTime: ['09:00', Validators.required],
+      endTime: ['10:00', Validators.required]
+    });
+  }
 
-  constructor(private courseService: CourseService) {}
-
-  onFileSelected(event: any) {
-    const file = event.target.files[0];
-    if (file) {
-      this.course.coverImage = file;
+  onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files[0]) {
+      const file = input.files[0];
+      if (file.size > 2 * 1024 * 1024) { // 2MB max
+        alert('La taille maximale de l\'image est de 2MB');
+        return;
+      }
+      
+      this.coverImage = file;
+      
+      // Create preview
+      const reader = new FileReader();
+      reader.onload = () => this.previewImage = reader.result;
+      reader.readAsDataURL(this.coverImage);
     }
   }
 
-  onSubmit() {
-    // Créer un objet FormData pour envoyer des données avec des fichiers
-    const formData = new FormData();
-    formData.append('title', this.course.title);
-    formData.append('category', this.course.category);
-    formData.append('price', this.course.price.toString());
-    formData.append('duration', this.course.duration.toString());
-    formData.append('description', this.course.description);
-    formData.append('coverImage', this.course.coverImage);
+  removeImage(): void {
+    this.coverImage = null;
+    this.previewImage = null;
+  }
 
-    // Appel au service pour envoyer les données à l'API
-    this.courseService.createCourse(formData).subscribe(
-      response => {
-        console.log('Formation ajoutée :', response);
-        alert('Formation créée avec succès!');
-      },
-      error => {
-        console.error('Erreur lors de la création de la formation', error);
-        alert('Une erreur est survenue lors de la création de la formation.');
+  onSubmit(): void {
+    if (this.courseForm.invalid) {
+      this.markFormGroupTouched(this.courseForm);
+      return;
+    }
+
+    this.isSubmitting = true;
+
+    const formData = new FormData();
+    formData.append('name', this.courseForm.value.name);
+    formData.append('description', this.courseForm.value.description);
+    formData.append('price', this.courseForm.value.price);
+    formData.append('platform', this.courseForm.value.platform);
+    formData.append('date', this.courseForm.value.date);
+    formData.append('startTime', this.courseForm.value.startTime);
+    formData.append('endTime', this.courseForm.value.endTime);
+    
+    if (this.coverImage) {
+      formData.append('coverImage', this.coverImage);
+    }
+
+    // Simulate API call
+    setTimeout(() => {
+      console.log('Form submitted:', formData);
+      this.isSubmitting = false;
+      // Reset form after successful submission
+      this.courseForm.reset({
+        platform: 'google_meet',
+        startTime: '09:00',
+        endTime: '10:00'
+      });
+      this.previewImage = null;
+      this.router.navigateByUrl('expert-formation');
+    }, 1500);
+  }
+
+  private markFormGroupTouched(formGroup: FormGroup): void {
+    Object.values(formGroup.controls).forEach(control => {
+      control.markAsTouched();
+      if (control instanceof FormGroup) {
+        this.markFormGroupTouched(control);
       }
-    );
+    });
   }
 }

@@ -9,7 +9,7 @@ import { CourseService } from 'src/app/services/course.service';
 })
 export class DashboardExpertComponent implements OnInit {
 
-  collapsedByDefault = true;
+  collapsedByDefault = true; // Indique si la sidebar est réduite au départ
   isSidebarCollapsed = true;
   isModalOpen = false;
 
@@ -30,6 +30,18 @@ export class DashboardExpertComponent implements OnInit {
     this.isSidebarCollapsed = this.collapsedByDefault;
   }
 
+  service = {
+    imageUrl: 'https://i.pinimg.com/736x/cf/f5/e1/cff5e1cba8964bcaeaee87cf0eaecb59.jpg',
+    expertProfil: 'https://i.pinimg.com/736x/a8/ba/96/a8ba9626de3fadff0b38e1c83cdea435.jpg',
+    expertName: 'Rehan',
+    title: ' Développement WordPress',
+    description: 'Je suis un développeur WordPress et j\'aime créer des sites Web WordPress personnalisés et réactifs.',
+    avarage: 4.2,
+    ratingCount: 120,
+    souscriptions : 24,
+    price: 80,
+    date: '12/02/202',
+  };
 
   // Méthode pour gérer la sélection d'une image
   onFileSelected(event: any) {

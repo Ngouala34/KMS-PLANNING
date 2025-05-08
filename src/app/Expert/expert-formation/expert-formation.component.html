@@ -1,0 +1,54 @@
+<app-header-expert [showSearch]="false"></app-header-expert>
+<div class="sidebar-container">
+    <app-sidebar-expert  [collapsedByDefault]="true"  (sidebarToggle)="isSidebarCollapsed = $event" ></app-sidebar-expert>
+
+</div>
+
+<div class="formation-container" [ngClass]="{ 'expanded': isSidebarCollapsed }">   
+    
+
+    <div class="search-container">
+        <div class="search-bar">
+          <input 
+            type="text" 
+            placeholder="Rechercher une formation..." 
+            class="search-input"
+            aria-label="Rechercher des formations"
+          />
+          <button class="search-btn" aria-label="Lancer la recherche">
+            <i class="fas fa-search"></i>
+          </button>
+        </div>
+    </div>
+        <div class="formation-section">
+            <h1 class="h1">Historique des formations </h1>
+            <div class="services-grid">
+            <div class="service-card">
+                <!-- Image -->
+                <div class="service-image-container">
+                <img [src]="service.imageUrl" [alt]="service.title" class="service-image" />
+                </div>
+            
+                <!-- Détails service -->
+                <h3 class="service-title">{{ service.title }}</h3>
+                
+                <div>
+                    Date: {{service.date}}
+                </div>
+                <!-- Expert -->
+                <div class="">
+                    <span class="rating-count">Souscriptions : {{ service.souscriptions }}</span>
+                </div>
+                
+
+                <!--<p class="service-description">{{ service.description }}</p>-->
+            
+                <div class="price">Prix : {{ service.price }} fcfa</div>
+                
+                </div>
+            </div>
+        </div>
+</div>
+
+
+

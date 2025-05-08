@@ -1,0 +1,52 @@
+<div class="reviews-container">
+    <h2 class="section-title">Avis sur cet expert</h2>
+  
+    <!-- Avis existants -->
+    <div class="reviews-list">
+      <div *ngFor="let review of reviews" class="review-card">
+        <div class="review-header">
+          <span class="review-author">{{ review.author }}</span>
+          <div class="stars">
+            <span *ngFor="let star of [1,2,3,4,5]">
+              <i class="star-icon" [class.active]="star <= review.rating"></i>
+            </span>
+          </div>
+        </div>
+        <p class="review-date">{{ review.date | date:'dd/MM/yyyy' }}</p>
+        <p class="review-text">{{ review.comment }}</p>
+      </div>
+    </div>
+  
+    <!-- Formulaire d'avis -->
+    <div class="review-form">
+      <h3 class="form-title">Donnez votre avis</h3>
+  
+      <div class="rating-input">
+        <p class="rating-label">Votre note :</p>
+        <div class="stars-input">
+          <span *ngFor="let star of [1,2,3,4,5]" 
+                (click)="setRating(star)"
+                (mouseenter)="setTempRating(star)"
+                (mouseleave)="resetTempRating()">
+            <i class="star-input-icon" 
+               [class.active]="star <= (tempRating || userRating)"></i>
+          </span>
+        </div>
+      </div>
+  
+      <div class="comment-input">
+        <textarea [(ngModel)]="userComment" placeholder="Partagez votre expérience..."></textarea>
+      </div>
+  
+      <button class="submit-btn" 
+              (click)="submitReview()"
+              [disabled]="isSubmitting || userRating < 1 || !userComment.trim()">
+        <span *ngIf="!isSubmitting">Envoyer</span>
+        <span *ngIf="isSubmitting">Envoi en cours...</span>
+      </button>
+  
+      <div *ngIf="showSuccess" class="success-message">
+        ✓ Merci pour votre avis !
+      </div>
+    </div>
+  </div>

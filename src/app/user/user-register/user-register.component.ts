@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-user-register',
@@ -8,65 +9,59 @@ import { AuthService } from '../../services/auth.service';
   styleUrls: ['./user-register.component.scss']
 })
 export class UserRegisterComponent implements OnInit {
-  user = {
-    username: '',
-    nom: '',
-    prenom: '',
-    telephone: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
-    role: ''
-  };
 
-  message: string = ''; // Message à afficher
-  messageType: 'success' | 'error' = 'success'; // Type du message (success ou error)
+registerForm!: FormGroup;
+  loading = false;
+  showPassword = false;
+  showConfirmPassword = false;
 
-  constructor(private router: Router, private authService: AuthService) {}
 
-  ngOnInit(): void {}
+  constructor(private fb: FormBuilder, private router: Router) {}
 
-  OnUserRegister(): void {
-    if (this.user.password !== this.user.confirmPassword) {
-      this.showMessage("Les mots de passe ne correspondent pas !", 'error');
-      return;
-    }
+  ngOnInit(): void {
+    this.registerForm = this.fb.group({
+      name: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(6)]],
+      confirmPassword: ['', Validators.required],
+      terms: [false, Validators.requiredTrue]
+    }, {
+      validators: this.matchPasswords('password', 'confirmPassword')
+    });
+  }
 
-    console.log("Données envoyées :", this.user);
-
-    this.authService.register(this.user).subscribe(
-      response => {
-        console.log('Inscription réussie', response);
-
-        // Afficher un message de succès
-        this.showMessage("Inscription réussie ! Redirection en cours...", 'success');
-
-        // Rediriger après 2 secondes
-        setTimeout(() => {
-          if (this.user.role.toUpperCase() === 'EXPERT') {  // Correction ici
-            this.router.navigateByUrl('dashboard-expert');
-          } else if (this.user.role.toUpperCase() === 'CLIENT') {
-            this.router.navigateByUrl('user-home');
+  matchPasswords(password: string, confirmPassword: string) {
+    return (formGroup: FormGroup) => {
+      const pass = formGroup.controls[password];
+      const confirm = formGroup.controls[confirmPassword];
+      if (pass.value !== confirm.value) {
+        confirm.setErrors({ ...confirm.errors, mismatch: true });
+      } else {
+        if (confirm.errors) {
+          delete confirm.errors['mismatch'];
+          if (Object.keys(confirm.errors).length === 0) {
+            confirm.setErrors(null);
           }
-        }, 2000);
-      },
-      error => {
-        console.error('Erreur détaillée du backend :', error.error);
-
-        // Afficher un message d'erreur correct
-        this.showMessage("Erreur lors de l'inscription. Veuillez réessayer.", 'error');
+        }
       }
-    );
+    };
   }
 
-  // Fonction pour afficher le message
-  showMessage(text: string, type: 'success' | 'error') {
-    this.message = text;
-    this.messageType = type;
 
-    // Effacer le message après 3 secondes
+
+onConnexion(): void {
+  if (this.registerForm.valid) {
+    this.loading = true;
+    // Simule l'appel API
     setTimeout(() => {
-      this.message = "";
-    }, 3000);
+      this.router.navigateByUrl('user-dashboard');
+      this.loading = false;
+    }, 2000);
+  } else {
+    // Marquer tous les champs comme "touchés" pour afficher les erreurs
+    this.registerForm.markAllAsTouched();
   }
+}
+
+
 }

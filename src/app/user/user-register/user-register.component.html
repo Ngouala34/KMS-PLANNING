@@ -1,64 +1,75 @@
 <div class="login-container">
-    <div class="container">
-        <form class="container1" (ngSubmit)="OnUserRegister()" #registerForm="ngForm">
-            <div class="logo">            
-                <img src="https://kms-entreprises.com/assets/img/branding/KMS%20logo.jpg" alt="Logo">
-                <p>PLANNING</p>
-            </div>
-
-            <!-- Message d'alerte -->
-            <div *ngIf="message" [ngClass]="{'success-message': messageType === 'success', 'error-message': messageType === 'error'}">
-                {{ message }}
-              </div>
-
-            <p>Veuillez remplir le formulaire d'inscription</p>
-
-            <!-- Nom d'utilisateur -->
-            <div class="input-group">
-                <i class="fas fa-user"></i>
-                <input type="text" [(ngModel)]="user.username" placeholder="Nom d'utilisateur" name="username" required>
-            </div>
-            
-            <!-- Numéro de téléphone -->
-            <div class="input-group">
-                <i class="fas fa-phone-alt"></i>
-                <input type="text" [(ngModel)]="user.telephone" placeholder="N° Téléphone" name="telephone" required>
-            </div>
-            
-            <!-- Email -->
-            <div class="input-group">
-                <i class="fas fa-envelope"></i>
-                <input type="email" [(ngModel)]="user.email" placeholder="email@gmail.com" name="email" required>
-            </div>
-
-            <select  class="input-group" [(ngModel)]="user.role" name="role" required>
-                <option  value="" disabled selected>Choisissez un rôle</option>
-                <option value="CLIENT">Client</option>
-                <option value="EXPERT">Expert</option>
-            </select>
-            <!-- Mot de passe -->
-            <div class="input-group">
-                <i class="fas fa-lock"></i>
-                <input type="password" [(ngModel)]="user.password" placeholder="Mot de passe" name="password"
-                pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" required>
-         
-            </div>
-         <small style="color: rgb(0, 0, 0); text-align: center;">Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule et un chiffre.</small>
-
-            
-            <!-- Confirmer le mot de passe -->
-            <div class="input-group">
-                <i class="fas fa-lock"></i>
-                <input type="password" [(ngModel)]="user.confirmPassword" placeholder="Confirmez votre mot de passe" name="confirmPassword" required>
-            </div>
-            
-            <!-- Termes et conditions -->
-            <div class="terms">
-                <input type="checkbox" id="terms" name="terms" value="terms" required>
-                <label for="terms">J'accepte <a class="conditions" href="">les termes et conditions d'utilisation</a></label>
-            </div>
-            
-            <button type="submit" [disabled]="registerForm.invalid" (click)="OnUserRegister()">S'inscrire</button>
-        </form>
-    </div> 
-</div>
+    <form [formGroup]="registerForm" class="login-form" (ngSubmit)="onConnexion()">
+      <div class="logo">
+        <img src="/assets/images/KmsLogo.jpg" alt="Logo" />
+        <p>PLANNING</p>
+      </div>
+  
+      <p class="subtitle">Veuillez remplir le formulaire d'inscription</p>
+  
+      <!-- Nom complet -->
+      <div class="form-group">
+        <label>Nom</label>
+        <input type="text" formControlName="name" placeholder="Entrez votre nom" />
+        <small *ngIf="registerForm.get('name')?.touched && registerForm.get('name')?.invalid" class="text-danger">
+          Le nom est requis.
+        </small>
+      </div>
+  
+      <!-- Email -->
+      <div class="form-group">
+        <label>Adresse email</label>
+        <input type="email" formControlName="email" placeholder="email@gmail.com" />
+        <small *ngIf="registerForm.get('email')?.touched && registerForm.get('email')?.errors?.['required']" class="text-danger">
+          L'adresse email est requise.
+        </small>
+        <small *ngIf="registerForm.get('email')?.touched && registerForm.get('email')?.errors?.['email']" class="text-danger">
+          L'adresse email est invalide.
+        </small>
+      </div>
+  
+      <!-- Mot de passe -->
+      <div class="form-group">
+        <label>Mot de passe</label>
+        <input type="password" formControlName="password" placeholder="********" />
+        <small *ngIf="registerForm.get('password')?.touched && registerForm.get('password')?.errors?.['required']" class="text-danger">
+          Le mot de passe est requis.
+        </small>
+        <small *ngIf="registerForm.get('password')?.touched && registerForm.get('password')?.errors?.['minlength']" class="text-danger">
+          Le mot de passe doit contenir au moins 6 caractères.
+        </small>
+      </div>
+  
+      <!-- Confirmer le mot de passe -->
+      <div class="form-group">
+        <label>Confirmez le mot de passe</label>
+        <input type="password" formControlName="confirmPassword" placeholder="********" />
+        <small *ngIf="registerForm.get('confirmPassword')?.touched && registerForm.get('confirmPassword')?.errors?.['required']" class="text-danger">
+          Veuillez confirmer votre mot de passe.
+        </small>
+        <small *ngIf="registerForm.get('confirmPassword')?.touched && registerForm.get('confirmPassword')?.errors?.['mismatch']" class="text-danger">
+          Les mots de passe ne correspondent pas.
+        </small>
+      </div>
+  
+      <!-- Conditions -->
+      <div class="form-check">
+        <input type="checkbox" formControlName="terms" id="terms" />
+        <label for="terms">J'accepte <a href="#" class="conditions">les termes et conditions</a></label>
+      </div>
+      <small *ngIf="registerForm.get('terms')?.touched && registerForm.get('terms')?.invalid" class="text-danger">
+        Vous devez accepter les conditions.
+      </small>
+  
+      <!-- Bouton -->
+      <button type="submit" [disabled]="registerForm.invalid || loading">
+        <ng-container *ngIf="!loading; else loadingTpl">S'inscrire</ng-container>
+      </button>
+  
+      <!-- Spinner -->
+      <ng-template #loadingTpl>
+        <span class="spinner"></span> Traitement en cours...
+      </ng-template>
+    </form>
+  </div>
+  

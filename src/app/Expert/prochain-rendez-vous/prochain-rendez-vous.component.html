@@ -1,0 +1,75 @@
+<!-- prochain-rendez-vous.component.html -->
+<div class="prochain-rdv-container">
+  
+    <!-- État de chargement -->
+    <div *ngIf="loading" class="appointment-card loading">
+      <div class="appointment-header">
+        <div class="client-avatar skeleton"></div>
+        <div class="client-info">
+          <div class="skeleton-text" style="width: 150px; height: 20px;"></div>
+          <div class="skeleton-text" style="width: 200px; height: 16px; margin-top: 8px;"></div>
+        </div>
+      </div>
+      <div class="appointment-footer">
+        <div class="skeleton-text" style="width: 80px; height: 24px;"></div>
+        <div class="action-buttons">
+          <div class="skeleton-circle" style="width: 32px; height: 32px;"></div>
+          <div class="skeleton-circle" style="width: 32px; height: 32px;"></div>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Message d'erreur -->
+    <div *ngIf="error && !loading" class="error-message">
+      {{ error }}
+    </div>
+  
+    <!-- Aucun rendez-vous -->
+    <div *ngIf="!appointment && !loading && !error" class="no-appointment">
+      <i class="fa-regular fa-calendar-check"></i>
+      <p>Aucun rendez-vous à venir</p>
+    </div>
+  
+    <!-- Carte de rendez-vous -->
+    <div *ngIf="appointment && !loading" class="appointment-card {{ appointment.status }}">
+      <div class="appointment-header">
+        <span class="client-avatar">
+          {{ getInitials(appointment.clientName) }}
+        </span>
+        <div class="client-info">
+          <h4>{{ appointment.clientName }}</h4>
+          <span class="appointment-time">
+            <i class="fa-regular fa-calendar"></i> 
+            {{ formatDate(appointment.date) }}
+            
+            <i class="fa-regular fa-clock"></i> 
+            {{ appointment.startTime }} - {{ appointment.endTime }}
+          </span>
+        </div>
+      </div>
+      
+      <div class="appointment-footer">
+        <span class="status-badge {{ appointment.status }}">
+          <i class="fa-solid {{ getStatusIcon(appointment.status) }}"></i>
+          {{ getStatusLabel(appointment.status) }}
+        </span>
+        
+        <div class="action-buttons">
+          <button 
+            class="icon-btn video-call" 
+            (click)="startVideoCall()"
+            title="Démarrer la visio"
+          >
+            <i class="fa-solid fa-video"></i>
+          </button>
+          <button 
+            class="icon-btn cancel" 
+            (click)="cancelAppointment()"
+            title="Annuler"
+          >
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>

@@ -2,20 +2,22 @@
     <div class="container">
         <form class="container1">
             <div class="logo">
-                <img src="https://kms-entreprises.com/assets/img/branding/KMS%20logo.jpg" alt="Logo">
+                <img src="/assets/images/KmsLogo.jpg" alt="Logo">
                 <p>PLANNING</p>
             </div><br>
             
             <!-- Email avec icône -->
             <div class="input-group">
+                <label for="email" class="input-label">Email</label>
                 <i class="fas fa-envelope"></i>
-                <input type="text" class="email" name="email" placeholder="email@gmail.com" [(ngModel)]="loginData.email">
+                <input type="text" id="email" class="email" name="email" placeholder="email@gmail.com" [(ngModel)]="loginData.email">
             </div><br>
             
             <!-- Mot de passe avec icône -->
             <div class="input-group">
+                <label for="password" class="input-label">Mot de passe</label>
                 <i class="fas fa-lock"></i>
-                <input type="password" class="password" name="password" placeholder="Password" [(ngModel)]="loginData.password">
+                <input type="password" id="password" class="password" name="password" placeholder="Password" [(ngModel)]="loginData.password">
             </div><br>
             
             <!-- Message d'erreur -->
@@ -25,7 +27,13 @@
             <a href="#" class="forgot-password">Mot de passe oublié ?</a><br><br>
             
             <!-- Bouton de connexion -->
-            <button type="button" (click)="OnUserConnexion()">Connexion</button>
+            <button type="button" (click)="OnUserConnexion()" [disabled]="loading">
+                <span *ngIf="!loading">Connexion</span>
+                <span *ngIf="loading" class="spinner">
+                    <i class="fas fa-circle-notch fa-spin"></i>
+                    Connexion ...
+                </span>
+            </button>
         </form>
     </div>
 </div>

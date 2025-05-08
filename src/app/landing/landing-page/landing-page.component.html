@@ -1,60 +1,13 @@
 <body>
-  <nav class="nav-navbar">
-    <nav class="topnav">
-      <section class="topnav-logo">
-        <div class="logo"></div>
-        <p class="planning">PLANNING</p>
-      </section>
-    </nav>
-    <nav class="navbar">
-      <ul>
-        <li><a href="#" class="active">Accueil</a></li>
-        <li><a (click)="onService()">Service</a></li>
-        <li><a href="#">Catégorie</a></li>
-      </ul>
-      <button class="btn-login" (click)="OnConnexion()">Login</button>
-    </nav>
-    <div class="toggle-menu" (click)="toggleMenu()">
-      <i class="fas fa-bars"></i>
-    </div>
-    
-    <div [ngClass]="{ 'mobile-menu': true, 'open': toggleMenuVisible, 'closed': !toggleMenuVisible }">
-      <a href=""><i class="fa fa-home"></i>Accueil</a>
-      <a (click)="onService()"><i class="fa fa-cogs"></i> Service</a>
-      <a href=""><i class="fa fa-th-list"></i> Catégorie</a>
-      <a href=""><i class="fa fa-info-circle"></i> A propos</a>
-    </div>
-  
-  </nav>
-  
-<header>
-  <div class="aim-container">
-    <h1>
-      <span>Enseignez</span> ou <span>Apprenez</span> sans limites
-    </h1>
-    <h3>
-      Inscrivez-vous, accédez aux services et formations en exclusivité et échangez en direct avec des experts !
-    </h3>
-    <div class="landing-content">
-      <button class="btn-commencer" (click)="OnInscription()">
-         Commencer
-      </button>
-    </div><br>
-  
-    <div class="canvas"> 
-      <button (click)="onContinue()">dashboard-admin</button>
-      <button (click)="Onuser()">dashboard-user</button>
-    </div>
-    
-  </div>
-</header>
+  <app-navlanding></app-navlanding>
+  <app-hero-section ></app-hero-section>
 
   <div class="landing-container2">
     <div class="service-title">Pourquoi choisir <span> KMS Planning</span> ?</div>
     <p class="description">Notre plateforme vous offre une expérience unique et personnalisée pour répondre à vos besoins d'apprentissage et de formation. Découvrez comment nous pouvons vous aider à atteindre vos objectifs !</p><br>
   </div>
 
-<div class="features-container">
+<div appAppearOnScroll class="features-container">
   <div class="feature-card">
       <i class="fas fa-calendar-alt feature-icon"></i>
       <h3>Réservation</h3>
@@ -86,21 +39,18 @@
       <p>Données protégées.</p>
   </div>
   <div class="feature-card">
-      <i class="fas fa-cogs feature-icon"></i>
-      <h3>Personnalisation</h3>
-      <p>Options adaptées à vos besoins.</p>
-  </div>
-  <div class="feature-card">
       <i class="fas fa-sync-alt feature-icon"></i>
       <h3>Synchronisation</h3>
       <p>Avec votre agenda.</p>
   </div>
 </div>
 
+<app-popular-services></app-popular-services>
 
 
 
-  <div class="service-title">Découvrez des services <span>sur mesure</span>, adaptés à <span>vos besoins </span>!</div>
+ <!--
+ <div class="service-title">Découvrez des services <span>sur mesure</span>, adaptés à <span>vos besoins </span>!</div>
   <p class="description">Accélérez votre apprentissage ou développez votre activité de formation avec nos services premium conçus pour maximiser votre succès. Rejoignez-nous dès maintenant et faites passer votre expertise au niveau supérieur !</p>
   <div class="services-grid" *ngIf="showServices">
     <div class="service-card" *ngFor="let service of services">
@@ -112,8 +62,9 @@
     </div>
   </div>
   <input type="button" value="Voir plus ..."id="btn-voir-plus" class="btn-voir-plus" /><br><br><br>
+  -->
 
-
+  <!--
   <div class="categories-section">
       <div class="service-title"> Parcourez nos catégories les plus populaires</div>
 
@@ -133,17 +84,17 @@
             <div class="category"> Développement Personnel</div>
           </div>
         </div>
-        <video width="640" height="360" controls autoplay loop>
+        <video  controls autoplay loop>
           <source src="assets/videos/presentation.mp4" type="video/mp4">
           <source src="assets/videos/presentation.ogv" type="video/ogg">
           <source src="assets/videos/presentation.webm" type="video/webm">
         </video>
-          <!-- <img src="assets/images/category.jpg" alt="Categories" class="category-image"> -->
+        <img src="assets/images/category.jpg" alt="Categories" class="category-image"> 
        
       </div>
   </div>
-  
-  
+  -->
+  <!--
   <div class="container">
   <div class="service-title">Nos <span>Fonctionnalités</span></div>
   <p class="description">Accédez à tous les outils indispensables pour des échanges efficaces et sans contraintes. Profitez d’une plateforme optimisée pour booster votre productivité et enrichir vos interactions</p><br>
@@ -167,10 +118,32 @@
       </div>
       <input type="button" value="Voir plus ..." class="btn-voir-plus" />
   </div><br>
-  
+  -->
 
+  <div appAppearOnScroll class="publicity-container">
+    <div class="publicity-text">
+      <h1>Des experts compétants dans tous les domaines à porté de clic </h1>
+      <div class="publicity">
+        <h3><i class="fa-regular fa-circle-check"></i>Des experts qualifiés - efficaces et fiables</h3>
+        <p>Trouvez satisfaction à travers des services de qualité qui répondent directement à vos besoins</p>
+      </div>
+      <div class="publicity">
+        <h3><i class="fa-regular fa-circle-check"></i>Des services variés adaptés à vos besoins</h3>
+        <p>Accédez à une large gamme de services allant de la formation à la consultation, en passant par le coaching et le développement personnel.</p>
+      </div>
+      <div class="publicity">
+        <h3><i class="fa-regular fa-circle-check"></i>Des outils de gestion pour une expérience fluide</h3>
+        <p>Profitez d'une plateforme optimisée pour gérer vos réservations, paiements et communications en toute simplicité.</p>
+      </div>
+      <div class="publicity">
+        <h3><i class="fa-regular fa-circle-check"></i>Une plateforme sécurisée et fiable</h3>
+        <p>Nous garantissons la sécurité de vos données et la confidentialité de vos informations personnelles.</p>
+      </div>
+    </div>
+    <img class="publicity-image" src="assets\images\user2.jpg" alt="">
+  </div>
 
-  <div class="how-it-works">
+  <div appAppearOnScroll class="how-it-works">
     <div class="service-title"> Comment ça marche ?</div>
     <p class="description">Découvrez comment notre plateforme fonctionne et comment elle peut vous aider à atteindre vos objectifs d'apprentissage ou de formation. Suivez ces étapes simples pour commencer dès aujourd'hui !</p><br>
 
@@ -178,7 +151,7 @@
         <div class="step">
           <i class="fas fa-user-plus step-icon"></i>
           <h3>Créer un compte</h3>
-          <p>Inscrivez-vous en quelques clics en tant qu'EXPERT si vous souhaitez offrir vos service ou en tant que simple UTILISATEUR si vous avez besoin de booster vos compétances ou la productivité de votre entreprise.</p>
+          <p>Inscrivez-vous en quelques clics en tant qu'expert si vous souhaitez offrir vos service ou en tant qu'utilisateur si vous avez besoin de booster vos compétances ou la productivité de votre entreprise.</p>
         </div>
         <div class="step">
             <i class="fas fa-search step-icon"></i>
@@ -200,9 +173,8 @@
   </div>
     
 
-  <app-stats-section></app-stats-section><br><br>
+  <app-stats-section></app-stats-section>
     <div class="landing-container3">
-      <div class="service-title">Quelques avis <span>utilisateurs</span></div>
       <app-avis-carousel></app-avis-carousel>
       
       

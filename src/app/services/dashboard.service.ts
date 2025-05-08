@@ -11,7 +11,7 @@ export class DashboardService {
 
   constructor(private http: HttpClient) {}
 
-  // 📊 Récupérer les statistiques de l'utilisateur
+  //  Récupérer les statistiques de l'utilisateur
   getUserStats(): Observable<any> {
     return this.http.get(`${this.apiUrl}/stats/`);
   }

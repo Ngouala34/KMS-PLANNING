@@ -12,8 +12,8 @@ export class AuthService {
 
   // URL de l'API de connexion (assurez-vous que l'endpoint correspond à votre backend)
 
-  //https://kms-planning-db.onrender.com/api/users/login/
-  private loginUrl = '';
+  private loginUrl = 'https://kms-planning-db.onrender.com/api/users/login/';
+  private registerUrl = 'https://kms-planning-db.onrender.com/api/users/register/';
   message: string= '';
 
   constructor(private http: HttpClient) {
@@ -26,8 +26,7 @@ export class AuthService {
 
   register(user: any) {
 
-    //https://kms-planning-db.onrender.com/api/users/register/
-    return this.http.post('', user).pipe(
+    return this.http.post(this.registerUrl, user).pipe(
       tap((response: any) => {
         // Sauvegarde des infos utilisateur dans le localStorage
         localStorage.setItem('currentUser', JSON.stringify(response));

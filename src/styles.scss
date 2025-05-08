@@ -24,10 +24,22 @@ button {
   }
 }
 button:hover{
-  box-shadow: 0px 10px 20px rgba(0, 123, 255, 0.374);
 
  
 }
-span {
-  color:#74C0FC ;
+
+p{
+  font-family: italic;
 }
+/* styles.css */
+[appAppearOnScroll] {
+  opacity: 0;
+  transform: translateY(100px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+[appAppearOnScroll].show {
+  opacity: 1;
+  transform: translateY(0);
+}
+

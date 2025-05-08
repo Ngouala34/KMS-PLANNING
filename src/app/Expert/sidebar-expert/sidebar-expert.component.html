@@ -5,36 +5,39 @@
             <h3 *ngIf="!isCollapsed"></h3>
         </div>
         <ul class="list-unstyled components">
+            <!-- Bouton flottant amélioré -->
+   
             <li routerLink="/dashboard-expert" routerLinkActive="active" (click)="OnExpertdashboard()">
                 <i class="fa-solid fa-money-bill-wave"></i>
                 <a >Dashboard</a>
             </li>
-            <li routerLink="/user-serv" routerLinkActive="active" (click)="OnExpertService()">
-                <i class="fa-solid fa-globe"></i>
-                <a >Services</a>
-            </li>
-            <li routerLink="/user-historique" routerLinkActive="active" (click)="OnExpertHistorique()">
-                <i class="fa-solid fa-history"></i>
-                <a  >Historique</a>
-            </li>
-            <li routerLink="/user-calendrier" routerLinkActive="active" (click)="OnExpertCalendrier()">
-                <i class="fa-solid fa-calendar"></i>
-                <a  >Calendrier</a>
-            </li>
-            <li routerLink="/parametres" routerLinkActive="active">
-                <i class="fa-solid fa-cog"></i>
-                <a routerLink="/parametres" *ngIf="!isCollapsed">Paramètres</a>
+            <li routerLink="/expert-formation" routerLinkActive="active" (click)="OnExpertformation()">
+                <i class="fa-solid fa-pen"></i>
+                <a >Formations</a>
             </li>
 
-            <div class="bar-horizontale"></div>
+            <li routerLink="/expert-rendez-vous" routerLinkActive="active" (click)="OnExpertrendezvous()">
+                <i class="fa-solid fa-calendar"></i>
+                <a  >Rendez-vous</a>
+            </li>
+            <li routerLink="/expert-settings" routerLinkActive="active" (click)="OnSettings()">
+                <i class="fa-solid fa-cog"></i>
+                <a >Paramètres</a>
+            </li>
+
             <li routerLink="/user-profile" routerLinkActive="active" class="profile">
-                <i class="fa-solid fa-user"></i>
-                <a >Profil</a>
+                <i class="fa-solid fa-dollar-sign"></i>
+                <a >historiques</a>
             </li>
             <li routerLink="/user-Deconnexion" routerLinkActive="active" (click)="Ondeconnexion()">
                 <i class="fa-solid fa-right-from-bracket"></i>
                 <a >Deconnexion</a>
+            </li><br><br>
+            <li routerLink="/expert" routerLinkActive="active" class="floating-action-btn" (click)="onCreateCourse()">
+                <i class="fa-solid fa-plus"></i>
+                <a>Nouveau service</a>
             </li>
+
 
 
         </ul>

@@ -21,7 +21,7 @@
   height: 50px;
   border-radius: 50%;
   background-size: cover;
-  background-image: url(https://mail.kms-entreprises.com/assets/img/branding/KMS%20logo.jpg);
+  background-image: url('/assets/images/KmsLogo.jpg');
 }
 
 .planning {
@@ -60,6 +60,9 @@
 }
 .nav-icons{
   margin-right: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
   .fa-bars{
     display: none;
@@ -109,6 +112,28 @@
     .logo {
       margin-left: 20px;
       
+    }
+  
+  }
+  .user{
+    background-color: black;
+    color: white;
+    border-radius: 50%;
+    padding: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 8px;
+    height: 8px;
+    font-size: 10px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    &:hover {
+      background-color: #333;
+      width: 9px;
+      height: 9px;
+      font-size: 11px;
     }
   }
 
