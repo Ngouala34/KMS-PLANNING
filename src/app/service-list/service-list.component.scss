@@ -245,6 +245,7 @@
     transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
     opacity: 0;
     animation: fadeIn 0.8s ease-in-out forwards;
+    cursor: pointer;
 }
 
 .service-card:nth-child(1) { animation-delay: 0.2s; }
