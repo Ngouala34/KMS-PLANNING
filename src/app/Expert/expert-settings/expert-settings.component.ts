@@ -11,6 +11,7 @@ import { Router, NavigationEnd } from '@angular/router';
 })
 export class ExpertSettingsComponent implements OnInit {
   isSidebarCollapsed = true;
+  collapsedByDefault = false; // Indique si la sidebar est réduite au départ
   settingsForm!: FormGroup;
   activeTab = 'profile';
   isSaving = false;
@@ -56,6 +57,7 @@ export class ExpertSettingsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.isSidebarCollapsed = this.collapsedByDefault; // Appliquer la configuration initiale
     this.initForm();
     this.loadUserSettings();
 

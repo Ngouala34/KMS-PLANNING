@@ -2,446 +2,642 @@
    STRUCTURE PRINCIPALE
    ============================================= */
 
-   :host {
-    display: block;
-    background: #f9f9fb;
-    min-height: 100vh;
-    font-family: 'Segoe UI', sans-serif;
+:host {
+  display: block;
+  background: #f9f9fb;
+  min-height: 100vh;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* Sidebar
+============================================= */
+.sidebar-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 20;
+}
+
+/* Conteneur principal des paramètres
+============================================= */
+.settings-container {
+  margin-left: 200px;
+  padding: 2rem;
+  transition: margin-left 0.3s ease;
+
+  &.expanded {
+    margin-left: 60px;
   }
-  
-  /* Sidebar
-     ============================================= */
-  .sidebar-container {
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 20;
+}
+
+/* En-tête des paramètres
+============================================= */
+.settings-header {
+  margin-bottom: 2rem;
+
+  h1 {
+    font-size: 2rem;
+    font-weight: 600;
+    color: #0a1f44;
   }
-  
-  /* Conteneur principal des paramètres
-     ============================================= */
-  .settings-container {
-    margin-left: 240px;
-    padding: 2rem;
-    transition: margin-left 0.3s ease;
-  
-    &.expanded {
-      margin-left: 80px;
-    }
-  }
-  
-  /* En-tête des paramètres
-     ============================================= */
-  .settings-header {
-    margin-bottom: 2rem;
-    
-    h1 {
-      font-size: 2rem;
-      font-weight: 600;
-      color: #0a1f44;
-    }
-  }
-  
-  /* Corps des paramètres (navigation + contenu)
-     ============================================= */
-  .settings-body {
-    display: flex;
-    gap: 2rem;
-    flex-wrap: wrap;
-  }
-  
-  /* Navigation latérale
-     ============================================= */
-  .settings-nav {
-    min-width: 200px;
-    display: flex;
-    flex-direction: column;
-    background: #fff;
-    border-radius: 12px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
-    padding: 1rem;
-  
-    .nav-item {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 0.8rem 1rem;
-      background: none;
-      border: none;
-      border-radius: 8px;
-      font-size: 1rem;
-      font-weight: 500;
-      cursor: pointer;
-      color: #444;
-      transition: all 0.2s ease;
-  
-      i {
-        font-size: 1.2rem;
-      }
-  
-      &:hover {
-        background-color: #f0f0f0;
-      }
-  
-      &.active {
-        background-color: #3498dba0;
-        color: #fff;
-      }
-    }
-  }
-  
-  /* Contenu principal des paramètres
-     ============================================= */
-  .settings-content {
-    flex: 1;
-    background: #fff;
-    border-radius: 12px;
-    padding: 2rem;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.04);
-  
-    h2 {
-      font-size: 1.5rem;
-      font-weight: 400;
-      color: #0a1f44;
-      margin-bottom: 1.5rem;
-  
-      i {
-        margin-right: 10px;
-        color: #3498dba0;
-      }
-    }
-  }
-  
-  /* Section Profil
-     ============================================= */
-  .form-section {
-    max-width: 800px;
-    margin: 0 auto;
-  }
-  
-  /* Upload d'avatar
-     ============================================= */
-  .avatar-upload {
+}
+
+/* Corps des paramètres (navigation + contenu)
+============================================= */
+.settings-body {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+/* Navigation horizontale
+============================================= */
+.settings-nav-horizontal {
+  display: flex;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+  padding: 1rem;
+  overflow-x: auto;
+  white-space: nowrap;
+
+  .nav-item {
     display: flex;
     align-items: center;
-    gap: 1rem;
-    margin-bottom: 1.5rem;
-  
-    .avatar-preview {
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 2px solid #ccc;
+    gap: 10px;
+    padding: 0.8rem 1.5rem;
+    background: none;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    color: #444;
+    transition: all 0.2s ease;
+    margin-right: 0.5rem;
+
+    &:last-child {
+      margin-right: 0;
     }
-  
-    .upload-btn {
-      cursor: pointer;
-      background: #153470;
+
+    i {
+      font-size: 1.2rem;
+    }
+
+    &:hover {
+      background-color: #f0f0f0;
+    }
+
+    &.active {
+      background-color: #3498dba0;
       color: #fff;
-      padding: 0.5rem 1rem;
-      border-radius: 8px;
-      font-size: 0.95rem;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      transition: background 0.2s ease;
-  
-      &:hover {
-        background: #143170d0;
-      }
     }
   }
-  
-  /* Disposition des formulaires
-     ============================================= */
-  .form-row {
+}
+
+/* Contenu principal des paramètres
+============================================= */
+.settings-content {
+  background: #fff;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.04);
+
+  h2 {
+    font-size: 1.5rem;
+    font-weight: 400;
+    color: #0a1f44;
+    margin-bottom: 1.5rem;
+
+    i {
+      margin-right: 10px;
+      color: #3498dba0;
+    }
+  }
+}
+
+/* Section Profil
+============================================= */
+.form-section {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+/* Upload d'avatar
+============================================= */
+.avatar-upload {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+
+  .avatar-preview {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #ccc;
+  }
+
+  .upload-btn {
+    cursor: pointer;
+    background: #153470;
+    color: #fff;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-size: 0.95rem;
     display: flex;
-    gap: 1.5rem;
-    margin-bottom: 1rem;
-  }
-  
-  .half-width {
-    flex: 1;
-    min-width: 0; // Prevent overflow
-  }
-  
-  /* Styles des champs de formulaire
-     ============================================= */
-  .form-group {
-    margin-bottom: 1.25rem;
-  
-    label {
-      display: block;
-      font-weight: normal;
-      margin-bottom: 0.4rem;
-      color: #333;
-    }
-  
-    input,
-    textarea,
-    select {
-      width: 100%;
-      padding: 0.6rem;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      font-size: 0.95rem;
-      transition: border-color 0.2s ease;
-  
-      &:focus {
-        border-color: #153470;
-        outline: none;
-      }
-    }
-  
-    textarea {
-      resize: vertical;
-    }
-  
-    .hint {
-      font-size: 0.85rem;
-      color: #777;
-    }
-  
-    .error-message {
-      font-size: 0.85rem;
-      color: #d52727;
-      margin-top: 0.25rem;
+    align-items: center;
+    gap: 0.5rem;
+    transition: background 0.2s ease;
+
+    &:hover {
+      background: #143170d0;
     }
   }
-  
-  /* Style spécifique pour les selects
-     ============================================= */
+}
+
+/* Disposition des formulaires
+============================================= */
+.form-row {
+  display: flex;
+  gap: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.half-width {
+  flex: 1;
+  min-width: 0; // Prevent overflow
+}
+
+/* Styles des champs de formulaire
+============================================= */
+.form-group {
+  margin-bottom: 1.25rem;
+
+  label {
+    display: block;
+    font-weight: normal;
+    margin-bottom: 0.4rem;
+    color: #333;
+  }
+
+  input,
+  textarea,
   select {
-    appearance: none;
-    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-    background-repeat: no-repeat;
-    background-position: right 0.75rem center;
-    background-size: 1rem;
-    padding-right: 2rem !important;
+    width: 100%;
+    padding: 0.6rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    transition: border-color 0.2s ease;
+
+    &:focus {
+      border-color: #153470;
+      outline: none;
+    }
   }
-  
-  /* Section Sécurité
-     ============================================= */
-  .security-item {
+
+  textarea {
+    resize: vertical;
+  }
+
+  .hint {
+    font-size: 0.85rem;
+    color: #777;
+  }
+
+  .error-message {
+    font-size: 0.85rem;
+    color: #d52727;
+    margin-top: 0.25rem;
+  }
+}
+
+/* Style spécifique pour les selects
+============================================= */
+select {
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 1rem;
+  padding-right: 2rem !important;
+}
+
+/* SCSS amélioré pour la section profil */
+.profile-section {
+  width: 90%;
+  margin: 0 auto;
+  padding: 0 1rem;
+  box-sizing: border-box;
+}
+
+.profile-form {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.profile-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+
+  i {
+    color: #3498db;
+    font-size: 1.3em;
+  }
+}
+
+.profile-header {
+  display: flex;
+  gap: 2rem;
+  align-items: flex-start;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid #eee;
+
+  @media (max-width: 600px) {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+.avatar-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  min-width: 150px;
+}
+
+.avatar-image {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #fff;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.avatar-upload-btn {
+  cursor: pointer;
+  background: #3498db;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 25px;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.2s ease;
+  text-align: center;
+
+  &:hover {
+    background: #2980b9;
+    transform: translateY(-1px);
+  }
+
+  i {
+    font-size: 0.9rem;
+  }
+}
+
+.profile-basic-info {
+  flex: 1;
+  width: 100%;
+}
+
+.profile-details {
+  margin-top: 1rem;
+}
+
+.details-title {
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: #2c3e50;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+
+  i {
+    color: #3498db;
+    font-size: 1.1em;
+  }
+}
+
+.form-row {
+  display: flex;
+  gap: 1.5rem;
+  margin-bottom: 1rem;
+
+  @media (max-width: 600px) {
+    flex-direction: column;
+    gap: 1rem;
+  }
+}
+
+.form-group {
+  flex: 1;
+  margin-bottom: 1.25rem;
+  min-width: 0;
+}
+
+.form-label {
+  display: block;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  color: #34495e;
+  font-size: 0.95rem;
+}
+
+.form-input,
+.form-select,
+.form-textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+  background-color: #fff;
+  box-sizing: border-box;
+
+  &:focus {
+    border-color: #3498db;
+    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+    outline: none;
+  }
+}
+
+.form-select {
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 1rem;
+  padding-right: 2.5rem !important;
+}
+
+.form-textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.char-counter {
+  font-size: 0.8rem;
+  color: #7f8c8d;
+  text-align: right;
+  margin-top: 0.25rem;
+}
+
+.error-message {
+  font-size: 0.85rem;
+  color: #e74c3c;
+  margin-top: 0.5rem;
+  animation: fadeIn 0.3s ease;
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-5px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+}
+
+/* Animation pour les transitions */
+.profile-form {
+  animation: slideUp 0.4s ease;
+
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+}
+
+
+/* Section Sécurité
+============================================= */
+.security-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background: #f7f7f9;
+  border-radius: 10px;
+  margin-top: 1.5rem;
+
+  h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 400;
+  }
+
+  p {
+    font-size: 0.9rem;
+    color: #555;
+    margin-top: 0.2rem;
+  }
+}
+
+/* Toggle switch
+============================================= */
+.toggle-switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 26px;
+
+  input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: 0.4s;
+    border-radius: 26px;
+
+    &::before {
+      position: absolute;
+      content: "";
+      height: 20px;
+      width: 20px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: 0.4s;
+      border-radius: 50%;
+    }
+  }
+
+  input:checked + .slider {
+    background-color: #153470;
+  }
+
+  input:checked + .slider::before {
+    transform: translateX(24px);
+  }
+}
+
+/* Section Notifications
+============================================= */
+.notification-settings-container {
+  margin: 0 auto;
+  background: #fff;
+  padding: 2rem;
+  border-radius: 12px;
+  width: 100%;
+  border: none;
+  box-sizing: border-box;
+
+  h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+  }
+
+  .notification-option {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem;
-    background: #f7f7f9;
-    border-radius: 10px;
-    margin-top: 1.5rem;
-  
-    h3 {
-      margin: 0;
-      font-size: 1.1rem;
-      font-weight: 400;
-    }
-  
-    p {
-      font-size: 0.9rem;
-      color: #555;
-      margin-top: 0.2rem;
-    }
-  }
-  
-  /* Toggle switch
-     ============================================= */
-  .toggle-switch {
-    position: relative;
-    display: inline-block;
-    width: 50px;
-    height: 26px;
-  
-    input {
-      opacity: 0;
-      width: 0;
-      height: 0;
-    }
-  
-    .slider {
-      position: absolute;
-      cursor: pointer;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-color: #ccc;
-      transition: 0.4s;
-      border-radius: 26px;
-  
-      &::before {
-        position: absolute;
-        content: "";
-        height: 20px;
-        width: 20px;
-        left: 3px;
-        bottom: 3px;
-        background-color: white;
-        transition: 0.4s;
-        border-radius: 50%;
-      }
-    }
-  
-    input:checked + .slider {
-      background-color: #153470;
-    }
-  
-    input:checked + .slider::before {
-      transform: translateX(24px);
-    }
-  }
-  
-  /* Section Notifications
-     ============================================= */
-  .notification-settings-container {
-    margin: 0 auto;
-    background: #fff;
-    padding: 2rem;
-    border-radius: 12px;
-    width: 100%;
-    border: none;
-    box-sizing: border-box;
-  
-    h2 {
-      font-size: 1.5rem;
-      margin-bottom: 1.5rem;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-  
-    form {
-      display: flex;
-      flex-direction: column;
-      gap: 1.2rem;
-    }
-  
-    .notification-option {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 1rem;
-      padding: 0.8rem 0;
-      border-bottom: 1px solid #f0f0f0;
-    }
-  
-    .privacy-section {
-      margin-top: 2rem;
-  
-      h3 {
-        font-size: 1.2rem;
-        margin-bottom: 1rem;
-      }
-    }
-  }
-  
-  /* Switch pour les notifications
-     ============================================= */
-  .switch {
-    position: relative;
-    display: inline-block;
-    width: 48px;
-    height: 24px;
-  
-    input {
-      opacity: 0;
-      width: 0;
-      height: 0;
-    }
-  
-    .slider {
-      position: absolute;
-      cursor: pointer;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background-color: #ccc;
-      transition: .4s;
-      border-radius: 24px;
-  
-      &::before {
-        position: absolute;
-        content: "";
-        height: 18px;
-        width: 18px;
-        left: 3px;
-        bottom: 3px;
-        background-color: white;
-        transition: .4s;
-        border-radius: 50%;
-      }
-    }
-  
-    input:checked + .slider {
-      background-color: #153470;
-    }
-  
-    input:checked + .slider:before {
-      transform: translateX(24px);
-    }
-  
-    .round {
-      border-radius: 24px;
-    }
-  }
-  
-  /* Pied de page des paramètres
-     ============================================= */
-  .settings-footer {
-    margin-top: 2rem;
-    text-align: right;
-  }
-  
-  .save-btn {
-    margin-top: 2rem;
-    padding: 0.75rem 1.5rem;
-    background-color: #153470;
-    color: #fff;
-    border: none;
-    border-radius: 25px;
     font-size: 1rem;
-    cursor: pointer;
-    transition: background 0.3s ease;
-    align-self: flex-end;
-  
-    i {
-      margin-right: 8px;
-    }
-  
-    &:hover {
-      background-color: #16336ecc;
-    }
+    padding: 0.8rem 0;
+    border-bottom: 1px solid #f0f0f0;
   }
-  
-  /* Responsive
-     ============================================= */
-  @media (max-width: 768px) {
-    .settings-container {
-      margin-left: 0;
-      padding: 1rem;
-    }
-  
-    .settings-body {
-      flex-direction: column;
-    }
-  
-    .settings-nav {
-      flex-direction: row;
-      overflow-x: auto;
+
+  .privacy-section {
+    margin-top: 2rem;
+
+    h3 {
+      font-size: 1.2rem;
       margin-bottom: 1rem;
-  
-      .nav-item {
-        flex: 1;
-        justify-content: center;
-        white-space: nowrap;
-      }
-    }
-  
-    .settings-footer {
-      text-align: center;
-    }
-  
-    .form-row {
-      flex-direction: column;
-      gap: 0;
     }
   }
+}
+
+/* Switch pour les notifications
+============================================= */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 48px;
+  height: 24px;
+
+  input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+    border-radius: 24px;
+
+    &::before {
+      position: absolute;
+      content: "";
+      height: 18px;
+      width: 18px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: .4s;
+      border-radius: 50%;
+    }
+  }
+
+  input:checked + .slider {
+    background-color: #153470;
+  }
+
+  input:checked + .slider:before {
+    transform: translateX(24px);
+  }
+
+  .round {
+    border-radius: 24px;
+  }
+}
+
+/* Pied de page des paramètres
+============================================= */
+.settings-footer {
+  margin-top: 2rem;
+  text-align: right;
+}
+
+.save-btn {
+  margin-top: 2rem;
+  padding: 0.75rem 1.5rem;
+  background-color: #153470;
+  color: #fff;
+  border: none;
+  border-radius: 25px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  align-self: flex-end;
+
+  i {
+    margin-right: 8px;
+  }
+
+  &:hover {
+    background-color: #16336ecc;
+  }
+}
+
+/* Responsive
+============================================= */
+@media (max-width: 768px) {
+  .settings-container {
+    margin-left: 0;
+    padding: 1rem;
+  }
+
+  .settings-nav-horizontal {
+    flex-wrap: wrap;
+    white-space: normal;
+
+    .nav-item {
+      flex: 1 0 auto;
+      min-width: 120px;
+      margin-bottom: 0.5rem;
+    }
+  }
+
+  .settings-footer {
+    text-align: center;
+  }
+
+  .form-row {
+    flex-direction: column;
+    gap: 0;
+  }
+}

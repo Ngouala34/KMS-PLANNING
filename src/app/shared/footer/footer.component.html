@@ -2,7 +2,7 @@
   <div class="footer-container">
     
     <!-- À Propos -->
-    <div id="about" class="footer-section">
+    <div class="footer-section">
       <h3>À Propos</h3>
       <p>
         KMS Planning est une plateforme de réservation en ligne facilitant les connexions entre experts et clients. Monétisez vos compétences grâce à des formations interactives avec des liens de réunion générés automatiquement.
@@ -10,43 +10,48 @@
     </div>
 
     <!-- Liens Utiles -->
-    <div id="useful-link" class="footer-section">
+    <div class="footer-section">
       <h3>Liens Utiles</h3>
       <ul class="footer-links">
-        <li><a href="#"><i class="fas fa-home"></i> Accueil</a></li>
-        <li><a href="#"><i class="fas fa-concierge-bell"></i> Services</a></li>
-        <li><a href="#"><i class="fas fa-money-bill-wave"></i> Tarifs</a></li>
-        <li><a href="#"><i class="fas fa-envelope"></i> Contact</a></li>
+        <li><a routerLink="/"><i class="fas fa-home"></i> Accueil</a></li>
+        <li><a routerLink="/services"><i class="fas fa-concierge-bell"></i> Services</a></li>
+        <li><a routerLink="/pricing"><i class="fas fa-money-bill-wave"></i> Tarifs</a></li>
+        <li><a routerLink="/contact"><i class="fas fa-envelope"></i> Contact</a></li>
+        <li><a routerLink="/privacy"><i class="fas fa-shield-alt"></i> Politique de confidentialité</a></li>
+        <li><a routerLink="/terms"><i class="fas fa-file-contract"></i> Conditions d'utilisation</a></li>
       </ul>
     </div>
 
     <!-- Contact -->
     <div class="footer-section">
       <h3>Contact</h3>
-      <p><i class="fas fa-map-marker-alt"></i> Douala, Cameroun</p>
-      <p><i class="fas fa-phone"></i> +237 6XX XXX XXX</p>
-      <p><i class="fas fa-envelope"></i> support&#64;kmsplanning.com</p>
+      <div class="contact-info">
+        <p><i class="fas fa-map-marker-alt"></i> Douala, Cameroun</p>
+        <p><i class="fas fa-phone"></i> <a href="tel:+2376XXXXXX">+237 6XX XXX XXX</a></p>
+        <p><i class="fas fa-envelope"></i> <a href="mailto:support@kmsplanning.com">support&#64;kmsplanning.com</a></p>
+      </div>
       <div class="social-icons">
-        <a href="#"><i class="fab fa-facebook-f"></i></a>
-        <a href="#"><i class="fab fa-twitter"></i></a>
-        <a href="#"><i class="fab fa-linkedin-in"></i></a>
-        <a href="#"><i class="fab fa-instagram"></i></a>
+        <a href="https://facebook.com/kmsplanning" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+        <a href="https://twitter.com/kmsplanning" target="_blank" rel="noopener noreferrer" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+        <a href="https://linkedin.com/company/kmsplanning" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+        <a href="https://instagram.com/kmsplanning" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
       </div>
     </div>
 
-    <!-- Formulaire de contact -->
-    <div class="footer-section contact-form">
-      <h3>Envoyez-nous un message</h3>
-      <form>
-        <input type="text" placeholder="Votre nom" required>
-        <input type="email" placeholder="Votre email" required>
-        <textarea rows="3" placeholder="Votre message" required></textarea>
-        <button type="submit">Envoyer</button>
+    <!-- Newsletter -->
+    <div class="footer-section newsletter">
+      <h3>Newsletter</h3>
+      <p>Abonnez-vous pour recevoir nos dernières actualités et offres.</p>
+      <form (ngSubmit)="subscribeNewsletter()" #newsletterForm="ngForm">
+        <input type="email" name="email" [(ngModel)]="newsletterEmail" placeholder="Votre email" required>
+        <button type="submit" [disabled]="!newsletterForm.valid">S'abonner</button>
       </form>
+      <div class="newsletter-message" *ngIf="newsletterMessage">{{ newsletterMessage }}</div>
     </div>
   </div>
 
   <div class="footer-bottom">
-    <p>&copy; 2025 KMS Planning | Tous droits réservés</p>
+    <p>&copy; {{ currentYear }} KMS Planning | Tous droits réservés</p>
+
   </div>
 </footer>

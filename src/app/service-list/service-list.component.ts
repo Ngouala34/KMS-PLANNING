@@ -1,6 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
+interface Service {
+  id: number;
+  title: string;
+  description: string;
+  imageUrl: string;
+  expertProfil: string;
+  expertName: string;
+  avarage: number;
+  reviews: number;
+  price: number;
+  category: string;
+}
+
 @Component({
   selector: 'app-service-list',
   templateUrl: './service-list.component.html',
@@ -19,11 +32,7 @@ toggleMobileMenu() {
   showServices = false; // Contrôle l'animation d'affichage
 
   constructor(private router:Router) { }
-
-  ngOnInit(): void {
-    // Simule un chargement des services avec un léger délai
-    
-  } 
+ 
 
 
 
@@ -150,6 +159,92 @@ toggleMobileMenu() {
 
   ];
 
+   filteredServices: Service[] = [];
+
+  // États des filtres
+  filters = {
+    searchText: '',
+    priceRange: 'all',
+    minRating: 0
+  };
+
+  // Options pour les filtres
+  priceRanges = [
+    { value: 'all', label: 'Tous les prix' },
+    { value: 'economy', label: 'Économique: < 50,000 FCFA' },
+    { value: 'standard', label: 'Standard: 50,000 - 150,000 FCFA' },
+    { value: 'premium', label: 'Premium: > 150,000 FCFA' }
+  ];
+
+  ratingOptions = [
+    { value: 0, label: 'Toutes les notes' },
+    { value: 3, label: '★★★☆☆ et plus' },
+    { value: 4, label: '★★★★☆ et plus' },
+    { value: 4.5, label: '★★★★★ seulement' }
+  ];
+
+  ngOnInit(): void {
+    this.filteredServices = [...this.filteredServices];
+  }
+
+  applyFilters(): void {
+    this.filteredServices = this.filteredServices.filter(service => {
+      // Filtre par texte (nom du service ou expert)
+      const matchesSearch = this.filters.searchText === '' || 
+        service.title.toLowerCase().includes(this.filters.searchText.toLowerCase()) || 
+        service.expertName.toLowerCase().includes(this.filters.searchText.toLowerCase());
+
+      // Filtre par prix
+      let matchesPrice = true;
+      switch(this.filters.priceRange) {
+        case 'economy': matchesPrice = service.price < 10000; break;
+        case 'standard': matchesPrice = service.price >= 10000 && service.price <= 30000; break;
+        case 'premium': matchesPrice = service.price > 30000; break;
+      }
+
+      // Filtre par note
+      const matchesRating = service.avarage >= this.filters.minRating;
+
+      return matchesSearch && matchesPrice && matchesRating;
+    });
+  }
+
+  // Méthode pour afficher les étoiles
+getStars(rating: number): number[] {
+  const stars = [];
+  const fullStars = Math.floor(rating);
+  const hasHalfStar = rating % 1 >= 0.5;
+  
+  for (let i = 0; i < fullStars; i++) {
+    stars.push(1); // étoile pleine
+  }
+  
+  if (hasHalfStar) {
+    stars.push(0.5); // demi-étoile
+  }
+  
+  return stars;
+}
+
+
+
+  onSearchChange(searchText: string): void {
+    this.filters.searchText = searchText;
+    this.applyFilters();
+  }
+
+  onPriceRangeChange(range: string): void {
+    this.filters.priceRange = range;
+    this.applyFilters();
+  }
+
+  onRatingChange(minRating: number): void {
+    this.filters.minRating = minRating;
+    this.applyFilters();
+  }
+
+
+  
   toggleFavorite() {
     this.isFavorite = !this.isFavorite;
     console.log('Favori:', this.service.title, 'état:', this.isFavorite);

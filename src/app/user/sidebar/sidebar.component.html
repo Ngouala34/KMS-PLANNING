@@ -5,13 +5,13 @@
             <h3 *ngIf="!isCollapsed"></h3>
         </div>
         <ul class="list-unstyled components">
-            <li routerLink="/user-home" routerLinkActive="active" (click)="OnUserConnexion()">
-                <i class="fa-solid fa-house"></i>
-                <a  >accueil</a>
-            </li>
             <li routerLink="/user-dashboard" routerLinkActive="active" (click)="OnUserdashboard()">
                 <i class="fa-solid fa-money-bill-wave"></i>
                 <a >Dashboard</a>
+            </li>
+            <li routerLink="/user-home" routerLinkActive="active" (click)="OnUserConnexion()">
+                <i class="fa-solid fa-house"></i>
+                <a  >accueil</a>
             </li>
             <li routerLink="/user-serv" routerLinkActive="active" (click)="OnUserService()">
                 <i class="fa-solid fa-globe"></i>
@@ -19,7 +19,7 @@
             </li>
             <li routerLink="/user-historique" routerLinkActive="active" (click)="OnUserHistorique()">
                 <i class="fa-solid fa-history"></i>
-                <a  >Historique des paiements</a>
+                <a  >Historique </a>
             </li>
             <li routerLink="/user-calendrier" routerLinkActive="active" (click)="OnUserCalendrier()">
                 <i class="fa-solid fa-calendar"></i>
@@ -28,12 +28,6 @@
             <li routerLink="/user-parameter" routerLinkActive="active" (click)="OnUserParameter()">
                 <i class="fa-solid fa-cog"></i>
                 <a routerLink="/parametres" *ngIf="!isCollapsed">Paramètres</a>
-            </li>
-
-            <div class="bar-horizontale"></div>
-            <li routerLink="/user-profile" routerLinkActive="active" class="profile">
-                <i class="fa-solid fa-user"></i>
-                <a >Profil</a>
             </li>
             <li routerLink="/user-Deconnexion" routerLinkActive="active" (click)="Ondeconnexion()">
                 <i class="fa-solid fa-right-from-bracket"></i>

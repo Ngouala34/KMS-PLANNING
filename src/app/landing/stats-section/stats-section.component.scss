@@ -4,8 +4,8 @@
 .stats-section {
   padding: 3rem ;
   padding-top: 1rem;
-  background: linear-gradient(135deg, #d6d6d6 0%, #050704 100%);
-  color: white;
+  background: linear-gradient(135deg, #ecf5f8 0%, #6b6b75 100%);
+  color: rgba(0, 0, 0, 0.682);
   font-family: 'Montserrat', sans-serif;
   position: relative;
   overflow: hidden;
@@ -50,7 +50,7 @@
       transform: translateX(-50%);
       width: 80px;
       height: 4px;
-      background-color: #0a94fe;
+      background-color: #1f1f5bce;
       border-radius: 2px;
     }
   }
@@ -90,7 +90,7 @@
 .stat-icon {
   font-size: 2.5rem;
   margin-right: 1.5rem;
-  color: #0a94fe  ;
+  color: #1f1f5bce  ;
   flex-shrink: 0;
 }
 

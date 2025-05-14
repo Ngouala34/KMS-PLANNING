@@ -96,7 +96,7 @@
   }
   
   .floating-action-btn:hover {
-    background:linear-gradient(to left, #0e0f49, #74C0FC);
+    background:linear-gradient(to right, #0e0f49, #74C0FC);
   
     transform: translateY(-2px);
   }
@@ -180,6 +180,8 @@ margin-top: 20px;
 }
  li.active {
     background-color: #3498dba0; /* Couleur lorsqu'un élément est actif */
+    transform: scaleY(1);
+
   
   }
 

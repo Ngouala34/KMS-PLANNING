@@ -45,31 +45,84 @@
     <section class="services-container" >
 
         <div class="research">
-            <!-- Barre de recherche -->
+           <!-- Barre de recherche améliorée -->
             <div class="search-bar">
-                <input type="text" placeholder="Rechercher un service..." />
-                <button class="btn-search">🔍</button>
-            </div>
+            <input type="text" placeholder="Rechercher un service ou un expert..." [(ngModel)]="filters.searchText"(input)="onSearchChange(filters.searchText)" />
+            <button class="btn-search">🔍</button>
+        </div>
 
-            <!-- Filtres -->
+        <!-- Filtres -->
+        <div class="filters-container">
+            <!-- Filtre par catégorie -->
             <div class="filters">
                 <select>
-                    <option value="all">Toutes les catégories</option>
-                    <option value="sante">Santé</option>
-                    <option value="education">Éducation</option>
-                    <option value="finance">Finance</option>
-                    <option value="finance">Sport</option>
-                    <option value="finance">Art</option>
-                    <option value="finance">Culture</option>
-                    <option value="finance">Loisirs</option>
-                    <option value="finance">Autres</option>
-                </select>
-                <select>
-                    <option value="popular">Populaires</option>
-                    <option value="price">Prix croissant</option>
-                    <option value="rating">Mieux notés</option>
+                    <option class="option">Toutes les catégories</option>
+                    <option class="option" value="sante">Programmation & Tech</option>
+                    <option class="option" value="education">Marketing digital</option>
+                    <option class="option" value="finance">Services Juridiques</option>
+                    <option value="finance">Banques & Finances</option>
+                    <option value="finance">Société & Services</option>
+                    <option value="finance">Sport & Coaching</option>
+                    <option value="finance">Design</option>
+                    <option value="finance">Business</option>
                 </select>
             </div>
+            <!-- Filtre par prix -->
+            <div class="filters">
+                <select aria-placeholder="Budget"
+                    [(ngModel)]="filters.priceRange" 
+                    (change)="onPriceRangeChange(filters.priceRange)">
+                    <option *ngFor="let range of priceRanges" [value]="range.value">
+                        {{range.label}}
+                    </option>
+                </select>
+            </div>
+
+            <!-- Filtre par note -->
+            <div class="filters">
+                <select [(ngModel)]="filters.minRating" (change)="onRatingChange(filters.minRating)">
+                    <option *ngFor="let option of ratingOptions" [value]="option.value">
+                        {{option.label}}
+                    </option>
+                </select>
+            </div>
+        </div>
+</div>
+
+<!-- Affichage des services filtrés -->
+<div class="services-grid">
+    <div class="service-card" 
+         *ngFor="let service of filteredServices" 
+         (click)="onServiceDetails()">
+         
+        <!-- Votre template de carte existant -->
+        <div class="service-image-container">
+            <img [src]="service.imageUrl" [alt]="service.title" class="service-image" />
+            <button class="favorite-button" (click)="toggleFavorite()">
+                <i class="fa" [ngClass]="{'fa-regular fa-heart': !isFavorite, 'fa-solid fa-heart': isFavorite}"></i>
+            </button>
+        </div>
+        
+        <div class="expert">
+            <div class="expert-profile">
+                <img [src]="service.expertProfil" class="expert-avatar">
+                <span class="expert-name">{{ service.expertName }}</span>
+            </div>
+            <div class="rating">
+                <span class="stars">
+                    <i class="fa fa-star" *ngFor="let star of getStars(service.avarage)"></i>
+                    <span class="avarage">{{service.avarage | number:'1.1-1'}}</span>
+                </span>
+                <span class="rating-count">({{ service.reviews }})</span>
+            </div>
+        </div>
+        
+        <h3 class="service-title">{{ service.title }}</h3>
+        <p class="service-description">{{ service.description }}</p>
+        
+        <div class="price">Prix : {{ service.price | currency:'CFA':'symbol':'1.0-0' }}</div>
+    </div>
+
         </div>
         <div class="title">Toutes les catégories</div>
 
@@ -113,10 +166,10 @@
                 </div>
                 <div class="price">Prix : {{ service.price }} fcfa</div>
                 
-                <!-- Bouton commander -->
             </div>
         </div> 
     </section>
 
 
 </div>
+ <app-footer></app-footer> 

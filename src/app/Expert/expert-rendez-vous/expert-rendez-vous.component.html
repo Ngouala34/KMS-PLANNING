@@ -1,5 +1,5 @@
 <app-header-expert [showSearch]="false"></app-header-expert>
-<app-sidebar-expert  [collapsedByDefault]="true"  (sidebarToggle)="isSidebarCollapsed = $event" ></app-sidebar-expert>
+<app-sidebar-expert  [collapsedByDefault]="false"  (sidebarToggle)="isSidebarCollapsed = $event" ></app-sidebar-expert>
 
 
 <div class="rendez-vous-container" [ngClass]="{ 'expanded': isSidebarCollapsed }">
@@ -62,5 +62,8 @@
           </div>
         </ng-template>
       </div>
+    <app-footer></app-footer>
+
     </section>
+
   </div>

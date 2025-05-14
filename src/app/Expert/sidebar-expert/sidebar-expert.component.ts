@@ -13,7 +13,7 @@ export class SidebarExpertComponent implements OnInit {
   @Output() sidebarToggle = new EventEmitter<boolean>(); //  Envoie l’état de la sidebar au parent
 
 
-  isCollapsed = false; // État de la sidebar
+  isCollapsed = true; // État de la sidebar
 
   constructor(private router: Router) { }
 

@@ -23,6 +23,7 @@ interface Service {
 })
 export class ExpertRendezVousComponent implements OnInit {
   isSidebarCollapsed = true; // État de la sidebar
+  collapsedByDefault = false; // Indique si la sidebar est réduite au départ
   calendarOptions: CalendarOptions = {
     plugins: [dayGridPlugin, interactionPlugin],
     initialView: 'dayGridMonth',
@@ -61,6 +62,7 @@ getDisplayDescription(description: string): string {
   selectedDate: Date | null = null;
 
   ngOnInit(): void {
+    this.isSidebarCollapsed =  this.collapsedByDefault ; // Appliquer la configuration initiale
     this.loadServices();
   }
 

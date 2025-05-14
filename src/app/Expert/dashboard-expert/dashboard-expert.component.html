@@ -1,99 +1,86 @@
 <app-header-expert></app-header-expert>
-<app-sidebar-expert  [collapsedByDefault]="true"  (sidebarToggle)="isSidebarCollapsed = $event" ></app-sidebar-expert>
+<app-sidebar-expert [collapsedByDefault]="false" (sidebarToggle)="isSidebarCollapsed = $event"></app-sidebar-expert>
 
-    <div class="dashboard-container" [ngClass]="{ 'expanded': isSidebarCollapsed }">      
+<div class="dashboard-container" [ngClass]="{ 'expanded': isSidebarCollapsed }">      
 
-        <!--  Section Résumé -->
-        <div class="summary-cards">
-          <div class="card">
-            <i class="fa-solid fa-book " id="book"></i>
-            <div class="info">
-              <h3>0</h3>
-              <p>Formations créées</p>
-            </div>
-          </div>
-          <div class="card">
-            <i class="fa-solid fa-users" style="color: orangered;" id="users"></i>
-            <div class="info">
-              <h3>0</h3>
-              <p>Participants inscrits</p>
-            </div>
-          </div>
-          <div class="card">
-            <i class="fa-solid fa-dollar-sign" id="dollar"></i>
-            <div class="info">
-              <h3>0</h3>
-              <p>Revenus générés</p>
-            </div>
-          </div>
-          <div class="card">
-            <i class="fa-solid fa-calendar" style="color: green;" id="calendar"></i>
-            <div class="info">
-              <h3>0</h3>
-              <p>Sessions à venir</p>
-            </div>
-          </div>
-        </div>
-      
-         <!-- Section Graphique -->
-         <div class="chart-container">
-          <app-revenue-chart></app-revenue-chart>
-        </div>
-
-        <h1 class="h1">Mes formations </h1>
-        <div class="services-grid">
-          <div class="service-card">
-              <!-- Image -->
-              <div class="service-image-container">
-              <img [src]="service.imageUrl" [alt]="service.title" class="service-image" />
-              </div>
-          
-              <!-- Détails service -->
-              <h3 class="service-title">{{ service.title }}</h3>
-              
-              <div>
-                Date: {{service.date}}
-              </div>
-              <!-- Expert -->
-              <div class="">
-                <span class="rating-count">Souscriptions : {{ service.souscriptions }}</span>
-              </div>
-              
-
-              <!--<p class="service-description">{{ service.description }}</p>-->
-          
-              <div class="price">Prix : {{ service.price }} fcfa</div>
-              
-            </div>
-        </div>
-
-
-       
-
-        <!-- Section Prochains Rendez-vous - Version Cards -->
-<div class="dashboard-section">
-  <h3 class="section-title">Prochains Rendez-vous</h3>
-  
-  <div class="appointments-grid">
-    <app-prochain-rendez-vous></app-prochain-rendez-vous>
-
+  <!-- Section Résumé -->
+  <div class="summary-cards" *ngIf="!isLoading">
+    <div class="card">
+      <i class="fa-solid fa-book" id="book"></i>
+      <div class="info">
+        <h3>{{ stats.coursesCreated }}</h3>
+        <p>Formations créées</p>
+      </div>
+    </div>
+    <div class="card">
+      <i class="fa-solid fa-users" style="color: orangered;" id="users"></i>
+      <div class="info">
+        <h3>{{ stats.participantsEnrolled }}</h3>
+        <p>Participants inscrits</p>
+      </div>
+    </div>
+    <div class="card">
+      <i class="fa-solid fa-dollar-sign" id="dollar"></i>
+      <div class="info">
+        <h3>{{ stats.revenueGenerated | currency:'CFA':'symbol':'1.0-0' }}</h3>
+        <p>Revenus générés</p>
+      </div>
+    </div>
+    <div class="card">
+      <i class="fa-solid fa-calendar" style="color: green;" id="calendar"></i>
+      <div class="info">
+        <h3>{{ stats.upcomingSessions }}</h3>
+        <p>Sessions à venir</p>
+      </div>
+    </div>
   </div>
-</div>
-
-
-
-<!-- Bouton flottant amélioré -->
-<button class="floating-action-btn" (click)="onCreateCourse()">
-  <i class="fa-solid fa-plus"></i>
-  <span>Nouveau Service</span>
-</button>
   
+  <!-- Section Graphique -->
+  <div class="chart-container">
+    <app-revenue-chart></app-revenue-chart>
+  </div>
+
+<h1 class="h1">Mes formations</h1>
+<div class="services-container" *ngIf="!isLoading">
+  <div class="services-grid">
+    <div class="service-card" *ngFor="let course of displayedCourses"> 
+      <div class="service-image-container">
+        <img [src]="course.imageUrl" [alt]="course.title" class="service-image" />
+      </div>
+      <h3 class="service-title">{{ course.title }}</h3>
+      <div>Date: {{ course.date }}</div>
+      <div>
+        <span class="rating-count">Souscriptions : {{ course.subscriptions }}</span>
+      </div>
+      <div class="price">Prix : {{ course.price | currency:'CFA':'symbol':'1.0-0' }}</div>
+    </div> 
+  </div>
+  <!-- Bouton Voir plus si nécessaire -->
+    <div class="see-more"  *ngIf="courses.length > coursesToShow" (click)="showMoreCourses()">
+      <button class="see-more-btn">
+        Voir plus ...
+      </button>
+    </div>
 </div>
-<app-footer></app-footer>
-      
-    
 
+  <!-- Section Prochains Rendez-vous -->
+  <div class="dashboard-section" *ngIf="!isLoading">
+    <h3 class="section-title">Prochains Rendez-vous</h3>
+    <div class="appointments-grid">
+      <app-prochain-rendez-vous ></app-prochain-rendez-vous>
+    </div>
+  </div>
 
+  <!-- Bouton flottant -->
+  <button class="floating-action-btn" (click)="onCreateCourse()">
+    <i class="fa-solid fa-plus"></i>
+    <span>Nouveau Service</span>
+  </button>
+  
+  <app-footer></app-footer>
+</div>
 
-
-
+<!-- Loader pour l'état de chargement -->
+<div *ngIf="isLoading" class="loading-overlay">
+  <div class="spinner"></div>
+</div>

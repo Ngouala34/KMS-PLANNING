@@ -1,54 +1,125 @@
 <app-header-expert [showSearch]="false"></app-header-expert>
 <div class="sidebar-container">
-    <app-sidebar-expert  [collapsedByDefault]="true"  (sidebarToggle)="isSidebarCollapsed = $event" ></app-sidebar-expert>
-
+    <app-sidebar-expert [collapsedByDefault]="false" (sidebarToggle)="isSidebarCollapsed = $event"></app-sidebar-expert>
 </div>
 
 <div class="formation-container" [ngClass]="{ 'expanded': isSidebarCollapsed }">   
-    
-
     <div class="search-container">
         <div class="search-bar">
-          <input 
-            type="text" 
-            placeholder="Rechercher une formation..." 
-            class="search-input"
-            aria-label="Rechercher des formations"
-          />
-          <button class="search-btn" aria-label="Lancer la recherche">
-            <i class="fas fa-search"></i>
-          </button>
+            <input 
+                type="text" 
+                placeholder="Rechercher une formation par nom ..." 
+                class="search-input"
+                aria-label="Rechercher des formations"
+                [(ngModel)]="searchQuery"
+                (input)="onSearch()"
+            />
+            <button class="search-btn" aria-label="Lancer la recherche">
+                <i class="fas fa-search"></i>
+            </button>
         </div>
     </div>
-        <div class="formation-section">
-            <h1 class="h1">Historique des formations </h1>
-            <div class="services-grid">
-            <div class="service-card">
-                <!-- Image -->
-                <div class="service-image-container">
-                <img [src]="service.imageUrl" [alt]="service.title" class="service-image" />
-                </div>
-            
-                <!-- Détails service -->
-                <h3 class="service-title">{{ service.title }}</h3>
-                
-                <div>
-                    Date: {{service.date}}
-                </div>
-                <!-- Expert -->
-                <div class="">
-                    <span class="rating-count">Souscriptions : {{ service.souscriptions }}</span>
-                </div>
-                
 
-                <!--<p class="service-description">{{ service.description }}</p>-->
-            
-                <div class="price">Prix : {{ service.price }} fcfa</div>
+    <div class="formation-section">
+        <h1 class="h1">Historique des formations</h1>
+        
+         <div class="services-grid">
+            <div class="service-card" *ngFor="let formation of paginatedFormations">
+                <div class="service-image-container">
+                    <img [src]="formation.imageUrl" [alt]="formation.title" class="service-image" />
+                    
+                    <!-- Icônes au survol -->
+                    <div class="hover-actions">
+                        <button class="action-btn" aria-label="Recherche visuelle">
+                            <i class="fas fa-search-plus"></i>
+                        </button>
+                        <button class="action-btn" aria-label="Transférer">
+                            <i class="fas fa-share-alt"></i>
+                        </button>
+                        <button class="action-btn" aria-label="Télécharger">
+                            <i class="fas fa-download"></i>
+                        </button>
+                    </div>
+                </div>
                 
+                <div class="service-content">
+                    <h3 class="service-title">{{ formation.title }}</h3>
+                    
+                    <div class="service-meta">
+                        <div>
+                            <i class="fas fa-calendar-alt"></i>
+                            <span>Date: {{ formation.date }}</span>
+                        </div>
+                        <div>
+                            <i class="fas fa-users"></i>
+                            <span>Souscriptions: {{ formation.subscriptions }}</span>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="price">Prix: {{ formation.price | currency:'CFA':'symbol':'1.0-0' }}</div>
+
+                        <!-- Bouton "Voir plus" -->
+                        <button class="see-more-btn" (click)="viewDetails(formation)">
+                            Voir plus <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+
                 </div>
             </div>
         </div>
+
+        <!-- Pagination -->
+        <div class="pagination" *ngIf="filteredFormations.length > itemsPerPage">
+            <button 
+                class="pagination-btn" 
+                [disabled]="currentPage === 1"
+                (click)="goToPage(1)"
+                aria-label="Première page"
+            >
+                <i class="fas fa-angle-double-left"></i>
+            </button>
+            <button 
+                class="pagination-btn" 
+                [disabled]="currentPage === 1"
+                (click)="goToPage(currentPage - 1)"
+                aria-label="Page précédente"
+            >
+                <i class="fas fa-angle-left"></i>
+            </button>
+            
+            <div class="page-numbers">
+                <button 
+                    *ngFor="let page of getPageNumbers()" 
+                    class="page-number" 
+                    [class.active]="page === currentPage"
+                    (click)="goToPage(page)"
+                     [attr.aria-label]="'Modifier la formation '">
+                    {{ page }}
+                </button>
+            </div>
+            
+            <button 
+                class="pagination-btn" 
+                [disabled]="currentPage === totalPages"
+                (click)="goToPage(currentPage + 1)"
+                aria-label="Page suivante"
+            >
+                <i class="fas fa-angle-right"></i>
+            </button>
+            <button 
+                class="pagination-btn" 
+                [disabled]="currentPage === totalPages"
+                (click)="goToPage(totalPages)"
+                aria-label="Dernière page"
+            >
+                <i class="fas fa-angle-double-right"></i>
+            </button>
+        </div>
+    </div>
+
+    <div *ngIf="notify" class="notification">
+        Nouvelle notification ({{ notificationCount }})
+    </div>
+
+    <app-footer></app-footer>  
 </div>
-
-
-

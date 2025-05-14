@@ -2,85 +2,222 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CourseService } from 'src/app/services/course.service';
 
+interface DashboardStats {
+  coursesCreated: number;
+  participantsEnrolled: number;
+  revenueGenerated: number;
+  upcomingSessions: number;
+}
+
+interface Course {
+  id: string;
+  title: string;
+  imageUrl: string;
+  date: string;
+  subscriptions: number;
+  price: number;
+  // Ajoutez d'autres propriétés selon les besoins
+}
+
+interface Appointment {
+  id: string;
+  title: string;
+  date: string;
+  clientName: string;
+  // Ajoutez d'autres propriétés selon les besoins
+}
+
 @Component({
   selector: 'app-expert-dashboard',
   templateUrl: './dashboard-expert.component.html',
   styleUrls: ['./dashboard-expert.component.scss']
 })
 export class DashboardExpertComponent implements OnInit {
-
-  collapsedByDefault = true; // Indique si la sidebar est réduite au départ
-  isSidebarCollapsed = true;
-  isModalOpen = false;
-
-  course = {
-    title: '',
-    category: '',
-    price: 0,
-    duration: 0,
-    description: '',
-    coverImage: ''
+  // État de la sidebar
+  isSidebarCollapsed: boolean = false;
+  
+  // Données statistiques
+  stats: DashboardStats = {
+    coursesCreated: 0,
+    participantsEnrolled: 0,
+    revenueGenerated: 0,
+    upcomingSessions: 0
   };
 
-  categories = ['Développement Web', 'Marketing Digital', 'Design', 'Business', 'Photographie'];
+  // Liste des cours/formations
+  courses: Course[] = [];
+  
+  // Prochains rendez-vous
+  upcomingAppointments: Appointment[] = [];
+  
+  // Catégories disponibles
+  categories: string[] = [];
+  
+  // Chargement des données
+  isLoading: boolean = true;
+  error: string | null = null;
 
+  constructor(
+    private router: Router, 
+    private courseService: CourseService
+  ) {}
 
-  constructor(private router : Router, private courseService: CourseService) { }
   ngOnInit(): void {
-    this.isSidebarCollapsed = this.collapsedByDefault;
+    this.loadDashboardData();
+    this.loadCategories();
   }
 
-  service = {
-    imageUrl: 'https://i.pinimg.com/736x/cf/f5/e1/cff5e1cba8964bcaeaee87cf0eaecb59.jpg',
-    expertProfil: 'https://i.pinimg.com/736x/a8/ba/96/a8ba9626de3fadff0b38e1c83cdea435.jpg',
-    expertName: 'Rehan',
-    title: ' Développement WordPress',
-    description: 'Je suis un développeur WordPress et j\'aime créer des sites Web WordPress personnalisés et réactifs.',
-    avarage: 4.2,
-    ratingCount: 120,
-    souscriptions : 24,
-    price: 80,
-    date: '12/02/202',
-  };
+  // Charger les données du dashboard
+  private loadDashboardData(): void {
+    this.isLoading = true;
+    
+    // À remplacer par des appels API réels
+    this.mockLoadStats();
+    this.mockLoadCourses();
+    this.mockLoadAppointments();
+    
+    this.isLoading = false;
+  }
+
+  // Charger les catégories
+  private loadCategories(): void {
+    // À remplacer par un appel API
+    this.categories = [
+      'Développement Web', 
+      'Marketing Digital', 
+      'Design', 
+      'Business', 
+      'Photographie'
+    ];
+  }
+
+  // --- Méthodes mockées pour la préparation API ---
+
+  private mockLoadStats(): void {
+    // Remplacer par: this.courseService.getDashboardStats().subscribe(...)
+    setTimeout(() => {
+      this.stats = {
+        coursesCreated: 12,
+        participantsEnrolled: 345,
+        revenueGenerated: 12500,
+        upcomingSessions: 5
+      };
+    }, 500);
+  }
+
+
+  private mockLoadAppointments(): void {
+    // Remplacer par: this.courseService.getUpcomingAppointments().subscribe(...)
+    setTimeout(() => {
+      this.upcomingAppointments = [
+        // Exemple de données de rendez-vous
+      ];
+    }, 1000);
+  }
+
+  // --- Méthodes d'action ---
+
+  onCreateCourse(): void {
+    this.router.navigate(['/create-course']);
+  }
 
   // Méthode pour gérer la sélection d'une image
-  onFileSelected(event: any) {
-    const file = event.target.files[0];
-    if (file) {
-      this.course.coverImage = file;
+  onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      // Traitement du fichier si nécessaire
     }
   }
 
-  // Méthode pour envoyer les données du formulaire à l'API
-  onSubmit() {
-    const formData = new FormData();
-    formData.append('title', this.course.title);
-    formData.append('category', this.course.category);
-    formData.append('price', this.course.price.toString());
-    formData.append('duration', this.course.duration.toString());
-    formData.append('description', this.course.description);
-    formData.append('coverImage', this.course.coverImage);
 
-    this.courseService.createCourse(formData).subscribe(
-      (      response: any) => {
-        console.log('Formation ajoutée :', response);
-        alert('Formation créée avec succès!');
-        this.close(); // Fermer le modal après envoi
+
+  // Ajoutez cette propriété pour gérer l'affichage limité
+displayedCourses: Course[] = [];
+coursesToShow = 4; // Nombre de cours à afficher initialement
+
+// Dans mockLoadCourses(), modifiez pour trier par date
+private mockLoadCourses(): void {
+
+     setTimeout(() => {
+      this.courses = [
+        {
+          id: '1',
+          title: 'Développement WordPress',
+          imageUrl: 'https://i.pinimg.com/736x/cf/f5/e1/cff5e1cba8964bcaeaee87cf0eaecb59.jpg',
+          date: '12/02/2023',
+          subscriptions: 24,
+          price: 80
+        }
+        // Ajouter d'autres cours si nécessaire
+      ];
+    }, 700);
+
+  setTimeout(() => {
+    this.courses = [
+      {
+        id: '1',
+        title: 'Développement WordPress',
+        imageUrl: 'https://i.pinimg.com/736x/cf/f5/e1/cff5e1cba8964bcaeaee87cf0eaecb59.jpg',
+        date: '2023-12-02', // Modifiez le format de date pour faciliter le tri
+        subscriptions: 24,
+        price: 80
       },
-      (      error: any) => {
-        console.error('Erreur lors de la création de la formation', error);
-        alert('Une erreur est survenue lors de la création de la formation.');
+      // Ajoutez d'autres exemples avec des dates différentes
+      {
+        id: '2',
+        title: 'Angular Avancé',
+        imageUrl: 'https://example.com/angular.jpg',
+        date: '2023-11-15',
+        subscriptions: 15,
+        price: 100
+      },
+      {
+        id: '3',
+        title: 'Marketing Digital',
+        imageUrl: 'https://example.com/marketing.jpg',
+        date: '2023-12-20',
+        subscriptions: 30,
+        price: 70
+      },
+      {
+        id: '4',
+        title: 'Design UI/UX',
+        imageUrl: 'https://example.com/design.jpg',
+        date: '2023-11-10',
+        subscriptions: 20,
+        price: 90
+      },
+      {
+        id: '5',
+        title: 'Data Science',
+        imageUrl: 'https://example.com/datascience.jpg',
+        date: '2023-12-05',
+        subscriptions: 18,
+        price: 120
       }
-    );
-  }
+    ];
 
-  // Méthode pour fermer le modal
-  close() {
-    this.isModalOpen = false;
-  }
-  onCreateCourse() : void {
-this.router.navigateByUrl('create-course');
-  }
-  
+    // Triez les cours par date croissante
+    this.courses.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+    
+    // Formatez la date pour l'affichage
+    this.courses.forEach(course => {
+      course.date = this.formatDate(course.date);
+    });
+    
+    // Initialisez les cours à afficher
+    this.displayedCourses = this.courses.slice(0, this.coursesToShow);
+  }, 700);
+}
 
+// Ajoutez cette méthode pour formater la date
+private formatDate(dateString: string): string {
+  const date = new Date(dateString);
+  return date.toLocaleDateString('fr-FR'); // Format français
+}
+
+// Ajoutez cette méthode pour voir plus de formations
+showMoreCourses(): void {
+  this.router.navigate(['/mes-formations']); // Adaptez la route selon votre configuration
+}
 }

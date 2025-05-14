@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ChartConfiguration, ChartType, ChartData } from 'chart.js';
+import { ChartConfiguration, ChartType } from 'chart.js';
 
 @Component({
   selector: 'app-revenue-chart',
@@ -7,105 +7,146 @@ import { ChartConfiguration, ChartType, ChartData } from 'chart.js';
   styleUrls: ['./revenue-chart.component.scss']
 })
 export class RevenueChartComponent implements OnInit {
-  // Options pour le graphique linéaire
+
+
+  constructor() {     this.lineChartData = {
+      labels: [],
+      datasets: []
+    };}
+  // Options pour le graphique
   public lineChartOptions: ChartConfiguration['options'] = {
     responsive: true,
+    maintainAspectRatio: false,
     plugins: {
-      title: {
-        display: true,
-        text: 'Évolution des revenus',
-        font: { size: 16 }
-      },
+      legend: { display: false },
       tooltip: {
         callbacks: {
-          label: (context) => `${context.parsed.y.toLocaleString()} fcfa`
+          label: (context) => `${context.parsed.y.toLocaleString('fr-FR')} FCFA`
         }
       }
     },
     scales: {
       y: {
         ticks: {
-          callback: (value) => `${value.toLocaleString()} fcfa`
+          callback: (value) => `${Number(value).toLocaleString('fr-FR')} FCFA`
         }
       }
     }
   };
 
   public lineChartType: ChartType = 'line';
-  public lineChartLegend = true;
+  public lineChartLegend = false;
+  public lineChartData: ChartConfiguration['data'];
 
-   getPeriodLabel(period: string): string {
-    const labels: { [key: string]: string } = {
-      'jour': 'Par jour',
-      'mois': 'Par mois',
-      'annee': 'Par année'
-    };
-    return labels[period] || period;
-  }
+  // Données dynamiques
+  public periodOptions = [
+    { value: 'day', label: 'Journalier' },
+    { value: 'week', label: 'Hebdomadaire' },
+    { value: 'month', label: 'Mensuel' },
+    { value: 'year', label: 'Annuel' }
+  ];
 
-  // Données pour le graphique linéaire
-  public lineChartData: ChartConfiguration['data'] = {
-    labels: ['lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'],
-    datasets: [
-      {
-        data: [1200000, 950000, 1400000, 1100000, 1750000, 1300000, 2000000],
-        label: 'Revenus totaux',
-        borderColor: '#3498db',
-        backgroundColor: 'rgba(52, 152, 219, 0.2)',
-        tension: 0.3,
-        fill: true
-        
-      },
-     
-    ]
-  };
+  public selectedPeriod = 'week';
+  public currentRevenue = 24500000;
+  public revenueChange = 8.5;
 
-
-
-
-
-  // Sélecteur de période
-  public selectedPeriod: string = 'jour';
-
-  constructor() { }
+  public kpis = [
+    {
+      title: 'Revenu Mensuel',
+      value: 450000,
+      type: 'currency',
+      trend: 8.5,
+      icon: 'fas fa-wallet',
+      color: '#4361ee',
+      tooltip: '+8.5% vs mois dernier',
+      highlight: true
+    },
+    {
+      title: 'Souscriptions',
+      value: 248,
+      type: 'number',
+      trend: -2.3,
+      icon: 'fas fa-users',
+      color: '#f72585',
+      tooltip: '-2.3% vs trimestre dernier'
+    },
+    {
+      title: 'Revenu Moyen',
+      value: 24500,
+      type: 'currency',
+      trend: 12.1,
+      icon: 'fas fa-chart-line',
+      color: '#4cc9f0',
+      tooltip: '+12.1% vs 2024'
+    },
+    {
+      title: 'Rendez-vous',
+      value: 153,
+      type: 'number',
+      trend: 6.2,
+      icon: 'fas fa-calendar-check',
+      color: '#f8961e',
+      tooltip: '+6.2% vs mois dernier'
+    },
+    {
+      title: 'Satisfaction',
+      value: 4.7,
+      type: 'rating',
+      trend: 0.2,
+      icon: 'fas fa-star',
+      color: '#4895ef',
+      tooltip: '+0.2 depuis la semaine dernière'
+    },
+    {
+      title: 'Revenu Cumulé',
+      value: 85000000,
+      type: 'currency',
+      trend: 0,
+      icon: 'fas fa-chart-pie',
+      color: '#3f37c9',
+      tooltip: 'Total depuis le début'
+    }
+  ];
 
   ngOnInit(): void {
-    // Ici tu pourrais faire un appel API pour récupérer les vraies données
+    this.updateChartData(this.selectedPeriod);
   }
 
   updateChartData(period: string): void {
     this.selectedPeriod = period;
     
-    // Créer un nouvel objet pour forcer la détection de changement
-    const newData: ChartConfiguration['data'] = { ...this.lineChartData };
-    
-    if (period === 'mois') {
-      newData.labels = ['Janvier', 'Fevrier', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Aout', 'Septembre', 'Octobre', 'Novembre', 'Decembre'];
-      newData.datasets = [
-        {
-          ...newData.datasets[0],
-          data: [3500000, 4200000, 3800000, 4500000, 5000000, 4800000, 5200000, 6000000, 5500000, 6200000, 7000000, 8000000]
-        }
-      ];
-    }
-    else if (period === 'annee') {
-      newData.labels = ['2021', '2022', '2023', '2024', '2025'];
-      newData.datasets = [
-        {
-          ...newData.datasets[0],
-          data: [5000000, 45000000, 40000000, 55000000, 35000000]
-        }
-      ];
-    } else {
-      newData.labels = ['lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'];
-      newData.datasets = [
-        {
-          ...newData.datasets[0],
-          data: [1200000, 950000, 1400000, 1100000, 1750000, 1300000, 2000000]
-        }
-      ];
-    }
-    
-    this.lineChartData = newData;
+    // Simuler des données différentes selon la période
+    const sampleData = {
+      day: Array.from({length: 7}, () => Math.floor(Math.random() * 2000000) + 500000),
+      week: Array.from({length: 4}, () => Math.floor(Math.random() * 8000000) + 2000000),
+      month: Array.from({length: 12}, () => Math.floor(Math.random() * 10000000) + 3000000),
+      year: Array.from({length: 5}, (_, i) => (i + 1) * 10000000)
+    };
+
+    const labels = {
+      day: ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'],
+      week: ['Sem 1', 'Sem 2', 'Sem 3', 'Sem 4'],
+      month: ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Jun', 'Jul', 'Aoû', 'Sep', 'Oct', 'Nov', 'Déc'],
+      year: ['2020', '2021', '2022', '2023', '2024']
+    };
+
+    this.lineChartData = {
+      labels: labels[period as keyof typeof labels],
+      datasets: [{
+        data: sampleData[period as keyof typeof sampleData],
+        borderColor: '#4361ee',
+        backgroundColor: '#74c1fc76',
+        tension: 0.4,
+        fill: true,
+        pointBackgroundColor: '#fff',
+        pointBorderColor: '#4361ee',
+        pointHoverRadius: 1,
+        borderWidth: 1
+      }]
+    };
+
+    // Mettre à jour les indicateurs
+    this.currentRevenue = sampleData[period as keyof typeof sampleData].reduce((a, b) => a + b, 0);
+    this.revenueChange = period === 'day' ? 8.5 : period === 'week' ? 5.2 : period === 'month' ? 12.1 : 18.4;
   }
 }

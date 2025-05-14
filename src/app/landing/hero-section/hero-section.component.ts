@@ -19,7 +19,7 @@ import { trigger, transition, style, animate } from '@angular/animations';
 })
 export class HeroSectionComponent implements OnInit, OnDestroy {
   images = [
-    { url: 'assets/images/th.jpg', title: 'Trouvez des experts certifiés pour tous vos besoins', subtitle: 'Leur expertise est mobilisée pour vous accompagner efficacement, quelle que soit la nature de vos besoins.' },
+    { url: 'assets/images/th.jpg', title: 'Trouvez des experts certifiés pour tous vos besoins', subtitle: 'Gagnez du temps, travaillez avec les meilleurs.' },
     { url: 'assets/images/tf.jpg', title: 'Une offre variée, des services exclusifs', subtitle: 'Découvrez des formations et prestations uniques, conçues pour vous.' },
     { url: 'assets/images/tf.webp', title: 'Réservez un service en quelques clics', subtitle: 'Prenez rendez-vous avec un expert qualifié .' },
 

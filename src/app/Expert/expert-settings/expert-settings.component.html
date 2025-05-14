@@ -2,7 +2,7 @@
 
 <div class="sidebar-container">
   <app-sidebar-expert 
-    [collapsedByDefault]="true" 
+    [collapsedByDefault]="false" 
     (sidebarToggle)="isSidebarCollapsed = $event">
   </app-sidebar-expert>
 </div>
@@ -13,7 +13,7 @@
   </header>
 
   <div class="settings-body">
-    <nav class="settings-nav">
+    <nav class="settings-nav-horizontal">
       <button class="nav-item" 
               [class.active]="activeTab === 'profile'" 
               (click)="changeTab('profile')">
@@ -32,108 +32,103 @@
     </nav>
 
     <main class="settings-content">
+   <!-- Dans le template (remplacer la partie profil actuelle) -->
+<div *ngIf="activeTab === 'profile'" class="profile-section">
+  <section [formGroup]="profileForm" class="profile-form">
+    <h2 class="profile-title"><i class="fas fa-user-circle"></i> Profil Public</h2>
 
-     <!-- Profil -->
-<div *ngIf="activeTab === 'profile'" class="form-section">
-  <section [formGroup]="profileForm">
-    <h2><i class="fas fa-user-circle"></i> Profil Public</h2>
-
-    <div class="avatar-upload">
-      <img [src]="profileForm.get('avatar')?.value || 'assets/images/default-avatar.jpg'" 
-           alt="Avatar" class="avatar-preview">
-      <label class="upload-btn">
-        <i class="fas fa-camera"></i> Changer
-        <input type="file" accept="image/*" (change)="onFileSelected($event)" hidden>
-      </label>
-    </div>
-
-    <div class="form-row">
-      <div class="form-group half-width">
-        <label>Prénom</label>
-        <input type="text" formControlName="firstName" 
-               [value]="profileForm.get('firstName')?.value" 
-               placeholder="Votre prénom">
-        <div *ngIf="firstName.invalid && (firstName.dirty || firstName.touched)" class="error-message">
-          <div *ngIf="firstName.errors?.required">Le prénom est requis</div>
-        </div>
+    <div class="profile-header">
+      <div class="avatar-container">
+        <img [src]="profileForm.get('avatar')?.value || 'assets/images/default-avatar.jpg'" 
+             alt="Avatar" class="avatar-image">
+        <label class="avatar-upload-btn">
+          <i class="fas fa-camera"></i> Changer la photo
+          <input type="file" accept="image/*" (change)="onFileSelected($event)" hidden>
+        </label>
       </div>
 
-      <div class="form-group half-width">
-        <label>Nom</label>
-        <input type="text" formControlName="lastName" 
-               [value]="profileForm.get('lastName')?.value" 
-               placeholder="Votre nom">
-        <div *ngIf="lastName.invalid && (lastName.dirty || lastName.touched)" class="error-message">
-          <div *ngIf="lastName.errors?.required">Le nom est requis</div>
-        </div>
-      </div>
-    </div>
+      <div class="profile-basic-info">
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Prénom</label>
+            <input type="text" formControlName="firstName" class="form-input"
+                   placeholder="Votre prénom">
+            <div *ngIf="firstName.invalid && (firstName.dirty || firstName.touched)" class="error-message">
+              <div *ngIf="firstName.errors?.required">Le prénom est requis</div>
+            </div>
+          </div>
 
-    <div class="form-row">
-      <div class="form-group half-width">
-        <label>Email</label>
-        <input type="email" formControlName="email" 
-               [value]="profileForm.get('email')?.value" 
-               placeholder="email@exemple.com">
-        <div *ngIf="email.invalid && (email.dirty || email.touched)" class="error-message">
-          <div *ngIf="email.errors?.required">L'email est requis</div>
-          <div *ngIf="email.errors?.email">Format d'email invalide</div>
+          <div class="form-group">
+            <label class="form-label">Nom</label>
+            <input type="text" formControlName="lastName" class="form-input"
+                   placeholder="Votre nom">
+            <div *ngIf="lastName.invalid && (lastName.dirty || lastName.touched)" class="error-message">
+              <div *ngIf="lastName.errors?.required">Le nom est requis</div>
+            </div>
+          </div>
         </div>
-      </div>
 
-      <div class="form-group half-width">
-        <label>Téléphone</label>
-        <input type="tel" formControlName="phone" 
-               [value]="profileForm.get('phone')?.value" 
-               placeholder="+123 456 7890">
-        <div *ngIf="phone.invalid && (phone.dirty || phone.touched)" class="error-message">
-          <div *ngIf="phone.errors?.pattern">Format de téléphone invalide</div>
+        <div class="form-group">
+          <label class="form-label">Email</label>
+          <input type="email" formControlName="email" class="form-input"
+                 placeholder="email@exemple.com">
+          <div *ngIf="email.invalid && (email.dirty || email.touched)" class="error-message">
+            <div *ngIf="email.errors?.required">L'email est requis</div>
+            <div *ngIf="email.errors?.email">Format d'email invalide</div>
+          </div>
         </div>
       </div>
     </div>
 
-    <div class="form-row">
-      <div class="form-group half-width">
-        <label>Pays</label>
-        <select formControlName="country" 
-                [value]="profileForm.get('country')?.value">
-          <option value="" disabled>Sélectionnez un pays</option>
-          <option *ngFor="let country of countries" [value]="country.code">
-            {{ country.name }}
+    <div class="profile-details">
+      <h3 class="details-title"><i class="fas fa-address-card"></i> Informations personnelles</h3>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Téléphone</label>
+          <input type="tel" formControlName="phone" class="form-input"
+                 placeholder="+123 456 7890">
+          <div *ngIf="phone.invalid && (phone.dirty || phone.touched)" class="error-message">
+            <div *ngIf="phone.errors?.pattern">Format de téléphone invalide</div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Pays</label>
+          <select formControlName="country" class="form-select">
+            <option value="" disabled>Sélectionnez un pays</option>
+            <option *ngFor="let country of countries" [value]="country.code">
+              {{ country.name }}
+            </option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Ville</label>
+          <input type="text" formControlName="city" class="form-input"
+                 placeholder="Votre ville">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Domaine d'expertise</label>
+        <select formControlName="expertise" class="form-select">
+          <option value="" disabled>Sélectionnez votre expertise</option>
+          <option *ngFor="let domain of expertiseDomains" [value]="domain">
+            {{ domain }}
           </option>
         </select>
       </div>
 
-      <div class="form-group half-width">
-        <label>Ville</label>
-        <input type="text" formControlName="city" 
-               [value]="profileForm.get('city')?.value" 
-               placeholder="Votre ville">
+      <div class="form-group">
+        <label class="form-label">Bio</label>
+        <textarea formControlName="bio" rows="4" class="form-textarea"
+                  placeholder="Décrivez votre expertise, vos compétences et votre expérience..."></textarea>
+        <div class="char-counter">{{ profileForm.get('bio')?.value?.length || 0 }}/500</div>
       </div>
-    </div>
-
-    <div class="form-group">
-      <label>Domaine d'expertise</label>
-      <select formControlName="expertise" 
-              [value]="profileForm.get('expertise')?.value">
-        <option value="" disabled>Sélectionnez votre expertise</option>
-        <option *ngFor="let domain of expertiseDomains" [value]="domain">
-          {{ domain }}
-        </option>
-      </select>
-    </div>
-
-    <div class="form-group">
-      <label>Bio</label>
-      <textarea formControlName="bio" rows="4" 
-                placeholder="Décrivez votre expertise, vos compétences et votre expérience...">
-        {{ profileForm.get('bio')?.value }}
-      </textarea>
-      <div class="hint">Maximum 500 caractères</div>
     </div>
   </section>
 </div>
-      
 
       <!-- Sécurité -->
       <section *ngIf="activeTab === 'security'" [formGroup]="securityForm">
@@ -175,40 +170,38 @@
       <!-- Notifications -->
       <section *ngIf="activeTab === 'notifications'" [formGroup]="notificationsForm">
         <div class="notification-settings-container">
-            <h2><i class="fas fa-bell"></i> Paramètres de notification</h2>
+          <h2><i class="fas fa-bell"></i> Paramètres de notification</h2>
           
-            <form (ngSubmit)="saveNotificationSettings()">
-              <div class="notification-option" *ngFor="let notif of notificationOptions">
-                <span>{{ notif.label }}</span>
+          <form (ngSubmit)="saveNotificationSettings()">
+            <div class="notification-option" *ngFor="let notif of notificationOptions">
+              <span>{{ notif.label }}</span>
+              <label class="switch">
+                <input type="checkbox" [(ngModel)]="notif.enabled" [name]="notif.key">
+                <span class="slider round"></span>
+              </label>
+            </div>
+          
+            <div class="privacy-section">
+              <h3>Confidentialité</h3>
+              <div class="notification-option">
+                <span>Ne pas afficher mes infos de contact</span>
                 <label class="switch">
-                  <input type="checkbox" [(ngModel)]="notif.enabled" [name]="notif.key">
+                  <input type="checkbox" [(ngModel)]="privacy.hideContact" name="hideContact">
                   <span class="slider round"></span>
                 </label>
               </div>
-          
-              <div class="privacy-section">
-                <h3>Confidentialité</h3>
-                <div class="notification-option">
-                  <span>Ne pas afficher mes infos de contact</span>
-                  <label class="switch">
-                    <input type="checkbox" [(ngModel)]="privacy.hideContact" name="hideContact">
-                    <span class="slider round"></span>
-                  </label>
-                </div>
-                <div class="notification-option">
-                  <span>Ne pas recevoir d’offres marketing</span>
-                  <label class="switch">
-                    <input type="checkbox" [(ngModel)]="privacy.noMarketing" name="noMarketing">
-                    <span class="slider round"></span>
-                  </label>
-                </div>
+              <div class="notification-option">
+                <span>Ne pas recevoir d'offres marketing</span>
+                <label class="switch">
+                  <input type="checkbox" [(ngModel)]="privacy.noMarketing" name="noMarketing">
+                  <span class="slider round"></span>
+                </label>
               </div>
-          
-            
-            </form>
-          </div>
-          
+            </div>
+          </form>
+        </div>
       </section>
+      
       <footer class="settings-footer">
         <button class="save-btn" 
                 (click)="saveSettings()">
@@ -217,8 +210,7 @@
         </button>
       </footer>
     </main>
-    
   </div>
-
- 
 </div>
+
+<app-footer></app-footer>
