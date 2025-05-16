@@ -1,49 +1,94 @@
+<app-header></app-header>
+<app-sidebar (sidebarToggle)="isSidebarCollapsed = $event"></app-sidebar>
 
-<div class="wrapper">
+<section class="souscription-container" [ngClass]="{ 'expanded': isSidebarCollapsed }">
+  <div class="header">
+  <div class="title">Toutes mes souscriptions</div>
+
+  </div>
+
+  <!-- États spéciaux -->
+  <div *ngIf="isLoading" class="loading-state">
+    <div class="spinner"></div>
+    <p>Chargement de vos souscriptions...</p>
+  </div>
+
+  <div *ngIf="errorMessage" class="error-message">
+    {{ errorMessage }}
+  </div>
+
+  <div *ngIf="!isLoading && souscriptions.length === 0" class="empty-state">
+    <i class="fa-regular fa-folder-open"></i>
+    <h3>Aucune souscription trouvée</h3>
+    <p>Vous n'avez souscrit à aucun service pour le moment</p>
+    <button routerLink="/services" class="btn-explorer">
+      Explorer les services
+    </button>
+  </div>
+
+  <!-- Liste des souscriptions -->
   
-    <div class="main-content">  
-      <!-- Subscription Page -->
-      <div class="subscription-page">
-        <section class="intro">
-          <h1><span>Mes Formations Souscrites</span></h1>
-          <p>Voici toutes les formations auxquelles vous avez souscrit. Suivez vos progrès et accédez au contenu des cours.</p>
-        </section>
-  
-        <section class="course-list">
-          <div class="course-card">
-            <img src="path/to/your-image.jpg" alt="Formation Web" />
-            <h3>Formation Développement Web</h3>
-            <p>Apprenez à créer des sites web interactifs avec HTML, CSS et JavaScript.</p>
-            <div class="course-progress">
-              <span>Progression : 60%</span>
-              <div class="progress-bar">
-                <div class="progress" style="width: 60%"></div>
-              </div>
-            </div>
-            <button>Accéder à la formation</button>
-          </div>
-  
-          <div class="course-card">
-            <img src="path/to/your-image.jpg" alt="Formation UX/UI Design" />
-            <h3>Formation UX/UI Design</h3>
-            <p>Comprendre les principes du design pour créer des interfaces utilisateurs efficaces.</p>
-            <div class="course-progress">
-              <span>Progression : 30%</span>
-              <div class="progress-bar">
-                <div class="progress" style="width: 30%"></div>
-              </div>
-            </div>
-            <button>Accéder à la formation</button>
-          </div>
-  
-          <!-- Ajoute d'autres formations ici -->
-        </section>
-  
-        <section class="support">
-          <h2>Besoin d'aide ?</h2>
-          <p>Consultez notre <a href="/faq">FAQ</a> ou contactez-nous pour plus d'assistance.</p>
-        </section>
+  <div class="services-grid">
+    <div class="service-card" 
+         *ngFor="let service of souscriptions" 
+         (click)="onServiceDetails(service.serviceId)">
+      
+      <div class="service-image-container">
+        <img [src]="service.imageUrl" [alt]="service.title" class="service-image" />
+        <button class="favorite-button" 
+                (click)="toggleFavorite(service, $event)">
+          <i class="fa-heart"
+             [ngClass]="{
+               'far': !service.isFavorite,
+               'fas': service.isFavorite
+             }"></i>
+        </button>
+        <span class="status-badge" [ngClass]="getStatusClass(service.status)">
+          {{ service.status | titlecase }}
+        </span>
+      </div>
+      
+      <div class="expert">
+        <div class="expert-profile">
+          <img [src]="service.expertProfil" class="expert-avatar">
+          <span class="expert-name">{{ service.expertName }}</span>
+        </div>
+        <div class="rating">
+          <span class="stars">
+            <i class="fa fa-star" *ngFor="let star of getStars(service.averageRating)"></i>
+            <span class="avarage">{{service.averageRating | number:'1.1-1'}}</span>
+          </span>
+          <span class="rating-count">({{ service.reviewsCount }})</span>
+        </div>
+      </div>
+      
+      <h3 class="service-title">{{ service.title }}</h3>
+      <p class="service-description">{{ service.description }}</p>
+      
+      <div class="price">Prix : {{ service.price | currency:'CFA':'symbol':'1.0-0' }}</div>
+      
+      <div class="subscription-dates">
+        <small>Souscrit le {{ service.dateSouscription | date:'dd/MM/yyyy' }}</small>
+        <small *ngIf="service.dateExpiration">Expire le {{ service.dateExpiration | date:'dd/MM/yyyy' }}</small>
       </div>
     </div>
   </div>
-  
+
+  <!-- Pagination -->
+  <div *ngIf="!isLoading && souscriptions.length > 0" class="pagination">
+    <button (click)="changePage(currentPage - 1)" [disabled]="currentPage === 1">
+      <i class="fa-solid fa-chevron-left"></i>
+    </button>
+    
+    <span *ngFor="let page of getPages()" 
+          (click)="changePage(page)"
+          [class.active]="page === currentPage">
+      {{ page }}
+    </span>
+    
+    <button (click)="changePage(currentPage + 1)" 
+            [disabled]="currentPage * itemsPerPage >= totalItems">
+      <i class="fa-solid fa-chevron-right"></i>
+    </button>
+  </div>
+</section>

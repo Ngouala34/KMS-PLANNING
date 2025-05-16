@@ -1,70 +1,47 @@
 <app-header></app-header>
 <app-sidebar [collapsedByDefault]="false" (sidebarToggle)="isSidebarCollapsed = $event"></app-sidebar>
 
-<!-- user-dashboard.component.html -->
 <div class="user-dashboard" [ngClass]="{ 'expanded': isSidebarCollapsed }">
-  <h1 class="dashboard-title">Mes Statistiques</h1>
+  <!-- Gestion des erreurs -->
+  <div class="error-message" *ngIf="error">
+    {{ error }}
+  </div>
 
-  <!-- Section Statistiques -->
-  <div class="stats-container">
-    <div class="stat-card fade-in">
-      <i class="fas fa-book"></i>
-      <h3>Formations souscrites</h3>
-      <p>12</p>
+  <!-- Section Bienvenue & Alertes -->
+  <div class="welcome-alert-container" *ngIf="!isLoading">
+    <div class="welcome-card">
+      <div class="cta">
+        <h2>Heureux de vous revoir, <span class="user-name">{{userName}}</span> </h2>
+        <p>Souscrivez à un nouveau service aujourd'hui et montez en compétence </p>
+      </div>
+      <button class="floating-action-btn" (click)="onServiceList()"> Nouveau service</button>
     </div>
-    <div class="stat-card fade-in">
-      <i class="fas fa-check-circle" style="color: green;"></i>
-      <h3>Formations terminées</h3>
-      <p>8</p>
-    </div>
-    <div class="stat-card fade-in">
-      <i class="fas fa-users" style="color: orangered;"></i>
-      <h3>Experts consultés</h3>
-      <p>5</p>
-    </div>
-    <div class="stat-card fade-in">
-      <i class="fas fa-calendar-check" style="color:rgb(190, 42, 235)"></i>
-      <h3>Rendez-vous réservés</h3>
-      <p>10</p>
+    <div class="alert-card">
+      <h3><i class="fas fa-bell"></i> Vos notifications</h3>
+      <div *ngIf="alerts.length > 0; else noAlerts">
+        <div class="alert-item" *ngFor="let alert of alerts">
+          <i class="fas" [ngClass]="{
+            'fa-calendar-check alert-icon success': alert.type === 'appointment',
+            'fa-exclamation-circle alert-icon warning': alert.type === 'warning'
+          }"></i>
+          <p>{{alert.message}}</p>
+        </div>
+      </div>
+      <ng-template #noAlerts>
+        <p class="no-notifications">Aucune notification pour le moment</p>
+      </ng-template>
     </div>
   </div>
 
-  <!-- Section Formations en cours -->
-  <div class="formations-container">
-  <h1 class="dashboard-title">Mes Souscriptions </h1>
-    <div class="formation-grid">
-     
-      
+  <!-- Composants enfants -->
+  <app-user-dashboard-stats [stats]="stats" *ngIf="!isLoading"></app-user-dashboard-stats>
+  <app-user-dashboard-rendez-vous 
+    [appointments]="upcomingAppointments" 
+    *ngIf="!isLoading ">
+  </app-user-dashboard-rendez-vous>
 
-      <div class="formation-card slide-up">
-        <div class="formation-card-content">
-            <img class="formation-card-image" src="https://i.pinimg.com/474x/63/4d/e7/634de7333549f91cf13cabead18f0a6f.jpg" alt="">
-            <div class="formation-card-info">
-                <h3>Formation : Marketing Digital</h3>
-                <p>Expert : Sarah Ndiaye</p>
-                <p>Progression : 40%</p>
-                <div class="progress-bar">
-                <div class="progress2" style="width: 40%;"></div>
-                </div>
-                <button class="btn-annuler">Plus</button>
-            </div>
-        </div>
-      </div>
-
-       <div class="formation-card slide-up">
-        <div class="formation-card-content">
-            <img class="formation-card-image" src="https://i.pinimg.com/474x/63/4d/e7/634de7333549f91cf13cabead18f0a6f.jpg" alt="">
-            <div class="formation-card-info">
-                <h3>Formation : Marketing Digital</h3>
-                <p>Expert : Sarah Ndiaye</p>
-                <p>Progression : 40%</p>
-                <div class="progress-bar">
-                <div class="progress2" style="width: 40%;"></div>
-                </div>
-                <button class="btn-annuler">Plus</button>
-            </div>
-        </div>
-      </div>
-    </div>
+  <!-- Loading state -->
+  <div class="loading-spinner" *ngIf="isLoading ">
+    <i class="fas fa-spinner fa-spin"></i> Chargement en cours...
   </div>
 </div>

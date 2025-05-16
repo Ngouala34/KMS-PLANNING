@@ -4,7 +4,7 @@ import { LandingPageComponent } from './landing/landing-page/landing-page.compon
 import { SidebarComponent } from './user/sidebar/sidebar.component';
 import { UserHomeComponent } from './user/user-home/user-home.component';
 import { UserServComponent } from './user/user-favoris/user-serv.component';
-import { UserSouscriptionsComponent } from './user/user-souscription/user-souscription.component';
+import { UserSouscriptionComponent } from './user/user-souscription/user-souscription.component';
 import { PaymentComponent } from './payment/payment.component';
 import { CreateCourseComponent } from './Expert/create-course/create-course.component';
 import { RevenueChartComponent } from './Expert/charts/revenue-chart/revenue-chart.component';
@@ -35,7 +35,7 @@ const routes: Routes = [
   { path: 'user-home', component: UserHomeComponent },
   { path: 'user-serv', component: UserServComponent },
   { path: 'user-register', component: UserRegisterComponent },
-  { path: 'user-souscriptions', component: UserSouscriptionsComponent },
+  { path: 'user-souscriptions', component: UserSouscriptionComponent },
   { path: 'user-dashboard', component: UserDashboardComponent },
   { path: 'user-historique', component: UserHistoriqueComponent },
   { path: 'user-calendrier', component: UserCalendrierComponent },

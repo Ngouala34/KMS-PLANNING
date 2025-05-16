@@ -1,29 +1,73 @@
 <app-header></app-header>
-<app-sidebar (sidebarToggle)="isSidebarCollapsed = $event"></app-sidebar>
+<app-sidebar [collapsedByDefault]="false" (sidebarToggle)="isSidebarCollapsed = $event"></app-sidebar>
 
-<section class="services-container" [ngClass]="{ 'expanded': isSidebarCollapsed }">
-    <h2 class="title">Mes Favoris !</h2>
+ 
 
-    <!-- Barre de recherche -->
-    <div class="search-bar">
-        <input type="text" placeholder="Rechercher un favoris..." />
-        <button class="btn-search">🔍</button>
-    </div>
+<section  [ngClass]="{ 'expanded': isSidebarCollapsed }" class="souscription-container">
+  <div class="header">
+  <div class="title">Mes services favoris</div>
 
-    <!-- Filtres -->
-    <div class="filters">
-        
-    </div>
+  </div>
 
-    <!-- Grille des services avec animation -->
-    <div class="services-grid" *ngIf="showServices">
-        <div class="service-card" *ngFor="let service of services">
-            <img src="assets/images/serv.jpg" alt="Service">
-            <h3>{{ service.nom }}</h3>
-            <p><strong>{{ service.expert }}</strong></p>
-            <p class="price">{{ service.prix }}fcfa</p>
-            <div class="rating">★★★★★ ({{ service.note }})</div>
-            <button class="btn-book" (click)="OnPayment()">Réserver</button>
+  <!-- État de chargement -->
+  <div *ngIf="isLoading" class="loading-state">
+    <div class="spinner"></div>
+    <p>Chargement de vos favoris...</p>
+  </div>
+
+  <!-- Message d'erreur -->
+  <div *ngIf="errorMessage" class="error-message">
+    {{ errorMessage }}
+  </div>
+
+  <!-- Liste vide -->
+  <div *ngIf="!isLoading && favoris.length === 0" class="empty-state">
+    <i class="fa-regular fa-heart"></i>
+    <h3>Vous n'avez aucun favoris pour le moment</h3>
+    <p>Explorez nos services et ajoutez ceux que vous aimez !</p>
+    <button routerLink="/services" class="btn-explorer">
+      Explorer les services
+    </button>
+  </div>
+
+  <!-- Liste des favoris -->
+  
+  <div class="services-grid">
+    <div class="service-card" 
+         *ngFor="let item of favoris" 
+         (click)="onServiceDetails(item.serviceId)">
+      
+      <div class="service-image-container">
+        <img [src]="item.imageUrl" [alt]="item.title" class="service-image" />
+        <button class="favorite-button" 
+                (click)="toggleFavorite(item, $event)">
+          <i class="fa-solid fa-heart"></i> <!-- Toujours plein car c'est un favori -->
+        </button>
+      </div>
+      
+      <div class="expert">
+        <div class="expert-profile">
+          <img [src]="item.expertProfil" class="expert-avatar">
+          <span class="expert-name">{{ item.expertName }}</span>
         </div>
+        <div class="rating">
+          <span class="stars">
+            <i class="fa fa-star" *ngFor="let star of getStars(item.averageRating)"></i>
+            <span class="avarage">{{item.averageRating | number:'1.1-1'}}</span>
+          </span>
+          <span class="rating-count">({{ item.reviewsCount }})</span>
+        </div>
+      </div>
+      
+      <h3 class="service-title">{{ item.title }}</h3>
+      <p class="service-description">{{ item.description }}</p>
+      
+      <div class="price">Prix : {{ item.price | currency:'CFA':'symbol':'1.0-0' }}</div>
+      
+      <div class="favori-date">
+        <small>Ajouté le {{ item.dateAdded | date:'dd/MM/yyyy' }}</small>
+        <button class="souscrire">souscrire</button>
+      </div>
     </div>
+  </div>
 </section>

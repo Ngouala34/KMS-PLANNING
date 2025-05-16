@@ -1,0 +1,129 @@
+/* Stats Cards */
+.stats-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+  margin-bottom: 40px;
+}
+
+.stat-card {
+  background: rgb(255, 255, 255);
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  line-height: 0;
+  height: 100px;
+  
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+  }
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+  }
+}
+
+.stat-icon-container {
+  width: 50px;
+  height: 50px;
+  border-radius: 12px;
+  background: rgba(67, 97, 238, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 15px;
+  
+  i {
+    font-size: 24px;
+    color: var(--primary-color);
+  }
+}
+
+.stat-card h3 {
+  font-size: 16px;
+  color: var(--gray-color);
+  margin-bottom: 10px;
+  font-weight: 500;
+}
+
+.stat-card p {
+  font-size: 28px;
+  font-weight: 600;
+  color: var(--dark-color);
+  margin-bottom: 15px;
+}
+
+.stat-trend {
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  
+  &.positive {
+    color: var(--success-color);
+  }
+  
+  &.negative {
+    color: var(--danger-color);
+  }
+}
+
+.stat-progress {
+  span {
+    font-size: 12px;
+    color: var(--gray-color);
+    display: block;
+    margin-top: 5px;
+  }
+}
+
+.engagement-meter {
+  height: 6px;
+  background: #096ae9;
+  border-radius: 3px;
+  overflow: hidden;
+  
+  .meter-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #4f46e5, #8b5cf6);
+    border-radius: 3px;
+  }
+}
+
+
+/* Animations */
+.fade-in {
+  animation: fadeIn 0.8s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .stats-container {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .stats-container {
+    grid-template-columns: 1fr;
+  }
+}

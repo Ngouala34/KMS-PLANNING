@@ -13,7 +13,7 @@
     width: 180px;
     height: 100vh;
     background-color: #0e0f49;
-    color: white;
+    color: rgb(238, 238, 238);
     padding: 20px;
     overflow: hidden;
     transition: width 0.3s ease-in-out;
@@ -50,7 +50,7 @@
 #fa-bars {
     margin-left: 160px;
     margin-top: -20px;
-    font-size: 24px;
+    font-size: 20px;
     position: fixed;
     cursor: pointer;
     transition: transform 0.3s ease-in-out;
@@ -127,7 +127,7 @@
 
 /* Liens */
 .components a {
-    color: white;
+    color: rgb(237, 236, 236);
     text-decoration: none;
     font-size: 16px;
     transition: opacity 0.3s ease-in-out;

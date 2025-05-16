@@ -1,46 +1,44 @@
 <section class="sidebar-container">
-    <div class="sidebar" [class.collapsed]="isCollapsed">
-        <div class="sidebar-header">
-            <i id="fa-bars" class="fa-solid fa-right-left" (click)="toggleSidebar()"></i>
-            <h3 *ngIf="!isCollapsed"></h3>
-        </div>
-        <ul class="list-unstyled components">
-            <!-- Bouton flottant amélioré -->
-   
-            <li routerLink="/dashboard-expert" routerLinkActive="active" (click)="OnExpertdashboard()">
-                <i class="fa-solid fa-money-bill-wave"></i>
-                <a >Dashboard</a>
-            </li>
-            <li routerLink="/expert-formation" routerLinkActive="active" (click)="OnExpertformation()">
-                <i class="fa-solid fa-pen"></i>
-                <a >Formations</a>
-            </li>
-
-            <li routerLink="/expert-rendez-vous" routerLinkActive="active" (click)="OnExpertrendezvous()">
-                <i class="fa-solid fa-calendar"></i>
-                <a  >Rendez-vous</a>
-            </li>
-            <li routerLink="/expert-settings" routerLinkActive="active" (click)="OnSettings()">
-                <i class="fa-solid fa-cog"></i>
-                <a >Paramètres</a>
-            </li>
-
-            <li routerLink="/user-profile" routerLinkActive="active" class="profile">
-                <i class="fa-solid fa-dollar-sign"></i>
-                <a >historiques</a>
-            </li>
-            <li routerLink="/user-Deconnexion" routerLinkActive="active" (click)="Ondeconnexion()">
-                <i class="fa-solid fa-right-from-bracket"></i>
-                <a >Deconnexion</a>
-            </li><br><br>
-            <li routerLink="/expert" routerLinkActive="active" class="floating-action-btn" (click)="onCreateCourse()">
-                <i class="fa-solid fa-plus"></i>
-                <a>Nouveau service</a>
-            </li>
-
-
-
-        </ul>
+  <div class="sidebar" [class.collapsed]="isCollapsed">
+    <div class="sidebar-header">
+      <i id="fa-bars" class="fa-solid fa-right-left" (click)="toggleSidebar()"></i>
+      <h3 *ngIf="!isCollapsed"></h3>
     </div>
 
+    <ul class="list-unstyled components">
+
+      <li routerLink="/dashboard-expert" routerLinkActive="active" (click)="OnExpertdashboard()">
+        <i class="fa-regular fa-chart-bar" style="color: #16a085;"></i>
+        <a>Dashboard</a>
+      </li>
+
+      <li routerLink="/expert-formation" routerLinkActive="active" (click)="OnExpertformation()">
+        <i class="fa-regular fa-pen-to-square" style="color: #d35400;"></i>
+        <a>Formations</a>
+      </li>
+
+      <li routerLink="/expert-rendez-vous" routerLinkActive="active" (click)="OnExpertrendezvous()">
+        <i class="fa-regular fa-calendar" style="color: #2980b9;"></i>
+        <a>Planifications</a>
+      </li>
+
+      <li routerLink="/expert-settings" routerLinkActive="active" (click)="OnSettings()">
+        <i class="fa-regular fa-circle-user" style="color: #8e44ad;"></i>
+        <a>Paramètres</a>
+      </li>
+
+      <li routerLink="/user-Deconnexion" routerLinkActive="active" (click)="Ondeconnexion()">
+        <i class="fa-regular fa-circle-xmark" style="color: #c0392b;"></i>
+        <a>Déconnexion</a>
+      </li>
+
+      <br><br>
+
+      <li routerLink="/expert" routerLinkActive="active" class="floating-action-btn" (click)="onCreateCourse()">
+        <i class="fa-regular fa-square-plus" style="color: #09ce1d;"></i>
+        <a>Nouveau service</a>
+      </li>
+
+    </ul>
+  </div>
 </section>

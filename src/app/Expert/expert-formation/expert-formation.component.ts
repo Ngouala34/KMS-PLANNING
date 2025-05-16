@@ -12,6 +12,7 @@ interface Formation {
   subscriptions: number;
   price: number;
   date: string;
+  
 }
 
 @Component({

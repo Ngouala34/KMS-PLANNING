@@ -1,40 +1,40 @@
 <section class="sidebar-container">
-    <div class="sidebar" [class.collapsed]="isCollapsed">
-        <div class="sidebar-header">
-            <i id="fa-bars" class="fa-solid fa-right-left" (click)="toggleSidebar()"></i>
-            <h3 *ngIf="!isCollapsed"></h3>
-        </div>
-        <ul class="list-unstyled components">
-            <li routerLink="/user-dashboard" routerLinkActive="active" (click)="OnUserdashboard()">
-                <i class="fa-solid fa-money-bill-wave"></i>
-                <a >Dashboard</a>
-            </li>
-            <li routerLink="/user-home" routerLinkActive="active" (click)="OnUserConnexion()">
-                <i class="fa-solid fa-house"></i>
-                <a  >accueil</a>
-            </li>
-            <li routerLink="/user-serv" routerLinkActive="active" (click)="OnUserService()">
-                <i class="fa-solid fa-globe"></i>
-                <a >Mes Favoris</a>
-            </li>
-            <li routerLink="/user-historique" routerLinkActive="active" (click)="OnUserHistorique()">
-                <i class="fa-solid fa-history"></i>
-                <a  >Historique </a>
-            </li>
-            <li routerLink="/user-calendrier" routerLinkActive="active" (click)="OnUserCalendrier()">
-                <i class="fa-solid fa-calendar"></i>
-                <a  >Calendrier</a>
-            </li>
-            <li routerLink="/user-parameter" routerLinkActive="active" (click)="OnUserParameter()">
-                <i class="fa-solid fa-cog"></i>
-                <a routerLink="/parametres" *ngIf="!isCollapsed">Paramètres</a>
-            </li>
-            <li routerLink="/user-Deconnexion" routerLinkActive="active" (click)="Ondeconnexion()">
-                <i class="fa-solid fa-right-from-bracket"></i>
-                <a >Deconnexion</a>
-            </li>
-
-
-        </ul>
+  <div class="sidebar" [class.collapsed]="isCollapsed">
+    <div class="sidebar-header">
+      <i id="fa-bars" class="fa-solid fa-right-left" (click)="toggleSidebar()"></i>
+      <h3 *ngIf="!isCollapsed"></h3>
     </div>
+
+    <ul class="list-unstyled components">
+      <li routerLink="/user-dashboard" routerLinkActive="active" (click)="OnUserdashboard()">
+        <i class="fa-regular fa-chart-bar" style="color: #e67e22;"></i>
+        <a>Dashboard</a>
+      </li>
+
+      <li routerLink="/user-souscriptions" routerLinkActive="active" (click)="OnUserSouscription()">
+        <i class="fa-regular fa-clock" style="color: #8e44ad;"></i>
+        <a>Souscriptions</a>
+      </li>
+
+      <li routerLink="/user-serv" routerLinkActive="active" (click)="OnUserService()">
+        <i class="fa-regular fa-heart" style="color: #2980b9;"></i>
+        <a>Mes Favoris</a>
+      </li>
+
+      <li routerLink="/user-calendrier" routerLinkActive="active" (click)="OnUserCalendrier()">
+        <i class="fa-regular fa-calendar" style="color: #27ae60;"></i>
+        <a>Calendrier</a>
+      </li>
+
+      <li routerLink="/user-parameter" routerLinkActive="active" (click)="OnUserParameter()">
+        <i class="fa-regular fa-circle-user" style="color: #d35400;"></i>
+        <a >Paramètres</a>
+      </li>
+
+      <li routerLink="/user-Deconnexion" routerLinkActive="active" (click)="Ondeconnexion()">
+        <i class="fa-regular fa-circle-xmark" style="color: #c0392b;"></i>
+        <a>Déconnexion</a>
+      </li>
+    </ul>
+  </div>
 </section>

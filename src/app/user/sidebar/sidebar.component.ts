@@ -39,8 +39,8 @@ export class SidebarComponent implements OnInit {
   OnUserprofile(): void {
     this.router.navigateByUrl('user-profile');
   } 
-   OnUserHistorique(): void {
-    this.router.navigateByUrl('user-historique');
+   OnUserSouscription(): void {
+    this.router.navigateByUrl('user-souscriptions');
   }
   OnUserCalendrier(): void {
     this.router.navigateByUrl('user-calendrier');

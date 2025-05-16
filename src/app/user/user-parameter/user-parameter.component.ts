@@ -1,7 +1,7 @@
 
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { UserService } from '../../services/user.service';
+import { UserService } from '../../services/user/user.service';
 import { debounceTime } from 'rxjs/operators';
 
 @Component({
@@ -15,6 +15,8 @@ export class UserParameterComponent implements OnInit {
   isLoading = false;
   isSaving = false;
   user: any;
+  isSidebarCollapsed = false;
+  collapsedByDefault = false;
 
   constructor(
     private fb: FormBuilder,

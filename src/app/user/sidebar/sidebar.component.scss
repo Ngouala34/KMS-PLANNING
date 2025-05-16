@@ -6,14 +6,15 @@
     padding-top: 57px;
     height: 100vh;
     z-index: 1000;
+    
 }
 
 /* Sidebar */
 .sidebar {
-    width: 200px;
+    width: 180px;
     height: 100vh;
     background-color: #0e0f49;
-    color: white;
+    color: rgb(238, 238, 238);
     transition: width 0.3s ease-in-out;
     padding: 20px;
     overflow: hidden;
@@ -42,9 +43,9 @@
 
 /* Icône du menu burger */
 #fa-bars {
-    margin-left: 170px;
+    margin-left: 160px;
     margin-top: -20px;
-    font-size: 24px;
+    font-size: 20px;
     position: fixed;
     cursor: pointer;
     transition: transform 0.3s ease-in-out;
@@ -77,13 +78,13 @@
 
 /* Icônes */
 .components i {
-    font-size: 20px;
+    font-size: 16px;
     width: 30px;
 }
 
 /* Liens */
 .components a {
-    color: white;
+    color: rgb(237, 236, 236);;
     text-decoration: none;
     font-size: 16px;
     transition: opacity 0.3s ease-in-out;
@@ -130,12 +131,12 @@ margin-top: 20px;
 }
 
 .components li:hover {
-    background-color: #2f7fbd8d;
+    background-color: #2f7fbd2e;
     transform: translateX(5px);
     transition: transform 0.2s ease-in-out, 
 }
  li.active {
-    background-color: #3498db; /* Couleur lorsqu'un élément est actif */
+    background-color: #3498dba0; /* Couleur lorsqu'un élément est actif */
   
   }
 

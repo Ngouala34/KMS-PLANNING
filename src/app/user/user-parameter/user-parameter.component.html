@@ -1,3 +1,9 @@
+<app-header></app-header>
+<app-sidebar [collapsedByDefault]="false" (sidebarToggle)="isSidebarCollapsed = $event"></app-sidebar>
+<div [ngClass]="{ expanded : isSidebarCollapsed}" class="user-historique">
+
+
+
 <div class="settings-container">
     <header class="settings-header">
       <h1>Paramètres du compte</h1>
@@ -97,3 +103,5 @@
       </button>
     </footer>
   </div>
+
+</div>

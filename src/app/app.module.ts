@@ -50,6 +50,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { NotificationIconComponent } from './shared/notification-icon/notification-icon.component';
 import { MatBadgeModule } from '@angular/material/badge';
 import { ExpertSettingsComponent } from './Expert/expert-settings/expert-settings.component';
+import { UserDashboardStatsComponent } from './user/user-dashboard/user-dashboard-stats/user-dashboard-stats.component';
+import { UserDashboardRendezVousComponent } from './user/user-dashboard/user-dashboard-rendez-vous/user-dashboard-rendez-vous.component';
+import { UserSouscriptionComponent } from './user/user-souscription/user-souscription.component';
 
 @NgModule({
   declarations: [
@@ -67,6 +70,7 @@ import { ExpertSettingsComponent } from './Expert/expert-settings/expert-setting
     SidebarExpertComponent,
     UserRegisterComponent,
     UserDashboardComponent,
+    UserSouscriptionComponent,
     UserHistoriqueComponent,
     UserCalendrierComponent,
     DashboardExpertComponent,
@@ -91,6 +95,8 @@ import { ExpertSettingsComponent } from './Expert/expert-settings/expert-setting
     ExpertRendezVousComponent,
     NotificationIconComponent,
     ExpertSettingsComponent,
+    UserDashboardStatsComponent,
+    UserDashboardRendezVousComponent,
     
     
     
