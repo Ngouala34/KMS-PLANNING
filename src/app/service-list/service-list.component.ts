@@ -24,6 +24,7 @@ export class ServiceListComponent implements OnInit {
 isFavorite = false;
 isSidebarCollapsed = false;
 isMobileMenuOpen = false;
+showPriceDropdown = false;
 
 toggleMobileMenu() {
   this.isMobileMenuOpen = !this.isMobileMenuOpen;
@@ -169,12 +170,39 @@ toggleMobileMenu() {
   };
 
   // Options pour les filtres
-  priceRanges = [
-    { value: 'all', label: 'Tous les prix' },
-    { value: 'economy', label: 'Économique: < 50,000 FCFA' },
-    { value: 'standard', label: 'Standard: 50,000 - 150,000 FCFA' },
-    { value: 'premium', label: 'Premium: > 150,000 FCFA' }
-  ];
+ priceRanges = [
+  { value: 'economy', label: ' 5000XAF - 20,000XAF', checked: false },
+  { value: 'standard', label: ' 20,000XAF - 50,000XAF', checked: false },
+  { value: 'premium', label: ' 50,000XAF - 100,000XAF', checked: false },
+  { value: 'premium1', label: ' 100,000XAF - 200,000XAF', checked: false },
+  { value: 'premium2', label: ' 200,000XAF - 500,000XAF', checked: false },
+  { value: 'premium3', label: ' 500,000XAF - 1,000,000XAF', checked: false }
+
+
+];
+
+
+customMax: number | null = null;
+
+togglePriceDropdown() {
+  this.showPriceDropdown = !this.showPriceDropdown;
+}
+
+applyPriceFilter() {
+  const selectedRanges = this.priceRanges
+    .filter(range => range.checked)
+    .map(range => range.value);
+
+  const customPrice = {
+    max: this.customMax
+  };
+
+  console.log('Filtres sélectionnés :', selectedRanges);
+  console.log('Prix personnalisé :', customPrice);
+
+  // Tu peux ensuite filtrer ta liste selon selectedRanges et/ou customMin/customMax
+  this.showPriceDropdown = false;
+}
 
   ratingOptions = [
     { value: 0, label: 'Toutes les notes' },

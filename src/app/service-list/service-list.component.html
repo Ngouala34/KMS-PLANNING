@@ -68,14 +68,29 @@
                 </select>
             </div>
             <!-- Filtre par prix -->
-            <div class="filters">
-                <select aria-placeholder="Budget"
-                    [(ngModel)]="filters.priceRange" 
-                    (change)="onPriceRangeChange(filters.priceRange)">
-                    <option *ngFor="let range of priceRanges" [value]="range.value">
-                        {{range.label}}
-                    </option>
-                </select>
+            <div class="filters price-filter">
+                <button (click)="togglePriceDropdown()" class="price-filter-button">
+                    Budget
+                </button>
+
+                <div class="price-dropdown" *ngIf="showPriceDropdown">
+                    <!-- Cases à cocher -->
+                    <div *ngFor="let range of priceRanges" class="range">
+                    <label>
+                        <input type="radio" [value]="range.value" [(ngModel)]="range.checked" />
+                        {{ range.label }}
+                    </label>
+                    </div>
+
+                    <hr />
+
+                    <!-- Champ de prix personnalisé -->
+                    <div class="custom-price-inputs">
+                    <input type="number" placeholder="Votre Budget" [(ngModel)]="customMax" />
+                    </div>
+
+                    <button (click)="applyPriceFilter()">Appliquer</button>
+                </div>
             </div>
 
             <!-- Filtre par note -->

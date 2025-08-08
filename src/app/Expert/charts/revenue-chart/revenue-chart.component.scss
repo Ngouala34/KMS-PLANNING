@@ -14,10 +14,16 @@
 }
 
 .dashboard-container {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 24px;
-  padding: 20px;
+  display:flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 20px;
+  width: 100%;
+  padding:  20px 0 20px 0;
+  background-color: rgb(255, 255, 255);
+  box-sizing: border-box;
+  border-radius: 8px;
 }
 
 /* Graphique amélioré */
@@ -28,6 +34,9 @@
   box-shadow: var(--shadow);
   display: flex;
   flex-direction: column;
+  width: 55%;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
 }
 
 .period-selector {
@@ -125,17 +134,33 @@
 
 /* Grille KPI moderne */
 .kpi-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  display: flex;
+  justify-content: space-between;
+  padding:0 20px 0 20px ;
+
+  flex-direction: row;
+  flex-wrap: wrap;
   gap: 16px;
+  width: 40%;
+  box-sizing: border-box;
+}
+
+.kpi-card-header{
+  display: flex;
+  gap: 16px;
+  
+  
 }
 
 .kpi-card {
-  background: white;
+  width: 45%;
+  height: 25%;
+  background: rgb(255, 255, 255);
   border-radius: var(--radius);
-  padding: 20px;
-  box-shadow: var(--shadow);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   display: flex;
+  flex-direction: column;
+  padding: 10px;
   align-items: center;
   gap: 15px;
   transition: var(--transition);
@@ -144,16 +169,13 @@
   border-radius: 10px;
   transition: transform 0.3s ease-in-out;
   cursor: pointer;
+  box-sizing: border-box;
 
     &:hover {
       transform: scale(1.05);
-      background-color: rgba(255, 255, 255, 0.582);
-    
+      background: rgb(250, 250, 250);
 
-    .kpi-tooltip {
-      opacity: 1;
-      visibility: visible;
-    }
+    
   }
 
   &.highlight {

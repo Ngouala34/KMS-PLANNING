@@ -11,44 +11,49 @@
       </button>
     </div>
 
-    <!-- Graphique amélioré -->
-    <div class="chart-card">
-      <div class="chart-header">
-        <h3>Performance des revenus</h3>
-        <div class="chart-summary">
-          <span class="revenue-total">{{ currentRevenue | currency:'CFA':'symbol':'1.0-0' }}</span>
-          <span class="revenue-change" [class.positive]="revenueChange >= 0" [class.negative]="revenueChange < 0">
-            <i class="trend-icon" [class.fa-arrow-up]="revenueChange >= 0" [class.fa-arrow-down]="revenueChange < 0"></i>
-            {{ revenueChange  }}%
-          </span>
-        </div>
-      </div>
-      <div class="chart-wrapper">
-        <canvas baseChart
-          [data]="lineChartData"
-          [options]="lineChartOptions"
-          [type]="lineChartType"
-          [legend]="lineChartLegend">
-        </canvas>
-      </div>
+
+<!-- Graphique amélioré -->
+<div class="chart-card">
+  <div class="chart-header">
+    <h3>Performance des revenus</h3>
+    <div class="chart-summary">
+      <span class="revenue-total">{{ currentRevenue | currency:'CFA':'symbol':'1.0-0' }}</span>
+      <span class="revenue-change" [class.positive]="revenueChange >= 0" [class.negative]="revenueChange < 0">
+        <i class="trend-icon" [class.fa-arrow-up]="revenueChange >= 0" [class.fa-arrow-down]="revenueChange < 0"></i>
+        {{ revenueChange  }}%
+      </span>
     </div>
   </div>
-  
+  <div class="chart-wrapper">
+    <canvas baseChart
+      [data]="lineChartData"
+      [options]="lineChartOptions"
+      [type]="lineChartType"
+      [legend]="lineChartLegend">
+    </canvas>
+  </div>
+</div>
+
+
+  </div>
+
   <!-- Section KPI améliorée -->
+
   <div class="kpi-grid">
     <div class="kpi-card" *ngFor="let kpi of kpis" [class.highlight]="kpi.highlight">
-      <div class="kpi-icon" [style.background-color]="kpi.color + '20'" [style.color]="kpi.color">
-        <i [class]="kpi.icon"></i>
-      </div>
-      <div class="kpi-content">
-        <h4 class="kpi-title">{{ kpi.title }}</h4>
-        <p class="kpi-value">{{ kpi.value  }}</p>
+      <div class="kpi-card-header">
+        <div class="kpi-icon" [style.background-color]="kpi.color + '20'" [style.color]="kpi.color">
+          <i [class]="kpi.icon"></i>
+        </div>
+        <div class="kpi-content">
+          <h4 class="kpi-title">{{ kpi.title }}</h4>
+          <p class="kpi-value">{{ kpi.value  }}</p>
+        </div>
       </div>
       <div class="kpi-trend" [class.positive]="kpi.trend >= 0" [class.negative]="kpi.trend < 0">
         <span>{{ kpi.trend }}%</span>
         <i class="fas" [class.fa-arrow-up]="kpi.trend >= 0" [class.fa-arrow-down]="kpi.trend < 0"></i>
       </div>
-      <div class="kpi-tooltip" *ngIf="kpi.tooltip">{{ kpi.tooltip }}</div>
     </div>
   </div>
 </section>
