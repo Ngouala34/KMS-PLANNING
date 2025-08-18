@@ -461,11 +461,11 @@ margin-top: -3px;
 
 .features-container {
   display: flex;
-  gap: 10px;
+  gap: 1rem;
   overflow-x: auto;
   padding-left: 100px;
   padding-right: 100px;
-  justify-content: space-between;
+  justify-content: space-evenly;
   padding-bottom: 20px;
   flex-wrap: wrap;
 }
@@ -657,6 +657,9 @@ video {
   text-align: left;
   font-weight: normal;
 }
+.publicity-img{
+  display: none;
+}
 .publicity{
   display: flex;
   justify-content: left;
@@ -688,44 +691,22 @@ video {
 
 @media screen and (min-width:300px ) and (max-width: 450px){
 
-  // POUR LES CATEGORIES POPULAIRES 
-  
-  .category-container{
-    display: flex;
-    flex-direction: column;
-    height: auto;
-    padding: 20px;
 
-  }
-  .categories-list {
-    width: 100%;
-  }
-  .categories-left{
-    width: 100%;
-    box-sizing: border-box;
-  }
-  .categories-left .title{
-    font-size: 15px;
-  }
-
-
-  .category-image{
-    display: none;
-  }
-  .categories-section .service-title{
-    margin-top: -35px;
-    margin-bottom: -20px;
-  }
-  video {
-    width: 100%;
-    height: 100%;
-    border-radius: 10px;
-  }
- 
   //CSS pour les cartes de présentation des fonctionnalités
-  .feature-card {
-    width: 45%;  
-  }  
+  .features-container {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding-left: 20px;
+    padding-right: 20px;
+
+    .feature-card {
+      width: 30%;  
+      height: 120px;
+    }
+    
+  }
+
   .feature-icon {
     font-size: 20px;
     margin-bottom: 5px;
@@ -952,9 +933,45 @@ video {
     margin-bottom: 0px;
   }
 
+ .publicity-container{
+  background-color: red;
+    .publicity-img{
+    display: block;
+    width: 80%;
+  }
+    .publicity-image{
+      width: 0%;
+      display: none;
+  }
+  .publicity-text{
+      width: 100%;
+      height: 100%;
+  }
 
-
+ }
 }
+@media screen and (min-width:450px ) and (max-width: 760px){
+  .landing-container2{
+    background-color: red;
+      padding-left: 20px;
+      padding-right: 20px;
+  }
+  
+  .features-container {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding-left: 20px;
+    padding-right: 20px;
+
+    .feature-card {
+      width: 30%;  
+      height: 120px;
+    }
+    
+  }
+}
+
 @media screen and (max-width: 360px){
   .toggle-menu {
     margin-left: 45%;
