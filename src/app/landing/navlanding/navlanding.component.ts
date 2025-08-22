@@ -52,4 +52,11 @@ export class NavlandingComponent implements OnInit {
   onAccueil(): void {
     this.router.navigateByUrl('landing');
   }
+  OnContact(): void {
+
+  }
+
+  OnApropos(): void{
+    
+  }
 }

@@ -1,100 +1,171 @@
-.popular-services-container{
-    margin-top: 50px;
+.popular-services-container {
+  margin-top: 50px;
   display: flex;
   flex-direction: column;
   padding-left: 100px;
   padding-right: 100px;
-}
-.pop-service-card div::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-color: rgba(0, 0, 0, 0.24); /* 👈 opacité de l’ombre */
-    z-index: 1;
-    border-radius:10px ;
+
+  h1 {
+    font-size: 48px;
+    font-weight: normal;
+    color: #000000;
+    margin-bottom: 20px;
   }
-h1{
-  font-size: 48px;
-  font-weight: normal;
-  color: #000000;
-  margin-bottom: 20px;
-}
-.popular-services-container p{
-  font-size: 20px;
-  font-weight: bold;
-  color: #ffffff;
-  margin-bottom: 20px;
-  margin-top: 2px;
-  margin-left: 10px;
-  padding-top: 25px;
-  padding-bottom: 25px;
-  z-index: 25;
-}
-.pop-service-card{
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  gap: 10px;
-  border-radius: 10px;
 
-}
-.pop-service-card div{
-  display: flex;  
-  flex-direction: column;        
-  padding: 5px;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-  transition: transform 0.2s;
-  background: #097aae57;
-  width: 14%;
-  height: 250px;
-  position: relative;
-  cursor: pointer;
-}
-.pop-service-card div:hover {
-    transform: scale(1.05);
-    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
-    transition: transform 0.2s;
-}
-.pop-service-card .card1{
-    background-image: url('https://i.pinimg.com/736x/d8/5c/d4/d85cd40d1036d27a3d88abb67befa412.jpg');
-    background-size: cover;
-    background-repeat: no-repeat;
-    opacity: 0.8 black ;
-}
-.pop-service-card .card2{
-    background-image: url('https://i.pinimg.com/736x/2f/5f/3a/2f5f3a4b9e869605169a52bb8e3d8864.jpg');
-    background-size: cover;
-    background-repeat: no-repeat;
-}
-.pop-service-card .card3{
-    background-image: url('https://i.pinimg.com/736x/46/1a/8d/461a8dbdedcdbaeeb71ffca70c606fa0.jpg');
-    background-size: cover;
-    background-repeat: no-repeat;
-}
-.pop-service-card .card4{
-    background-image: url('https://i.pinimg.com/736x/8f/71/69/8f716999c704247968581fa907ebdf90.jpg');
-    background-size: cover;
-    background-repeat: no-repeat;
-}
-.pop-service-card .card5{
-    background-image: url('https://i.pinimg.com/736x/06/c4/11/06c411a5f6eaf46d47f0cf24f54b8578.jpg');
-    background-size: cover;
-    background-repeat: no-repeat;
-}
-.pop-service-card .card6{
-    background-image: url('https://i.pinimg.com/736x/19/86/f0/1986f01adea0cf09d239570672a2296b.jpg');
-    background-size: cover;
-    background-repeat: no-repeat;
+  p {
+    font-size: 20px;
+    font-weight: bold;
+    color: #ffffff;
+    margin-bottom: 20px;
+    margin-top: 2px;
+    margin-left: 10px;
+    padding-top: 25px;
+    padding-bottom: 25px;
+    z-index: 25;
+  }
+
+  .pop-service-card {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 10px;
+    border-radius: 10px;
+
+    div {
+      display: flex;  
+      flex-direction: column;        
+      padding: 5px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      transition: transform 0.2s;
+      background: #097aae57;
+      width: 14%;
+      height: 250px;
+      position: relative;
+      cursor: pointer;
+
+      &::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background-color: rgba(0, 0, 0, 0.24);
+        z-index: 1;
+        border-radius: 10px;
+      }
+
+      &:hover {
+        transform: scale(1.05);
+        box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+        transition: transform 0.2s;
+      }
+    }
+
+    // Background images for each card
+    .card1 {
+      background-image: url('https://i.pinimg.com/736x/d8/5c/d4/d85cd40d1036d27a3d88abb67befa412.jpg');
+      background-size: cover;
+      background-repeat: no-repeat;
+    }
+    .card2 {
+      background-image: url('https://i.pinimg.com/736x/2f/5f/3a/2f5f3a4b9e869605169a52bb8e3d8864.jpg');
+      background-size: cover;
+      background-repeat: no-repeat;
+    }
+    .card3 {
+      background-image: url('https://i.pinimg.com/736x/46/1a/8d/461a8dbdedcdbaeeb71ffca70c606fa0.jpg');
+      background-size: cover;
+      background-repeat: no-repeat;
+    }
+    .card4 {
+      background-image: url('https://i.pinimg.com/736x/8f/71/69/8f716999c704247968581fa907ebdf90.jpg');
+      background-size: cover;
+      background-repeat: no-repeat;
+    }
+    .card5 {
+      background-image: url('https://i.pinimg.com/736x/06/c4/11/06c411a5f6eaf46d47f0cf24f54b8578.jpg');
+      background-size: cover;
+      background-repeat: no-repeat;
+    }
+    .card6 {
+      background-image: url('https://i.pinimg.com/736x/19/86/f0/1986f01adea0cf09d239570672a2296b.jpg');
+      background-size: cover;
+      background-repeat: no-repeat;
+    }
+  }
 }
 
-.pop-service-card img{
-  width: 100%;
-  height: auto;
-  border-radius: 10px;
-  top: 200px;
-  height: 150px;
-  
+/* Responsive styles */
+@media (max-width: 1200px) {
+  .popular-services-container {
+    padding-left: 100px;
+    padding-right: 100px;
+
+    .popular-services-description {
+      display: flex;
+      justify-content: space-around;
+
+    }
+    
+    .pop-service-card div {
+      width: 20%; // 3 cards per row
+      height: 200px;
+    }
+  }
 }
 
+@media (max-width: 768px) {
+  .popular-services-container {
+    padding-left: 30px;
+    padding-right: 30px;
+    
+    h1 {
+      font-size: 36px;
+    }
 
+    p {
+      font-size: 18px;
+      padding-top: 15px;
+      padding-bottom: 15px;
+    }
+
+    .pop-service-card {
+      justify-content: space-around;
+      gap: 1rem;
+      
+      div {
+        width: 25%; // 1 card per row
+        height: 180px;
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .popular-services-container {
+    padding-left: 15px;
+    padding-right: 15px;
+    margin-top: 30px;
+    
+    h1 {
+      font-size: 28px;
+      margin-bottom: 15px;
+    }
+
+    p {
+      font-size: 16px;
+      margin-left: 5px;
+      padding-top: 10px;
+      padding-bottom: 10px;
+    }
+
+    .pop-service-card {
+      justify-content: space-around;
+      gap: 1rem;
+      
+      div {
+        width: 25%; // 1 card per row
+        height: 150px;
+      }
+    }
+  }
+}
