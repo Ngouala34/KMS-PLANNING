@@ -249,6 +249,7 @@
 }
 
 @media (max-width: 480px) {
+
   .avis-header h2 {
     font-size: 1.8rem;
   }
@@ -272,12 +273,22 @@
       transform: translateX(-50%);
     }
   }
+  .avis-slider {
+  display: flex;
+  position: relative;
+  width: 400px;
+  overflow: hidden;
+  padding: 0px;
+  background-color: pink;
+}
 }
 .avis-slider {
   display: flex;
   position: relative;
-  width: 100%;
+  width: 400px;
   overflow: hidden;
+  padding: 0px;
+  background-color: pink;
 
   .avis-item {
     min-width: 100%;
@@ -286,6 +297,7 @@
     top: 0;
     left: 0;
     opacity: 0;
+    margin: 0px;
   }
 
   .active {

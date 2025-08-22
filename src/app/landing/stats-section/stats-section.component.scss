@@ -211,4 +211,12 @@
     margin-right: 0;
     margin-bottom: 1rem;
   }
+  .stat-content{
+    .stat-value{
+      display: flex;
+      justify-content:center;
+      text-align: center;
+      gap: 5px;
+    }
+  }
 }

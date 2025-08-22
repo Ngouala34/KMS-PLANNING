@@ -28,6 +28,7 @@ import { ExpertRendezVousComponent } from './Expert/expert-rendez-vous/expert-re
 import { ExpertSettingsComponent } from './Expert/expert-settings/expert-settings.component';
 
 const routes: Routes = [
+  { path: '', component: LandingPageComponent },
   { path: 'landing', component: LandingPageComponent },
   { path: 'sidebar', component: SidebarComponent },
   { path: 'login', component: LoginComponent },  

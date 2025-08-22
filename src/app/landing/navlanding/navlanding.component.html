@@ -29,6 +29,8 @@
     <div [ngClass]="{ 'mobile-menu': true, 'open': toggleMenuVisible, 'closed': !toggleMenuVisible }">
       <a routerLink="/" routerLinkActive="active"><i class="fa fa-home"></i> Accueil</a>
       <a (click)="onService()"><i class="fa fa-cogs"></i> Service</a>
+      <a (click)="onService()"><i class="fa fa-envelope"></i> Contacts</a>
+      <a (click)="onService()"><i class="fa fa-info-circle"></i> A propos</a>
       <a (click)="OnBecomeExpert()"><i class="fa fa-user-plus"></i> Devenir expert</a>
       <a (click)="OnConnexion()"><i class="fa fa-sign-in-alt"></i> Se connecter</a>
       <a (click)="OnInscription()"><i class="fa fa-user-plus"></i> S’inscrire</a>
