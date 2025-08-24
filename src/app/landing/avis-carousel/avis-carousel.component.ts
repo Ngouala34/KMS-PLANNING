@@ -80,7 +80,7 @@ export class AvisCarouselComponent {
     setTimeout(() => {
       this.currentIndex = this.prevIndex;
       this.animationState = 'ready';
-    }, ); // temps pour l'animation
+    },); // temps pour l'animation
   }
 
   isMobileView(): boolean {

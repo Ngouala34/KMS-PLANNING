@@ -26,6 +26,10 @@ import { ServiceDetailsComponent } from './service-details/service-details.compo
 import { ExpertFormationComponent } from './Expert/expert-formation/expert-formation.component';
 import { ExpertRendezVousComponent } from './Expert/expert-rendez-vous/expert-rendez-vous.component';
 import { ExpertSettingsComponent } from './Expert/expert-settings/expert-settings.component';
+import { ContactComponent } from './landing/contact/contact.component';
+import { AProposComponent } from './landing/a-propos/a-propos.component';
+import { map } from 'rxjs/operators';
+import { MapIframeComponent } from './landing/map-iframe/map-iframe.component';
 
 const routes: Routes = [
   { path: '', component: LandingPageComponent },
@@ -34,6 +38,9 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },  
   { path: 'user-home', component: UserHomeComponent },
   { path: 'user-serv', component: UserServComponent },
+  { path: 'contact', component: ContactComponent },
+  { path: 'a-propos', component: AProposComponent },
+  { path: 'map-iframe', component: MapIframeComponent },
   { path: 'user-register', component: UserRegisterComponent },
   { path: 'user-souscriptions', component: UserSouscriptionComponent },
   { path: 'user-dashboard', component: UserDashboardComponent },

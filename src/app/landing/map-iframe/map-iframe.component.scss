@@ -1,0 +1,266 @@
+// Variables
+$primary: #4361ee;
+$secondary: #3a0ca3;
+$accent: #f72585;
+$light: #f8f9fa;
+$dark: #212529;
+$gray: #6c757d;
+
+.map-container {
+  padding: 2rem;
+  border-radius: 20px;
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+
+}
+.map {
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 90%;
+
+}
+
+.map-header {
+  text-align: center;
+  margin-bottom: 2rem;
+
+  h2 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    color: $gray;
+    font-size: 1.1rem;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+}
+
+.map-wrapper {
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  margin-bottom: 1.5rem;
+  border: 3px solid white;
+}
+
+.map-iframe-container {
+  position: relative;
+  width: 100%;
+  height: 400px;
+  
+  iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    border-radius: 12px;
+  }
+}
+
+.map-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.action-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.8rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.9rem;
+
+  &.primary {
+    background: linear-gradient(135deg, $primary, $secondary);
+    color: white;
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba($primary, 0.3);
+    }
+  }
+
+  &.secondary {
+    background: transparent;
+    color: $primary;
+    border: 2px solid $primary;
+
+    &:hover {
+      background: $primary;
+      color: white;
+      transform: translateY(-2px);
+    }
+  }
+}
+
+.location-info {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin: 2rem 0;
+}
+
+.info-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1.5rem;
+  background: $light;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    background: lighten($primary, 45%);
+  }
+
+  i {
+    font-size: 1.5rem;
+    color: $primary;
+    margin-top: 0.2rem;
+    min-width: 24px;
+  }
+
+  div {
+    flex: 1;
+  }
+
+  h3 {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+    color: $dark;
+    font-weight: 600;
+  }
+
+  p {
+    margin: 0.2rem 0;
+    color: $dark;
+    font-weight: 500;
+  }
+
+  small {
+    color: $gray;
+    font-size: 0.8rem;
+  }
+}
+
+.map-notice {
+  text-align: center;
+  padding: 1rem;
+  background: lighten($primary, 45%);
+  border-radius: 10px;
+  border-left: 4px solid $primary;
+
+  p {
+    margin: 0;
+    color: $dark;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+  }
+
+  i {
+    color: $primary;
+  }
+}
+
+// Responsive Design
+@media (max-width: 768px) {
+ 
+  .map-container {
+    padding-right: 0rem;
+    padding-left: 0rem;
+  }
+
+  .map-header {
+    h2 {
+      font-size: 2rem;
+      margin-top: 0px;
+    }
+  }
+
+  .map-actions {
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .action-btn {
+    width: 40%;
+    justify-content: center;
+    flex-direction: row;
+  }
+
+  .location-info {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    flex-direction: row;
+  }
+
+  .info-item {
+    padding: 1.2rem;
+    width: 40%;
+  }
+}
+
+@media (max-width: 480px) {
+  .map-container {
+    padding: 1rem;
+    margin: 0.5rem;
+  }
+
+  .map-header {
+    h2 {
+      font-size: 1.8rem;
+    }
+    
+    p {
+      font-size: 1rem;
+    }
+  }
+
+  .map-iframe-container {
+    height: 300px;
+  }
+}
+
+// Animation pour le chargement
+.map-loading {
+  height: 400px;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  &::after {
+    content: "Chargement de la carte...";
+    color: $gray;
+    font-style: italic;
+  }
+}
+
+@keyframes loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}

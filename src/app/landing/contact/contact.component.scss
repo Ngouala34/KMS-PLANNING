@@ -1,0 +1,351 @@
+// Variables
+$primary: #4361ee;
+$secondary: #3a0ca3;
+$accent: #f72585;
+$light: #f8f9fa;
+$dark: #212529;
+$gray: #6c757d;
+$success: #10b981;
+$error: #ef4444;
+$transition: all 0.3s ease;
+
+
+.contact-section {
+  padding: 2.5rem 1rem;
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.contact-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.contact-header {
+  text-align: center;
+  margin-bottom: 2rem;
+  
+  h1 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 2.8rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+  }
+  
+  p {
+    font-size: 1.2rem;
+    color: $gray;
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+}
+
+.contact-content {
+  display: flex;
+  flex-direction: row;
+  gap: 3rem;
+  background: white;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+.contact-form-container {
+  padding: 1rem;
+  
+  h2 {
+    font-size: 1.8rem;
+    margin-bottom: 2rem;
+    color: $dark;
+    position: relative;
+    padding-bottom: 0.5rem;
+    
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 50px;
+      height: 3px;
+      background: linear-gradient(to right, $primary, $accent);
+      border-radius: 2px;
+    }
+  }
+}
+
+.contact-form {
+  .form-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .form-group {
+    margin-bottom: 1.5rem;
+    width: 45%;
+    
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+      color: $dark;
+    }
+    
+    input, select, textarea {
+      width: 100%;
+      padding: 1rem;
+      border: 2px solid #e2e8f0;
+      border-radius: 10px;
+      font-size: 1rem;
+      transition: $transition;
+      box-sizing: border-box;
+      
+      &:focus {
+        outline: none;
+        border-color: $primary;
+        box-shadow: 0 0 0 3px rgba($primary, 0.1);
+      }
+      
+      &.invalid {
+        border-color: $error;
+      }
+    }
+    
+    textarea {
+      resize: vertical;
+      min-height: 120px;
+    }
+
+  }
+  .error-message {
+    color: $error;
+    font-size: 0.85rem;
+    margin-top: 0.5rem;
+  }
+}
+    #message-group {
+        width: 98%;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        margin-left: 1%;
+    }
+
+.submit{ 
+  width: 99%;
+}
+.submit-btn {
+  background: linear-gradient(135deg, $primary, $secondary);
+  background: linear-gradient(135deg, #0e0f49 50%, #1a1a2e 100%);
+
+  color: white;
+  border: none;
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: $transition;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  
+  margin-left: auto;
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba($primary, 0.3);
+  }
+  
+  &:disabled {
+    background: $gray;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+}
+
+.contact-info {
+  background: linear-gradient(135deg, $primary, $secondary);
+  background: linear-gradient(135deg, #0e0f49 0%, #1a1a2e 100%);
+
+  color: white;
+  padding: 1rem;
+  position: relative;
+  width: 50%;
+  
+  h2 {
+    font-size: 1.8rem;
+    margin-bottom: 2rem;
+    position: relative;
+    
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 0;
+      width: 40px;
+      height: 3px;
+      background: linear-gradient(to right, $primary, $accent);
+      border-radius: 2px;
+    }
+  }
+}
+.info-form{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-left: 2rem;
+  padding-right: 2rem;
+}
+
+.info-item {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 2rem;
+  
+  .info-icon {
+    width: 50px;
+    height: 50px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 1rem;
+    font-size: 1.2rem;
+  }
+  
+  .info-content {
+    h3 {
+      font-size: 1.1rem;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+    }
+    
+    p {
+      margin: 0;
+      line-height: 1.5;
+      
+      a {
+        color: white;
+        text-decoration: none;
+        transition: $transition;
+        
+        &:hover {
+          color: $accent;
+        }
+      }
+    }
+  }
+}
+
+.social-links {
+  margin-top: 2rem;
+  
+  h3 {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+  }
+}
+
+.social-icons {
+  display: flex;
+  gap: 1rem;
+  
+  a {
+    width: 45px;
+    height: 45px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.1rem;
+    transition: $transition;
+    
+    &:hover {
+      background: $accent;
+      transform: translateY(-3px);
+    }
+  }
+}
+
+// Responsive
+@media (max-width: 968px) {
+  .contact-content {
+    grid-template-columns: 1fr;
+  }
+  
+  .contact-info {
+    order: -1;
+  }
+}
+
+@media (max-width: 768px) {
+  .contact-section {
+    padding: 1rem 1rem;
+  }
+  
+  .contact-header {
+    h1 {
+      font-size: 2.2rem;
+    }
+    
+    p {
+      font-size: 1.1rem;
+    }
+  }
+  
+  .contact-form-container{
+    padding: 2rem;
+    width: 100%;
+  }
+  .contact-info {
+    display: none;
+
+  }
+  
+  .contact-form {
+    .form-row {
+      grid-template-columns: 1fr;
+    }
+  }
+  
+  .info-item {
+    flex-direction: column;
+    text-align: center;
+    
+    .info-icon {
+      margin-right: 0;
+      margin-bottom: 1rem;
+    }
+  }
+  
+  .social-icons {
+    justify-content: center;
+  }
+}
+
+// Animation d'apparition
+.contact-section.appear {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+  
+  &.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

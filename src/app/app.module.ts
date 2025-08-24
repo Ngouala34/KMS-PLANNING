@@ -53,6 +53,9 @@ import { ExpertSettingsComponent } from './Expert/expert-settings/expert-setting
 import { UserDashboardStatsComponent } from './user/user-dashboard/user-dashboard-stats/user-dashboard-stats.component';
 import { UserDashboardRendezVousComponent } from './user/user-dashboard/user-dashboard-rendez-vous/user-dashboard-rendez-vous.component';
 import { UserSouscriptionComponent } from './user/user-souscription/user-souscription.component';
+import { ContactComponent } from './landing/contact/contact.component';
+import { AProposComponent } from './landing/a-propos/a-propos.component';
+import { MapIframeComponent } from './landing/map-iframe/map-iframe.component';
 
 @NgModule({
   declarations: [
@@ -97,6 +100,9 @@ import { UserSouscriptionComponent } from './user/user-souscription/user-souscri
     ExpertSettingsComponent,
     UserDashboardStatsComponent,
     UserDashboardRendezVousComponent,
+    ContactComponent,
+    AProposComponent,
+    MapIframeComponent,
     
     
     

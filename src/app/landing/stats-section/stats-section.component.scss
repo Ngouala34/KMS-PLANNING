@@ -1,11 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap');
 @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css');
 
+$primary: #4361ee;
+$secondary: #3a0ca3;
 .stats-section {
   padding: 3rem ;
   padding-top: 1rem;
-  background: linear-gradient(135deg, #ecf5f8 0%, #6b6b75 100%);
-  color: rgba(0, 0, 0, 0.682);
+  background: linear-gradient(135deg, #ecf5f8 0%, #3a0ca3 100%);
+  color: rgb(255, 255, 255);
   font-family: 'Montserrat', sans-serif;
   position: relative;
   overflow: hidden;

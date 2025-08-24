@@ -1,0 +1,131 @@
+
+<app-navlanding></app-navlanding> 
+
+<section class="about-section">
+  <div class="about-container">
+    
+    <!-- Hero Section -->
+    <div class="about-hero">
+      <div class="hero-content">
+        <h1>Notre Mission: Révolutionner la Prise de Rendez-vous</h1>
+        <p class="hero-description">
+          KMS Planning connecte les experts et les clients à travers une plateforme innovante 
+          qui simplifie la réservation de rendez-vous, rendant les services professionnels 
+          accessibles à tous, partout et à tout moment.
+        </p>
+        <div class="hero-stats">
+          <div class="stat-item" *ngFor="let figure of keyFigures">
+            <span class="stat-number">{{ figure.number }}</span>
+            <span class="stat-label">{{ figure.label }}</span>
+          </div>
+        </div>
+      </div>
+      <div class="hero-image">
+        <img src="/assets/images/about-hero.svg" alt="Plateforme de rendez-vous en ligne">
+      </div>
+    </div>
+
+    <!-- Notre Histoire -->
+    <div class="history-section">
+      <h2>Notre Histoire</h2>
+      <p class="section-description">
+        Découvrez le parcours qui nous a conduits à devenir la référence en matière 
+        de réservation de rendez-vous en ligne.
+      </p>
+      
+      <div class="timeline">
+        <div class="timeline-item" *ngFor="let event of companyHistory">
+          <div class="timeline-year">{{ event.year }}</div>
+          <div class="timeline-content">
+            <h3>{{ event.title }}</h3>
+            <p>{{ event.description }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Nos Valeurs -->
+    <div class="values-section">
+      <h2>Nos Valeurs Fondamentales</h2>
+      <p class="section-description">
+        Ces principes guident chacune de nos actions et décisions au quotidien.
+      </p>
+      
+      <div class="values-grid">
+        <div class="value-card" *ngFor="let value of companyValues">
+          <div class="value-icon">
+            <i [class]="value.icon"></i>
+          </div>
+          <h3>{{ value.title }}</h3>
+          <p>{{ value.description }}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Notre Équipe -->
+    <div class="team-section">
+      <h2>Rencontrez Notre Équipe</h2>
+      <p class="section-description">
+        Des passionnés dévoués à rendre votre expérience de réservation exceptionnelle.
+      </p>
+      
+      <div class="team-grid">
+        <div class="team-card" *ngFor="let member of leadershipTeam">
+          <div class="team-image">
+            <img [src]="member.image" [alt]="member.name">
+            <div class="team-social">
+              <a [href]="member.social.linkedin" target="_blank" aria-label="LinkedIn">
+                <i class="fab fa-linkedin-in"></i>
+              </a>
+              <a [href]="member.social.twitter || member.social.github" target="_blank" 
+                 [attr.aria-label]="member.social.twitter ? 'Twitter' : 'GitHub'">
+                <i [class]="member.social.twitter ? 'fab fa-twitter' : 'fab fa-github'"></i>
+              </a>
+            </div>
+          </div>
+          <div class="team-info">
+            <h3>{{ member.name }}</h3>
+            <p class="team-role">{{ member.role }}</p>
+            <p class="team-description">{{ member.description }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FAQ -->
+    <div class="faq-section">
+      <h2>Questions Fréquentes</h2>
+      <p class="section-description">
+        Trouvez les réponses aux questions les plus courantes sur notre plateforme.
+      </p>
+      
+      <div class="faq-list">
+        <div class="faq-item" *ngFor="let faq of faqItems; let i = index" 
+             [class.active]="faq.open">
+          <div class="faq-question" (click)="toggleFaq(i)">
+            <h3>{{ faq.question }}</h3>
+            <i class="fas" [class.fa-chevron-down]="!faq.open" [class.fa-chevron-up]="faq.open"></i>
+          </div>
+          <div class="faq-answer" [class.show]="faq.open">
+            <p>{{ faq.answer }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CTA Section -->
+    <div class="cta-section">
+      <div class="cta-content">
+        <h2>Prêt à Commencer ?</h2>
+        <p>Rejoignez les milliers de professionnels et clients qui font confiance à KMS Planning.</p>
+        <div class="cta-buttons">
+          <a routerLink="/register" class="btn btn-primary">Créer un Compte</a>
+          <a routerLink="/contact" class="btn btn-secondary">Nous Contacter</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<app-footer></app-footer>

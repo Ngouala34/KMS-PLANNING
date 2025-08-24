@@ -1,0 +1,179 @@
+<app-navlanding></app-navlanding>
+
+
+<section class="contact-section">
+  <div class="contact-container">
+    
+    <!-- En-tête -->
+    <div class="contact-header">
+      <h1>Contactez-nous</h1>
+      <p>Une question, un problème ou simplement envie de nous faire part de vos suggestions ? Nous sommes à votre écoute.</p>
+    </div>
+
+    <div class="contact-content">
+      
+      <!-- Formulaire de contact -->
+      <div class="contact-form-container">
+        <h2>Envoyez-nous un message</h2>
+        
+        <form [formGroup]="contactForm" (ngSubmit)="onSubmit()" class="contact-form">
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label for="name">Nom complet *</label>
+              <input 
+                type="text" 
+                id="name" 
+                formControlName="name" 
+                [class.invalid]="isSubmitted && f['name'].invalid"
+                placeholder="Votre nom complet">
+              <div class="error-message" *ngIf="isSubmitted && f['name'].invalid">
+                <span *ngIf="f['name'].errors?.['required']">Le nom est requis</span>
+                <span *ngIf="f['name'].errors?.['minlength']">Le nom doit contenir au moins 2 caractères</span>
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <label for="email">Adresse email *</label>
+              <input 
+                type="email" 
+                id="email" 
+                formControlName="email" 
+                [class.invalid]="isSubmitted && f['email'].invalid"
+                placeholder="votre@email.com">
+              <div class="error-message" *ngIf="isSubmitted && f['email'].invalid">
+                <span *ngIf="f['email'].errors?.['required']">L'email est requis</span>
+                <span *ngIf="f['email'].errors?.['email']">Format d'email invalide</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label for="phone">Téléphone</label>
+              <input 
+                type="tel" 
+                id="phone" 
+                formControlName="phone" 
+                [class.invalid]="isSubmitted && f['phone'].invalid"
+                placeholder="+237 XXX XXX XXX">
+              <div class="error-message" *ngIf="isSubmitted && f['phone'].invalid">
+                Format de téléphone invalide
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <label for="subject">Sujet *</label>
+              <select 
+                id="subject" 
+                formControlName="subject" 
+                [class.invalid]="isSubmitted && f['subject'].invalid">
+                <option value="">Sélectionnez un sujet</option>
+                <option *ngFor="let subject of subjects" [value]="subject">{{ subject }}</option>
+              </select>
+              <div class="error-message" *ngIf="isSubmitted && f['subject'].invalid">
+                Veuillez sélectionner un sujet
+              </div>
+            </div>
+          </div>
+          
+          <div class="form-group full-width" id="message-group">
+            <label for="message">Message *</label>
+            <textarea 
+              id="message" 
+              formControlName="message" 
+              rows="5" 
+              [class.invalid]="isSubmitted && f['message'].invalid"
+              placeholder="Décrivez-nous votre demande en détail..."></textarea>
+            <div class="error-message" *ngIf="isSubmitted && f['message'].invalid">
+              <span *ngIf="f['message'].errors?.['required']">Le message est requis</span>
+              <span *ngIf="f['message'].errors?.['minlength']">Le message doit contenir au moins 10 caractères</span>
+            </div>
+          </div>
+           
+          <div class="submit">
+            <button 
+                type="submit" 
+                class="submit-btn" 
+                [disabled]="isLoading">
+                <span *ngIf="!isLoading">Envoyer le message</span>
+                <span *ngIf="isLoading">Envoi en cours...</span>
+                <i class="fas" [class.fa-paper-plane]="!isLoading" [class.fa-spinner]="isLoading" [class.fa-spin]="isLoading"></i>
+            </button>
+          </div>
+        </form>
+      </div>
+      
+      <!-- Informations de contact -->
+      <div class="contact-info">
+        <h2>Nos coordonnées</h2>
+
+        <div class="info-form">
+
+        <div class="info-item">
+          <div class="info-icon">
+            <i class="fas fa-map-marker-alt"></i>
+          </div>
+          <div class="info-content">
+            <h3>Adresse</h3>
+            <p>{{ contactInfo.address }}</p>
+          </div>
+        </div>
+        
+        <div class="info-item">
+          <div class="info-icon">
+            <i class="fas fa-phone"></i>
+          </div>
+          <div class="info-content">
+            <h3>Téléphone</h3>
+            <p><a [href]="'tel:' + contactInfo.phone">{{ contactInfo.phone }}</a></p>
+          </div>
+        </div>
+        
+        <div class="info-item">
+          <div class="info-icon">
+            <i class="fas fa-envelope"></i>
+          </div>
+          <div class="info-content">
+            <h3>Email</h3>
+            <p><a [href]="'mailto:' + contactInfo.email">{{ contactInfo.email }}</a></p>
+          </div>
+        </div>
+        
+        <div class="info-item">
+          <div class="info-icon">
+            <i class="fas fa-clock"></i>
+          </div>
+          <div class="info-content">
+            <h3>Horaires</h3>
+            <p>{{ contactInfo.hours }}</p>
+          </div>
+        </div>
+        
+        <div class="social-links">
+          <h3>Suivez-nous</h3>
+          <div class="social-icons">
+            <a href="https://facebook.com/kmsplanning" target="_blank" aria-label="Facebook">
+              <i class="fab fa-facebook-f"></i>
+            </a>
+            <a href="https://twitter.com/kmsplanning" target="_blank" aria-label="Twitter">
+              <i class="fab fa-twitter"></i>
+            </a>
+            <a href="https://linkedin.com/company/kmsplanning" target="_blank" aria-label="LinkedIn">
+              <i class="fab fa-linkedin-in"></i>
+            </a>
+            <a href="https://instagram.com/kmsplanning" target="_blank" aria-label="Instagram">
+              <i class="fab fa-instagram"></i>
+            </a>
+          </div>
+        </div>
+        </div>
+
+      </div> 
+    </div>
+  </div>
+</section>
+
+<app-map-iframe></app-map-iframe>
+
+<app-footer></app-footer>

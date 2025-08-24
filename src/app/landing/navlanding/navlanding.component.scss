@@ -16,7 +16,6 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      flex-wrap: wrap;
       padding: 10px 20px;
     }
   
@@ -36,31 +35,51 @@
      
     }
   
-    .navbar-links {
-      list-style: none;
-      display: inline-flex;
-      flex-direction: row;
-      gap: 20px;
-  
-      li a {
-        text-decoration: none;
-        color: #0a1f44;
-        font-size: 18px;
-        padding: 8px 12px;
-        border-radius: 8px;
-        transition: 0.3s ease;
-  
-        &:hover {
-          background-color: #e9f4ff;
-          color: #2e87ed;
+  .navbar-links {
+    list-style: none;
+    display: inline-flex;
+    flex-direction: row;
+    gap: 15px;
+
+    li a {
+      text-decoration: none;
+      color: #0a1f44;
+      font-size: 16px;
+      padding: 8px 12px;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+      position: relative;
+
+      &::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        width: 0;
+        height: 2px;
+        background: #3a0ca3;
+        transition: all 0.3s ease;
+        transform: translateX(-50%);
+      }
+
+      &:hover {
+        color: #3a0ca3;
+        
+        &::after {
+          width: 70%;
         }
-  
-        &.active {
-          font-weight: bold;
-          color: #2e87ed;
+      }
+
+      &.active {
+        color: #3a0ca3;
+        font-weight: bold;
+        
+        &::after {
+          width: 70%;
         }
       }
     }
+  }
   
     .auth-buttons {
       display: flex;
@@ -157,8 +176,7 @@
     display: none; // caché par défaut
   }
   
-  
-  @media (max-width: 768px) {
+  @media (max-width: 950px) {
     .toggle-menu {
       display: block;
     }

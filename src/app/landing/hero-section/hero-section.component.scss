@@ -24,16 +24,16 @@
   height: 100%;
   object-fit: cover;
   object-position: center;
-  transition: transform 1s ease-in-out;
+  transition: transform 6s ease-out; // Durée augmentée pour plus de fluidité
 }
 
 .hero-slide.active .hero-image {
-  transform: scale(1.1);
+  transform: scale(1.08); // Zoom plus subtil
 }
 
 .hero-content {
   position: absolute;
-  bottom: 30px;
+  top: 30%;
   left: 50%;
   transform: translateX(-50%);
   text-align: center;
@@ -42,30 +42,49 @@
   padding: 2rem;
   border-radius: 10px;
   width: 70%;
+  
+  // Styles pour l'animation - éléments masqués initialement
+  h1, .subtitle, .partners {
+    opacity: 0;
+    transform: translateY(40px);
+  }
 }
 
 .hero-content h1 {
   font-size: 4rem;
   font-weight: normal;
+  margin-bottom: 1rem;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+  line-height: 1.2;
+  transition: all 0.8s cubic-bezier(0.35, 0, 0.25, 1); // Courbe bézier personnalisée
 }
 
 .hero-content .subtitle {
   font-size: 2rem;
+  margin-bottom: 2rem;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+  opacity: 0.9;
+  line-height: 1.4;
+  transition: all 0.8s cubic-bezier(0.35, 0, 0.25, 1) 0.1s; // Délai de 100ms
 }
 
-.cta-button {
-  padding: 0.8rem 2rem;
-  background-color: #FF7F50;
-  color: white;
-  border: none;
-  border-radius: 25px;
-  font-size: 1.2rem;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.cta-button:hover {
-  background-color: #FF5722;
+// Animation séquentielle lors de l'activation
+.hero-slide.active .hero-content {
+  h1 {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  .subtitle {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  .partners {
+    opacity: 1;
+    transform: translateY(0);
+    transition: all 0.8s cubic-bezier(0.35, 0, 0.25, 1) 0.2s; // Délai de 200ms
+  }
 }
 
 .indicators {
@@ -74,23 +93,30 @@
   left: 50%;
   transform: translateX(-50%);
   display: flex;
-  gap: 10px;
+  gap: 12px; // Espacement augmenté
   z-index: 3;
 }
 
 .indicators span {
   display: block;
-  width: 12px;
-  height: 12px;
+  width: 10px; // Taille légèrement augmentée
+  height: 10px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.4);
   cursor: pointer;
-  transition: background 0.3s;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); // Animation fluide
+  
+  &.active {
+    background: white;
+    transform: scale(1.2); // Effet d'agrandissement
+  }
+  
+  &:hover {
+    transform: scale(1.3);
+    background: rgba(255, 255, 255, 0.8);
+  }
 }
 
-.indicators span.active {
-  background: white;
-}
 //Search bar styles
 .search-container{
   background-color: #fff;
@@ -102,6 +128,7 @@
   margin: 0 auto;
   box-sizing: border-box;
 }
+
 .search-input{
   flex: 1;
   padding: 0.5rem;
@@ -111,6 +138,7 @@
   font-size: 1rem;
   width: 80%;
 }
+
 .search-icon{
   background-color: #74C0FC;
   color: white;
@@ -120,8 +148,9 @@
   border-bottom-right-radius: 5px;
   cursor: pointer;
   font-size: 1.3rem;
-  transition: background-color 0.3s ease;
+  transition: all 0.3s ease; // Transition sur toutes les propriétés
 }
+
 .search-icon:hover{
   background-color: #4ca3e7d7;
   transform: scale(1.1);
@@ -135,15 +164,22 @@
   justify-content: center;
   align-items: center;
   margin-top: 2rem;
-  gap: 2rem;
+  gap: 1rem; // Espacement réduit pour plus d'élégance
   z-index: 2;
-  bottom: 10px;
+
+  p {
+    margin: 0;
+    font-size: 1.2rem;
+    opacity: 0.8;
+    transition: all 0.8s cubic-bezier(0.35, 0, 0.25, 1); // Même animation
+  }
 
   img{
     width: 80px;
     height: 35px;
     border-radius: 5px;
     transition: transform 0.3s ease;
+    
     &:hover{
       transform: scale(1.1);
     }
@@ -156,7 +192,8 @@
     background-image: url('/assets/icons/KmsLogo.jpg');
     background-size: contain;
     background-repeat: no-repeat;
-     &:hover{
+    
+    &:hover{
       transform: scale(1.1);
     }
   }
@@ -168,25 +205,91 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.4); // 40% d’opacité noire
+  background: linear-gradient(to top, 
+    rgba(0, 0, 0, 0.7) 0%, 
+    rgba(0, 0, 0, 0.4) 50%,
+    rgba(0, 0, 0, 0.2) 100%); // Dégradé amélioré
   z-index: 1;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
+  
+  .indicators span {
+      width: 12px; // Taille réduite
+      height: 12px;
+  }
   .hero-content {
-    padding: 1rem;
+    top: 40%;
+    width: 85%;
+    padding: 1.5rem;
+    
+    h1 {
+      font-size: 3rem;
+    }
+    
+    .subtitle {
+      font-size: 1.6rem;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .indicators span {
+    width: 10px; // Taille réduite
+    height: 10px;
+  }
+  .hero-content {
+    padding: 1.2rem;
     width: 90%;
-  }
+    bottom: 20px;
 
-  .hero-content h1 {
-    font-size: 2rem;
-  }
+    h1 {
+      font-size: 2.2rem;
+    }
 
-  .hero-content p {
-    font-size: 1rem;
+    .subtitle {
+      font-size: 1.3rem;
+      margin-bottom: 1.5rem;
+    }
   }
-
+  
+  .partners {
+    flex-direction: row;
+    gap: 1rem;
+    
+    p {
+      font-size: 1.1rem;
+    }
+  }
+  
   .cta-button {
     font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .indicators span {
+      width: 8px; // Taille réduite
+      height: 8px;
+  }
+  .hero-content {
+    h1 {
+      font-size: 1.8rem;
+    }
+
+    .subtitle {
+      font-size: 1.1rem;
+    }
+  }
+  
+  .partners {
+    .logo-intellium {
+      width: 70px;
+      height: 30px;
+    }
+  }
+  
+  .search-container {
+    width: 80%; // Plus large sur mobile
   }
 }

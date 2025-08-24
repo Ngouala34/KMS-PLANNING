@@ -8,14 +8,9 @@
 
     <div class="dark-overlay"></div>
 
-
-    <div class="hero-content">
+    <div class="hero-content" [@fadeInUp]="animationState">
       <h1>{{ image.title }}</h1>
       <p class="subtitle">{{ image.subtitle }}</p>
-      <div class="search-container">
-        <input type="text" placeholder="Rechercher..." class="search-input" />
-        <i class="fa fa-search search-icon "  ></i>
-      </div>
       <div class="partners">
         <p>Nos partenaires :</p>
         <a href="https://kms-entreprises.com/" class="logo-intellium"></a>

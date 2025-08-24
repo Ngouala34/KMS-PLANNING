@@ -1,39 +1,41 @@
 <nav class="nav-navbar" [class.sticky]="isSticky">
-    <div class="nav-content">
-      <div class="topnav-logo">
-        <div class="logo"></div>
-      </div>
-  
-      <div class="navul">
-        <ul class="navbar-links">
-            <li><a routerLink="/landing" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="onAccueil()">Accueil</a></li>
-            <li><a routerLink="/service-list" routerLinkActive="active" (click)="onService()">Services</a></li>
-            <li><a routerLink="/service-list" routerLinkActive="active" (click)="onService()">Contact</a></li>
-            <li><a routerLink="/service-list" routerLinkActive="active" (click)="onService()">A propos</a></li>
-            <li><a routerLink="/become-expert-page" routerLinkActive="active" (click)="OnBecomeExpert()">Devenir expert</a></li>
-          </ul>
-      </div>
-  
-      <div class="navbtn">
-        <div class="auth-buttons">
-            <button class="btn-login" (click)="OnConnexion()">Se connecter</button>
-            <button class="btn-register" (click)="OnInscription()">S'inscrire</button>
-        </div>
-      </div>
-  
-      <div class="toggle-menu" (click)="toggleMenu()">
-        <i class="fas fa-bars"></i>
+  <div class="nav-content">
+    <div class="topnav-logo">
+      <div class="logo"></div>
+    </div>
+
+    <div class="navul">
+      <ul class="navbar-links">
+        <li><a routerLink="/landing" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="onAccueil()">Accueil</a></li>
+        <li><a routerLink="/service-list" routerLinkActive="active" (click)="onService()">Services</a></li>
+        <li><a routerLink="/contact" routerLinkActive="active" (click)="OnContact()">Contact</a></li>
+        <li><a routerLink="/a-propos" routerLinkActive="active" (click)="OnApropos()">À propos</a></li>
+        <li><a routerLink="/become-expert-page" routerLinkActive="active" (click)="OnBecomeExpert()">Devenir expert</a></li>
+      </ul>
+    </div>
+
+    <div class="navbtn">
+      <div class="auth-buttons">
+        <button class="btn-login" (click)="OnConnexion()">Se connecter</button>
+        <button class="btn-register" (click)="OnInscription()">S'inscrire</button>
       </div>
     </div>
-  
-    <div [ngClass]="{ 'mobile-menu': true, 'open': toggleMenuVisible, 'closed': !toggleMenuVisible }">
-      <a routerLink="/" routerLinkActive="active"><i class="fa fa-home"></i> Accueil</a>
-      <a (click)="onService()"><i class="fa fa-cogs"></i> Service</a>
-      <a (click)="onService()"><i class="fa fa-envelope"></i> Contacts</a>
-      <a (click)="onService()"><i class="fa fa-info-circle"></i> A propos</a>
-      <a (click)="OnBecomeExpert()"><i class="fa fa-user-plus"></i> Devenir expert</a>
-      <a (click)="OnConnexion()"><i class="fa fa-sign-in-alt"></i> Se connecter</a>
-      <a (click)="OnInscription()"><i class="fa fa-user-plus"></i> S’inscrire</a>
+
+    <div class="toggle-menu" (click)="toggleMenu()">
+      <i class="fas" [class.fa-bars]="!toggleMenuVisible" [class.fa-times]="toggleMenuVisible"></i>
     </div>
-  </nav>
-  
+  </div>
+
+  <div [ngClass]="{ 'mobile-menu': true, 'open': toggleMenuVisible, 'closed': !toggleMenuVisible }">
+    <a routerLink="/landing" routerLinkActive="active" (click)="closeMenu()"><i class="fa fa-home"></i> Accueil</a>
+    <a (click)="onService(); closeMenu()"><i class="fa fa-cogs"></i> Services</a>
+    <a (click)="OnContact(); closeMenu()"><i class="fa fa-envelope"></i> Contact</a>
+    <a (click)="OnApropos(); closeMenu()"><i class="fa fa-info-circle"></i> À propos</a>
+    <a (click)="OnBecomeExpert(); closeMenu()"><i class="fa fa-user-plus"></i> Devenir expert</a>
+    <div class="mobile-auth-buttons">
+      <a (click)="OnConnexion(); closeMenu()"><i class="fa fa-sign-in-alt"></i> Se connecter</a>
+      <a (click)="OnInscription(); closeMenu()"><i class="fa fa-user-plus"></i> S'inscrire</a>
+    </div>
+  </div>
+</nav>
+
