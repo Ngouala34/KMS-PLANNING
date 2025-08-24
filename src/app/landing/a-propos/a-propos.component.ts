@@ -73,29 +73,56 @@ export class AProposComponent {
     }
   ];
 
-  // Histoire de l'entreprise
-  companyHistory = [
-    {
-      year: '2020',
-      title: 'Fondation',
-      description: 'Création de KMS Planning avec une vision révolutionnaire des rendez-vous en ligne.'
-    },
-    {
-      year: '2021',
-      title: 'Lancement Version 1.0',
-      description: 'Première version de notre plateforme avec les fonctionnalités de base.'
-    },
-    {
-      year: '2022',
-      title: 'Expansion',
-      description: 'Ouverture à de nouveaux marchés et intégration de services supplémentaires.'
-    },
-    {
-      year: '2023',
-      title: 'Innovation',
-      description: 'Lancement de notre application mobile et intégration IA.'
-    }
-  ];
+// Histoire détaillée de l'entreprise
+companyHistory = [
+  {
+    year: '2020',
+    title: 'Fondation et Vision',
+    description: `Création de KMS Planning par une équipe passionnée de développeurs et d'experts en expérience utilisateur. 
+    Notre vision était de révolutionner la prise de rendez-vous en ligne en Afrique, en offrant une plateforme intuitive 
+    qui connecte efficacement les professionnels et leurs clients.`,
+    image: '/assets/images/foncdation.jpg'
+  },
+  {
+    year: '2021',
+    title: 'Lancement Version 1.0 - Premiers Pas',
+    description: `Lancement officiel de la première version de notre plateforme après des mois de développement intensif 
+    et de tests utilisateurs. Cette version incluait les fonctionnalités essentielles de réservation, gestion de calendrier 
+    et notifications. Nos premiers clients, principalement des consultants et formateurs locaux, ont adopté la solution 
+    avec enthousiasme.`,
+    image: '/assets/images/history/2021-launch.jpg',
+
+  },
+  {
+    year: '2022',
+    title: 'Expansion et Croissance - Conquête de Nouveaux Marchés',
+    description: `Année d'expansion significative avec l'entrée sur de nouveaux marchés en Afrique francophone. 
+    Nous avons ajouté des fonctionnalités avancées comme la visioconférence intégrée, les rappels automatisés 
+    et l'analyse de performance. L'équipe a triplé pour supporter la croissance et nous avons ouvert un second 
+    bureau à Yaoundé.`,
+    image: '/assets/images/history/2022-expansion.jpg',
+
+  },
+  {
+    year: '2023',
+    title: 'Innovation et IA - L\'Ère de l\'Intelligence Artificielle',
+    description: `Introduction de l'intelligence artificielle pour optimiser les recommandations d'experts 
+    et anticiper les besoins des utilisateurs. Lancement de notre application mobile native disponible sur 
+    iOS et Android, offrant une expérience encore plus fluide. `,
+    image: '/assets/images/notification.jpg',
+
+  },
+  {
+    year: '2024',
+    title: 'Excellence et Reconnaissance - Leader du Marché',
+    description: `Consolidation de notre position de leader en Afrique francophone avec une refonte complète 
+    de l'interface utilisateur et l'introduction de fonctionnalités premium. Reconnaissance internationale 
+    avec le prix de la meilleure startup tech africaine. Début de notre expansion en Afrique anglophone 
+    avec une version multilingue de la plateforme.`,
+    image: '/assets/images/history/2024-excellence.jpg',
+
+  }
+];
 
   // FAQ
   faqItems = [

@@ -56,6 +56,8 @@ import { UserSouscriptionComponent } from './user/user-souscription/user-souscri
 import { ContactComponent } from './landing/contact/contact.component';
 import { AProposComponent } from './landing/a-propos/a-propos.component';
 import { MapIframeComponent } from './landing/map-iframe/map-iframe.component';
+import { SlideInOnScrollDirective } from './directives/app-slide-in-on-scroll.directive';
+import { ZoomInOnScrollDirective } from './directives/zoom-in-on-scroll.directive';
 
 @NgModule({
   declarations: [
@@ -103,6 +105,8 @@ import { MapIframeComponent } from './landing/map-iframe/map-iframe.component';
     ContactComponent,
     AProposComponent,
     MapIframeComponent,
+    SlideInOnScrollDirective,
+    ZoomInOnScrollDirective,
     
     
     

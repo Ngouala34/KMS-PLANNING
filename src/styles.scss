@@ -50,3 +50,46 @@ p{
     }
 }
 
+// Animations pour la directive SlideIn
+[appSlideInOnScroll] {
+  transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+  
+  &.slide-in-visible {
+    transform: translate(0, 0) !important;
+    opacity: 1 !important;
+  }
+}
+
+// Animations pour la directive ZoomIn
+[appZoomInOnScroll] {
+  transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+  transform-origin: center !important;
+  
+  &.zoom-in-visible {
+    transform: scale(1) rotate(0deg) !important;
+    opacity: 1 !important;
+  }
+}
+
+// Animation pour la directive originale
+[appAppearOnScroll] {
+  transition: opacity 0.6s ease, transform 0.6s ease !important;
+  
+  &.show {
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+  }
+}
+
+// Classes utilitaires pour les délais
+.animation-delay-100 { animation-delay: 0.1s !important; }
+.animation-delay-200 { animation-delay: 0.2s !important; }
+.animation-delay-300 { animation-delay: 0.3s !important; }
+.animation-delay-400 { animation-delay: 0.4s !important; }
+.animation-delay-500 { animation-delay: 0.5s !important; }
+
+// Classes utilitaires pour la durée
+.animation-duration-fast { animation-duration: 0.4s !important; }
+.animation-duration-normal { animation-duration: 0.6s !important; }
+.animation-duration-slow { animation-duration: 0.8s !important; }
+

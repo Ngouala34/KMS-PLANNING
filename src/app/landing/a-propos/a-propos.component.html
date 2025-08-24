@@ -7,21 +7,15 @@
     <!-- Hero Section -->
     <div class="about-hero">
       <div class="hero-content">
-        <h1>Notre Mission: Révolutionner la Prise de Rendez-vous</h1>
+        <div appAppearOnScroll class="titre">
+            <div class="overlay"></div>
+            <h1>Notre Mission: Révolutionner la Prise de Rendez-vous en Ligne</h1>
+        </div>
         <p class="hero-description">
-          KMS Planning connecte les experts et les clients à travers une plateforme innovante 
+          Meet Expert connecte les experts et les clients à travers une plateforme innovante 
           qui simplifie la réservation de rendez-vous, rendant les services professionnels 
           accessibles à tous, partout et à tout moment.
         </p>
-        <div class="hero-stats">
-          <div class="stat-item" *ngFor="let figure of keyFigures">
-            <span class="stat-number">{{ figure.number }}</span>
-            <span class="stat-label">{{ figure.label }}</span>
-          </div>
-        </div>
-      </div>
-      <div class="hero-image">
-        <img src="/assets/images/about-hero.svg" alt="Plateforme de rendez-vous en ligne">
       </div>
     </div>
 
@@ -34,13 +28,98 @@
       </p>
       
       <div class="timeline">
-        <div class="timeline-item" *ngFor="let event of companyHistory">
-          <div class="timeline-year">{{ event.year }}</div>
-          <div class="timeline-content">
-            <h3>{{ event.title }}</h3>
-            <p>{{ event.description }}</p>
-          </div>
+
+        <div class="timeline-item">
+        <div class="timeline-year">2022</div>
+        <div appAppearOnScroll class="info">
+            <div class="timeline-content">
+                <h3>Fondation et Vision</h3>
+                <p>
+                    Création de KMS Planning par une équipe passionnée de développeurs et d'experts en expérience utilisateur. 
+                    Notre vision était de révolutionner la prise de rendez-vous en ligne en Afrique, en offrant une plateforme intuitive 
+                    qui connecte efficacement les professionnels et leurs clients.
+                </p>
+            </div>
+            <div class="timeline-image">
+                <img src="/assets/images/foncdation.jpg" alt="image Fondation et Vision">
+            </div>
         </div>
+        </div>
+
+        <div class="timeline-item">
+        <div class="timeline-year">2023</div>
+        <div appSlideInOnScroll class="info" id="info-reverse">
+            <div class="timeline-image">
+            <img id="img" src="/assets/images/pas.jpg" alt="image Lancement Version 1.0 - Premiers Pas">
+            </div>
+            <div class="timeline-content">
+            <h3>Lancement Version 1.0 - Premiers Pas</h3>
+            <p>
+                Lancement officiel de la première version de notre plateforme après des mois de développement intensif 
+                et de tests utilisateurs. Cette version incluait les fonctionnalités essentielles de réservation, gestion de calendrier 
+                et notifications. Nos premiers clients, principalement des consultants et formateurs locaux, ont adopté la solution 
+                avec enthousiasme.
+            </p>
+            </div>
+
+        </div>
+        </div>
+
+        <div class="timeline-item">
+        <div class="timeline-year">2024</div>
+        <div appAppearOnScroll class="info">
+            <div class="timeline-content">
+            <h3>Expansion et Croissance - Conquête de Nouveaux Marchés</h3>
+            <p>
+                Année d'expansion significative avec l'entrée sur de nouveaux marchés en Afrique francophone. 
+                Nous avons ajouté des fonctionnalités avancées comme la visioconférence intégrée, les rappels automatisés 
+                et l'analyse de performance. L'équipe a triplé pour supporter la croissance et nous avons ouvert un second 
+                bureau à Yaoundé.
+            </p>
+            </div>
+            <div class="timeline-image">
+            <img src="/assets/images/expansion.jpg" alt="image Expansion et Croissance - Conquête de Nouveaux Marchés">
+            </div>
+        </div>
+        </div>
+
+        <div class="timeline-item">
+        <div class="timeline-year">2025</div>
+        <div appSlideInOnScroll class="info" id="info-reverse">
+            <div class="timeline-image">
+            <img id="img" src="/assets/images/IA.jpg" alt="image Innovation et IA - L'Ère de l'Intelligence Artificielle">
+            </div>
+            <div class="timeline-content">
+            <h3>Innovation et IA - L'Ère de l'Intelligence Artificielle</h3>
+            <p>
+                Introduction de l'intelligence artificielle pour optimiser les recommandations d'experts 
+                et anticiper les besoins des utilisateurs. Lancement de notre application mobile native disponible sur 
+                iOS et Android, offrant une expérience encore plus fluide.
+            </p>
+            </div>
+
+        </div>
+        </div>
+
+        <div class="timeline-item">
+        <div class="timeline-year">2026</div>
+        <div appAppearOnScroll class="info">
+            <div class="timeline-content">
+            <h3>Excellence et Reconnaissance - Leader du Marché</h3>
+            <p>
+                Consolidation de notre position de leader en Afrique francophone avec une refonte complète 
+                de l'interface utilisateur et l'introduction de fonctionnalités premium. Reconnaissance internationale 
+                avec le prix de la meilleure startup tech africaine. Début de notre expansion en Afrique anglophone 
+                avec une version multilingue de la plateforme.
+            </p>
+            </div>
+            <div class="timeline-image">
+            <img src="/assets/images/excellence.jpg" alt="image Excellence et Reconnaissance - Leader du Marché">
+            </div>
+        </div>
+        </div>
+
+
       </div>
     </div>
 
