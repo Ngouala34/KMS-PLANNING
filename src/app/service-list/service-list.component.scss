@@ -410,13 +410,18 @@ $transition: all 0.3s ease;
   cursor: pointer;
   transition: $transition;
   color: white;
+  i{
+    font-size: 1.3rem;
+    color: white;
+  }
   
   &:hover {
     background: $dark;
     transform: scale(1.1);
     
     i {
-      color: $accent;
+
+      color: white;
     }
   }
   

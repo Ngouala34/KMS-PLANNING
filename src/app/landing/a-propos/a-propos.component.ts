@@ -10,27 +10,27 @@ export class AProposComponent {
   // Équipe de direction
   leadershipTeam = [
     {
-      name: 'Jean Dupont',
+      name: 'Keyou Guy Martial',
       role: 'CEO & Fondateur',
-      image: '/assets/images/team/ceo.jpg',
-      description: 'Expert en gestion de projet avec 10 ans d\'expérience dans le domaine des services digitaux.',
+      image: '/assets/images/KGM.jpeg',
+      description: 'Ingénieur logiciel avec 10 ans d\'expérience dans le domaine des services digitaux.',
       social: {
         linkedin: '#',
         twitter: '#'
       }
     },
     {
-      name: 'Marie Laurent',
-      role: 'Directrice Technique',
-      image: '/assets/images/team/cto.jpg',
-      description: 'Développeuse full-stack passionnée par la création d\'expériences utilisateur exceptionnelles.',
+      name: 'Tchanou Josué',
+      role: 'Directeur Technique',
+      image: '/assets/images/TJ.jpeg',
+      description: 'Développeur full-stack passionnée par la création d\'expériences utilisateur exceptionnelles.',
       social: {
         linkedin: '#',
         github: '#'
       }
     },
     {
-      name: 'Paul Martin',
+      name: 'XXXXXXXXXXXXX',
       role: 'Directeur Commercial',
       image: '/assets/images/team/cmo.jpg',
       description: 'Spécialiste du marketing digital et de la croissance des startups technologiques.',
@@ -41,13 +41,6 @@ export class AProposComponent {
     }
   ];
 
-  // Chiffres clés
-  keyFigures = [
-    { number: '5000+', label: 'Utilisateurs satisfaits' },
-    { number: '250+', label: 'Experts partenaires' },
-    { number: '98%', label: 'Taux de satisfaction' },
-    { number: '24/7', label: 'Support disponible' }
-  ];
 
   // Valeurs de l'entreprise
   companyValues = [
