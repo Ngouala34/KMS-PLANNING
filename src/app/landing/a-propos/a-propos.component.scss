@@ -217,18 +217,19 @@ h2 {
 
 // Valeurs Section
 .values-section {
-  margin-bottom: 6rem;
-  padding: 3rem 0;
+  margin-bottom: 1rem;
   background: white;
   border-radius: 20px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  padding: 1rem;
+
 }
 
 .values-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 2rem;
-  max-width: 1000px;
+  gap: 1rem;
+  width: 90%;
   margin: 0 auto;
 }
 
@@ -237,13 +238,17 @@ h2 {
   padding: 2rem;
   transition: $transition;
 
+
   &:hover {
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius:  20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
     transform: translateY(-5px);
   }
 
   .value-icon {
-    width: 80px;
-    height: 80px;
+    width: 60px;
+    height: 60px;
     background: linear-gradient(135deg, $primary, $secondary);
     color: white;
     border-radius: 50%;
@@ -364,15 +369,15 @@ h2 {
 
 // FAQ Section
 .faq-section {
-  margin-bottom: 6rem;
-  padding: 3rem 0;
+  margin-bottom: 2rem;
+  padding: 1rem 0;
   background: white;
   border-radius: 20px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
 }
 
 .faq-list {
-  max-width: 800px;
+  width: 90%;
   margin: 0 auto;
 }
 

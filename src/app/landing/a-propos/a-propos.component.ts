@@ -30,12 +30,12 @@ export class AProposComponent {
       }
     },
     {
-      name: 'XXXXXXXXXXXXX',
-      role: 'Directeur Commercial',
-      image: '/assets/images/team/cmo.jpg',
-      description: 'Spécialiste du marketing digital et de la croissance des startups technologiques.',
+      name: 'Ngoualadjo Pizulehe Junior',
+      role: 'DEveloppeur Frontend',
+      image: '/assets/images/NPJ.png',
+      description: 'Développeur frontend spécialisé dans la création d\'interfaces utilisateur intuitives et réactives.',
       social: {
-        linkedin: '#',
+        linkedin: 'https://www.linkedin.com/in/junior-ngoualadjo-1103a8267/',
         twitter: '#'
       }
     }
