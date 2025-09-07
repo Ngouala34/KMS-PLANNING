@@ -10,13 +10,13 @@
       <p>Une question, un problème ou simplement envie de nous faire part de vos suggestions ? Nous sommes à votre écoute.</p>
     </div>
 
-    <div class="contact-content">
+    <div appAppearOnScroll class="contact-content">
       
       <!-- Formulaire de contact -->
       <div class="contact-form-container">
         <h2>Envoyez-nous un message</h2>
         
-        <form [formGroup]="contactForm" (ngSubmit)="onSubmit()" class="contact-form">
+        <form  [formGroup]="contactForm" (ngSubmit)="onSubmit()" class="contact-form">
           
           <div class="form-row">
             <div class="form-group">

@@ -27,7 +27,7 @@
             <a href="#" class="forgot-password">Mot de passe oublié ?</a><br><br>
             
             <!-- Bouton de connexion -->
-            <button type="button" (click)="OnUserConnexion()" [disabled]="loading">
+            <button type="button"  [disabled]="loading">
                 <span *ngIf="!loading">Connexion</span>
                 <span *ngIf="loading" class="spinner">
                     Connexion ...

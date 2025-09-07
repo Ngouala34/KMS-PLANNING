@@ -1,11 +1,201 @@
-<div class="login-container">
+
+<div class="register-container">
+  <form [formGroup]="registerForm" class="register-form" (ngSubmit)="onRegister()" novalidate>
+    
+    <!-- Logo -->
+    <div class="logo">
+      <img src="assets/icons/MeetExpert.png" alt="MeetExpert Logo" />
+      <h1>Devenez Expert</h1>
+      <p class="subtitle">Rejoignez notre communauté de professionnels</p>
+    </div>
+
+    <!-- Message d'erreur général -->
+    <div *ngIf="errorMessage" class="alert alert-error">
+      <i class="fas fa-exclamation-circle"></i>
+      {{ errorMessage }}
+    </div>
+
+    <!-- Nom complet -->
+    <div class="form-group">
+      <!-- <label for="name">Nom complet *</label> -->
+      <input 
+        id="name"
+        type="text" 
+        formControlName="name" 
+        placeholder="Nom " 
+        [class.invalid]="name?.touched && name?.invalid"
+      />
+      <div class="error-messages">
+        <small *ngIf="name?.touched && name?.errors?.['required']">
+          Le nom est requis.
+        </small>
+        <small *ngIf="name?.touched && name?.errors?.['minlength']">
+          Minimum 2 caractères.
+        </small>
+      </div>
+    </div>
+
+    <!-- Email -->
+    <div class="form-group">
+      <!-- <label for="email">Adresse email *</label> -->
+      <input 
+        id="email"
+        type="email" 
+        formControlName="email" 
+        placeholder="Email" 
+        [class.invalid]="email?.touched && email?.invalid"
+      />
+      <div class="error-messages">
+        <small *ngIf="email?.touched && email?.errors?.['required']">
+          L'email est requis.
+        </small>
+        <small *ngIf="email?.touched && email?.errors?.['email']">
+          Format d'email invalide.
+        </small>
+      </div>
+    </div>
+
+    <!-- Domaine d'expertise -->
+    <div class="form-group">
+      <!-- <label for="domaine">Domaine d'expertise *</label> -->
+      <input 
+        id="domaine"
+        type="text" 
+        formControlName="domaine" 
+        placeholder="Domaine d'expertise" 
+        [class.invalid]="domaine?.touched && domaine?.invalid"
+      />
+      
+      <!-- Suggestions de domaines -->
+      <div class="suggestions">
+        <span *ngFor="let domain of suggestedDomains" 
+              (click)="onDomainSelect(domain)"
+              class="suggestion-tag">
+          {{ domain }}
+        </span>
+      </div>
+      
+      <div class="error-messages">
+        <small *ngIf="domaine?.touched && domaine?.errors?.['required']">
+          Le domaine est requis.
+        </small>
+        <small *ngIf="domaine?.touched && domaine?.errors?.['minlength']">
+          Minimum 3 caractères.
+        </small>
+      </div>
+    </div>
+
+    <!-- Mot de passe -->
+    <div class="form-group">
+      <!-- <label for="password">Mot de passe *</label> -->
+      <div class="password-input-container">
+        <input 
+          id="password"
+          [type]="showPassword ? 'text' : 'password'" 
+          formControlName="password" 
+          placeholder="Mot de passe" 
+          [class.invalid]="password?.touched && password?.invalid"
+        />
+        <button type="button" class="toggle-password" (click)="togglePasswordVisibility('password')">
+          <i [class]="showPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
+        </button>
+      </div>
+      
+      <div class="error-messages">
+        <small *ngIf="password?.touched && password?.errors?.['required']">
+          Le mot de passe est requis.
+        </small>
+        <small *ngIf="password?.touched && password?.errors?.['minlength']">
+          Minimum 8 caractères.
+        </small>
+      </div>
+    </div>
+
+    <!-- Confirmation mot de passe -->
+    <div class="form-group">
+      <!-- <label for="confirmPassword">Confirmer le mot de passe *</label> -->
+      <div class="password-input-container">
+        <input 
+          id="confirmPassword"
+          [type]="showConfirmPassword ? 'text' : 'password'" 
+          formControlName="confirmPassword" 
+          placeholder="Retapez votre mot de passe" 
+          [class.invalid]="(confirmPassword?.touched && confirmPassword?.invalid) || passwordMismatch"
+        />
+        <button type="button" class="toggle-password" (click)="togglePasswordVisibility('confirmPassword')">
+          <i [class]="showConfirmPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
+        </button>
+      </div>
+      <div class="error-messages">
+        <small *ngIf="confirmPassword?.touched && confirmPassword?.errors?.['required']">
+          Confirmation requise.
+        </small>
+        <small *ngIf="passwordMismatch">
+          Les mots de passe ne correspondent pas.
+        </small>
+      </div>
+    </div>
+
+    <!-- Conditions -->
+    <div class="form-check">
+      <input 
+        type="checkbox" 
+        id="terms" 
+        formControlName="terms"
+        class="checkbox"
+      />
+      <label for="terms">
+        J'accepte les 
+        <a href="/terms" target="_blank" class="link">termes et conditions</a>
+      </label>
+    </div>
+    <div class="error-messages">
+      <small *ngIf="terms?.touched && terms?.invalid">
+        Vous devez accepter les conditions.
+      </small>
+    </div>
+
+    <!-- Bouton d'inscription -->
+    <button 
+      type="submit" 
+      class="submit-button"
+      [disabled]="registerForm.invalid || loading"
+      [class.loading]="loading"
+    >
+      <span *ngIf="!loading">Devenir Expert</span>
+      <span *ngIf="loading" class="loading-content">
+        <i class="fas fa-spinner fa-spin"></i>
+        Inscription en cours...
+      </span>
+    </button>
+
+        <div class="separator">
+      <span>OU</span>
+    </div>
+
+    <a   class="google-btn">
+      <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google logo" />
+      Se connecter avec Google
+    </a>
+
+    <!-- Lien de connexion -->
+    <div class="login-link">
+      <p>Déjà expert ? <a routerLink="/expert-login" class="link">Connectez-vous</a></p>
+    </div>
+  </form>
+</div>
+
+
+
+
+<!-- <div class="login-container">
     <form [formGroup]="registerForm" class="login-form" (ngSubmit)="onConnexion()">
       <div class="logo">
         <img src="assets\icons\MeetExpert.png" alt="Logo" />
       </div>
   
   
-      <!-- Nom complet -->
+      <!-- Nom complet --
       <div class="form-group">
         <label>Nom</label>
         <input type="text" formControlName="name" placeholder="Entrez votre nom" />
@@ -14,7 +204,7 @@
         </small>
       </div>
   
-      <!-- Email -->
+      <!-- Email --
       <div class="form-group">
         <label>Adresse email</label>
         <input type="email" formControlName="email" placeholder="email@gmail.com" />
@@ -26,7 +216,7 @@
         </small>
       </div>
   
-      <!-- Domaine d'expertise -->
+      <!-- Domaine d'expertise --
       <div class="form-group" >
         <label>Domaine d'expertise</label>
         <input type="text" formControlName="domaine" placeholder="Ex: Développement web" />
@@ -35,7 +225,7 @@
         </small>
       </div>
   
-      <!-- Mot de passe -->
+      <!-- Mot de passe --
       <div class="form-group">
         <label>Mot de passe</label>
         <input type="password" formControlName="password" placeholder="********" />
@@ -47,7 +237,7 @@
         </small>
       </div>
   
-      <!-- Confirmer le mot de passe -->
+      <!-- Confirmer le mot de passe --
       <div class="form-group">
         <label>Confirmez le mot de passe</label>
         <input type="password" formControlName="confirmPassword" placeholder="********" />
@@ -59,7 +249,7 @@
         </small>
       </div>
   
-      <!-- Conditions -->
+      <!-- Conditions --
       <div class="form-check">
         <input type="checkbox" formControlName="terms" id="terms" />
         <label for="terms">J'accepte <a href="#" class="conditions">les termes et conditions</a></label>
@@ -68,15 +258,15 @@
         Vous devez accepter les conditions.
       </small>
   
-      <!-- Bouton -->
+      <!-- Bouton --
       <button type="submit" [disabled]="registerForm.invalid || loading">
         <ng-container *ngIf="!loading; else loadingTpl">S'inscrire</ng-container>
       </button>
   
-      <!-- Spinner -->
+      <!-- Spinner --
       <ng-template #loadingTpl>
         <span class="spinner"></span> Traitement en cours...
       </ng-template>
     </form>
   </div>
-  
+   -->
