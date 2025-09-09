@@ -1,6 +1,6 @@
 
 <div class="register-container">
-  <form [formGroup]="registerForm" class="register-form" (ngSubmit)="onRegister()" novalidate>
+  <form [formGroup]="registerForm" class="register-form" (ngSubmit)="onExpertRegister()" novalidate>
     
     <!-- Logo -->
     <div class="logo">
@@ -61,7 +61,7 @@
       <input 
         id="domaine"
         type="text" 
-        formControlName="domaine" 
+        formControlName="domain" 
         placeholder="Domaine d'expertise" 
         [class.invalid]="domaine?.touched && domaine?.invalid"
       />

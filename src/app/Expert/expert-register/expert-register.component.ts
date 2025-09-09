@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-expert-register',
@@ -24,7 +25,8 @@ export class ExpertRegisterComponent {
 
   constructor(
     private fb: FormBuilder,
-    private router: Router
+    private router: Router,
+    private authService: AuthService
   ) {
     this.registerForm = this.createForm();
   }
@@ -33,11 +35,17 @@ export class ExpertRegisterComponent {
     return this.fb.group({
       name: ['', [Validators.required, Validators.minLength(2)]],
       email: ['', [Validators.required, Validators.email]],
-      domaine: ['', [Validators.required, Validators.minLength(3)]],
+      domain: ['', [Validators.required, Validators.minLength(3)]],
       password: ['', [Validators.required, Validators.minLength(8)]],
       confirmPassword: ['', Validators.required],
       terms: [false, Validators.requiredTrue]
-    });
+    }, { validators: this.passwordsMatchValidator });
+  }
+
+  private passwordsMatchValidator(group: FormGroup) {
+    const password = group.get('password')?.value;
+    const confirmPassword = group.get('confirmPassword')?.value;
+    return password === confirmPassword ? null : { passwordMismatch: true };
   }
 
   togglePasswordVisibility(field: 'password' | 'confirmPassword'): void {
@@ -52,19 +60,9 @@ export class ExpertRegisterComponent {
     this.registerForm.patchValue({ domaine: domain });
   }
 
-  onRegister(): void {
+  onExpertRegister(): void {
     // Réinitialiser les erreurs
-    this.passwordMismatch = false;
     this.errorMessage = '';
-
-    // Vérifier si les mots de passe correspondent
-    const password = this.registerForm.get('password')?.value;
-    const confirmPassword = this.registerForm.get('confirmPassword')?.value;
-    
-    if (password !== confirmPassword) {
-      this.passwordMismatch = true;
-      return;
-    }
 
     // Marquer tous les champs comme touchés pour afficher les erreurs
     if (this.registerForm.invalid) {
@@ -74,11 +72,28 @@ export class ExpertRegisterComponent {
 
     this.loading = true;
     
-    // Simulation d'appel API
-    setTimeout(() => {
-      this.loading = false;
-      this.router.navigate(['/dashboard-expert']);
-    }, 2000);
+    const expertData = {
+      name: this.registerForm.get('name')?.value,
+      email: this.registerForm.get('email')?.value,
+      domain: this.registerForm.get('domain')?.value,
+      password: this.registerForm.get('password')?.value,
+      password_confirm: this.registerForm.get('confirmPassword')?.value,
+      terms: this.registerForm.get('terms')?.value
+    };
+
+    // Appel au service d'authentification pour l'inscription de l'expert
+    this.authService.registerExpert(expertData).subscribe({
+      next: (response) => {
+        console.log('Inscription réussie:', response);
+        this.loading = false;
+        this.router.navigateByUrl('login'); // Rediriger vers la page de connexion
+      },
+      error: (error) => {
+        console.error('Erreur lors de l\'inscription:', error);
+        this.loading = false;
+        this.errorMessage = 'Une erreur est survenue lors de l\'inscription. Veuillez réessayer.';
+      }
+    });
   }
 
   private markAllFieldsAsTouched(): void {
@@ -97,86 +112,3 @@ export class ExpertRegisterComponent {
 }
 
 
-
-
-
-
-
-
-
-// import { Component, Input, OnInit } from '@angular/core';
-// import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-// import { Router } from '@angular/router';
-
-// @Component({
-//   selector: 'app-expert-register',
-//   templateUrl: './expert-register.component.html',
-//   styleUrls: ['./expert-register.component.scss']
-// })
-// export class ExpertRegisterComponent implements OnInit {
-//   registerForm!: FormGroup;
-//   loading = false;
-//   showPassword = false;
-//   showConfirmPassword = false;
-
-
-//   constructor(private fb: FormBuilder, private router: Router) {}
-
-//   ngOnInit(): void {
-//     this.registerForm = this.fb.group({
-//       name: ['', Validators.required],
-//       email: ['', [Validators.required, Validators.email]],
-//       domaine: ['', Validators.required],
-//       password: ['', [Validators.required, Validators.minLength(6)]],
-//       confirmPassword: ['', Validators.required],
-//       terms: [false, Validators.requiredTrue]
-//     }, {
-//       validators: this.matchPasswords('password', 'confirmPassword')
-//     });
-//   }
-
-//   matchPasswords(password: string, confirmPassword: string) {
-//     return (formGroup: FormGroup) => {
-//       const pass = formGroup.controls[password];
-//       const confirm = formGroup.controls[confirmPassword];
-//       if (pass.value !== confirm.value) {
-//         confirm.setErrors({ ...confirm.errors, mismatch: true });
-//       } else {
-//         if (confirm.errors) {
-//           delete confirm.errors['mismatch'];
-//           if (Object.keys(confirm.errors).length === 0) {
-//             confirm.setErrors(null);
-//           }
-//         }
-//       }
-//     };
-//   }
-
-
-
-// onConnexion(): void {
-//   if (this.registerForm.valid) {
-//     this.loading = true;
-//     // Simule l'appel API
-//     setTimeout(() => {
-//       this.router.navigateByUrl('dashboard-expert');
-//       this.loading = false;
-//     }, 2000);
-//   } else {
-//     // Marquer tous les champs comme "touchés" pour afficher les erreurs
-//     this.registerForm.markAllAsTouched();
-//   }
-// }
-
-
-//   onRegister(): void {
-//     if (this.registerForm.valid) {
-//       this.loading = true;
-//       // Ici tu peux appeler ton service d'inscription
-//       setTimeout(() => {
-//         this.router.navigateByUrl('dashboard-expert');
-//         this.loading = false;
-//       }, 1500);
-//     }
-//   }
-// }

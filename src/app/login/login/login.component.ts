@@ -1,4 +1,6 @@
+// login.component.ts
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 
@@ -8,42 +10,68 @@ import { AuthService } from 'src/app/services/auth.service';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
-  loginData = { email: '', password: '' };
+  loginForm!: FormGroup; 
   message: string = '';
-  loading: boolean = false; // Ajout de la propriété loading
+  loading: boolean = false;
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private fb: FormBuilder
+  ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.loginForm = this.fb.group({
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(6)]],
+    });
+  }
 
-  // OnUserConnexion(): void {
-  //   this.loading = true; // Activer le spinner
-  //   this.authService.login(this.loginData.email, this.loginData.password).subscribe({
-  //     next: (response) => {
-  //       console.log('Réponse du backend:', response); // Affiche toute la réponse
-  
-  //       // Vérifiez si l'utilisateur existe et si le rôle est défini
-  //       const user = response?.user;
-  //       if (user && user.role) {
-  //         // Gérer la redirection en fonction du rôle
-  //         if (user.role === 'EXPERT') {
-  //           this.router.navigate(['/expert-dashboard']);
-  //         } else if (user.role === 'CLIENT') {
-  //           this.router.navigate(['/user-home']);
-  //         } else {
-  //           this.message = "Rôle inconnu. Veuillez contacter l'administrateur.";
-  //         }
-  //       } else {
-  //         this.message = "Informations utilisateur manquantes.";
-  //       }
-  //       this.loading = false;
-  //     },
-  //     error: (error) => {
-  //       console.error('Erreur de connexion :', error);
-  //       this.message = "Email ou mot de passe incorrect !";
-  //     }
-  //   });
-  // }
-  
-  
+  onLogin(): void {
+    if (this.loginForm.invalid) {
+      this.message = 'Veuillez remplir correctement tous les champs.';
+      return;
+    }
+
+    this.loading = true;
+
+    this.authService.loginUser(this.loginForm.value).subscribe({
+      next: (response) => {
+        this.loading = false;
+        
+        // Maintenant on récupère le user_type depuis le token décodé
+        const userType = this.authService.getUserType();
+        console.log('User type from token:', userType);
+        
+        if (userType) {
+          this.handleRedirection(userType);
+        } else {
+          console.warn('User type non trouvé dans le token');
+          this.message = 'Impossible de déterminer le type d\'utilisateur';
+        }
+      },
+      error: (error) => {
+        this.loading = false;
+        console.error('Erreur de connexion:', error);
+        this.message = 'Email ou mot de passe incorrect.';
+      }
+    });
+  }
+
+  private handleRedirection(userType: string): void {
+    const type = userType.toLowerCase();
+    
+    switch(type) {
+      case 'client':
+        this.router.navigate(['/user-dashboard']);
+        break;
+      case 'expert':
+        this.router.navigate(['/dashboard-expert']);
+        break;
+      default:
+        console.warn('Type d\'utilisateur inconnu:', userType);
+        this.router.navigate(['/']); // Page d'accueil par défaut
+        break;
+    }
+  }
 }

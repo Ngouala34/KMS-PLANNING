@@ -1,5 +1,5 @@
 <div class="login-container">
-    <form [formGroup]="registerForm" class="login-form" (ngSubmit)="onConnexion()">
+    <form [formGroup]="registerForm" class="login-form" (ngSubmit)="onUserRegister()">
       <div class="logo">
         <img src="assets\icons\MeetExpert.png" alt="Logo" />
       </div>
@@ -42,11 +42,11 @@
       <!-- Confirmer le mot de passe -->
       <div class="form-group">
         <label>Confirmez le mot de passe</label>
-        <input type="password" formControlName="confirmPassword" placeholder="********" />
-        <small *ngIf="registerForm.get('confirmPassword')?.touched && registerForm.get('confirmPassword')?.errors?.['required']" class="text-danger">
+        <input type="password" formControlName="password_confirm" placeholder="********" />
+        <small *ngIf="registerForm.get('password_confirm')?.touched && registerForm.get('password_confirm')?.errors?.['required']" class="text-danger">
           Veuillez confirmer votre mot de passe.
         </small>
-        <small *ngIf="registerForm.get('confirmPassword')?.touched && registerForm.get('confirmPassword')?.errors?.['mismatch']" class="text-danger">
+        <small *ngIf="registerForm.get('password_confirm')?.touched && registerForm.get('password_confirm')?.errors?.['mismatch']" class="text-danger">
           Les mots de passe ne correspondent pas.
         </small>
       </div>

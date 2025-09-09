@@ -2,10 +2,8 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LandingPageComponent } from './landing/landing-page/landing-page.component';
 import { SidebarComponent } from './user/sidebar/sidebar.component';
-import { UserHomeComponent } from './user/user-home/user-home.component';
 import { UserServComponent } from './user/user-favoris/user-serv.component';
 import { UserSouscriptionComponent } from './user/user-souscription/user-souscription.component';
-import { PaymentComponent } from './payment/payment.component';
 import { CreateCourseComponent } from './Expert/create-course/create-course.component';
 import { RevenueChartComponent } from './Expert/charts/revenue-chart/revenue-chart.component';
 import { UserRegisterComponent } from './user/user-register/user-register.component';
@@ -18,9 +16,6 @@ import { ExpertServiceComponent } from './Expert/expert-service/expert-service.c
 import { HeaderExpertComponent } from './Expert/header-expert/header-expert.component';
 import { ServiceListComponent } from './service-list/service-list.component';
 import { UserParameterComponent } from './user/user-parameter/user-parameter.component';
-import { StatsSectionComponent } from './landing/stats-section/stats-section.component';
-import { AvisCarouselComponent } from './landing/avis-carousel/avis-carousel.component';
-import { BecomeExpertPageComponent } from './Expert/become-expert-page/become-expert-page.component';
 import { ExpertRegisterComponent } from './Expert/expert-register/expert-register.component';
 import { ServiceDetailsComponent } from './service-details/service-details.component';
 import { ExpertFormationComponent } from './Expert/expert-formation/expert-formation.component';
@@ -28,46 +23,47 @@ import { ExpertRendezVousComponent } from './Expert/expert-rendez-vous/expert-re
 import { ExpertSettingsComponent } from './Expert/expert-settings/expert-settings.component';
 import { ContactComponent } from './landing/contact/contact.component';
 import { AProposComponent } from './landing/a-propos/a-propos.component';
-import { map } from 'rxjs/operators';
-import { MapIframeComponent } from './landing/map-iframe/map-iframe.component';
+import { AuthGuard } from './guards/auth.guard';
 
 const routes: Routes = [
+
+
+
+
   { path: '', component: LandingPageComponent },
   { path: 'landing', component: LandingPageComponent },
-  { path: 'sidebar', component: SidebarComponent },
   { path: 'login', component: LoginComponent },  
-  { path: 'user-home', component: UserHomeComponent },
-  { path: 'user-serv', component: UserServComponent },
   { path: 'contact', component: ContactComponent },
   { path: 'a-propos', component: AProposComponent },
-  { path: 'map-iframe', component: MapIframeComponent },
+  { path: 'service-list', component: ServiceListComponent},
+  { path: 'service-details', component: ServiceDetailsComponent },
+
+
   { path: 'user-register', component: UserRegisterComponent },
-  { path: 'user-souscriptions', component: UserSouscriptionComponent },
-  { path: 'user-dashboard', component: UserDashboardComponent },
-  { path: 'user-historique', component: UserHistoriqueComponent },
-  { path: 'user-calendrier', component: UserCalendrierComponent },
-  { path: 'user-parameter', component: UserParameterComponent },
+  { path: 'sidebar',canActivate : [AuthGuard],  component: SidebarComponent },
+  { path: 'user-souscriptions',canActivate : [AuthGuard],  component: UserSouscriptionComponent },
+  { path: 'user-dashboard',canActivate : [AuthGuard],  component: UserDashboardComponent },
+  { path: 'user-serv', canActivate : [AuthGuard], component: UserServComponent },
+  { path: 'user-historique',canActivate : [AuthGuard],  component: UserHistoriqueComponent },
+  { path: 'user-calendrier',canActivate : [AuthGuard],  component: UserCalendrierComponent },
+  { path: 'user-parameter',canActivate : [AuthGuard],  component: UserParameterComponent },
 
  
-  { path: 'dashboard-expert', component: DashboardExpertComponent },
-  { path: 'expert-service', component: ExpertServiceComponent },
-  { path: 'header-expert', component: HeaderExpertComponent },
-  { path: 'become-expert-page', component: BecomeExpertPageComponent },
   { path: 'expert-register', component: ExpertRegisterComponent },
-  { path: 'expert-formation', component: ExpertFormationComponent },
-  { path: 'expert-rendez-vous', component: ExpertRendezVousComponent },
-  { path: 'expert-settings', component: ExpertSettingsComponent },
+  { path: 'sidebar-expert',canActivate : [AuthGuard], component: SidebarComponent },
+  { path: 'dashboard-expert',canActivate : [AuthGuard],  component: DashboardExpertComponent },
+  { path: 'expert-service',canActivate : [AuthGuard],  component: ExpertServiceComponent },
+  { path: 'header-expert', canActivate : [AuthGuard], component: HeaderExpertComponent },
+  { path: 'expert-formation', canActivate : [AuthGuard], component: ExpertFormationComponent },
+  { path: 'expert-rendez-vous', canActivate : [AuthGuard], component: ExpertRendezVousComponent },
+  { path: 'expert-settings', canActivate : [AuthGuard], component: ExpertSettingsComponent },  
+  { path: 'create-course',canActivate : [AuthGuard], component: CreateCourseComponent },
+  { path: 'revenue-chart',canActivate : [AuthGuard], component: RevenueChartComponent },
 
 
   
-  { path: 'service-details', component: ServiceDetailsComponent },
-  { path: 'payment', component: PaymentComponent },
-  { path: 'create-course', component: CreateCourseComponent },
-  { path: 'revenue-chart', component: RevenueChartComponent },
-  { path: 'sidebar-expert', component: SidebarComponent },
-  { path: 'service-list', component: ServiceListComponent},
-  { path: 'stats-section', component: StatsSectionComponent },
-  { path: 'avis-carousel', component: AvisCarouselComponent },
+
+
 
 
 ];
