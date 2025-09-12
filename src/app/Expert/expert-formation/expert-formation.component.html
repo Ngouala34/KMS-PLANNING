@@ -21,12 +21,12 @@
     </div>
 
     <div class="formation-section">
-        <h1 class="h1">Historique des formations</h1>
+        <h1 class="h1">Historique des services </h1>
         
          <div class="services-grid">
             <div class="service-card" *ngFor="let formation of paginatedFormations">
                 <div class="service-image-container">
-                    <img [src]="formation.imageUrl" [alt]="formation.title" class="service-image" />
+                    <img [src]="formation.cover_image" [alt]="formation.name" class="service-image" />
                     
                     <!-- Icônes au survol -->
                     <div class="hover-actions">
@@ -41,7 +41,7 @@
                 </div>
                 
                 <div class="service-content">
-                    <h3 class="service-title">{{ formation.title }}</h3>
+                    <h3 class="service-title">{{ formation.name }}</h3>
                     
                     <div class="service-meta">
                         <div>
@@ -50,7 +50,7 @@
                         </div>
                         <div>
                             <i class="fas fa-users"></i>
-                            <span>Souscriptions: {{ formation.subscriptions }}</span>
+                            <span>Souscriptions: {{ formation.subscription }}</span>
                         </div>
                     </div>
                     <div class="card-footer">

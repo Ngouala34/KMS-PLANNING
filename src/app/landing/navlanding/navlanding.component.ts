@@ -94,7 +94,7 @@ export class NavlandingComponent implements OnInit, OnDestroy {
   } 
   
   OnBecomeExpert(): void {
-    this.router.navigateByUrl('/become-expert-page'); 
+    this.router.navigateByUrl('/expert-register'); 
   }
   
   onAccueil(): void {

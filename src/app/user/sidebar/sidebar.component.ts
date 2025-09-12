@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthService } from 'src/app/services/auth.service';
 
 interface SidebarItem {
   title: string;
@@ -66,7 +67,7 @@ export class SidebarComponent implements OnInit {
     }
   ];
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private authService : AuthService) { }
 
   ngOnInit(): void {
     this.isCollapsed = this.collapsedByDefault;
@@ -119,8 +120,8 @@ export class SidebarComponent implements OnInit {
   }
 
   Ondeconnexion(): void {
-    // Ajouter une confirmation ou appel à un service de déconnexion
-    this.router.navigateByUrl('');
+    this.authService.logout();
+    this.router.navigateByUrl('/login');
   }
 
   OnUserParameter(): void {

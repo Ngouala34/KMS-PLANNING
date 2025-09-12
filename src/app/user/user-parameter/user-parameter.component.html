@@ -97,7 +97,7 @@
     </div>
   
     <footer class="settings-footer">
-      <button class="save-btn" (click)="saveSettings()" [disabled]="isSaving || settingsForm.invalid">
+      <button class="save-btn" [disabled]="isSaving || settingsForm.invalid">
         <span *ngIf="!isSaving">Enregistrer les modifications</span>
         <span *ngIf="isSaving"><i class="fas fa-spinner fa-spin"></i> Enregistrement...</span>
       </button>

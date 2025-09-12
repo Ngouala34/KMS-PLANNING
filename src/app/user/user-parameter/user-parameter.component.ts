@@ -44,53 +44,12 @@ export class UserParameterComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loadUserSettings();
 
-    // Sauvegarde automatique après 1 seconde d'inactivité
-    this.settingsForm.valueChanges
-      .pipe(debounceTime(1000))
-      .subscribe(() => {
-        if (this.settingsForm.valid && !this.isSaving) {
-          this.saveSettings();
-        }
-      });
   }
 
-  async loadUserSettings() {
-    this.isLoading = true;
-    try {
-      this.user = await this.userService.getUserProfile();
-      this.settingsForm.patchValue({
-        profile: {
-          avatar: this.user.avatar,
-          fullName: this.user.fullName,
-          email: this.user.email,
-          bio: this.user.bio
-        },
-        security: {
-          twoFactorEnabled: this.user.twoFactorEnabled
-        }
-      });
-    } catch (error) {
-      console.error('Failed to load user settings', error);
-    } finally {
-      this.isLoading = false;
-    }
-  }
 
-  async saveSettings() {
-    if (this.settingsForm.invalid) return;
 
-    this.isSaving = true;
-    try {
-      await this.userService.updateUserProfile(this.settingsForm.value);
-      // Feedback visuel
-    } catch (error) {
-      console.error('Failed to save settings', error);
-    } finally {
-      this.isSaving = false;
-    }
-  }
+
 
   changeTab(tab: string) {
     this.activeTab = tab;

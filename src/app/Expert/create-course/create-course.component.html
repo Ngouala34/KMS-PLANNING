@@ -1,14 +1,42 @@
 <!-- create-course.component.html -->
 <div class="form-container">
   
-  <form [formGroup]="courseForm" (ngSubmit)="onSubmit()" class="course-form">
-  <h2 class="form-title">Création du service</h2>
+  <form [formGroup]="courseForm" (ngSubmit)="onCreateService()" class="course-form">
+    <h2 class="form-title">Création du service</h2>
     
     <!-- Nom du service -->
     <div class="form-group">
       <label for="name">Nom du service *</label>
       <input type="text" id="name" formControlName="name" placeholder="Ex: Consultation initiale">
       <div *ngIf="courseForm.get('name')?.invalid && courseForm.get('name')?.touched" class="error-message">
+        Ce champ est obligatoire
+      </div>
+    </div>
+
+    <!-- Catégorie -->
+    <div class="form-group">
+      <label for="category">Catégorie *</label>
+      <select id="category" formControlName="category">
+        <option value="">Sélectionnez une catégorie</option>
+        <option *ngFor="let category of categories" [value]="category.value">
+          {{ category.displayName }}
+        </option>
+      </select>
+      <div *ngIf="courseForm.get('category')?.invalid && courseForm.get('category')?.touched" class="error-message">
+        Ce champ est obligatoire
+      </div>
+    </div>
+
+    <!-- Sous-catégorie (apparaît seulement si une catégorie est sélectionnée) -->
+    <div *ngIf="showSubcategories" class="form-group">
+      <label for="subcategory">Sous-catégorie *</label>
+      <select id="subcategory" formControlName="subsubcategory">
+        <option value="">Sélectionnez une sous-catégorie</option>
+        <option *ngFor="let subcategory of availableSubcategories" [value]="subcategory.value">
+          {{ subcategory.displayName }}
+        </option>
+      </select>
+      <div *ngIf="courseForm.get('subcategory')?.invalid && courseForm.get('subcategory')?.touched" class="error-message">
         Ce champ est obligatoire
       </div>
     </div>
@@ -63,6 +91,14 @@
       <div class="form-group">
         <label for="endTime">Fin *</label>
         <input type="time" id="endTime" formControlName="endTime">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="name">Lien *</label>
+      <input type="text" id="name" formControlName="meeting_link" placeholder="Ex: Lien de la reunion en ligne">
+      <div *ngIf="courseForm.get('meeting_link')?.invalid && courseForm.get('meeting_link')?.touched" class="error-message">
+        Ce champ est obligatoire
       </div>
     </div>
 

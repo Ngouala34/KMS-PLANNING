@@ -59,7 +59,6 @@ export class ExpertSettingsComponent implements OnInit {
   ngOnInit(): void {
     this.isSidebarCollapsed = this.collapsedByDefault; // Appliquer la configuration initiale
     this.initForm();
-    this.loadUserSettings();
 
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
@@ -71,7 +70,6 @@ export class ExpertSettingsComponent implements OnInit {
       .pipe(debounceTime(1000))
       .subscribe(() => {
         if (this.settingsForm.valid && !this.isSaving) {
-          this.saveSettings();
         }
       });
   }
@@ -109,40 +107,7 @@ export class ExpertSettingsComponent implements OnInit {
     return newPassword === confirmPassword ? null : { mismatch: true };
   }
 
-  async loadUserSettings(): Promise<void> {
-    try {
-      const user = await this.userService.getUserProfile();
-      this.user = user;
 
-      // Mise à jour avec les nouveaux champs
-      this.settingsForm.patchValue({
-        profile: {
-          avatar: user.avatar || 'assets/images/default-avatar.jpg',
-          firstName: user.firstName || '',
-          lastName: user.lastName || '',
-          email: user.email,
-          phone: user.phone || '',
-          country: user.country || '',
-          city: user.city || '',
-          expertise: user.expertise || '',
-          bio: user.bio || ''
-        },
-        security: {
-          twoFactorEnabled: user.twoFactorEnabled
-        },
-        notifications: {
-          emailNotifications: user.emailNotifications,
-          smsNotifications: user.smsNotifications,
-          reminderBeforeMeeting: user.reminderBeforeMeeting
-        }
-      });
-
-    } catch (error) {
-      console.error('Erreur chargement profil', error);
-      // Charger des données par défaut en cas d'erreur
-      this.loadDefaultExpertData();
-    }
-  }
 
   private loadDefaultExpertData(): void {
     this.settingsForm.patchValue({
@@ -159,24 +124,7 @@ export class ExpertSettingsComponent implements OnInit {
     });
   }
 
-  async saveSettings(): Promise<void> {
-    if (this.settingsForm.invalid) {
-      this.markAllAsTouched();
-      return;
-    }
 
-    this.isSaving = true;
-    try {
-      const formData = this.prepareSaveData();
-      await this.userService.updateUserProfile(formData);
-      // Afficher un toast ou message de succès
-    } catch (error) {
-      console.error('Erreur sauvegarde paramètres', error);
-      // Afficher un message d'erreur
-    } finally {
-      this.isSaving = false;
-    }
-  }
 
   private prepareSaveData(): any {
     const formValue = this.settingsForm.value;
@@ -207,7 +155,6 @@ export class ExpertSettingsComponent implements OnInit {
       reader.onload = (e: any) => {
         this.profileForm.get('avatar')?.setValue(e.target.result);
         // Sauvegarder automatiquement l'avatar
-        this.saveSettings();
       };
       reader.readAsDataURL(file);
     }

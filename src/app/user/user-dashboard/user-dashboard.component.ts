@@ -1,179 +1,277 @@
-import { Component, OnInit } from '@angular/core';
-import { UserService } from '../../services/user/user.service'; // Service pour les données utilisateur
-import { NotificationService } from '../../services/notification.service'; // Service pour les notifications
-import { catchError } from 'rxjs/operators';
-import { Notification, of } from 'rxjs';
-import { UserNotificationService } from 'src/app/services/user/userNotification.service';
+import { Component, OnInit, OnDestroy, OnChanges, SimpleChanges } from '@angular/core';
 import { Router } from '@angular/router';
+import { Subject, Observable, of } from 'rxjs';
+import { takeUntil, catchError } from 'rxjs/operators'; // ← catchError vient de 'rxjs/operators'
+// Services
+import { UserService } from '../../services/user/user.service';
+import { UserNotificationService } from '../../services/user/userNotification.service';
+import { DashboardAppointment, UserNotification, UserProfile, UserStats } from 'src/app/Interfaces/iuser';
 
-
-
-export interface UserStats {
-  upcomingAppointments: number; 
-  completedCourses: number;
-  engagementRate: number; // Pourcentage d'engagement
-  favorisNumber: number; // Nombre de favoris
-}
-
-// interfaces/appointment.interface.ts
-export interface Appointment {
-  id: string;
-  title: string;
-  expertName: string;
-  startTime: string; // ou Date si vous convertissez déjà
-  endTime: string;   // ou Date si vous convertissez déjà
-  status: 'CONFIRMED' | 'PENDING' | 'CANCELLED';
-  type: 'CONSULTATION' | 'FORMATION';
-}
-
-// interfaces/dashboard-appointment.interface.ts
-export interface DashboardAppointment {
-  id: string;
-  title: string;
-  expert: string;
-  time: string;
-  date: string;
-  duration: string;
-  status: 'confirmed' | 'pending';
-  type: 'consultation' | 'formation';
-}
-
-// interfaces de notification
-export interface INotification { 
-  id: string;
-  type: 'appointment' | 'warning';
-  message: string;
-}
-
+// Interfaces
 
 @Component({
   selector: 'app-user-dashboard',
   templateUrl: './user-dashboard.component.html',
   styleUrls: ['./user-dashboard.component.scss']
 })
-export class UserDashboardComponent implements OnInit {
-  collapsedByDefault = false;
+export class UserDashboardComponent implements OnInit, OnDestroy, OnChanges {
+  // Configuration
+  private destroy$ = new Subject<void>();
+  
+  // State
   isSidebarCollapsed = false;
-  
-  // Données utilisateur avec valeurs par défaut
-  userName: string = 'Chargement...';
-  userStatus: string = 'standard';
-  userPoints: number = 0;
-  
-  // Notifications
-  alerts: any[] = [];
-  isLoading: boolean = true;
+  isLoading = true;
   error: string | null = null;
-
-  // Données pour les composants enfants
-  stats = {
+  
+  // User Data
+  userName = '';
+  userProfile: UserProfile | null = null;
+  
+  // Dashboard Data
+  alerts: UserNotification[] = [];
+  stats: UserStats = {
     upcomingAppointments: 0,
     completedFormations: 0,
     souscriptions: 0,
     favoris: 0
   };
-
-  upcomingAppointments: any[] = [];
+  
+  upcomingAppointments: DashboardAppointment[] = [];
 
   constructor(
     private router: Router,
     private userService: UserService,
-    private usernotificationService: UserNotificationService
-  ) { }
+    private userNotificationService: UserNotificationService
+  ) {}
 
+  // Lifecycle Hooks
   ngOnInit(): void {
+    this.initializeComponent();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    // Réagir aux changements des inputs si nécessaire
+  }
+
+  ngOnDestroy(): void {
+    this.cleanupResources();
+  }
+
+  // Public Methods
+  onServiceList(): void {
+    this.navigateToServiceList();
+  }
+
+  onSidebarToggle(collapsed: boolean): void {
+    this.isSidebarCollapsed = collapsed;
+  }
+
+  // Private Methods - Initialization
+  private initializeComponent(): void {
     this.loadUserData();
     this.loadNotifications();
-    this.loadStats();
-    this.loadAppointments();
+    this.loadDashboardData();
   }
 
   private loadUserData(): void {
-    this.userService.getCurrentUser().pipe(
-      catchError(error => {
-        console.error('Erreur lors du chargement des données utilisateur', error);
-        this.error = 'Impossible de charger les informations utilisateur';
-        return of(null);
-      })
-    ).subscribe(user => {
-      if (user) {
-        this.userName = user.fullName || 'Utilisateur';
-        this.userStatus = user.accountType || 'standard';
-        this.userPoints = user.loyaltyPoints || 0;
-      }
-    });
+    this.userService.currentUser$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (response: unknown) => {
+          // Validation du type
+          if (this.isUserProfileOrNull(response)) {
+            this.handleUserData(response);
+          } else {
+            console.error('Invalid user data format:', response);
+            this.handleUserData(null);
+          }
+        },
+        error: (error) => this.handleUserError(error)
+      });
   }
 
-  private loadNotifications(): void {
-    this.usernotificationService.getUserNotifications().pipe(
-      catchError(error => {
-        console.error('Erreur lors du chargement des notifications', error);
-        return of([]);
-      })
-    ).subscribe((notifications:INotification[]) =>  {
-      this.alerts = notifications.map(notif => ({
-        type: notif.type === 'appointment' ? 'appointment' : 'warning',
-        message: notif.message
-      }));
-    });
+  // Méthode de validation
+  private isUserProfileOrNull(obj: unknown): obj is UserProfile | null {
+    return obj === null || this.isUserProfile(obj);
   }
 
-  private loadStats(): void {
-    this.userService.getUserStats().pipe(
-      catchError(error => {
-        console.error('Erreur lors du chargement des statistiques', error);
-        return of(this.stats); // Retourne les valeurs par défaut en cas d'erreur
-      })
-    ).subscribe(stats => {
-      this.stats = {
-        upcomingAppointments: stats?.upcomingAppointments || 0,
-        completedFormations: stats?.completedCourses || 0,
-        souscriptions: stats?.souscriptionsNumber || 0,
-        favoris: stats?.favorisNumber || 0
-      };
-    });
+
+
+  private handleUserData(user: UserProfile | null): void {
+    if (user) {
+      this.userProfile = user;
+      this.userName = user.name;
+    } else {
+      this.fetchUserProfile();
+    }
   }
 
-private loadAppointments(): void {
-  this.userService.getUpcomingAppointments().pipe(
-    catchError(error => {
-      console.error('Erreur lors du chargement des rendez-vous', error);
-      return of([]);
-    })
-  ).subscribe((appointments: Appointment[]) => {
-    this.upcomingAppointments = appointments.map((app: Appointment) => ({
-      id: app.id,
-      title: app.title,
-      expert: app.expertName,
-      time: this.formatTime(app.startTime),
-      date: this.formatDate(app.startTime),
-      duration: this.calculateDuration(app.startTime, app.endTime),
-      status: app.status === 'CONFIRMED' ? 'confirmed' : 'pending',
-      type: app.type === 'CONSULTATION' ? 'consultation' : 'formation'
-    } as DashboardAppointment));
-    this.isLoading = false;
-  });
+  private fetchUserProfile(): void {
+    this.userService.getProfile()
+      .pipe(
+        takeUntil(this.destroy$),
+        catchError(error => this.handleProfileError(error))
+      )
+      .subscribe({
+        next: (response: any) => {
+          // Validation du type
+          if (this.isUserProfile(response)) {
+            this.handleProfileSuccess(response);
+          } else {
+            console.error('Invalid user profile response:', response);
+            this.handleProfileError(new Error('Invalid user profile format'));
+          }
+        },
+        error: (error) => this.handleProfileError(error)
+      });
+  }
+
+// Méthode de validation
+private isUserProfile(obj: any): obj is UserProfile {
+  return obj && 
+         typeof obj.id === 'number' &&
+         typeof obj.name === 'string' &&
+         typeof obj.email === 'string' &&
+         typeof obj.user_type === 'string';
 }
 
+  private handleProfileSuccess(profile: UserProfile): void {
+    this.userProfile = profile;
+    this.userName = profile.name;
+  }
+
+  private handleProfileError(error: any): any {
+    console.error('Error loading user profile:', error);
+    this.error = 'Impossible de charger le profil utilisateur';
+    this.userName = 'Utilisateur';
+    return of(null);
+  }
+
+  private handleUserError(error: any): void {
+    console.error('Error in user stream:', error);
+    this.error = 'Erreur de chargement des données utilisateur';
+  }
+
+  // Private Methods - Notifications
+    private loadNotifications(): void {
+      this.userNotificationService.getUserNotifications()
+        .pipe(
+          takeUntil(this.destroy$),
+          catchError(error => this.handleNotificationsError(error))
+        )
+        .subscribe({
+          next: (response: any) => {
+            // Validation du type
+            if (Array.isArray(response)) {
+              this.handleNotificationsSuccess(response as UserNotification[]);
+            } else {
+              console.error('Invalid notifications response:', response);
+              this.alerts = [];
+            }
+          }
+        });
+    }
+
+  private handleNotificationsSuccess(notifications: UserNotification[]): void {
+    this.alerts = notifications.map(notification => ({
+      ...notification,
+      type: notification.type || 'info'
+    }));
+  }
+
+  private handleNotificationsError(error: any): any {
+    console.error('Error loading notifications:', error);
+    return of([]);
+  }
+
+  // Private Methods - Dashboard Data
+  private loadDashboardData(): void {
+    // Implémente le chargement des autres données du dashboard ici
+    // this.loadStats();
+    // this.loadAppointments();
+    
+    // Simuler le chargement complet
+    setTimeout(() => {
+      this.isLoading = false;
+    }, 1000);
+  }
+
+  // Private Methods - Navigation
+  private navigateToServiceList(): void {
+    this.router.navigate(['/service-list'])
+      .then(success => {
+        if (!success) {
+          console.error('Navigation failed');
+        }
+      })
+      .catch(error => {
+        console.error('Navigation error:', error);
+      });
+  }
+
+  // Private Methods - Utilities
   private formatTime(dateString: string): string {
-    const date = new Date(dateString);
-    return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    try {
+      const date = new Date(dateString);
+      return date.toLocaleTimeString([], { 
+        hour: '2-digit', 
+        minute: '2-digit',
+        hour12: false 
+      });
+    } catch (error) {
+      console.error('Error formatting time:', error);
+      return '--:--';
+    }
   }
 
   private formatDate(dateString: string): string {
-    return new Date(dateString).toLocaleDateString();
+    try {
+      return new Date(dateString).toLocaleDateString();
+    } catch (error) {
+      console.error('Error formatting date:', error);
+      return '--/--/----';
+    }
   }
 
   private calculateDuration(start: string, end: string): string {
-    const startDate = new Date(start);
-    const endDate = new Date(end);
-    const diff = (endDate.getTime() - startDate.getTime()) / (1000 * 60);
-    
-    if (diff < 60) return `${Math.round(diff)} min`;
-    return `${Math.round(diff / 60)}h`;
+    try {
+      const startDate = new Date(start);
+      const endDate = new Date(end);
+      const diff = (endDate.getTime() - startDate.getTime()) / (1000 * 60);
+      
+      if (diff < 60) return `${Math.round(diff)} min`;
+      return `${Math.round(diff / 60)}h`;
+    } catch (error) {
+      console.error('Error calculating duration:', error);
+      return '--';
+    }
   }
 
-  onServiceList(): void {
-    this.router.navigateByUrl('service-list');
+  // Private Methods - Cleanup
+  private cleanupResources(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  // Public Getters for Template (Optionnel)
+  get userInitials(): string {
+    if (!this.userName) return 'U';
+    return this.userName
+      .split(' ')
+      .map(name => name[0])
+      .join('')
+      .toUpperCase()
+      .slice(0, 2);
+  }
+
+  get hasNotifications(): boolean {
+    return this.alerts.length > 0;
+  }
+
+  get welcomeMessage(): string {
+    const hour = new Date().getHours();
+    if (hour < 12) return 'Bonjour';
+    if (hour < 18) return 'Bon après-midi';
+    return 'Bonsoir';
   }
 }

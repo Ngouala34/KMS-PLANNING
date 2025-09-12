@@ -1,37 +1,85 @@
 <div class="login-container">
-    <div class="container">
-        <form class="container1" [formGroup]="loginForm">
-            <div class="logo">
-                <img src="/assets/images/KmsLogo.jpg" alt="Logo">
-            </div><br>
-            
-            <!-- Email avec icône -->
-            <div class="input-group">
-                <label for="email" class="input-label">Email</label>
-                <i class="fas fa-envelope"></i>
-                <input type="text" id="email" class="email" name="email" placeholder="email@gmail.com" formControlName="email">
-            </div><br>
-            
-            <!-- Mot de passe avec icône -->
-            <div class="input-group">
-                <label for="password" class="input-label">Mot de passe</label>
-                <i class="fas fa-lock"></i>
-                <input type="password" id="password" class="password" name="password" placeholder="Password" formControlName="password">
-            </div><br>
-            
-            <!-- Message d'erreur -->
-            <p *ngIf="message" class="error-message">{{ message }}</p>
-            
-            <!-- Lien mot de passe oublié -->
-            <a href="#" class="forgot-password">Mot de passe oublié ?</a><br><br>
-            
-            <!-- Bouton de connexion -->
-            <button type="button"  [disabled]="loading" (click)="onLogin()">
-                <span *ngIf="!loading">Connexion</span>
-                <span *ngIf="loading" class="spinner">
-                    Connexion ...
-                </span>
-            </button>
+    <div class="login-card">
+        <form class="login-form" [formGroup]="loginForm">
+            <!-- Logo et titre -->
+            <div class="login-header">
+                <div class="logo">
+                    <img src="assets\icons\MeetExpert.png" alt="Logo" class="logo-image">
+                </div>
+                <h2 class="login-title">Connexion</h2>
+                <p class="login-subtitle">Accédez à votre espace personnel</p>
+            </div>
+
+            <!-- Champs de formulaire -->
+            <div class="form-content">
+                <!-- Email -->
+                <div class="input-group">
+                    <label for="email" class="input-label">Adresse email</label>
+                    <div class="input-container">
+                        <i class="fas fa-envelope input-icon"></i>
+                        <input type="email" id="email" class="form-input" name="email" 
+                               placeholder="votre.email@exemple.com" formControlName="email"
+                               [class.invalid]="loginForm.get('email')?.invalid && loginForm.get('email')?.touched">
+                    </div>
+                    <div *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched" 
+                         class="error-text">
+                        Veuillez entrer une adresse email valide
+                    </div>
+                </div>
+
+                <!-- Mot de passe -->
+                <div class="input-group">
+                    <label for="password" class="input-label">Mot de passe</label>
+                    <div class="input-container">
+                        <i class="fas fa-lock input-icon"></i>
+                        <input type="password" id="password" class="form-input" name="password" 
+                               placeholder="Votre mot de passe" formControlName="password"
+                               [class.invalid]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
+                    </div>
+                    <div *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched" 
+                         class="error-text">
+                        Le mot de passe est requis
+                    </div>
+                </div>
+
+                <!-- Message d'erreur général -->
+                <div *ngIf="message" class="error-message">
+                    <i class="fas fa-exclamation-circle"></i>
+                    {{ message }}
+                </div>
+
+                <!-- Mot de passe oublié -->
+                <div class="forgot-password-container">
+                    <a href="#" class="forgot-password-link">
+                        <i class="fas fa-key"></i>
+                        Mot de passe oublié ?
+                    </a>
+                </div>
+
+                <!-- Bouton de connexion -->
+                <button type="button" class="login-button" 
+                        [disabled]="loginForm.invalid || loading" 
+                        (click)="onLogin()"
+                        [class.loading]="loading">
+                    <span class="button-content">
+                        <span *ngIf="!loading">Se connecter</span>
+                        <span *ngIf="loading" class="loading-content">
+                            <i class="fas fa-spinner fa-spin"></i>
+                            Connexion en cours...
+                        </span>
+                    </span>
+                </button>
+
+                <!-- Séparateur -->
+                <div class="separator">
+                    <span class="separator-text">ou</span>
+                </div>
+
+                <!-- Inscription -->
+                <div class="signup-container">
+                    <p class="signup-text">Nouveau ici ? <a href="/register" class="signup-link">Créer un compte</a></p>
+                </div>
+            </div>
         </form>
     </div>
 </div>

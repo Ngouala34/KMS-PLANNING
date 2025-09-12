@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-sidebar-expert',
@@ -15,7 +16,7 @@ export class SidebarExpertComponent implements OnInit {
 
   isCollapsed = true; // État de la sidebar
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private authService : AuthService) { }
 
   ngOnInit(): void {
     this.isCollapsed = this.collapsedByDefault; //  Applique la configuration initiale
@@ -49,7 +50,8 @@ export class SidebarExpertComponent implements OnInit {
   }
 
   Ondeconnexion():void{
-    this.router.navigateByUrl('')
+    this.authService.logout();
+    this.router.navigateByUrl('/login');
    }
      onCreateCourse() : void {
     this.router.navigateByUrl('create-course');

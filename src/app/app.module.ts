@@ -58,7 +58,6 @@ import { SidebarExpertComponent } from './Expert/sidebar-expert/sidebar-expert.c
 import { DashboardExpertComponent } from './Expert/dashboard-expert/dashboard-expert.component';
 import { ExpertServiceComponent } from './Expert/expert-service/expert-service.component';
 import { HeaderExpertComponent } from './Expert/header-expert/header-expert.component';
-import { PopupExpertsComponent } from './Expert/popup-experts/popup-experts.component';
 import { ExpertRegisterComponent } from './Expert/expert-register/expert-register.component';
 import { CreateCourseComponent } from './Expert/create-course/create-course.component';
 import { RevenueChartComponent } from './Expert/charts/revenue-chart/revenue-chart.component';
@@ -112,7 +111,6 @@ import { ZoomInOnScrollDirective } from './directives/zoom-in-on-scroll.directiv
     DashboardExpertComponent,
     ExpertServiceComponent,
     HeaderExpertComponent,
-    PopupExpertsComponent,
     ExpertRegisterComponent,
     CreateCourseComponent,
     RevenueChartComponent,

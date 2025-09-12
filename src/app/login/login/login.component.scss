@@ -1,190 +1,259 @@
-/* Style de base */
+// 🎨 Variables
+
+
+// Couleurs
+$primary: #4361ee;
+$secondary: #3a0ca3;
+$third: #0e0f49;
+$accent: #f72585;
+$light: #f8f9fa;
+$dark: #212529;
+$gray: #6c757d;
+$transition: all 0.3s ease;
+$primary-color: #4361ee;
+$secondary-color: #0e0f49;
+$error-color: #ef4444;
+$text-light: #ffffff;
+$text-dark: #1c1c1c;
+$bg-gradient: linear-gradient(135deg, #0a1f44 0%, #1e3a8a 100%);
+
 .login-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: linear-gradient(to bottom right, #0e0f49, #74C0FC);
-    width: auto;
-    height: 100vh;
-    margin: 0;
-}
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-image: url('https://maximumwallhd.com/wp-content/uploads/2016/09/fond-ecran-wallpaper-image-abstrait-bleu-20.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  padding: 1rem;
 
-
-.container1 {
-    box-shadow: 0px 0px 1px 0px;
-    border: 1px solid rgba(9, 4, 67, 0.126);
-    border-radius: 10px;
-    height: auto;
-    width: 400px;
-    padding: 30px;
-    color: black;
-    background-color: rgb(245, 245, 245);
-    animation: fadeIn 1s ease-out;
-}
-
-@keyframes fadeIn {
-    0% {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    100% {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-img {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-}
-
-.logo {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.logo p {
-    font-size: 20px;
-    font-weight: bold;
-    color: rgb(0, 0, 0);
-    padding-left: 10px;
-}
-
-/* Groupement des inputs avec icônes */
-.input-group {
-    position: relative;
+  .login-card {
     width: 100%;
-    margin-bottom: 10px;
-    display: flex;
-    align-items: center;
-    animation: slideIn 0.5s ease-out;
-}
+    max-width: 420px;
+    background: rgb(255, 255, 255);
 
-@keyframes slideIn {
-    0% {
-        opacity: 0;
-        transform: translateX(-50px);
-    }
-    100% {
-        opacity: 1;
-        transform: translateX(0);
-    }
-}
+    backdrop-filter: blur(14px);
+    border-radius: 20px;
+    padding: 2.5rem 2rem;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+    color: $text-dark;
+    animation: fadeInUp 0.8s ease forwards;
 
-.input-group i {
-    position: absolute;
-    left: 15px;
-    color: #555;
-    font-size: 18px;
-}
+    .login-header {
+      text-align: center;
+      margin-bottom: 2rem;
 
-.input-group input {
-    width: 100%;
-    padding: 12px 10px 12px 35px;
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    outline: none;
-    font-size: 16px;
-    transition: border-color 0.3s ease;
-}
+      .logo {
+        margin-bottom: 1rem;
 
-.input-group input:focus {
-    border-color: #74C0FC;
-}
-
-/* Effet de transition fluide pour les champs */
-.input-group input:hover {
-    background-color: rgb(222, 222, 222);
-}
-
-/* Lien mot de passe oublié */
-.forgot-password {
-    font-size: 14px;
-    color: #74C0FC;
-    text-decoration: none;
-    transition: color 0.3s ease;
-    margin-left: 35%;
-}
-
-.forgot-password:hover {
-    color: #0d6efd;
-}
-
-/* Style du bouton */
-button {
-    width: 100%;
-    margin-top: 15px;
-    border-radius: 10px;
-    height: 43px;
-    background-color: rgb(1, 17, 56);
-    color: aliceblue;
-    box-shadow: rgb(180, 180, 188) 0 0 5px;
-    font-size: 18px;
-    transition: background-color 0.3s ease;
-    span{
-        color: white;
-    }
-}
-
-button:hover {
-    background-color: rgb(3, 3, 74);
-   
-}
-
-button:focus {
-    outline: none;
-}
-/* Styles ajoutés pour les labels et le spinner */
-.input-group {
-    position: relative;
-    margin-top: 20px; /* Ajout d'espace pour le label */
-
-    .input-label {
-        position: absolute;
-        top: -20px;
-        left: 0;
-        font-size: 14px;
-        color: #555;
-        transition: all 0.3s ease;
-    }
-}
-
-/* Style pour le spinner */
-button {
-    position: relative;
-    
-    .spinner {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        
-        i {
-            font-size: 18px;
-            margin-right: 8px;
+        .logo-image {
+          width: 80px;
+          height: auto;
         }
-    }
-    
-    &[disabled] {
+      }
+
+      .login-title {
+        font-size: 1.8rem;
+        font-weight: 700;
+        margin-bottom: 0.3rem;
+      }
+
+      .login-subtitle {
+        font-size: 0.95rem;
         opacity: 0.8;
-        cursor: not-allowed;
+      }
     }
+
+    .form-content {
+      .input-group {
+        margin-bottom: 1.5rem;
+        box-sizing: border-box;
+
+        .input-label {
+          display: block;
+          font-size: 0.85rem;
+          font-weight: 600;
+          margin-bottom: 0.5rem;
+          color: $text-dark;
+        }
+
+        .input-container {
+
+          position: relative;
+
+          .input-icon {
+            position: absolute;
+            top: 50%;
+            left: 14px;
+            transform: translateY(-50%);
+            color: #999;
+            font-size: 1rem;
+          }
+
+          .form-input {
+
+            width: 100%;
+            padding: 0.85rem 0.85rem 0.85rem 2.5rem;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba($primary-color, 0.1);
+            color: $text-dark;
+            font-size: 0.95rem;
+            outline: none;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+
+
+            &::placeholder {
+              color: rgba(255, 255, 255, 0.6);
+            }
+
+            &:focus {
+              border-color: $secondary-color;
+              background: rgba(255, 255, 255, 0.25);
+              box-shadow: 0 0 8px rgba($third, 0.2);
+            }
+
+            &.invalid {
+              border-color: $error-color;
+            }
+          }
+        }
+
+        .error-text {
+          font-size: 0.8rem;
+          color: $error-color;
+          margin-top: 0.3rem;
+        }
+      }
+
+      .error-message {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: rgba(230, 57, 70, 0.1);
+        border: 1px solid $error-color;
+        color: $error-color;
+        padding: 0.8rem 1rem;
+        border-radius: 10px;
+        font-size: 0.85rem;
+        margin-bottom: 1rem;
+
+        i {
+          font-size: 1rem;
+        }
+      }
+
+      .forgot-password-container {
+        text-align: right;
+        margin-bottom: 1.5rem;
+
+        .forgot-password-link {
+          color: $primary-color;
+          font-size: 0.9rem;
+          text-decoration: none;
+          transition: color 0.3s;
+
+          &:hover {
+            color: lighten($secondary-color, 10%);
+          }
+
+          i {
+            margin-right: 5px;
+          }
+        }
+      }
+
+      .login-button {
+        width: 100%;
+        padding: 0.9rem;
+        border: none;
+        border-radius: 12px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        background: linear-gradient(135deg, $primary 0%, $secondary 100%);
+
+        color: $text-light;
+        transition: all 0.3s ease;
+        position: relative;
+
+        &:hover:not(:disabled) {
+          background: $gray;
+          transform: translateY(-2px);
+          box-shadow: 0 6px 12px rgba(240, 226, 34, 0.3);
+        }
+
+        &:disabled {
+          opacity: 0.6;
+          cursor: not-allowed;
+        }
+
+        &.loading {
+          background: lighten($primary-color, 10%);
+          color: $text-light;
+        }
+
+        .loading-content {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 8px;
+        }
+      }
+
+      .separator {
+        margin: 2rem 0;
+        display: flex;
+        align-items: center;
+        text-align: center;
+
+        .separator-text {
+          padding: 0 1rem;
+          background: rgb(255, 255, 255);
+          color: rgb(0, 0, 0);
+          font-size: 0.85rem;
+        }
+
+        &::before,
+        &::after {
+          content: '';
+          flex: 1;
+          border-bottom: 1px solid $primary-color;
+        }
+      }
+
+      .signup-container {
+        text-align: center;
+
+        .signup-text {
+          font-size: 0.9rem;
+          color: rgba(0, 0, 0, 0.85);
+
+          .signup-link {
+            color: $primary-color;
+            font-weight: 600;
+            text-decoration: none;
+            transition: color 0.3s;
+
+            &:hover {
+              color: lighten($secondary-color, 10%);
+            }
+          }
+        }
+      }
+    }
+  }
 }
 
-/* Animation du spinner */
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+// Animation
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
-
-.fa-spin {
-    animation: spin 1s linear infinite;
-}
-.error-message {
-    color: #ef4444;
-    font-size: 1rem;
-    margin-top: 0.25rem;
-}
-
-
