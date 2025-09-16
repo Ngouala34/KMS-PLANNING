@@ -24,7 +24,7 @@ export class CreateCourseComponent {
   courseForm: FormGroup;
   isSubmitting = false;
   coverImage: File | null = null;
-  previewImage: string | ArrayBuffer | null = null;
+  previewImage: string |null = null;
   showSubcategories = false;
   availableSubcategories: Subcategory[] = [];
 
@@ -38,8 +38,6 @@ export class CreateCourseComponent {
       value: 'programming_tech',
       displayName: 'Programmation & Tech',
       subcategories: [
-        { value: 'ai_development', displayName: 'Développement IA' },
-
         { value: 'web_ai_software', displayName: 'Sites web IA & Logiciel' },
         { value: 'mobile_ai_apps', displayName: 'Applications mobiles IA' },
         { value: 'ai_integrations', displayName: 'Intégrations IA' },
@@ -243,15 +241,22 @@ export class CreateCourseComponent {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files[0]) {
       const file = input.files[0];
+
       if (file.size > 2 * 1024 * 1024) {
-        alert('La taille maximale de l\'image est de 2MB');
+        alert("La taille maximale de l'image est de 2MB");
         return;
       }
-      
+
       this.coverImage = file;
-      this.previewImage = URL.createObjectURL(file);
+
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.previewImage = reader.result as string; // base64 utilisable directement
+      };
+      reader.readAsDataURL(file);
     }
   }
+
 
   removeImage(): void {
     if (this.previewImage) {
@@ -292,13 +297,13 @@ export class CreateCourseComponent {
 
     this.courseService.createCourse(formData).subscribe({
       next: (response) => {
-        console.log('✅ Service créé:', response);
+        console.log('Service créé:', response);
         this.isSubmitting = false;
         this.resetForm();
         this.router.navigate(['/expert-formation']);
       },
       error: (error) => {
-        console.error('❌ Erreur:', error);
+        console.error(' Erreur:', error);
         this.isSubmitting = false;
         this.handleError(error);
       }

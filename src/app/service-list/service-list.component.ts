@@ -1,7 +1,7 @@
 import { Component, OnInit, HostListener, ElementRef, ViewChild, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-import { Subject } from 'rxjs';
-import { takeUntil, catchError } from 'rxjs/operators';
+import { Subject, throwError } from 'rxjs';
+import { takeUntil, catchError, finalize } from 'rxjs/operators';
 import { IService } from 'src/app/Interfaces/iservice';
 import { ExpertService } from '../services/expert/expert.service';
 
@@ -43,10 +43,13 @@ export class ServiceListComponent implements OnInit, OnDestroy {
   error: string | null = null;
 
   // Services - chargés depuis l'API
-  services: IService[] = [];
+  service: IService[] = [];
   filteredServices: IService[] = [];
   selectedCategory: string = 'all';
   selectedSubcategory: string = 'all';
+  serv!: IService; // pour stocker les détails du service sélectionné
+
+  // Filtres
 
   filters = {
     searchText: '',
@@ -177,7 +180,7 @@ export class ServiceListComponent implements OnInit, OnDestroy {
 
   // Chargement des services depuis l'API
   private loadServices(): void {
-    console.log('🔄 Début du chargement des services');
+    console.log(' Début du chargement des services');
     this.isLoading = true;
     this.error = null;
 
@@ -185,7 +188,7 @@ export class ServiceListComponent implements OnInit, OnDestroy {
       .pipe(
         takeUntil(this.destroy$),
         catchError(error => {
-          console.error('❌ Erreur lors du chargement des services:', error);
+          console.error(' Erreur lors du chargement des services:', error);
           this.error = 'Impossible de charger les services';
           this.isLoading = false;
           return [];
@@ -193,11 +196,11 @@ export class ServiceListComponent implements OnInit, OnDestroy {
       )
       .subscribe({
         next: (services) => {
-          console.log('✅ Services reçus de l\'API', services);
+          console.log(' Services reçus de l\'API', services);
           this.handleServicesResponse(services);
         },
         error: (error) => {
-          console.error('💥 Erreur dans la subscription:', error);
+          console.error(' Erreur dans la subscription:', error);
         }
       });
   }
@@ -224,13 +227,13 @@ export class ServiceListComponent implements OnInit, OnDestroy {
   }
 
   private handleServicesResponse(services: IService[]): void {
-    console.log('📦 Services reçus de l\'API:', services);
+    console.log(' Services reçus de l\'API:', services);
     
     // Transforme les services pour la compatibilité
-    this.services = this.transformServices(services);
-    this.filteredServices = [...this.services];
+    this.service = this.transformServices(services);
+    this.filteredServices = [...this.service];
     
-    console.log('✅ Services transformés:', this.services);
+    console.log(' Services transformés:', this.service);
     
     this.isLoading = false;
     this.showServices = true;
@@ -307,7 +310,7 @@ export class ServiceListComponent implements OnInit, OnDestroy {
   applyFilters(): void {
     console.log('🔍 Application des filtres:', this.filters);
     
-    this.filteredServices = this.services.filter(service => {
+    this.filteredServices = this.service.filter(service => {
       // Filtre par texte - utilise les champs réels de l'API
       const matchesSearch = this.filters.searchText === '' || 
         service.name.toLowerCase().includes(this.filters.searchText.toLowerCase()) || 
@@ -411,7 +414,7 @@ export class ServiceListComponent implements OnInit, OnDestroy {
     // Pour l'instant, retourne toutes les sous-catégories possibles
     const allSubcategories = new Set<string>();
     
-    this.services.forEach(service => {
+    this.service.forEach(service => {
       if (service.category_display === categoryValue || service.category?.name === categoryValue) {
         if (service.subcategory?.name) {
           allSubcategories.add(service.subcategory.name);
@@ -423,4 +426,35 @@ export class ServiceListComponent implements OnInit, OnDestroy {
     console.log('Sous-catégories trouvées:', result);
     return result;
   }
+  loadServiceDetails(id: number): void {
+  this.isLoading = true;
+  this.error = null;
+
+  this.serviceService.getServiceDetails(id)
+    .pipe(
+      takeUntil(this.destroy$),
+      catchError(err => {
+        console.error('Erreur lors du chargement du service:', err);
+        this.error = 'Impossible de charger les détails du service';
+        return throwError(() => err);
+      }),
+      finalize(() => {
+        this.isLoading = false;
+      })
+    )
+    .subscribe({
+      next: (serv: IService) => {
+        this.serv = serv; // assignation correcte
+        console.log('Détails du service:', this.serv);
+
+        // navigation avec l'objet reçu
+        this.router.navigate(
+          ['/service-details', serv.id],
+          { state: { service: serv } }
+        );
+      }
+    });
+}
+
+
 }

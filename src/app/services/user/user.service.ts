@@ -4,6 +4,7 @@ import { Observable, BehaviorSubject, throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 import { UserProfile } from 'src/app/Interfaces/iuser';
+import { IBooking, IBookingResponse, ICommentResponse, IRatingResponse, ISubscritionResponse } from 'src/app/Interfaces/iservice';
 
 @Injectable({
   providedIn: 'root'
@@ -42,6 +43,62 @@ export class UserService {
     localStorage.removeItem(this.storageKey);
   }
 
+  addComment(serviceId: number, content: string): Observable<ICommentResponse> {
+    return this.http.post<ICommentResponse>(
+      `${this.apiUrl}add_comment/${serviceId}/`,
+      { content }
+    ).pipe(
+      catchError(error => {
+        console.error('Error adding comment:', error);
+        return throwError(() => new Error('Failed to add comment'));
+      })
+    );
+  }
+
+  addRating(serviceId: number, score: number): Observable<IRatingResponse> {
+    return this.http.post<IRatingResponse>(
+      `${this.apiUrl}add_rating/${serviceId}/`,
+      { score }
+    ).pipe(
+      catchError(error => {
+        console.error('Error adding rating:', error);
+        return throwError(() => new Error('Failed to add rating'));
+      })
+    );
+  }
+
+  getUserComments(serviceId: number): Observable<ICommentResponse[]> {
+    return this.http.get<ICommentResponse[]>(
+      `${this.apiUrl}list_comments/${serviceId}/`
+    ).pipe(
+      catchError(error => {
+        console.error('Error fetching user comments:', error);
+        return throwError(() => new Error('Failed to fetch user comments'));
+      })
+    );
+  }
+
+
+  subscribeToNewService( bookingData: {
+    date: string;
+    start_time: string;
+    end_time: string;
+    platform: 'google_meet' | 'zoom';
+    meeting_link?: string | null;
+  }): Observable<ISubscritionResponse> {
+    return this.http.post<ISubscritionResponse>(
+      `${this.apiUrl}bookings/`,
+      bookingData
+    ).pipe(
+      catchError(error => {
+        console.error('Error subscribing to service:', error);
+        return throwError(() => new Error('Failed to subscribe to service'));
+      })
+    );
+}
+
+
+
   private loadUserFromStorage(): void {
     try {
       const storedUser = localStorage.getItem(this.storageKey);
@@ -73,5 +130,5 @@ export class UserService {
     }
   }
 
-  
+
 }

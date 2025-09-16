@@ -1,3 +1,4 @@
+<!-- expert-formation.component.html -->
 <app-header-expert [showSearch]="false"></app-header-expert>
 <div class="sidebar-container">
     <app-sidebar-expert [collapsedByDefault]="false" (sidebarToggle)="isSidebarCollapsed = $event"></app-sidebar-expert>
@@ -23,10 +24,24 @@
     <div class="formation-section">
         <h1 class="h1">Historique des services </h1>
         
-         <div class="services-grid">
+        <!-- Loading -->
+        <div class="loading" *ngIf="isLoading">
+            <i class="fas fa-spinner fa-spin"></i>
+            <p>Chargement de vos services...</p>
+        </div>
+
+        <!-- Error -->
+        <div class="error" *ngIf="error && !isLoading">
+            <i class="fas fa-exclamation-triangle"></i>
+            <p>{{ error }}</p>
+            <button (click)="reloadServices()">Réessayer</button>
+        </div>
+
+        <!-- Services List -->
+        <div class="services-grid" *ngIf="!isLoading && filteredFormations.length > 0">
             <div class="service-card" *ngFor="let formation of paginatedFormations">
                 <div class="service-image-container">
-                    <img [src]="formation.cover_image" [alt]="formation.name" class="service-image" />
+                    <img [src]="formation.cover_image || 'assets/default-service.jpg'" [alt]="formation.name" class="service-image" />
                     
                     <!-- Icônes au survol -->
                     <div class="hover-actions">
@@ -36,34 +51,39 @@
                         <button class="action-btn" aria-label="Transférer">
                             <i class="fas fa-share-alt"></i>
                         </button>
-
                     </div>
                 </div>
                 
                 <div class="service-content">
-                    <h3 class="service-title">{{ formation.name }}</h3>
+                    <h3 class="service-title">{{ formation.name | lowercase }}</h3>
                     
                     <div class="service-meta">
                         <div>
                             <i class="fas fa-calendar-alt"></i>
-                            <span>Date: {{ formation.date }}</span>
+                            <span>Date: {{ formation.date | date:'dd/MM/yyyy' }}</span>
                         </div>
                         <div>
                             <i class="fas fa-users"></i>
-                            <span>Souscriptions: {{ formation.subscription }}</span>
+                            <span>Souscriptions: {{ formation.subscription || 0 }}</span>
                         </div>
                     </div>
                     <div class="card-footer">
                         <div class="price">Prix: {{ formation.price | currency:'CFA':'symbol':'1.0-0' }}</div>
 
-                        <!-- Bouton "Voir plus" -->
-                        <button class="see-more-btn" (click)="viewDetails(formation)">
-                            Modifier <i class="fas fa-chevron-right"></i>
+                        <!-- Bouton "Modifier" -->
+                        <button class="see-more-btn" (click)="openEditModal(formation)">
+                            Modifier <i class="fas fa-edit"></i>
                         </button>
                     </div>
-
                 </div>
             </div>
+        </div>
+
+        <!-- Empty State -->
+        <div class="empty-state" *ngIf="!isLoading && filteredFormations.length === 0">
+            <i class="fas fa-graduation-cap"></i>
+            <h3>Aucun service trouvé</h3>
+            <p>{{ searchQuery ? 'Aucun résultat pour votre recherche' : 'Vous n\'avez pas encore créé de services' }}</p>
         </div>
 
         <!-- Pagination -->
@@ -91,7 +111,8 @@
                     class="page-number" 
                     [class.active]="page === currentPage"
                     (click)="goToPage(page)"
-                     [attr.aria-label]="'Modifier la formation '">
+                    [attr.aria-label]="'Page ' + page"
+                >
                     {{ page }}
                 </button>
             </div>
@@ -117,6 +138,164 @@
 
     <div *ngIf="notify" class="notification">
         Nouvelle notification ({{ notificationCount }})
+    </div>
+
+    <!-- MODAL DE MODIFICATION -->
+    <div class="modal-overlay" *ngIf="showEditModal" (click)="closeEditModal()">
+        <div class="modal-content" (click)="$event.stopPropagation()">
+            
+            <!-- En-tête du modal -->
+            <div class="modal-header">
+                <h2>Modifier le service</h2>
+                <button class="close-btn" (click)="closeEditModal()" type="button">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <!-- Message d'erreur -->
+            <div class="error-alert" *ngIf="modalError">
+                <i class="fas fa-exclamation-circle"></i>
+                {{ modalError }}
+            </div>
+
+            <!-- Chargement des données -->
+            <div class="loading-container" *ngIf="isFetchingService">
+                <div class="spinner"></div>
+                <p>Chargement des détails du service...</p>
+            </div>
+
+            <!-- Formulaire de modification -->
+            <form *ngIf="!isFetchingService && selectedService" [formGroup]="editServiceForm" (ngSubmit)="onSubmitEdit()" class="modal-form">
+                
+                <div class="form-grid">
+                    
+                    <!-- Nom du service -->
+                    <div class="form-group">
+                        <label for="name">Nom du service *</label>
+                        <input type="text" id="name" formControlName="name" placeholder="Nom du service">
+                        <div class="error-message" *ngIf="editServiceForm.get('name')?.invalid && editServiceForm.get('name')?.touched">
+                            Le nom est requis (min. 3 caractères)
+                        </div>
+                    </div>
+
+                    <!-- Description -->
+                    <div class="form-group full-width">
+                        <label for="description">Description *</label>
+                        <textarea id="description" formControlName="description" rows="4" placeholder="Description détaillée du service..."></textarea>
+                        <div class="error-message" *ngIf="editServiceForm.get('description')?.invalid && editServiceForm.get('description')?.touched">
+                            La description est requise (min. 10 caractères)
+                        </div>
+                    </div>
+
+                    <!-- Prix -->
+                    <div class="form-group">
+                        <label for="price">Prix (XAF) *</label>
+                        <input type="number" id="price" formControlName="price" placeholder="5000" min="0">
+                        <div class="error-message" *ngIf="editServiceForm.get('price')?.invalid && editServiceForm.get('price')?.touched">
+                            Prix invalide
+                        </div>
+                    </div>
+
+                    <!-- Date -->
+                    <div class="form-group">
+                        <label for="date">Date *</label>
+                        <input type="date" id="date" formControlName="date">
+                        <div class="error-message" *ngIf="editServiceForm.get('date')?.invalid && editServiceForm.get('date')?.touched">
+                            Date requise
+                        </div>
+                    </div>
+
+                    <!-- Heure de début -->
+                    <div class="form-group">
+                        <label for="start_time">Heure de début *</label>
+                        <input type="time" id="start_time" formControlName="start_time">
+                        <div class="error-message" *ngIf="editServiceForm.get('start_time')?.invalid && editServiceForm.get('start_time')?.touched">
+                            Heure requise
+                        </div>
+                    </div>
+
+                    <!-- Heure de fin -->
+                    <div class="form-group">
+                        <label for="end_time">Heure de fin *</label>
+                        <input type="time" id="end_time" formControlName="end_time">
+                        <div class="error-message" *ngIf="editServiceForm.get('end_time')?.invalid && editServiceForm.get('end_time')?.touched">
+                            Heure requise
+                        </div>
+                    </div>
+
+                    <!-- Plateforme préférée -->
+                    <div class="form-group">
+                        <label for="preferred_platform">Plateforme *</label>
+                        <select id="preferred_platform" formControlName="preferred_platform">
+                            <option value="">Sélectionnez une plateforme</option>
+                            <option value="zoom">Zoom</option>
+                            <option value="google_meet">Google Meet</option>
+               
+                        </select>
+                        <div class="error-message" *ngIf="editServiceForm.get('preferred_platform')?.invalid && editServiceForm.get('preferred_platform')?.touched">
+                            Plateforme requise
+                        </div>
+                    </div>
+
+                    <!-- Lien de réunion -->
+                    <div class="form-group full-width">
+                        <label for="meeting_link">Lien de réunion</label>
+                        <input type="url" id="meeting_link" formControlName="meeting_link" placeholder="https://meet.google.com/...">
+                    </div>
+
+                    <!-- Image de couverture -->
+                    <div class="form-group full-width">
+                        <label for="cover_image">Image de couverture</label>
+                        <input type="file" id="cover_image" (change)="onFileSelected($event)" accept="image/*">
+                        <div class="image-preview" *ngIf="imagePreview">
+                            <img [src]="imagePreview" alt="Aperçu de l'image">
+                            <button type="button" class="remove-image" (click)="imagePreview = null; editServiceForm.patchValue({ cover_image: '' })">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Catégorie -->
+                    <div class="form-group">
+                        <label for="category">Catégorie *</label>
+                        <select id="category" formControlName="category" (change)="onCategoryChange()">
+                            <option value="">Sélectionnez une catégorie</option>
+                            <option *ngFor="let cat of categories" [value]="cat.value">{{ cat.displayName }}</option>
+                        </select>
+                        <div class="error-message" *ngIf="editServiceForm.get('category')?.invalid && editServiceForm.get('category')?.touched">
+                            Catégorie requise
+                        </div>
+                    </div>
+
+                        <!-- Sous-catégorie -->
+                    <div class="form-group">
+                        <label for="subcategory">Sous-catégorie</label>
+                        <select id="subcategory" formControlName="subcategory" (change)="onSubcategoryChange()">
+                            <option value="">Sélectionnez une sous-catégorie</option>
+                            <option *ngFor="let sub of availableSubcategories" [value]="sub.value">
+                                {{ sub.displayName }}
+                            </option>
+                        </select>
+                    </div>
+
+
+                </div>
+
+                <!-- Actions du modal -->
+                <div class="modal-actions">
+                    <button type="button" class="btn-cancel" (click)="closeEditModal()" [disabled]="isModalLoading">
+                        Annuler
+                    </button>
+                    <button type="submit" class="btn-save" [disabled]=" isModalLoading">
+                        <i class="fas fa-save" *ngIf="!isModalLoading"></i>
+                        <i class="fas fa-spinner fa-spin" *ngIf="isModalLoading"></i>
+                        {{ isModalLoading ? 'Modification...' : 'Modifier le service' }}
+                    </button>
+                </div>
+
+            </form>
+
+        </div>
     </div>
 
 </div>

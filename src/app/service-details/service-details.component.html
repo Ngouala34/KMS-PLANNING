@@ -1,78 +1,251 @@
 <app-navlanding></app-navlanding>
 
-<div class="details-container">
-  <div class="page-title">
-    <p class="details-title">Détails du service</p>
-  </div>
+<div class="service-details-page">
+  <!-- Hero Section avec image et infos principales -->
+  <section class="hero-section">
+    <div class="hero-container">
+      <!-- Image principale -->
+      <div class="hero-image">
+        <img src="https://i.pinimg.com/736x/cf/f5/e1/cff5e1cba8964bcaeaee87cf0eaecb59.jpg" 
+             [alt]="details.title" 
+             class="service-image" />
+        <div class="image-overlay">
+          <div class="price-badge">
+            <i class="fas fa-tag"></i>
+            <span>{{ service.price }} FCFA</span>
+          </div>
+        </div>
+      </div>
 
-  <div class="page-header">
-    <div class="avis-client">
-      <img [src]="avis.avatar" [alt]="avis.nom" />
-      <div class="nom">
-        <p class="p1">{{ avis.nom }}, <span>{{ avis.role }}</span></p>
-        <p class="p2"><strong>{{ avis.note }}</strong> {{ avis.moyenne }}</p>
+      <!-- Contenu principal -->
+      <div class="hero-content">
+        <!-- Breadcrumb -->
+        <nav class="breadcrumb">
+          <span class="breadcrumb-item">Services</span>
+          <i class="fas fa-chevron-right"></i>
+          <span class="breadcrumb-item active">{{ service.name| lowercase}}</span>
+        </nav>
+
+        <!-- Titre et expert -->
+        <div class="service-header">
+          <h1 class="service-title">{{ service.name| lowercase  }}</h1>
+          
+          <!-- Expert info -->
+          <div class="expert-card">
+            <div class="expert-avatar">
+              <img [src]="avis.avatar" [alt]="avis.nom" />
+              <div class="expert-badge">
+                <i class="fas fa-crown"></i>
+              </div>
+            </div>
+            <div class="expert-info">
+              <h3 class="expert-name">{{ avis.nom }}</h3>
+              <p class="expert-role">{{ avis.role }}</p>
+              <div class="expert-rating">
+                <div class="stars">
+                  <i class="fas fa-star" *ngFor="let star of getStarsArray(avis.note)"></i>
+                  <i class="far fa-star" *ngFor="let star of getEmptyStarsArray(avis.note)"></i>
+                </div>
+                <span class="rating-text">{{ avis.note }} ({{ avis.moyenne }})</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Description -->
+        <div class="service-description">
+          <p>{{ service.description }}</p>
+        </div>
+
+        <!-- Détails du service -->
+        <div class="service-details-grid">
+          <div class="detail-card">
+            <div class="detail-icon">
+              <i class="fas fa-calendar-alt"></i>
+            </div>
+            <div class="detail-content">
+              <span class="detail-label">Date</span>
+              <span class="detail-value">{{ service.date | date:'fullDate':'fr' }}</span>
+            </div>
+          </div>
+
+          <div class="detail-card">
+            <div class="detail-icon">
+              <i class="fas fa-clock"></i>
+            </div>
+            <div class="detail-content">
+              <span class="detail-label">Horaire</span>
+              <span class="detail-value">{{ service.start_time}} - {{ service.end_time }}</span>
+            </div>
+          </div>
+
+          <div class="detail-card">
+            <div class="detail-icon">
+              <i class="fas fa-video"></i>
+            </div>
+            <div class="detail-content">
+              <span class="detail-label">Plateforme</span>
+                <span class="detail-value" *ngIf="service?.preferred_platform === 'google_meet'">
+                  Google Meet
+                </span>
+
+                <span class="detail-value" *ngIf="service?.preferred_platform === 'zoom'">
+                  zoom
+                </span>
+
+            </div>
+          </div>
+
+          <div class="detail-card">
+            <div class="detail-icon">
+              <i class="fas fa-users"></i>
+            </div>
+            <div class="detail-content">
+              <span class="detail-label">Places disponibles</span>
+              <span class="detail-value">{{ details.availableSpots || '0' }} places</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="action-section">
+          <button class="reserve-btn primary" (click)="subscribeToService()">
+            <i class="fas fa-calendar-check"></i>
+            <span>Réserver maintenant</span>
+          </button>
+          <div *ngIf="successMessage" class="alert alert-success">
+            {{ successMessage }}
+          </div>
+          <div *ngIf="errorMessage" class="alert alert-danger">
+            {{ errorMessage }}
+          </div>
+          
+          <div class="secondary-actions">
+            <button class="action-btn" (click)="onAddToWishlist()">
+              <i class="far fa-heart"></i>
+            </button>
+            <button class="action-btn" (click)="onShare()">
+              <i class="fas fa-share"></i>
+            </button>
+
+          </div>
+        </div>
       </div>
     </div>
+  </section>
 
-    <div class="details-card">
-      <img src="https://i.pinimg.com/736x/cf/f5/e1/cff5e1cba8964bcaeaee87cf0eaecb59.jpg" alt="Image du service" />
-      <div class="detail">
-        <div class="detail-header">
-          <h2 class="title">{{ details.title }}</h2>
-        </div>
-      
-        <div class="description">{{ details.description }}</div>
-      
-        <div class="detail-grid">
-          <div class="detail-item">
-            <i class="fa-regular fa-calendar-days"></i>
-            <div>
-              <span class="label">Date</span>
-              <span class="value">{{ details.date }}</span>
-            </div>
-          </div>
-      
-          <div class="detail-item">
-            <i class="fa-solid fa-clock"></i>
-            <div>
-              <span class="label">Horaire</span>
-              <span class="value">{{ details.startTime }}-{{ details.endTime }}</span>
-            </div>
-          </div>          
-      
-          <div class="detail-item ">
-            <i class="fa-solid fa-video"></i>
-            <div>
-              <span class="label">Plateforme</span>
-              <span class="value">{{ details.platform }}</span>
-            </div>
-          </div>
-
-          <div class="detail-item">
-            <div class="price-tag">
-                <i class="fa-solid fa-tag"></i>
-                {{ details.price }} FCFA
-              </div>
-          </div>
-        </div>
-      
-        <button class="reserve-btn">
-          <i class="fa-regular fa-calendar-check"></i>
-          Réserver maintenant
+  <!-- Section informations détaillées
+  <section class="info-section">
+    <div class="container">
+      <div class="info-tabs">
+        <button class="tab-btn active" (click)="setActiveTab('overview')">
+          <i class="fas fa-info-circle"></i>
+          Vue d'ensemble
+        </button>
+        <button class="tab-btn" (click)="setActiveTab('requirements')">
+          <i class="fas fa-list-check"></i>
+          Prérequis
+        </button>
+        <button class="tab-btn" (click)="setActiveTab('schedule')">
+          <i class="fas fa-calendar"></i>
+          Programme
         </button>
       </div>
-      
+
+      <div class="tab-content" *ngIf="activeTab === 'overview'">
+        <div class="overview-content">
+          <h3>À propos de ce service</h3>
+          <p>{{ details.fullDescription || details.description }}</p>
+          
+          <div class="features-grid">
+            <div class="feature-item">
+              <i class="fas fa-check-circle"></i>
+              <span>Certification incluse</span>
+            </div>
+            <div class="feature-item">
+              <i class="fas fa-check-circle"></i>
+              <span>Support 24/7</span>
+            </div>
+            <div class="feature-item">
+              <i class="fas fa-check-circle"></i>
+              <span>Accès à vie</span>
+            </div>
+            <div class="feature-item">
+              <i class="fas fa-check-circle"></i>
+              <span>Garantie satisfait ou remboursé</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-content" *ngIf="activeTab === 'requirements'">
+        <div class="requirements-content">
+          <h3>Prérequis</h3>
+          <ul class="requirements-list">
+            <li><i class="fas fa-dot-circle"></i> Connexion internet stable</li>
+            <li><i class="fas fa-dot-circle"></i> Navigateur web récent</li>
+            <li><i class="fas fa-dot-circle"></i> Niveau débutant accepté</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="tab-content" *ngIf="activeTab === 'schedule'">
+        <div class="schedule-content">
+          <h3>Programme détaillé</h3>
+          <div class="schedule-timeline">
+            <div class="timeline-item">
+              <div class="timeline-marker"></div>
+              <div class="timeline-content">
+                <h4>Introduction</h4>
+                <p>Présentation des concepts de base</p>
+                <span class="timeline-duration">30 min</span>
+              </div>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-marker"></div>
+              <div class="timeline-content">
+                <h4>Partie pratique</h4>
+                <p>Exercices dirigés et mise en pratique</p>
+                <span class="timeline-duration">60 min</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section> -->
+
+  <!-- Section avis -->
+  <section class="reviews-section">
+      <app-service-details-avis></app-service-details-avis>
+  </section>
+
+  <!-- Services similaires -->
+  <section class="similar-services-section">
+    <div class="container">
+      <h2 class="section-title">
+        <i class="fas fa-lightbulb"></i>
+        Services similaires
+      </h2>
+      <div class="similar-services-grid">
+        <!-- Contenu des services similaires -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Sticky footer avec bouton de réservation (mobile) -->
+  <div class="sticky-footer" *ngIf="isMobile">
+    <div class="sticky-content">
+      <div class="price-info">
+        <span class="price">{{ details.price }} FCFA</span>
+        <span class="price-label">par personne</span>
+      </div>
+      <button class="sticky-reserve-btn" (click)="subscribeToService()">
+        <i class="fas fa-calendar-check"></i>
+        Réserver
+      </button>
     </div>
   </div>
-
-  <app-service-details-avis></app-service-details-avis>
-  <div class="similar">
-    <h2 class="section-title">Services similaires</h2>
-    <div class="similar-cards">
-        
-    </div>    
-  </div>
-
 </div>
 
 <app-footer></app-footer>

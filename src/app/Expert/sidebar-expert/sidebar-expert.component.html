@@ -1,44 +1,90 @@
 <section class="sidebar-container">
   <div class="sidebar" [class.collapsed]="isCollapsed">
+    <!-- Header avec logo et toggle -->
     <div class="sidebar-header">
-      <i id="fa-bars" class="fa-solid fa-right-left" (click)="toggleSidebar()"></i>
-      <h3 *ngIf="!isCollapsed"></h3>
+      <div class="logo-section" *ngIf="!isCollapsed">
+        <h3 class="sidebar-title">Expert Panel</h3>
+      </div>
+      <button class="toggle-btn" (click)="toggleSidebar()" [attr.aria-label]="isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'">
+        <i class="fas" [class.fa-chevron-left]="!isCollapsed" [class.fa-chevron-right]="isCollapsed"></i>
+      </button>
     </div>
 
-    <ul class="list-unstyled components">
+    <!-- Navigation principale -->
+    <nav class="sidebar-nav">
+      <ul class="nav-list">
+        <li class="nav-item" 
+            routerLink="/dashboard-expert" 
+            routerLinkActive="active" 
+            (click)="OnExpertdashboard()"
+            [attr.title]="isCollapsed ? 'Dashboard' : null">
+          <div class="nav-link">
+            <i class="fas fa-chart-line nav-icon"></i>
+            <span class="nav-text" *ngIf="!isCollapsed">Dashboard</span>
+          </div>
+        </li>
 
-      <li routerLink="/dashboard-expert" routerLinkActive="active" (click)="OnExpertdashboard()">
-        <i class="fa-regular fa-chart-bar" style="color: #16a085;"></i>
-        <a>Dashboard</a>
-      </li>
+        <li class="nav-item" 
+            routerLink="/expert-formation" 
+            routerLinkActive="active" 
+            (click)="OnExpertformation()"
+            [attr.title]="isCollapsed ? 'Mes Services' : null">
+          <div class="nav-link">
+            <i class="fas fa-cog nav-icon"></i>
+            <span class="nav-text" *ngIf="!isCollapsed">Mes Services</span>
+          </div>
+        </li>
 
-      <li routerLink="/expert-formation" routerLinkActive="active" (click)="OnExpertformation()">
-        <i class="fa-regular fa-pen-to-square" style="color: #d35400;"></i>
-        <a>Mes Services</a>
-      </li>
+        <li class="nav-item" 
+            routerLink="/expert-rendez-vous" 
+            routerLinkActive="active" 
+            (click)="OnExpertrendezvous()"
+            [attr.title]="isCollapsed ? 'Planifications' : null">
+          <div class="nav-link">
+            <i class="fas fa-calendar-alt nav-icon"></i>
+            <span class="nav-text" *ngIf="!isCollapsed">Planifications</span>
+          </div>
+        </li>
 
-      <li routerLink="/expert-rendez-vous" routerLinkActive="active" (click)="OnExpertrendezvous()">
-        <i class="fa-regular fa-calendar" style="color: #2980b9;"></i>
-        <a>Planifications</a>
-      </li>
+        <li class="nav-item" 
+            routerLink="/expert-settings" 
+            routerLinkActive="active" 
+            (click)="OnSettings()"
+            [attr.title]="isCollapsed ? 'Paramètres' : null">
+          <div class="nav-link">
+            <i class="fas fa-user-cog nav-icon"></i>
+            <span class="nav-text" *ngIf="!isCollapsed">Paramètres</span>
+          </div>
+        </li>
+      </ul>
 
-      <li routerLink="/expert-settings" routerLinkActive="active" (click)="OnSettings()">
-        <i class="fa-regular fa-circle-user" style="color: #8e44ad;"></i>
-        <a>Paramètres</a>
-      </li>
+      <!-- Séparateur -->
+      <div class="nav-divider"></div>
 
-      <li routerLink="/user-Deconnexion" routerLinkActive="active" (click)="Ondeconnexion()">
-        <i class="fa-regular fa-circle-xmark" style="color: #c0392b;"></i>
-        <a>Déconnexion</a>
-      </li>
+      <!-- Action principale -->
+      <div class="primary-action">
+        <button class="create-btn" 
+                (click)="onCreateCourse()"
+                [attr.title]="isCollapsed ? 'Nouveau service' : null">
+          <i class="fas fa-plus create-icon"></i>
+          <span class="create-text" *ngIf="!isCollapsed">Nouveau service</span>
+        </button>
+      </div>
+    </nav>
 
-      <br><br>
-
-      <li routerLink="/expert" routerLinkActive="active" class="floating-action-btn" (click)="onCreateCourse()">
-        <i class="fa-regular fa-square-plus" style="color: #09ce1d;"></i>
-        <a>Nouveau service</a>
-      </li>
-
-    </ul>
+    <!-- Footer avec déconnexion -->
+    <div class="sidebar-footer">
+      <button class="logout-btn" 
+              (click)="Ondeconnexion()"
+              [attr.title]="isCollapsed ? 'Déconnexion' : null">
+        <i class="fas fa-sign-out-alt logout-icon"></i>
+        <span class="logout-text" *ngIf="!isCollapsed">Déconnexion</span>
+      </button>
+    </div>
   </div>
+
+  <!-- Overlay pour mobile -->
+  <div class="sidebar-overlay" 
+       *ngIf="!isCollapsed && isMobile" 
+       (click)="toggleSidebar()"></div>
 </section>

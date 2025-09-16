@@ -26,7 +26,7 @@ import { AProposComponent } from './landing/a-propos/a-propos.component';
 import { AuthGuard } from './guards/auth.guard';
 
 const routes: Routes = [
-
+ 
 
 
 
@@ -36,7 +36,7 @@ const routes: Routes = [
   { path: 'contact', component: ContactComponent },
   { path: 'a-propos', component: AProposComponent },
   { path: 'service-list', component: ServiceListComponent},
-  { path: 'service-details', component: ServiceDetailsComponent },
+  { path: 'service-details/:id', component: ServiceDetailsComponent },
 
 
   { path: 'user-register', component: UserRegisterComponent },

@@ -1,55 +1,273 @@
 <div class="reviews-container">
-    <h2 class="section-title">Avis sur cet expert</h2>
-  
-    <!-- Avis existants -->
-    <div class="reviews-list">
-      <div *ngFor="let review of reviews" class="review-card">
-        <div class="review-header">
-          <span class="review-author">{{ review.author }}</span>
-          <div class="stars">
-            <span *ngFor="let star of [1,2,3,4,5]">
-              <i class="star-icon" [class.active]="star <= review.rating"></i>
-            </span>
+  <!-- Header avec statistiques
+  <div class="reviews-header">
+    <h2 class="section-title">
+      <i class="fas fa-star-half-alt"></i>
+      Avis sur cet expert
+    </h2>
+    
+    <div class="reviews-stats" *ngIf="reviewsStats">
+      <div class="overall-rating">
+        <div class="rating-score">{{ reviewsStats.averageRating | number:'1.1-1' }}</div>
+        <div class="rating-details">
+          <div class="stars-display">
+            <i class="fas fa-star" *ngFor="let star of getFullStars(reviewsStats.averageRating)"></i>
+            <i class="fas fa-star-half-alt" *ngIf="hasHalfStar(reviewsStats.averageRating)"></i>
+            <i class="far fa-star" *ngFor="let star of getEmptyStars(reviewsStats.averageRating)"></i>
           </div>
+          <span class="total-reviews">{{ reviewsStats.totalReviews }} avis</span>
         </div>
-        <p class="review-date">{{ review.date | date:'dd/MM/yyyy' }}</p>
-        <p class="review-text">{{ review.comment }}</p>
+      </div>
+      
+      <div class="rating-breakdown">
+        <div class="rating-bar" *ngFor="let item of reviewsStats.breakdown">
+          <span class="stars-count">{{ item.stars }} ⭐</span>
+          <div class="progress-bar">
+            <div class="progress-fill" [style.width.%]="item.percentage"></div>
+          </div>
+          <span class="count">{{ item.count }}</span>
+        </div>
       </div>
     </div>
-  
-    <!-- Formulaire d'avis -->
-    <div class="review-form">
-      <h3 class="form-title">Donnez votre avis</h3>
-  
-      <div class="rating-input">
-        <p class="rating-label">Votre note :</p>
-        <div class="stars-input">
-          <span *ngFor="let star of [1,2,3,4,5]" 
-                (click)="setRating(star)"
-                (mouseenter)="setTempRating(star)"
-                (mouseleave)="resetTempRating()">
-            <i class="star-input-icon" 
-               [class.active]="star <= (tempRating || userRating)"></i>
-          </span>
+  </div> -->
+
+  <!-- Filtres et tri -->
+  <div class="reviews-filters">
+    <div class="filter-buttons">
+      <button class="filter-btn" 
+              [class.active]="selectedFilter === 'all'"
+              (click)="setFilter('all')">
+        Tous les avis
+      </button>
+      <button class="filter-btn" 
+              [class.active]="selectedFilter === 5"
+              (click)="setFilter(5)">
+        5 étoiles ({{ getReviewsCountByRating(5) }})
+      </button>
+      <button class="filter-btn" 
+              [class.active]="selectedFilter === 4"
+              (click)="setFilter(4)">
+        4 étoiles ({{ getReviewsCountByRating(4) }})
+      </button>
+    </div>
+    
+    <div class="sort-dropdown">
+      <select [(ngModel)]="sortBy" (change)="sortReviews()" class="sort-select">
+        <option value="date_desc">Plus récents</option>
+        <option value="date_asc">Plus anciens</option>
+        <option value="rating_desc">Note décroissante</option>
+        <option value="rating_asc">Note croissante</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- État de chargement -->
+  <div class="loading-state" *ngIf="isLoadingReviews">
+    <div class="skeleton-loader" *ngFor="let item of [1,2,3]">
+      <div class="skeleton-header">
+        <div class="skeleton-avatar"></div>
+        <div class="skeleton-info">
+          <div class="skeleton-line short"></div>
+          <div class="skeleton-line shorter"></div>
         </div>
       </div>
-  
-      <div class="comment-input">
-        <textarea [(ngModel)]="userComment" placeholder="Partagez votre expérience..."></textarea>
-      </div>
-  
-      <button class="submit-btn" 
-              (click)="submitReview()"
-              [disabled]="isSubmitting || userRating < 1 || !userComment.trim()">
-        <span *ngIf="!isSubmitting">Envoyer</span>
-        <span *ngIf="isSubmitting">Envoi en cours...</span>
-      </button>
-  
-      <div *ngIf="showSuccess" class="success-message">
-        ✓ Merci pour votre avis !
+      <div class="skeleton-content">
+        <div class="skeleton-line"></div>
+        <div class="skeleton-line"></div>
+        <div class="skeleton-line medium"></div>
       </div>
     </div>
   </div>
-  
 
+  <!-- Avis existants -->
+  <div class="reviews-list" *ngIf="!isLoadingReviews">
+    <div class="empty-state" *ngIf="filteredReviews.length === 0">
+      <div class="empty-icon">
+        <i class="fas fa-comment-slash"></i>
+      </div>
+      <h3>Aucun avis trouvé</h3>
+      <p>Soyez le premier à donner votre avis sur cet expert.</p>
+    </div>
 
+    <div *ngFor="let review of pagedReviews; trackBy: trackByReviewId" 
+         class="review-card"
+         [@slideInUp]>
+      <div class="review-header">
+        <div class="reviewer-info">
+          <div class="reviewer-avatar">
+            <img [src]="review.avatar || '/assets/images/image.png'" 
+                 [alt]="review.author"
+                 (error)="onImageError($event)">
+          </div>
+          <div class="reviewer-details">
+            <h4 class="review-author">{{ review.author }}</h4>
+            <div class="review-meta">
+              <div class="stars">
+                <i class="fas fa-star" *ngFor="let star of getStarsArray(review.rating)"></i>
+                <i class="far fa-star" *ngFor="let star of getEmptyStarsArray(review.rating)"></i>
+              </div>
+              <span class="review-date">{{ review.date | date:'dd/MM/yyyy' }}</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="review-actions">
+          <button class="action-btn" 
+                  (click)="toggleHelpful(review)"
+                  [class.active]="review.isHelpful">
+            <i class="fas fa-thumbs-up"></i>
+            <span>{{ review.helpfulCount || 0 }}</span>
+          </button>
+          <button class="action-btn" (click)="reportReview(review)">
+            <i class="fas fa-flag"></i>
+          </button>
+        </div>
+      </div>
+      
+      <div class="review-content">
+        <p class="review-text" [class.expanded]="review.isExpanded">
+          {{ review.comment }}
+        </p>
+        
+        <button class="expand-btn" 
+                *ngIf="review.comment.length > 200"
+                (click)="toggleExpanded(review)">
+          {{ review.isExpanded ? 'Voir moins' : 'Voir plus' }}
+        </button>
+        
+        <div class="review-tags" *ngIf="review.tags && review.tags.length > 0">
+          <span class="tag" *ngFor="let tag of review.tags">{{ tag }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pagination -->
+    <div class="pagination" *ngIf="totalPages > 1">
+      <button class="page-btn" 
+              [disabled]="currentPage === 1"
+              (click)="goToPage(currentPage - 1)">
+        <i class="fas fa-chevron-left"></i>
+        Précédent
+      </button>
+      
+      <div class="page-numbers">
+        <button class="page-number" 
+                *ngFor="let page of getPageNumbers()"
+                [class.active]="page === currentPage"
+                (click)="goToPage(page)">
+          {{ page }}
+        </button>
+      </div>
+      
+      <button class="page-btn" 
+              [disabled]="currentPage === totalPages"
+              (click)="goToPage(currentPage + 1)">
+        Suivant
+        <i class="fas fa-chevron-right"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- Formulaire d'avis -->
+  <div class="review-form-container">
+    <div class="form-header">
+      <h3 class="form-title">
+        <i class="fas fa-edit"></i>
+        Donnez votre avis
+      </h3>
+      <p class="form-subtitle">Partagez votre expérience avec cet expert</p>
+    </div>
+
+    <form class="review-form" (ngSubmit)="submitReview()" #reviewForm="ngForm">
+      <!-- Note -->
+      <div class="form-group rating-input">
+        <label class="form-label">
+          Votre note <span class="required">*</span>
+        </label>
+        <div class="stars-input">
+          <button type="button"
+                  class="star-btn"
+                  *ngFor="let star of [1,2,3,4,5]"
+                  (click)="setRating(star)"
+                  (mouseenter)="setTempRating(star)"
+                  (mouseleave)="resetTempRating()"
+                  [class.active]="star <= (tempRating || userRating)">
+            <i class="fas fa-star"></i>
+          </button>
+        </div>
+        <div class="rating-labels">
+          <span class="rating-label" *ngIf="userRating > 0">
+            {{ getRatingLabel(userRating) }}
+          </span>
+        </div>
+      </div>
+
+      <!-- Commentaire -->
+      <div class="form-group comment-input">
+        <label class="form-label" for="comment">
+          Votre commentaire <span class="required">*</span>
+        </label>
+        <textarea id="comment"
+                  [(ngModel)]="userComment" 
+                  name="comment"
+                  #commentField="ngModel"
+                  placeholder="Décrivez votre expérience avec cet expert..."
+                  maxlength="1000"
+                  required></textarea>
+        <div class="character-counter">
+          {{ userComment.length }}/1000 caractères
+        </div>
+        
+        <div class="form-error" *ngIf="commentField.invalid && commentField.touched">
+          Le commentaire est obligatoire
+        </div>
+      </div>
+
+      <!-- Tags suggérés -->
+      <div class="form-group tags-input">
+        <label class="form-label">Tags (optionnel)</label>
+        <div class="suggested-tags">
+          <button type="button" 
+                  class="tag-btn"
+                  *ngFor="let tag of suggestedTags"
+                  [class.selected]="selectedTags.includes(tag)"
+                  (click)="toggleTag(tag)">
+            {{ tag }}
+          </button>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="form-actions">
+        <button type="button" 
+                class="cancel-btn"
+                (click)="resetForm()"
+                [disabled]="isSubmitting">
+          Annuler
+        </button>
+        
+        <button type="submit" 
+                class="submit-btn"
+                (click)="submitReview()"
+                [disabled]="isSubmitting || userRating < 1 || !userComment.trim()">
+          <i class="fas fa-paper-plane" *ngIf="!isSubmitting"></i>
+          <i class="fas fa-spinner fa-spin" *ngIf="isSubmitting"></i>
+          <span>{{ isSubmitting ? 'Envoi en cours...' : 'Publier l\'avis' }}</span>
+        </button>
+      </div>
+
+      <!-- Messages -->
+      <div class="form-messages">
+        <div class="success-message" *ngIf="showSuccess" [@fadeInOut]>
+          <i class="fas fa-check-circle"></i>
+          Merci pour votre avis ! Il sera publié après modération.
+        </div>
+        
+        <div class="error-message" *ngIf="submitError" [@fadeInOut]>
+          <i class="fas fa-exclamation-triangle"></i>
+          {{ submitError }}
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

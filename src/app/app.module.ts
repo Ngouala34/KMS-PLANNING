@@ -126,6 +126,7 @@ import { ZoomInOnScrollDirective } from './directives/zoom-in-on-scroll.directiv
     AppearOnScrollDirective,
     SlideInOnScrollDirective,
     ZoomInOnScrollDirective,
+
   ],
   imports: [
     BrowserModule,
