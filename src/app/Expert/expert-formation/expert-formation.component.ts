@@ -272,7 +272,7 @@ export class ExpertFormationComponent implements OnInit, OnDestroy {
     if (this.selectedCategory) {
       filtered = filtered.filter(service =>
         service.category_display === this.selectedCategory ||
-        service.category?.value === this.selectedCategory
+        service.category === this.selectedCategory
       );
     }
 
@@ -379,7 +379,7 @@ export class ExpertFormationComponent implements OnInit, OnDestroy {
       label: cat.displayName,
       count: this.formations.filter(s => 
         s.category_display === cat.displayName || 
-        s.category?.value === cat.value
+        s.category === cat.value
       ).length
     }));
 
@@ -481,7 +481,7 @@ export class ExpertFormationComponent implements OnInit, OnDestroy {
       preferred_platform: service.preferred_platform,
       price: service.price,
       duration: service.duration,
-      category: service.category?.value || service.category_display,
+      category: service.category || service.category_display,
       subcategory: service.subcategory?.value,
       subsubcategory: service.subsubcategory?.value,
       meeting_link: service.meeting_link

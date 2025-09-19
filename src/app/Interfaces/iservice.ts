@@ -50,7 +50,7 @@ export interface IService {
   cover_image: string;
   cover_image_url: string;
   effective_duration: number;
-  category: Category;
+  category: string;
   subcategory: Subcategory;
   subsubcategory: Subsubcategory;
   category_display: string;

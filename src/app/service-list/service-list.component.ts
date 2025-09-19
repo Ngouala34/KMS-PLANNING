@@ -220,7 +220,7 @@ export class ServiceListComponent implements OnInit, OnDestroy {
         avarage: 4.5, // Valeur par défaut
         reviews: 15, // Valeur par défaut
         price: (service.price) || 0,
-        category: service.category_display || service.category?.name || 'Catégorie inconnue',
+        category: service.category_display || service.category || 'Catégorie inconnue',
         isFavorite: false
       };
     });
@@ -334,7 +334,7 @@ export class ServiceListComponent implements OnInit, OnDestroy {
       // Filtre par catégorie - utilise les champs réels
       const matchesCategory = this.filters.category === 'all' || 
         service.category_display === this.filters.category ||
-        service.category?.name === this.filters.category;
+        service.category === this.filters.category;
 
       // Filtre par sous-catégorie - utilise les champs réels
       const matchesSubcategory = this.filters.subcategory === 'all' || 
@@ -415,7 +415,7 @@ export class ServiceListComponent implements OnInit, OnDestroy {
     const allSubcategories = new Set<string>();
     
     this.service.forEach(service => {
-      if (service.category_display === categoryValue || service.category?.name === categoryValue) {
+      if (service.category_display === categoryValue || service.category === categoryValue) {
         if (service.subcategory?.name) {
           allSubcategories.add(service.subcategory.name);
         }
