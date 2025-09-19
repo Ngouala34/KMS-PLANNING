@@ -21,9 +21,9 @@
 /* Conteneur principal des paramètres
 ============================================= */
 .settings-container {
-  margin-left: 200px;
   padding: 2rem;
   transition: margin-left 0.3s ease;
+  margin-top: 65px;
 
   &.expanded {
     margin-left: 60px;

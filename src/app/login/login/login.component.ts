@@ -66,7 +66,7 @@ export class LoginComponent implements OnInit {
         this.router.navigate(['/user-dashboard']);
         break;
       case 'expert':
-        this.router.navigate(['/dashboard-expert']);
+        this.router.navigate(['/main-expert/dashboard-expert']);
         break;
       default:
         console.warn('Type d\'utilisateur inconnu:', userType);

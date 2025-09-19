@@ -12,7 +12,6 @@ import { UserDashboardComponent } from './user/user-dashboard/user-dashboard.com
 import { UserHistoriqueComponent } from './user/user-historique/user-historique.component';
 import { UserCalendrierComponent } from './user/user-calendrier/user-calendrier.component';
 import { DashboardExpertComponent } from './Expert/dashboard-expert/dashboard-expert.component';
-import { ExpertServiceComponent } from './Expert/expert-service/expert-service.component';
 import { HeaderExpertComponent } from './Expert/header-expert/header-expert.component';
 import { ServiceListComponent } from './service-list/service-list.component';
 import { UserParameterComponent } from './user/user-parameter/user-parameter.component';
@@ -24,6 +23,7 @@ import { ExpertSettingsComponent } from './Expert/expert-settings/expert-setting
 import { ContactComponent } from './landing/contact/contact.component';
 import { AProposComponent } from './landing/a-propos/a-propos.component';
 import { AuthGuard } from './guards/auth.guard';
+import { MainExpertComponent } from './Expert/_main-expert/main-expert.component';
 
 const routes: Routes = [
  
@@ -51,14 +51,22 @@ const routes: Routes = [
  
   { path: 'expert-register', component: ExpertRegisterComponent },
   { path: 'sidebar-expert',canActivate : [AuthGuard], component: SidebarComponent },
-  { path: 'dashboard-expert',canActivate : [AuthGuard],  component: DashboardExpertComponent },
-  { path: 'expert-service',canActivate : [AuthGuard],  component: ExpertServiceComponent },
   { path: 'header-expert', canActivate : [AuthGuard], component: HeaderExpertComponent },
-  { path: 'expert-formation', canActivate : [AuthGuard], component: ExpertFormationComponent },
-  { path: 'expert-rendez-vous', canActivate : [AuthGuard], component: ExpertRendezVousComponent },
-  { path: 'expert-settings', canActivate : [AuthGuard], component: ExpertSettingsComponent },  
   { path: 'create-course',canActivate : [AuthGuard], component: CreateCourseComponent },
   { path: 'revenue-chart',canActivate : [AuthGuard], component: RevenueChartComponent },
+
+    {
+    path: 'main-expert',
+    canActivate: [AuthGuard],
+    component: MainExpertComponent,
+    children: [
+      { path: 'dashboard-expert', component: DashboardExpertComponent,  },
+      { path: 'expert-formation', component: ExpertFormationComponent,   },
+      { path: 'expert-rendez-vous', component: ExpertRendezVousComponent,  },
+      { path: 'expert-settings', component: ExpertSettingsComponent,  },
+      { path: '', redirectTo: 'dashboard-expert', pathMatch: 'full' } // par défaut
+    ]
+  },
 
 
   

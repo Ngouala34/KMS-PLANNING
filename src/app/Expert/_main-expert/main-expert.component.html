@@ -1,0 +1,9 @@
+<app-header-expert></app-header-expert>
+
+<app-sidebar-expert (sidebarToggle)="isSidebarCollapsed = $event"[collapsedByDefault]="false"></app-sidebar-expert>
+
+<div class="main-expert-container" [class.collapsed]="isSidebarCollapsed">
+  <router-outlet></router-outlet>
+</div>
+
+

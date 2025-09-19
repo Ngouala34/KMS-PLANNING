@@ -1,35 +1,135 @@
-<header>
-  <nav class="topnav">
-    <section class="topnav-logo">
-      <div class="logo"></div>
-      <p class="planning">PLANNING</p> 
-    </section>
+<!-- header-expert.component.html -->
+<nav class="navbar" 
+     [@slideDown]="navbarVisible ? 'visible' : 'hidden'">
+  <div class="navbar-container">
     
-    <div class="nav-search" *ngIf="showSearch" >
-      <input class="top-input" type="text" placeholder="Rechercher..." />
-      <button id="iconrechercher">
-        <i class="fas fa-search"></i>
+    <!-- Logo et branding -->
+    <a (click)="onDashboard()" class="brand" role="button" tabindex="0">
+      <div class="logo">
+        <i class="fas fa-calendar-check"></i>
+      </div>
+      <span class="brand-text">Meet-Expert</span>
+    </a>
+
+    <!-- Barre de recherche (desktop) -->
+    <div class="search-container" *ngIf="showSearch">
+      <div class="search-wrapper">
+        <i class="fas fa-search search-icon" 
+           [class.focused]="isSearchFocused"></i>
+        <input 
+          type="text" 
+          class="search-input"
+          [(ngModel)]="searchQuery"
+          (focus)="onSearchFocus()"
+          (blur)="onSearchBlur()"
+          (keydown)="onSearchKeydown($event)"
+          placeholder="Rechercher des services, experts..."
+          aria-label="Rechercher"
+        />
+        <button class="search-button" 
+                (click)="onSearchSubmit()"
+                [disabled]="!searchQuery.trim()"
+                aria-label="Lancer la recherche">
+          <i class="fas fa-search"></i>
+        </button>
+        
+        <!-- Bouton clear search -->
+        <button class="clear-search" 
+                *ngIf="searchQuery"
+                (click)="clearSearch()"
+                aria-label="Effacer la recherche">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Actions navigation -->
+    <div class="nav-actions">
+      
+      <!-- Notifications -->
+      <button class="notification-btn" 
+              (click)="onNotifications()"
+              [attr.aria-label]="hasNotifications() ? 'Notifications (' + getNotificationNumber() + ')' : 'Aucune notification'">
+        <i class="fas fa-bell"></i>
+        <div class="notification-badge" 
+             *ngIf="hasNotifications()"
+             {{ notificationCount }}>
+        </div>
+      </button>
+
+      <!-- Profil utilisateur -->
+      <div class="user-profile" 
+           (click)="onProfile()"
+           role="button" 
+           tabindex="0"
+           [attr.aria-label]="'Profil de ' + userName">
+        <div class="user-avatar">
+          <img *ngIf="userAvatar; else initialsTemplate" 
+               [src]="userAvatar" 
+               [alt]="userName"
+               >
+          <ng-template #initialsTemplate>
+            {{ getUserInitials() }}
+          </ng-template>
+        </div>
+        <div class="user-info">
+          <div class="user-name">{{ userName }}</div>
+          <div class="user-role">{{ userRole }}</div>
+        </div>
+        <i class="fas fa-chevron-down dropdown-icon"></i>
+      </div>
+
+      <!-- Toggle menu mobile -->
+      <button class="mobile-toggle" 
+              (click)="toggleMobileMenu()"
+              [class.active]="mobileMenuOpen"
+              aria-label="Menu navigation"
+              [attr.aria-expanded]="mobileMenuOpen">
+        <span></span>
+        <span></span>
+        <span></span>
       </button>
     </div>
-    
-    <!-- Toggle Menu pour petits écrans -->
-    <div class="toggle-menu" (click)="toggleMenu()">
-      <i class="fas fa-bars"></i>
-    </div>
-    
-    <div *ngIf="toggleMenuVisible" class="mobile-menu">
-      <button (click)="OnUserdashboard()">Dashboard</button>
-      <button (click)="OnUserService()">Service</button>
-      <button (click)="OnUserHistorique()">Histirique</button>
-      <button (click)="OnUserCalendrier()">Calendrier</button>
-      <button >Parametres</button>
-      <button >Deconnexion</button>
-    </div>
-    
+  </div>
 
-    <div class="nav-icons">
-      <app-notification-icon></app-notification-icon>
-      <div class="user" (click)="onSettings()">Ad</div>
+  <!-- Menu mobile -->
+  <div class="mobile-menu" 
+       [@mobileMenu]="mobileMenuOpen ? 'open' : 'closed'"
+       [attr.aria-hidden]="!mobileMenuOpen">
+    <div class="mobile-menu-content">
+      
+      <!-- Recherche mobile -->
+      <div class="mobile-search" *ngIf="showSearch">
+        <div class="search-wrapper">
+          <i class="fas fa-search search-icon"></i>
+          <input 
+            type="text" 
+            class="search-input"
+            [(ngModel)]="searchQuery"
+            (keydown)="onSearchKeydown($event)"
+            placeholder="Rechercher..."
+            aria-label="Rechercher"
+          />
+          <button class="search-button" 
+                  (click)="onSearchSubmit()"
+                  [disabled]="!searchQuery.trim()">
+            <i class="fas fa-search"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Items de navigation -->
+      <ng-container *ngFor="let item of menuItems; trackBy: trackByMenuItem">
+        <a class="mobile-menu-item" 
+           [class.active]="item.active"
+           (click)="navigateToItem(item)"
+           role="button"
+           tabindex="0">
+          <i [class]="item.icon"></i>
+          <span>{{ item.label }}</span>
+          <i class="fas fa-chevron-right item-arrow" *ngIf="!item.active"></i>
+        </a>
+      </ng-container>
     </div>
-  </nav>
-</header>
+  </div>
+</nav>

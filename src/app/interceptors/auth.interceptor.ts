@@ -31,8 +31,18 @@ export class AuthInterceptor implements HttpInterceptor {
   private shouldAddToken(request: HttpRequest<IAuthResponse>): boolean {
     // Ne pas ajouter le token aux endpoints d'authentification
     const authUrls = ['/login', '/register', '/refresh'];
+
+    // Ignorer la requête getAllServices (services/)
+    const ignoredUrls = ['https://vps-ecacc737.vps.ovh.net/rendez_vous/api/public-services/'];
+
+    // Si l’URL fait partie des ignorées → ne pas ajouter le token
+    if (ignoredUrls.some(url => request.url.includes(url))) {
+      return false;
+    }
+
     return !authUrls.some(url => request.url.includes(url));
   }
+
 
   private addToken(request: HttpRequest<IAuthResponse>, token: string | null): HttpRequest<IAuthResponse> {
     return request.clone({

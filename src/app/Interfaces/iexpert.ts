@@ -30,3 +30,13 @@ export interface IAuthResponse {
         user_type: string;
     };
 }
+
+export interface IExpertNotifications {
+    id: number;
+    title: string;
+    message: string;
+    is_read: boolean;
+    notif_type: "service" | "reservation"| "reminder" | "general" // Type de notification (info, warning, alert, etc.)
+    user: number; // ID de l'utilisateur
+    created_at: string; // Date de création
+}

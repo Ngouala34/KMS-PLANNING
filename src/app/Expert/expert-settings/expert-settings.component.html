@@ -1,11 +1,5 @@
-<app-header-expert [showSearch]="false"></app-header-expert>
 
-<div class="sidebar-container">
-  <app-sidebar-expert 
-    [collapsedByDefault]="false" 
-    (sidebarToggle)="isSidebarCollapsed = $event">
-  </app-sidebar-expert>
-</div>
+
 
 <div class="settings-container" [ngClass]="{ 'expanded': isSidebarCollapsed }">
   <header class="settings-header">

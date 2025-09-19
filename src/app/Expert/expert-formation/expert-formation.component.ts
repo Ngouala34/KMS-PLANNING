@@ -1,8 +1,9 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subject, throwError } from 'rxjs';
-import { takeUntil, catchError, finalize } from 'rxjs/operators';
+import { takeUntil, catchError, finalize, debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { trigger, state, style, transition, animate, query, stagger } from '@angular/animations';
 import { IService } from 'src/app/Interfaces/iservice';
 import { ExpertService } from 'src/app/services/expert/expert.service';
 
@@ -12,32 +13,104 @@ interface Category {
   subcategories: { value: string; displayName: string }[];
 }
 
+interface FilterOption {
+  value: string;
+  label: string;
+  count?: number;
+}
+
+interface NotificationMessage {
+  id: string;
+  message: string;
+  type: 'success' | 'error' | 'warning' | 'info';
+}
+
 @Component({
   selector: 'app-expert-formation',
   templateUrl: './expert-formation.component.html',
-  styleUrls: ['./expert-formation.component.scss']
+  styleUrls: ['./expert-formation.component.scss'],
+  animations: [
+    trigger('fadeInUp', [
+      transition(':enter', [
+        style({ opacity: 0, transform: 'translateY(20px)' }),
+        animate('300ms cubic-bezier(0.4, 0, 0.2, 1)', style({ opacity: 1, transform: 'translateY(0)' }))
+      ])
+    ]),
+    trigger('staggerCards', [
+      transition('* => *', [
+        query('.service-card:enter', [
+          style({ opacity: 0, transform: 'translateY(30px) scale(0.9)' }),
+          stagger(50, animate('400ms cubic-bezier(0.4, 0, 0.2, 1)', 
+            style({ opacity: 1, transform: 'translateY(0) scale(1)' })
+          ))
+        ], { optional: true })
+      ])
+    ]),
+    trigger('modalAnimation', [
+      state('open', style({ opacity: 1, transform: 'scale(1)' })),
+      state('closed', style({ opacity: 0, transform: 'scale(0.95)' })),
+      transition('closed => open', animate('300ms cubic-bezier(0.4, 0, 0.2, 1)')),
+      transition('open => closed', animate('200ms cubic-bezier(0.4, 0, 0.2, 1)'))
+    ]),
+    trigger('slideInRight', [
+      transition(':enter', [
+        style({ transform: 'translateX(100%)' }),
+        animate('300ms cubic-bezier(0.4, 0, 0.2, 1)', style({ transform: 'translateX(0)' }))
+      ]),
+      transition(':leave', [
+        animate('200ms cubic-bezier(0.4, 0, 0.2, 1)', style({ transform: 'translateX(100%)' }))
+      ])
+    ])
+  ]
 })
 export class ExpertFormationComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
+  private searchSubject = new Subject<string>();
 
+  // State management
   isSidebarCollapsed = false;
-  collapsedByDefault = false;
-  notify = false;
-  notificationCount = 0;
+  isLoading = true;
+  error: string | null = null;
   searchQuery = '';
 
+  // Data
+  formations: IService[] = [];
+  filteredFormations: IService[] = [];
+  paginatedFormations: IService[] = [];
+
+  // Pagination
   currentPage = 1;
   itemsPerPage = 12;
   totalPages = 1;
   totalItems = 0;
 
-  isLoading = true;
-  error: string | null = null;
+  // Filters
+  selectedCategory = '';
+  selectedPriceRange = '';
+  selectedDateRange = '';
+  sortBy = 'date_desc';
 
-  formations: IService[] = [];
-  filteredFormations: IService[] = [];
-  paginatedFormations: IService[] = [];
+  filterOptions = {
+    categories: [] as FilterOption[],
+    priceRanges: [
+      { value: '0-5000', label: '0 - 5 000 XAF', count: 0 },
+      { value: '5000-15000', label: '5 000 - 15 000 XAF', count: 0 },
+      { value: '15000-50000', label: '15 000 - 50 000 XAF', count: 0 },
+      { value: '50000+', label: '50 000+ XAF', count: 0 }
+    ] as FilterOption[],
+    dateRanges: [
+      { value: 'today', label: "Aujourd'hui", count: 0 },
+      { value: 'week', label: 'Cette semaine', count: 0 },
+      { value: 'month', label: 'Ce mois', count: 0 },
+      { value: 'future', label: 'À venir', count: 0 }
+    ] as FilterOption[]
+  };
 
+  // View options
+  viewMode: 'grid' | 'list' = 'grid';
+  showFilters = false;
+
+  // Modal
   showEditModal = false;
   editServiceForm!: FormGroup;
   isModalLoading = false;
@@ -46,16 +119,19 @@ export class ExpertFormationComponent implements OnInit, OnDestroy {
   selectedService: IService | null = null;
   modalError: string | null = null;
 
+  // Categories
   availableSubcategories: { value: string; displayName: string }[] = [];
   availableSubsubcategories: { value: string; displayName: string }[] = [];
 
-  // --- TON TABLEAU COMPLET ---
+  // Notifications
+  notifications: NotificationMessage[] = [];
+
   categories: Category[] = [
     {
-      value: '1',
+      value: 'programming_tech',
       displayName: 'Programmation & Tech',
       subcategories: [
-        { value: '1', displayName: 'Sites web IA & Logiciel' },
+        { value: '', displayName: 'Sites web IA & Logiciel' },
         { value: 'mobile_ai_apps', displayName: 'Applications mobiles IA' },
         { value: 'ai_integrations', displayName: 'Intégrations IA' },
         { value: 'ai_tech_advice', displayName: 'Conseil en technologie IA' },
@@ -66,20 +142,7 @@ export class ExpertFormationComponent implements OnInit, OnDestroy {
         { value: 'website_maintenance', displayName: 'Maintenance de site web' },
         { value: 'bug_fixing', displayName: 'Correction de bugs' },
         { value: 'backup_migration', displayName: 'Sauvegarde et migration' },
-        { value: 'speed_optimization', displayName: 'Optimisation de la vitesse' },
-        { value: 'cloud_computing', displayName: 'Cloud Computing' },
-        { value: 'devops_engineering', displayName: 'DevOps Engineering' },
-        { value: 'cybersecurity', displayName: 'Cybersecurity' },
-        { value: 'cross_platform_dev', displayName: 'Développement multiplateforme' },
-        { value: 'android_dev', displayName: 'Android' },
-        { value: 'ios_dev', displayName: 'iOS' },
-        { value: 'mobile_maintenance', displayName: 'Maintenance mobile' },
-        { value: 'web_apps', displayName: 'Applications web' },
-        { value: 'workflow_automation', displayName: 'Automations & Flux de travail' },
-        { value: 'api_integrations', displayName: 'API et intégrations' },
-        { value: 'databases', displayName: 'Bases de données' },
-        { value: 'qa_review', displayName: 'QA et révision' },
-        { value: 'user_testing', displayName: 'Tests utilisateurs' }
+        { value: 'speed_optimization', displayName: 'Optimisation de la vitesse' }
       ]
     },
     {
@@ -91,32 +154,23 @@ export class ExpertFormationComponent implements OnInit, OnDestroy {
         { value: 'performance_reviews', displayName: 'Bilans de performance' },
         { value: 'post_career_transition', displayName: 'Transition post-carrière' },
         { value: 'competition_organization', displayName: 'Organisation de compétitions' },
-        { value: 'logistics_management', displayName: 'Gestion logistique' },
-        { value: 'event_security', displayName: 'Sécurité événementielle' },
-        { value: 'sports_promotion', displayName: 'Promotion sportive' },
-        { value: 'performance_analysis', displayName: 'Analyse de performance' },
-        { value: 'fitness_apps', displayName: 'Applications fitness' },
-        { value: 'esport', displayName: 'E-sport' },
-        { value: 'connected_equipment', displayName: 'Équipements connectés' },
-        { value: 'custom_programs', displayName: 'Programmes sur mesure' },
-        { value: 'physical_preparation', displayName: 'Préparation physique' },
-        { value: 'sports_nutrition', displayName: 'Nutrition sportive' },
-        { value: 'recovery', displayName: 'Récupération' }
+        { value: 'custom_programs', displayName: 'Programmes sur mesure' }
       ]
     }
-    // Ajoute toutes les autres catégories complètes ici...
   ];
 
   constructor(
     private serviceService: ExpertService,
     private router: Router,
     private fb: FormBuilder
-  ) {}
+  ) {
+    this.initSearchSubscription();
+  }
 
   ngOnInit(): void {
-    this.isSidebarCollapsed = this.collapsedByDefault;
-    this.loadServices();
     this.initEditForm();
+    this.loadServices();
+    this.checkScreenSize();
   }
 
   ngOnDestroy(): void {
@@ -124,7 +178,28 @@ export class ExpertFormationComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  // --- INIT FORM ---
+  @HostListener('window:resize', ['$event'])
+  onResize(): void {
+    this.checkScreenSize();
+  }
+
+  private checkScreenSize(): void {
+    const isMobile = window.innerWidth <= 768;
+    if (isMobile && this.showFilters) {
+      this.showFilters = false;
+    }
+  }
+
+  private initSearchSubscription(): void {
+    this.searchSubject.pipe(
+      debounceTime(300),
+      distinctUntilChanged(),
+      takeUntil(this.destroy$)
+    ).subscribe(searchTerm => {
+      this.performSearch(searchTerm);
+    });
+  }
+
   initEditForm(): void {
     this.editServiceForm = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(3)]],
@@ -143,7 +218,219 @@ export class ExpertFormationComponent implements OnInit, OnDestroy {
     });
   }
 
-  // --- MODAL EXISTANT ---
+  // Search functionality
+  onSearchInput(event: any): void {
+    this.searchQuery = event.target.value;
+    this.searchSubject.next(this.searchQuery);
+  }
+
+  private performSearch(searchTerm: string): void {
+    this.applyFilters();
+  }
+
+  clearSearch(): void {
+    this.searchQuery = '';
+    this.applyFilters();
+  }
+
+  // Filter functionality
+  toggleFilters(): void {
+    this.showFilters = !this.showFilters;
+  }
+
+  onFilterChange(): void {
+    this.currentPage = 1;
+    this.applyFilters();
+  }
+
+  onSortChange(): void {
+    this.applyFilters();
+  }
+
+  clearAllFilters(): void {
+    this.selectedCategory = '';
+    this.selectedPriceRange = '';
+    this.selectedDateRange = '';
+    this.sortBy = 'date_desc';
+    this.searchQuery = '';
+    this.applyFilters();
+  }
+
+  private applyFilters(): void {
+    let filtered = [...this.formations];
+
+    // Search filter
+    if (this.searchQuery.trim()) {
+      const query = this.searchQuery.toLowerCase();
+      filtered = filtered.filter(service =>
+        service.name.toLowerCase().includes(query) ||
+        service.description.toLowerCase().includes(query)
+      );
+    }
+
+    // Category filter
+    if (this.selectedCategory) {
+      filtered = filtered.filter(service =>
+        service.category_display === this.selectedCategory ||
+        service.category?.value === this.selectedCategory
+      );
+    }
+
+    // Price range filter
+    if (this.selectedPriceRange) {
+      filtered = this.filterByPriceRange(filtered, this.selectedPriceRange);
+    }
+
+    // Date range filter
+    if (this.selectedDateRange) {
+      filtered = this.filterByDateRange(filtered, this.selectedDateRange);
+    }
+
+    // Sort
+    filtered = this.sortServices(filtered, this.sortBy);
+
+    this.filteredFormations = filtered;
+    this.updatePagination();
+    this.updateFilterCounts();
+  }
+
+  private filterByPriceRange(services: IService[], range: string): IService[] {
+    const ranges = {
+      '0-5000': (price: number) => price >= 0 && price <= 5000,
+      '5000-15000': (price: number) => price > 5000 && price <= 15000,
+      '15000-50000': (price: number) => price > 15000 && price <= 50000,
+      '50000+': (price: number) => price > 50000
+    };
+
+    const filterFn = ranges[range as keyof typeof ranges];
+    return filterFn ? services.filter(s => filterFn(s.price)) : services;
+  }
+
+  private filterByDateRange(services: IService[], range: string): IService[] {
+    const now = new Date();
+    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const weekFromNow = new Date(today.getTime() + 7 * 24 * 60 * 60 * 1000);
+    const monthFromNow = new Date(today.getTime() + 30 * 24 * 60 * 60 * 1000);
+
+    return services.filter(service => {
+      const serviceDate = new Date(service.date);
+      switch (range) {
+        case 'today':
+          return serviceDate.toDateString() === today.toDateString();
+        case 'week':
+          return serviceDate >= today && serviceDate <= weekFromNow;
+        case 'month':
+          return serviceDate >= today && serviceDate <= monthFromNow;
+        case 'future':
+          return serviceDate > today;
+        default:
+          return true;
+      }
+    });
+  }
+
+  private sortServices(services: IService[], sortBy: string): IService[] {
+    return services.sort((a, b) => {
+      switch (sortBy) {
+        case 'date_desc':
+          return new Date(b.date).getTime() - new Date(a.date).getTime();
+        case 'date_asc':
+          return new Date(a.date).getTime() - new Date(b.date).getTime();
+        case 'price_desc':
+          return b.price - a.price;
+        case 'price_asc':
+          return a.price - b.price;
+        case 'name_asc':
+          return a.name.localeCompare(b.name);
+        case 'name_desc':
+          return b.name.localeCompare(a.name);
+        case 'popularity':
+          return (Number(b.subscription) || 0) - (Number(a.subscription) || 0);
+        default:
+          return 0;
+      }
+    });
+  }
+
+  getCategoryLabel(): string {
+    const category = this.filterOptions.categories.find(c => c.value === this.selectedCategory);
+    return category ? category.label : '';
+  }
+
+  getPriceRangeLabel(): string {
+    const range = this.filterOptions.priceRanges.find(p => p.value === this.selectedPriceRange);
+    return range ? range.label : '';
+  }
+
+  getDateRangeLabel(): string {
+    const range = this.filterOptions.dateRanges.find(d => d.value === this.selectedDateRange);
+    return range ? range.label : '';
+  }
+
+  oncreateService(): void {
+    this.router.navigate(['/create-service']);
+  }
+
+
+  private updateFilterCounts(): void {
+    // Update category counts
+    this.filterOptions.categories = this.categories.map(cat => ({
+      value: cat.value,
+      label: cat.displayName,
+      count: this.formations.filter(s => 
+        s.category_display === cat.displayName || 
+        s.category?.value === cat.value
+      ).length
+    }));
+
+    // Update price range counts
+    this.filterOptions.priceRanges.forEach(range => {
+      range.count = this.filterByPriceRange(this.formations, range.value).length;
+    });
+
+    // Update date range counts
+    this.filterOptions.dateRanges.forEach(range => {
+      range.count = this.filterByDateRange(this.formations, range.value).length;
+    });
+  }
+
+  // View mode
+  setViewMode(mode: 'grid' | 'list'): void {
+    this.viewMode = mode;
+  }
+
+  // Pagination
+  updatePagination(): void {
+    this.totalPages = Math.ceil(this.filteredFormations.length / this.itemsPerPage);
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    this.paginatedFormations = this.filteredFormations.slice(startIndex, startIndex + this.itemsPerPage);
+  }
+
+  goToPage(page: number): void {
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+      this.updatePagination();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }
+
+  getPageNumbers(): number[] {
+    const pages = [];
+    const maxVisiblePages = 5;
+    let startPage = Math.max(1, this.currentPage - Math.floor(maxVisiblePages / 2));
+    const endPage = Math.min(this.totalPages, startPage + maxVisiblePages - 1);
+    
+    if (endPage - startPage + 1 < maxVisiblePages) {
+      startPage = Math.max(1, endPage - maxVisiblePages + 1);
+    }
+    
+    for (let i = startPage; i <= endPage; i++) {
+      pages.push(i);
+    }
+    return pages;
+  }
+
+  // Modal functionality
   openEditModal(service: IService): void {
     this.modalError = null;
     this.isFetchingService = true;
@@ -222,13 +509,17 @@ export class ExpertFormationComponent implements OnInit, OnDestroy {
   }
 
   getSubsubcategories(categoryValue: string, subcategoryValue: string): { value: string; displayName: string }[] {
-    // Ici tu peux gérer si tu as des "sub-subcategories"
     return [];
   }
 
   onFileSelected(event: any): void {
     const file = event.target.files[0];
     if (file) {
+      if (file.size > 5 * 1024 * 1024) { // 5MB limit
+        this.addNotification('Fichier trop volumineux (max 5MB)', 'error');
+        return;
+      }
+
       const reader = new FileReader();
       reader.onload = () => {
         this.imagePreview = reader.result as string;
@@ -258,94 +549,76 @@ export class ExpertFormationComponent implements OnInit, OnDestroy {
           next: (updatedService) => {
             this.updateServiceInList(updatedService);
             this.closeEditModal();
-            this.showSuccessNotification('Service modifié avec succès !');
+            this.addNotification('Service modifié avec succès !', 'success');
           }
         });
+    } else {
+      this.addNotification('Veuillez corriger les erreurs du formulaire', 'error');
     }
   }
 
-private prepareFormData(): FormData {
-  const formData = new FormData();
-  const formValue = this.editServiceForm.value;
+  private prepareFormData(): FormData {
+    const formData = new FormData();
+    const formValue = this.editServiceForm.value;
 
-  Object.keys(formValue).forEach(key => {
-    if (formValue[key] !== null && formValue[key] !== undefined && formValue[key] !== '') {
+    Object.keys(formValue).forEach(key => {
+      if (formValue[key] !== null && formValue[key] !== undefined && formValue[key] !== '') {
+        if (key === 'date') {
+          formData.append('date', JSON.stringify([formValue.date]));
+        } else if (key === 'category' || key === 'subcategory' || key === 'subsubcategory') {
+          formData.append(key, formValue[key]);
+        } else {
+          formData.append(key, formValue[key]);
+        }
+      }
+    });
 
-      //  Gestion de la date (le backend attend un tableau JSON)
-      if (key === 'date') {
-        formData.append('date', JSON.stringify([formValue.date]));
-      }
-      //  Gestion des catégories (backend attend la valeur/id)
-      else if (key === 'category' || key === 'subcategory' || key === 'subsubcategory') {
-        formData.append(key, formValue[key]); // formValue doit contenir la valeur/id, pas le displayName
-      }
-      //  Autres champs
-      else {
-        formData.append(key, formValue[key]);
-      }
+    if (formValue.cover_image instanceof File) {
+      formData.append('cover_image', formValue.cover_image);
     }
-  });
 
-  // Image de couverture
-  if (formValue.cover_image instanceof File) {
-    formData.append('cover_image', formValue.cover_image);
+    return formData;
   }
-
-  return formData;
-}
-
 
   private updateServiceInList(updatedService: IService): void {
     const index = this.formations.findIndex(s => s.id === updatedService.id);
     if (index !== -1) {
       this.formations[index] = updatedService;
-      this.filteredFormations = [...this.formations];
-      this.updatePagination();
+      this.applyFilters();
     }
   }
 
-  private showSuccessNotification(message: string): void {
-    console.log(message);
-    this.notificationCount++;
-    this.notify = true;
-    setTimeout(() => this.notify = false, 3000);
+  // Notifications
+  private addNotification(message: string, type: NotificationMessage['type']): void {
+    const notification: NotificationMessage = {
+      id: Date.now().toString(),
+      message,
+      type
+    };
+    this.notifications.push(notification);
+    setTimeout(() => this.removeNotification(notification.id), 5000);
   }
 
-  // --- SEARCH ---
-  onSearch(): void {
-    if (!this.searchQuery.trim()) {
-      this.filteredFormations = [...this.formations];
-    } else {
-      const query = this.searchQuery.toLowerCase();
-      this.filteredFormations = this.formations.filter(service =>
-        service.name.toLowerCase().includes(query) ||
-        service.description.toLowerCase().includes(query)
-      );
-    }
-    this.currentPage = 1;
-    this.updatePagination();
+  removeNotification(id: string): void {
+    this.notifications = this.notifications.filter(n => n.id !== id);
   }
 
+  // Service actions
   viewDetails(service: IService): void {
     this.router.navigate(['/service-details', service.id]);
   }
 
-  updatePagination(): void {
-    this.totalPages = Math.ceil(this.filteredFormations.length / this.itemsPerPage);
-    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-    this.paginatedFormations = this.filteredFormations.slice(startIndex, startIndex + this.itemsPerPage);
+  duplicateService(service: IService): void {
+    this.addNotification('Fonctionnalité de duplication en développement', 'info');
   }
 
-  goToPage(page: number): void {
-    if (page >= 1 && page <= this.totalPages) {
-      this.currentPage = page;
-      this.updatePagination();
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+  archiveService(service: IService): void {
+    if (confirm('Êtes-vous sûr de vouloir archiver ce service ?')) {
+      this.addNotification('Service archivé avec succès', 'success');
     }
   }
 
-  getPageNumbers(): number[] { const pages = []; const maxVisiblePages = 5; let startPage = Math.max(1, this.currentPage - Math.floor(maxVisiblePages / 2)); const endPage = Math.min(this.totalPages, startPage + maxVisiblePages - 1); if (endPage - startPage + 1 < maxVisiblePages) { startPage = Math.max(1, endPage - maxVisiblePages + 1); } for (let i = startPage; i <= endPage; i++) { pages.push(i); } return pages; }
-
+  // Data loading
   reloadServices(): void {
     this.loadServices();
   }
@@ -364,12 +637,58 @@ private prepareFormData(): FormData {
           return [];
         })
       )
-      .subscribe({ next: (services) => {
-        this.formations = services;
-        this.filteredFormations = [...this.formations];
-        this.totalItems = this.formations.length;
-        this.updatePagination();
-        this.isLoading = false;
-      }});
+      .subscribe({
+        next: (services) => {
+          this.formations = services;
+          this.filteredFormations = [...this.formations];
+          this.totalItems = this.formations.length;
+          this.updatePagination();
+          this.updateFilterCounts();
+          this.isLoading = false;
+        }
+      });
+  }
+
+  // Utility methods
+  getServiceStatusClass(service: IService): string {
+    const serviceDate = new Date(service.date);
+    const now = new Date();
+    
+    if (serviceDate < now) {
+      return 'past';
+    } else if (serviceDate.toDateString() === now.toDateString()) {
+      return 'today';
+    } else {
+      return 'upcoming';
+    }
+  }
+
+  formatPrice(price: number): string {
+    return new Intl.NumberFormat('fr-FR', {
+      style: 'currency',
+      currency: 'XAF',
+      minimumFractionDigits: 0
+    }).format(price);
+  }
+
+  formatDate(date: string): string {
+    return new Date(date).toLocaleDateString('fr-FR', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric'
+    });
+  }
+
+  getActiveFiltersCount(): number {
+    let count = 0;
+    if (this.selectedCategory) count++;
+    if (this.selectedPriceRange) count++;
+    if (this.selectedDateRange) count++;
+    if (this.searchQuery.trim()) count++;
+    return count;
+  }
+
+  trackByServiceId(index: number, service: IService): any {
+    return service.id;
   }
 }

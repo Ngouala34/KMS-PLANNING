@@ -1,90 +1,126 @@
-<section class="sidebar-container">
-  <div class="sidebar" [class.collapsed]="isCollapsed">
-    <!-- Header avec logo et toggle -->
-    <div class="sidebar-header">
-      <div class="logo-section" *ngIf="!isCollapsed">
-        <h3 class="sidebar-title">Expert Panel</h3>
-      </div>
-      <button class="toggle-btn" (click)="toggleSidebar()" [attr.aria-label]="isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'">
-        <i class="fas" [class.fa-chevron-left]="!isCollapsed" [class.fa-chevron-right]="isCollapsed"></i>
-      </button>
-    </div>
+<!-- sidebar-expert.component.html -->
+<section class="sidebar-container"
+         [class.collapsed]="isCollapsed"
+         [class.mobile]="isMobile"
+         [@slideInOut]="isCollapsed ? 'collapsed' : 'expanded'">
+  <!-- Sidebar principale -->
+ 
+    
+    <!-- Header de la sidebar -->
+
 
     <!-- Navigation principale -->
-    <nav class="sidebar-nav">
-      <ul class="nav-list">
-        <li class="nav-item" 
-            routerLink="/dashboard-expert" 
-            routerLinkActive="active" 
-            (click)="OnExpertdashboard()"
-            [attr.title]="isCollapsed ? 'Dashboard' : null">
-          <div class="nav-link">
-            <i class="fas fa-chart-line nav-icon"></i>
-            <span class="nav-text" *ngIf="!isCollapsed">Dashboard</span>
-          </div>
-        </li>
-
-        <li class="nav-item" 
-            routerLink="/expert-formation" 
-            routerLinkActive="active" 
-            (click)="OnExpertformation()"
-            [attr.title]="isCollapsed ? 'Mes Services' : null">
-          <div class="nav-link">
-            <i class="fas fa-cog nav-icon"></i>
-            <span class="nav-text" *ngIf="!isCollapsed">Mes Services</span>
-          </div>
-        </li>
-
-        <li class="nav-item" 
-            routerLink="/expert-rendez-vous" 
-            routerLinkActive="active" 
-            (click)="OnExpertrendezvous()"
-            [attr.title]="isCollapsed ? 'Planifications' : null">
-          <div class="nav-link">
-            <i class="fas fa-calendar-alt nav-icon"></i>
-            <span class="nav-text" *ngIf="!isCollapsed">Planifications</span>
-          </div>
-        </li>
-
-        <li class="nav-item" 
-            routerLink="/expert-settings" 
-            routerLinkActive="active" 
-            (click)="OnSettings()"
-            [attr.title]="isCollapsed ? 'Paramètres' : null">
-          <div class="nav-link">
-            <i class="fas fa-user-cog nav-icon"></i>
-            <span class="nav-text" *ngIf="!isCollapsed">Paramètres</span>
-          </div>
-        </li>
-      </ul>
-
-      <!-- Séparateur -->
-      <div class="nav-divider"></div>
-
-      <!-- Action principale -->
-      <div class="primary-action">
-        <button class="create-btn" 
-                (click)="onCreateCourse()"
-                [attr.title]="isCollapsed ? 'Nouveau service' : null">
-          <i class="fas fa-plus create-icon"></i>
-          <span class="create-text" *ngIf="!isCollapsed">Nouveau service</span>
+    <nav class="sidebar-navigation" role="navigation">
+      <div class="scrollbtn">
+        <button class="toggle-button" 
+                (click)="toggleSidebar()"
+                [attr.aria-label]="isCollapsed ? 'Développer le menu' : 'Réduire le menu'"
+                [attr.aria-expanded]="!isCollapsed">
+          <i class="fas fa-chevron-left toggle-icon" 
+            [@rotateChevron]="isCollapsed ? 'collapsed' : 'expanded'"></i>
         </button>
+      </div>
+
+      <div class="nav-section">
+        <h4 class="nav-section-title" 
+            *ngIf="shouldShowExpanded()"
+            [@fadeInOut]="shouldShowExpanded() ? 'visible' : 'hidden'">
+          Navigation
+        </h4>
+        
+        <ul class="nav-list" role="menubar">
+          <li class="nav-item" 
+              *ngFor="let item of navItems; trackBy: trackByNavItem"
+              role="none">
+            <a class="nav-link"
+               [routerLink]="item.route"
+               routerLinkActive="active"
+               (click)="navigateToItem(item)"
+               [attr.title]="isCollapsed && !isHovered ? item.label : null"
+               [attr.aria-label]="item.label"
+               role="menuitem">
+              
+              <div class="nav-icon-container">
+                <i [class]="item.icon + ' nav-icon'"></i>
+              </div>
+              
+              <span class="nav-label" 
+                    *ngIf="shouldShowExpanded()"
+                    [@fadeInOut]="shouldShowExpanded() ? 'visible' : 'hidden'">
+                {{ item.label }}
+              </span>
+              
+              <div class="nav-indicator" 
+                   [class.active]="item.isActive"></div>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Section Actions Rapides -->
+      <div class="nav-section">
+        <h4 class="nav-section-title" 
+            *ngIf="shouldShowExpanded()"
+            [@fadeInOut]="shouldShowExpanded() ? 'visible' : 'hidden'">
+          Actions
+        </h4>
+        
+        <div class="quick-actions">
+          <button class="action-button primary-action"
+                  (click)="onCreateCourse()"
+                  [attr.title]="isCollapsed && !isHovered ? 'Nouveau Service' : null"
+                  [attr.aria-label]="'Créer un nouveau service'">
+            <div class="action-icon-container">
+              <i class="fas fa-plus action-icon"></i>
+            </div>
+            <span class="action-label" 
+                  *ngIf="shouldShowExpanded()"
+                  [@fadeInOut]="shouldShowExpanded() ? 'visible' : 'hidden'">
+              Nouveau Service
+            </span>
+          </button>
+          
+        </div>
       </div>
     </nav>
 
+    <!-- Statistiques rapides (optionnel) -->
+    <div class="sidebar-stats" 
+         *ngIf="shouldShowExpanded()"
+         [@fadeInOut]="shouldShowExpanded() ? 'visible' : 'hidden'">
+      <div class="stat-item">
+        <div class="stat-value">24</div>
+        <div class="stat-label">Services actifs</div>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-item">
+        <div class="stat-value">12</div>
+        <div class="stat-label">RDV aujourd'hui</div>
+      </div>
+    </div>
+
     <!-- Footer avec déconnexion -->
     <div class="sidebar-footer">
-      <button class="logout-btn" 
+      <button class="logout-button"
               (click)="Ondeconnexion()"
-              [attr.title]="isCollapsed ? 'Déconnexion' : null">
-        <i class="fas fa-sign-out-alt logout-icon"></i>
-        <span class="logout-text" *ngIf="!isCollapsed">Déconnexion</span>
+              [attr.title]="isCollapsed && !isHovered ? 'Se déconnecter' : null"
+              [attr.aria-label]="'Se déconnecter du compte'">
+        <div class="logout-icon-container">
+          <i class="fas fa-sign-out-alt logout-icon"></i>
+        </div>
+        <span class="logout-label" 
+              *ngIf="shouldShowExpanded()"
+              [@fadeInOut]="shouldShowExpanded() ? 'visible' : 'hidden'">
+          Déconnexion
+        </span>
       </button>
+      
     </div>
-  </div>
 
   <!-- Overlay pour mobile -->
   <div class="sidebar-overlay" 
-       *ngIf="!isCollapsed && isMobile" 
-       (click)="toggleSidebar()"></div>
+       *ngIf="!isCollapsed && isMobile"
+       (click)="toggleSidebar()"
+       [@fadeInOut]="'visible'">
+  </div>
 </section>

@@ -1,0 +1,22 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+
+.main-expert-container{
+    margin-left: 16rem; // Ajustez cette valeur en fonction de la largeur de votre sidebar
+    transition: margin-left 0.3s ease, width 0.3s ease;
+
+    &.collapsed {
+        margin-left: 4.5rem; // Ajustez cette valeur en fonction de la largeur réduite de votre sidebar
+    }
+}
+
+@media (max-width: 768px) {
+  .main-expert-container {
+    margin-left: 0 !important; // Pour les petits écrans, la sidebar peut être masquée ou superposée
+  } 
+}
+

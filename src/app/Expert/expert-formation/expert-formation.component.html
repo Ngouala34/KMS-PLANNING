@@ -1,301 +1,694 @@
 <!-- expert-formation.component.html -->
-<app-header-expert [showSearch]="false"></app-header-expert>
-<div class="sidebar-container">
-    <app-sidebar-expert [collapsedByDefault]="false" (sidebarToggle)="isSidebarCollapsed = $event"></app-sidebar-expert>
-</div>
-
-<div class="formation-container" [ngClass]="{ 'expanded': isSidebarCollapsed }">   
-    <div class="search-container">
-        <div class="search-bar">
-            <input 
-                type="text" 
-                placeholder="Rechercher une formation par nom ..." 
-                class="search-input"
-                aria-label="Rechercher des formations"
-                [(ngModel)]="searchQuery"
-                (input)="onSearch()"
-            />
-            <button class="search-btn" aria-label="Lancer la recherche">
-                <i class="fas fa-search"></i>
-            </button>
+<div class="formation-container" [class.sidebar-collapsed]="isSidebarCollapsed">
+  
+  <!-- Page Header -->
+  <div class="page-header" [@fadeInUp]>
+    <div class="header-content">
+      <div class="header-info">
+        <h1 class="page-title">
+          <i class="fas fa-concierge-bell"></i>
+          Historique des Services
+        </h1>
+        <p class="page-subtitle">
+          Gérez et modifiez vos services existants
+        </p>
+      </div>
+      
+      <div class="header-actions">
+        <button class="btn btn-primary" (click)="oncreateService()">
+          <i class="fas fa-plus"></i>
+          Nouveau Service
+        </button>
+        
+        <div class="view-controls">
+          <button class="view-btn" 
+                  [class.active]="viewMode === 'grid'"
+                  (click)="setViewMode('grid')"
+                  title="Vue grille">
+            <i class="fas fa-th"></i>
+          </button>
+          <button class="view-btn" 
+                  [class.active]="viewMode === 'list'"
+                  (click)="setViewMode('list')"
+                  title="Vue liste">
+            <i class="fas fa-list"></i>
+          </button>
         </div>
+      </div>
     </div>
 
-    <div class="formation-section">
-        <h1 class="h1">Historique des services </h1>
+    <!-- Search and Filters Bar -->
+    <div class="search-filters-bar">
+      <div class="search-section">
+        <div class="search-input-container">
+          <i class="fas fa-search search-icon"></i>
+          <input type="text" 
+                 class="search-input"
+                 placeholder="Rechercher par nom, description..."
+                 [value]="searchQuery"
+                 (input)="onSearchInput($event)"
+                 aria-label="Rechercher des services">
+          <button class="clear-search" 
+                  *ngIf="searchQuery"
+                  (click)="clearSearch()"
+                  title="Effacer la recherche">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="filters-section">
+        <button class="filters-toggle" 
+                (click)="toggleFilters()"
+                [class.active]="showFilters">
+          <i class="fas fa-filter"></i>
+          Filtres
+          <span class="filter-count" *ngIf="getActiveFiltersCount() > 0">
+            {{ getActiveFiltersCount() }}
+          </span>
+        </button>
+
+        <div class="sort-select">
+          <select [(ngModel)]="sortBy" (change)="onSortChange()">
+            <option value="date_desc">Plus récents</option>
+            <option value="date_asc">Plus anciens</option>
+            <option value="price_desc">Prix décroissant</option>
+            <option value="price_asc">Prix croissant</option>
+            <option value="name_asc">Nom A-Z</option>
+            <option value="name_desc">Nom Z-A</option>
+            <option value="popularity">Populaires</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Filters Panel -->
+    <div class="filters-panel" *ngIf="showFilters" [@slideInRight]>
+      <div class="filters-content">
         
-        <!-- Loading -->
-        <div class="loading" *ngIf="isLoading">
-            <i class="fas fa-spinner fa-spin"></i>
-            <p>Chargement de vos services...</p>
+        <!-- Category Filter -->
+        <div class="filter-group">
+          <h4>Catégorie</h4>
+          <div class="filter-options">
+            <label class="filter-option">
+              <input type="radio" 
+                     [(ngModel)]="selectedCategory" 
+                     value=""
+                     (change)="onFilterChange()">
+              <span class="option-label">Toutes</span>
+              <span class="option-count">({{ totalItems }})</span>
+            </label>
+            <label class="filter-option" *ngFor="let cat of filterOptions.categories">
+              <input type="radio" 
+                     [(ngModel)]="selectedCategory" 
+                     [value]="cat.value"
+                     (change)="onFilterChange()">
+              <span class="option-label">{{ cat.label }}</span>
+              <span class="option-count">({{ cat.count }})</span>
+            </label>
+          </div>
         </div>
 
-        <!-- Error -->
-        <div class="error" *ngIf="error && !isLoading">
-            <i class="fas fa-exclamation-triangle"></i>
-            <p>{{ error }}</p>
-            <button (click)="reloadServices()">Réessayer</button>
+        <!-- Price Range Filter -->
+        <div class="filter-group">
+          <h4>Prix</h4>
+          <div class="filter-options">
+            <label class="filter-option">
+              <input type="radio" 
+                     [(ngModel)]="selectedPriceRange" 
+                     value=""
+                     (change)="onFilterChange()">
+              <span class="option-label">Tous les prix</span>
+            </label>
+            <label class="filter-option" *ngFor="let range of filterOptions.priceRanges">
+              <input type="radio" 
+                     [(ngModel)]="selectedPriceRange" 
+                     [value]="range.value"
+                     (change)="onFilterChange()">
+              <span class="option-label">{{ range.label }}</span>
+              <span class="option-count">({{ range.count }})</span>
+            </label>
+          </div>
         </div>
 
-        <!-- Services List -->
-        <div class="services-grid" *ngIf="!isLoading && filteredFormations.length > 0">
-            <div class="service-card" *ngFor="let formation of paginatedFormations">
-                <div class="service-image-container">
-                    <img [src]="formation.cover_image || 'assets/default-service.jpg'" [alt]="formation.name" class="service-image" />
-                    
-                    <!-- Icônes au survol -->
-                    <div class="hover-actions">
-                        <button class="action-btn" aria-label="Recherche visuelle">
-                            <i class="fas fa-search-plus"></i>
-                        </button>
-                        <button class="action-btn" aria-label="Transférer">
-                            <i class="fas fa-share-alt"></i>
-                        </button>
-                    </div>
-                </div>
-                
-                <div class="service-content">
-                    <h3 class="service-title">{{ formation.name | lowercase }}</h3>
-                    
-                    <div class="service-meta">
-                        <div>
-                            <i class="fas fa-calendar-alt"></i>
-                            <span>Date: {{ formation.date | date:'dd/MM/yyyy' }}</span>
-                        </div>
-                        <div>
-                            <i class="fas fa-users"></i>
-                            <span>Souscriptions: {{ formation.subscription || 0 }}</span>
-                        </div>
-                    </div>
-                    <div class="card-footer">
-                        <div class="price">Prix: {{ formation.price | currency:'CFA':'symbol':'1.0-0' }}</div>
+        <!-- Date Range Filter -->
+        <div class="filter-group">
+          <h4>Période</h4>
+          <div class="filter-options">
+            <label class="filter-option">
+              <input type="radio" 
+                     [(ngModel)]="selectedDateRange" 
+                     value=""
+                     (change)="onFilterChange()">
+              <span class="option-label">Toutes les dates</span>
+            </label>
+            <label class="filter-option" *ngFor="let range of filterOptions.dateRanges">
+              <input type="radio" 
+                     [(ngModel)]="selectedDateRange" 
+                     [value]="range.value"
+                     (change)="onFilterChange()">
+              <span class="option-label">{{ range.label }}</span>
+              <span class="option-count">({{ range.count }})</span>
+            </label>
+          </div>
+        </div>
 
-                        <!-- Bouton "Modifier" -->
-                        <button class="see-more-btn" (click)="openEditModal(formation)">
-                            Modifier <i class="fas fa-edit"></i>
-                        </button>
-                    </div>
-                </div>
+        <!-- Filter Actions -->
+        <div class="filter-actions">
+          <button class="btn-clear" (click)="clearAllFilters()">
+            <i class="fas fa-times"></i>
+            Effacer tous
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Content Area -->
+  <div class="content-area">
+    
+    <!-- Results Summary -->
+    <div class="results-summary" *ngIf="!isLoading">
+      <div class="results-info">
+        <span class="results-count">
+          {{ filteredFormations.length }} service{{ filteredFormations.length > 1 ? 's' : '' }}
+          <span *ngIf="searchQuery || getActiveFiltersCount() > 0">trouvé{{ filteredFormations.length > 1 ? 's' : '' }}</span>
+        </span>
+        <span class="filter-tag" *ngIf="selectedCategory">
+            {{ getCategoryLabel() }}
+            <button (click)="selectedCategory = ''; onFilterChange()"><i class="fas fa-times"></i></button>
+            </span>
+
+            <span class="filter-tag" *ngIf="selectedPriceRange">
+            {{ getPriceRangeLabel() }}
+            <button (click)="selectedPriceRange = ''; onFilterChange()"><i class="fas fa-times"></i></button>
+            </span>
+
+            <span class="filter-tag" *ngIf="selectedDateRange">
+            {{ getDateRangeLabel() }}
+            <button (click)="selectedDateRange = ''; onFilterChange()"><i class="fas fa-times"></i></button>
+            </span>
+
+      </div>
+    </div>
+
+    <!-- Loading State -->
+    <div class="loading-state" *ngIf="isLoading" [@fadeInUp]>
+      <div class="loading-spinner">
+        <div class="spinner"></div>
+      </div>
+      <p>Chargement de vos services...</p>
+    </div>
+
+    <!-- Error State -->
+    <div class="error-state" *ngIf="error && !isLoading" [@fadeInUp]>
+      <div class="error-icon">
+        <i class="fas fa-exclamation-triangle"></i>
+      </div>
+      <h3>Erreur de chargement</h3>
+      <p>{{ error }}</p>
+      <button class="btn btn-primary" (click)="reloadServices()">
+        <i class="fas fa-refresh"></i>
+        Réessayer
+      </button>
+    </div>
+
+    <!-- Empty State -->
+    <div class="empty-state" *ngIf="!isLoading && filteredFormations.length === 0" [@fadeInUp]>
+      <div class="empty-icon">
+        <i class="fas fa-search" *ngIf="searchQuery || getActiveFiltersCount() > 0"></i>
+        <i class="fas fa-concierge-bell" *ngIf="!searchQuery && getActiveFiltersCount() === 0"></i>
+      </div>
+      <h3>{{ searchQuery || getActiveFiltersCount() > 0 ? 'Aucun service trouvé' : 'Aucun service créé' }}</h3>
+      <p *ngIf="searchQuery || getActiveFiltersCount() > 0">
+        Essayez de modifier vos critères de recherche ou filtres
+      </p>
+      <p *ngIf="!searchQuery && getActiveFiltersCount() === 0">
+        Commencez par créer votre premier service
+      </p>
+      <button class="btn btn-primary" 
+              *ngIf="!searchQuery && getActiveFiltersCount() === 0"
+              (click)="oncreateService()">
+        <i class="fas fa-plus"></i>
+        Créer un service
+      </button>
+      <button class="btn btn-secondary" 
+              *ngIf="searchQuery || getActiveFiltersCount() > 0"
+              (click)="clearAllFilters()">
+        <i class="fas fa-times"></i>
+        Effacer les filtres
+      </button>
+    </div>
+
+    <!-- Services Grid/List -->
+    <div class="services-container" 
+         *ngIf="!isLoading && filteredFormations.length > 0"
+         [@staggerCards]="paginatedFormations.length">
+      
+      <!-- Grid View -->
+      <div class="services-grid" *ngIf="viewMode === 'grid'">
+        <div class="service-card" 
+             *ngFor="let formation of paginatedFormations; trackBy: trackByServiceId"
+             [class]="getServiceStatusClass(formation)">
+          
+          <!-- Service Image -->
+          <div class="service-image-container">
+            <img [src]="formation.cover_image || 'assets/default-service.jpg'" 
+                 [alt]="formation.name" 
+                 class="service-image" 
+                 loading="lazy" />
+            
+            <!-- Status Badge -->
+            <div class="status-badge" [class]="getServiceStatusClass(formation)">
+              <span *ngIf="getServiceStatusClass(formation) === 'past'">Terminé</span>
+              <span *ngIf="getServiceStatusClass(formation) === 'today'">Aujourd'hui</span>
+              <span *ngIf="getServiceStatusClass(formation) === 'upcoming'">À venir</span>
             </div>
-        </div>
 
-        <!-- Empty State -->
-        <div class="empty-state" *ngIf="!isLoading && filteredFormations.length === 0">
-            <i class="fas fa-graduation-cap"></i>
-            <h3>Aucun service trouvé</h3>
-            <p>{{ searchQuery ? 'Aucun résultat pour votre recherche' : 'Vous n\'avez pas encore créé de services' }}</p>
-        </div>
+            <!-- Hover Actions -->
+            <div class="hover-actions">
+              <button class="action-btn" 
+                      (click)="viewDetails(formation)"
+                      title="Voir les détails">
+                <i class="fas fa-eye"></i>
+              </button>
+            </div>
+          </div>
+          
+          <!-- Service Content -->
+          <div class="service-content">
+            <div class="service-header">
+              <h3 class="service-title">{{ formation.name|lowercase }}</h3>
+              <!-- <div class="service-category">
+                {{ formation.category }}
+              </div> -->
+            </div>
+            
+            <!-- <p class="service-description">{{ formation.description | slice:0:100 }}{{ formation.description.length > 100 ? '...' : '' }}</p> -->
+            
+            <div class="service-meta">
+              <div class="meta-item">
+                <i class="fas fa-calendar-alt"></i>
+                <span>{{ formation.date }}</span>
+              </div>
+              <div class="meta-item">
+                <i class="fas fa-clock"></i>
+                <span>{{ formation.start_time }} - {{ formation.end_time }}</span>
+              </div>
+                <div class="meta-item">
+                    <i class="fas fa-users"></i>
+                    <span>
+                        {{ formation.subscription || 0 }} inscription{{ (+formation.subscription || 0) > 1 ? 's' : '' }}
+                    </span>
+                </div>
 
-        <!-- Pagination -->
-        <div class="pagination" *ngIf="filteredFormations.length > itemsPerPage">
-            <button 
-                class="pagination-btn" 
+            </div>
+
+            <div class="service-footer">
+              <div class="price">{{ formatPrice(formation.price) }}</div>
+              <button class="edit-btn" (click)="openEditModal(formation)">
+                <i class="fas fa-edit"></i>
+                Modifier
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- List View -->
+      <div class="services-list" *ngIf="viewMode === 'list'">
+        <div class="service-list-item" 
+             *ngFor="let formation of paginatedFormations; trackBy: trackByServiceId"
+             [class]="getServiceStatusClass(formation)">
+          
+          <div class="item-image">
+            <img [src]="formation.cover_image || 'assets/default-service.jpg'" 
+                 [alt]="formation.name" 
+                 loading="lazy" />
+            <div class="status-indicator" [class]="getServiceStatusClass(formation)"></div>
+          </div>
+
+          <div class="item-content">
+            <div class="content-main">
+              <h3 class="item-title">{{ formation.name }}</h3>
+              <p class="item-description">{{ formation.description | slice:0:150 }}{{ formation.description.length > 150 ? '...' : '' }}</p>
+              <div class="item-category">{{ formation.category_display }}</div>
+            </div>
+
+            <div class="content-meta">
+              <div class="meta-row">
+                <div class="meta-item">
+                  <i class="fas fa-calendar-alt"></i>
+                  <span>{{ formatDate(formation.date) }}</span>
+                </div>
+                <div class="meta-item">
+                  <i class="fas fa-clock"></i>
+                  <span>{{ formation.start_time }} - {{ formation.end_time }}</span>
+                </div>
+              </div>
+              <div class="meta-row">
+                <div class="meta-item">
+                  <i class="fas fa-users"></i>
+                  <span>{{ formation.subscription || 0 }} inscription{{ (+formation.subscription || 0) > 1 ? 's' : '' }}</span>
+                </div>
+                <div class="meta-item price">
+                  {{ formatPrice(formation.price) }}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="item-actions">
+            <button class="action-btn primary" (click)="openEditModal(formation)">
+              <i class="fas fa-edit"></i>
+              Modifier
+            </button>
+            <div class="action-dropdown">
+              <button class="dropdown-toggle">
+                <i class="fas fa-ellipsis-v"></i>
+              </button>
+              <div class="dropdown-menu">
+                <button (click)="viewDetails(formation)">
+                  <i class="fas fa-eye"></i>
+                  Voir les détails
+                </button>
+                <button (click)="duplicateService(formation)">
+                  <i class="fas fa-copy"></i>
+                  Dupliquer
+                </button>
+                <button (click)="archiveService(formation)" class="danger">
+                  <i class="fas fa-archive"></i>
+                  Archiver
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pagination -->
+    <div class="pagination-container" *ngIf="totalPages > 1" [@fadeInUp]>
+      <div class="pagination">
+        <button class="pagination-btn" 
                 [disabled]="currentPage === 1"
                 (click)="goToPage(1)"
-                aria-label="Première page"
-            >
-                <i class="fas fa-angle-double-left"></i>
-            </button>
-            <button 
-                class="pagination-btn" 
+                title="Première page">
+          <i class="fas fa-angle-double-left"></i>
+        </button>
+        <button class="pagination-btn" 
                 [disabled]="currentPage === 1"
                 (click)="goToPage(currentPage - 1)"
-                aria-label="Page précédente"
-            >
-                <i class="fas fa-angle-left"></i>
-            </button>
-            
-            <div class="page-numbers">
-                <button 
-                    *ngFor="let page of getPageNumbers()" 
-                    class="page-number" 
-                    [class.active]="page === currentPage"
-                    (click)="goToPage(page)"
-                    [attr.aria-label]="'Page ' + page"
-                >
-                    {{ page }}
-                </button>
-            </div>
-            
-            <button 
-                class="pagination-btn" 
+                title="Page précédente">
+          <i class="fas fa-angle-left"></i>
+        </button>
+        
+        <div class="page-numbers">
+          <button *ngFor="let page of getPageNumbers()" 
+                  class="page-number" 
+                  [class.active]="page === currentPage"
+                  (click)="goToPage(page)">
+            {{ page }}
+          </button>
+        </div>
+        
+        <button class="pagination-btn" 
                 [disabled]="currentPage === totalPages"
                 (click)="goToPage(currentPage + 1)"
-                aria-label="Page suivante"
-            >
-                <i class="fas fa-angle-right"></i>
-            </button>
-            <button 
-                class="pagination-btn" 
+                title="Page suivante">
+          <i class="fas fa-angle-right"></i>
+        </button>
+        <button class="pagination-btn" 
                 [disabled]="currentPage === totalPages"
                 (click)="goToPage(totalPages)"
-                aria-label="Dernière page"
-            >
-                <i class="fas fa-angle-double-right"></i>
-            </button>
+                title="Dernière page">
+          <i class="fas fa-angle-double-right"></i>
+        </button>
+      </div>
+      
+      <div class="pagination-info">
+        Page {{ currentPage }} sur {{ totalPages }} ({{ filteredFormations.length }} services)
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Edit Modal -->
+  <div class="modal-overlay" 
+       *ngIf="showEditModal" 
+       [@modalAnimation]="showEditModal ? 'open' : 'closed'"
+       (click)="closeEditModal()">
+    <div class="modal-container" (click)="$event.stopPropagation()">
+      
+      <div class="modal-header">
+        <h2>
+          <i class="fas fa-edit"></i>
+          Modifier le service
+        </h2>
+        <button class="close-btn" (click)="closeEditModal()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <!-- Error Alert -->
+        <div class="alert alert-error" *ngIf="modalError" [@fadeInUp]>
+          <i class="fas fa-exclamation-circle"></i>
+          {{ modalError }}
         </div>
-    </div>
 
-    <div *ngIf="notify" class="notification">
-        Nouvelle notification ({{ notificationCount }})
-    </div>
+        <!-- Loading Service Details -->
+        <div class="modal-loading" *ngIf="isFetchingService" [@fadeInUp]>
+          <div class="loading-spinner">
+            <div class="spinner"></div>
+          </div>
+          <p>Chargement des détails du service...</p>
+        </div>
 
-    <!-- MODAL DE MODIFICATION -->
-    <div class="modal-overlay" *ngIf="showEditModal" (click)="closeEditModal()">
-        <div class="modal-content" (click)="$event.stopPropagation()">
+        <!-- Edit Form -->
+        <form *ngIf="!isFetchingService && selectedService" 
+              [formGroup]="editServiceForm" 
+              (ngSubmit)="onSubmitEdit()" 
+              class="modal-form">
+          
+          <div class="form-grid">
             
-            <!-- En-tête du modal -->
-            <div class="modal-header">
-                <h2>Modifier le service</h2>
-                <button class="close-btn" (click)="closeEditModal()" type="button">
-                    <i class="fas fa-times"></i>
-                </button>
+            <!-- Service Name -->
+            <div class="form-group">
+              <label for="name">Nom du service <span class="required">*</span></label>
+              <input type="text" 
+                     id="name" 
+                     formControlName="name" 
+                     placeholder="Nom du service"
+                     [class.error]="editServiceForm.get('name')?.invalid && editServiceForm.get('name')?.touched">
+              <div class="error-message" *ngIf="editServiceForm.get('name')?.invalid && editServiceForm.get('name')?.touched">
+                Le nom est requis (minimum 3 caractères)
+              </div>
             </div>
 
-            <!-- Message d'erreur -->
-            <div class="error-alert" *ngIf="modalError">
-                <i class="fas fa-exclamation-circle"></i>
-                {{ modalError }}
+            <!-- Category -->
+            <div class="form-group">
+              <label for="category">Catégorie <span class="required">*</span></label>
+              <select id="category" 
+                      formControlName="category" 
+                      (change)="onCategoryChange()"
+                      [class.error]="editServiceForm.get('category')?.invalid && editServiceForm.get('category')?.touched">
+                <option value="">Sélectionnez une catégorie</option>
+                <option *ngFor="let cat of categories" [value]="cat.value">
+                  {{ cat.displayName }}
+                </option>
+              </select>
+              <div class="error-message" *ngIf="editServiceForm.get('category')?.invalid && editServiceForm.get('category')?.touched">
+                Catégorie requise
+              </div>
             </div>
 
-            <!-- Chargement des données -->
-            <div class="loading-container" *ngIf="isFetchingService">
-                <div class="spinner"></div>
-                <p>Chargement des détails du service...</p>
+            <!-- Description -->
+            <div class="form-group full-width">
+              <label for="description">Description <span class="required">*</span></label>
+              <textarea id="description" 
+                        formControlName="description" 
+                        rows="4" 
+                        placeholder="Description détaillée du service..."
+                        [class.error]="editServiceForm.get('description')?.invalid && editServiceForm.get('description')?.touched"></textarea>
+              <div class="char-counter">
+                {{ editServiceForm.get('description')?.value?.length || 0 }}/1000
+              </div>
+              <div class="error-message" *ngIf="editServiceForm.get('description')?.invalid && editServiceForm.get('description')?.touched">
+                La description est requise (minimum 10 caractères)
+              </div>
             </div>
 
-            <!-- Formulaire de modification -->
-            <form *ngIf="!isFetchingService && selectedService" [formGroup]="editServiceForm" (ngSubmit)="onSubmitEdit()" class="modal-form">
-                
-                <div class="form-grid">
-                    
-                    <!-- Nom du service -->
-                    <div class="form-group">
-                        <label for="name">Nom du service *</label>
-                        <input type="text" id="name" formControlName="name" placeholder="Nom du service">
-                        <div class="error-message" *ngIf="editServiceForm.get('name')?.invalid && editServiceForm.get('name')?.touched">
-                            Le nom est requis (min. 3 caractères)
-                        </div>
-                    </div>
+            <!-- Price -->
+            <div class="form-group">
+              <label for="price">Prix (XAF) <span class="required">*</span></label>
+              <div class="input-with-icon">
+                <input type="number" 
+                       id="price" 
+                       formControlName="price" 
+                       placeholder="5000" 
+                       min="0"
+                       [class.error]="editServiceForm.get('price')?.invalid && editServiceForm.get('price')?.touched">
+                <i class="fas fa-coins input-icon"></i>
+              </div>
+              <div class="error-message" *ngIf="editServiceForm.get('price')?.invalid && editServiceForm.get('price')?.touched">
+                Prix requis et valide
+              </div>
+            </div>
 
-                    <!-- Description -->
-                    <div class="form-group full-width">
-                        <label for="description">Description *</label>
-                        <textarea id="description" formControlName="description" rows="4" placeholder="Description détaillée du service..."></textarea>
-                        <div class="error-message" *ngIf="editServiceForm.get('description')?.invalid && editServiceForm.get('description')?.touched">
-                            La description est requise (min. 10 caractères)
-                        </div>
-                    </div>
+            <!-- Date -->
+            <div class="form-group">
+              <label for="date">Date <span class="required">*</span></label>
+              <input type="date" 
+                     id="date" 
+                     formControlName="date"
+                     [class.error]="editServiceForm.get('date')?.invalid && editServiceForm.get('date')?.touched">
+              <div class="error-message" *ngIf="editServiceForm.get('date')?.invalid && editServiceForm.get('date')?.touched">
+                Date requise
+              </div>
+            </div>
 
-                    <!-- Prix -->
-                    <div class="form-group">
-                        <label for="price">Prix (XAF) *</label>
-                        <input type="number" id="price" formControlName="price" placeholder="5000" min="0">
-                        <div class="error-message" *ngIf="editServiceForm.get('price')?.invalid && editServiceForm.get('price')?.touched">
-                            Prix invalide
-                        </div>
-                    </div>
+            <!-- Start Time -->
+            <div class="form-group">
+              <label for="start_time">Heure de début <span class="required">*</span></label>
+              <input type="time" 
+                     id="start_time" 
+                     formControlName="start_time"
+                     [class.error]="editServiceForm.get('start_time')?.invalid && editServiceForm.get('start_time')?.touched">
+              <div class="error-message" *ngIf="editServiceForm.get('start_time')?.invalid && editServiceForm.get('start_time')?.touched">
+                Heure de début requise
+              </div>
+            </div>
 
-                    <!-- Date -->
-                    <div class="form-group">
-                        <label for="date">Date *</label>
-                        <input type="date" id="date" formControlName="date">
-                        <div class="error-message" *ngIf="editServiceForm.get('date')?.invalid && editServiceForm.get('date')?.touched">
-                            Date requise
-                        </div>
-                    </div>
+            <!-- End Time -->
+            <div class="form-group">
+              <label for="end_time">Heure de fin <span class="required">*</span></label>
+              <input type="time" 
+                     id="end_time" 
+                     formControlName="end_time"
+                     [class.error]="editServiceForm.get('end_time')?.invalid && editServiceForm.get('end_time')?.touched">
+              <div class="error-message" *ngIf="editServiceForm.get('end_time')?.invalid && editServiceForm.get('end_time')?.touched">
+                Heure de fin requise
+              </div>
+            </div>
 
-                    <!-- Heure de début -->
-                    <div class="form-group">
-                        <label for="start_time">Heure de début *</label>
-                        <input type="time" id="start_time" formControlName="start_time">
-                        <div class="error-message" *ngIf="editServiceForm.get('start_time')?.invalid && editServiceForm.get('start_time')?.touched">
-                            Heure requise
-                        </div>
-                    </div>
+            <!-- Platform -->
+            <div class="form-group">
+              <label for="preferred_platform">Plateforme <span class="required">*</span></label>
+              <select id="preferred_platform" 
+                      formControlName="preferred_platform"
+                      [class.error]="editServiceForm.get('preferred_platform')?.invalid && editServiceForm.get('preferred_platform')?.touched">
+                <option value="">Sélectionnez une plateforme</option>
+                <option value="zoom">Zoom</option>
+                <option value="google_meet">Google Meet</option>
+                <option value="teams">Microsoft Teams</option>
+                <option value="webex">Cisco Webex</option>
+              </select>
+              <div class="error-message" *ngIf="editServiceForm.get('preferred_platform')?.invalid && editServiceForm.get('preferred_platform')?.touched">
+                Plateforme requise
+              </div>
+            </div>
 
-                    <!-- Heure de fin -->
-                    <div class="form-group">
-                        <label for="end_time">Heure de fin *</label>
-                        <input type="time" id="end_time" formControlName="end_time">
-                        <div class="error-message" *ngIf="editServiceForm.get('end_time')?.invalid && editServiceForm.get('end_time')?.touched">
-                            Heure requise
-                        </div>
-                    </div>
+            <!-- Subcategory -->
+            <div class="form-group" *ngIf="availableSubcategories.length > 0">
+              <label for="subcategory">Sous-catégorie</label>
+              <select id="subcategory" 
+                      formControlName="subcategory" 
+                      (change)="onSubcategoryChange()">
+                <option value="">Sélectionnez une sous-catégorie</option>
+                <option *ngFor="let sub of availableSubcategories" [value]="sub.value">
+                  {{ sub.displayName }}
+                </option>
+              </select>
+            </div>
 
-                    <!-- Plateforme préférée -->
-                    <div class="form-group">
-                        <label for="preferred_platform">Plateforme *</label>
-                        <select id="preferred_platform" formControlName="preferred_platform">
-                            <option value="">Sélectionnez une plateforme</option>
-                            <option value="zoom">Zoom</option>
-                            <option value="google_meet">Google Meet</option>
-               
-                        </select>
-                        <div class="error-message" *ngIf="editServiceForm.get('preferred_platform')?.invalid && editServiceForm.get('preferred_platform')?.touched">
-                            Plateforme requise
-                        </div>
-                    </div>
+            <!-- Meeting Link -->
+            <div class="form-group full-width">
+              <label for="meeting_link">Lien de réunion</label>
+              <div class="input-with-icon">
+                <input type="url" 
+                       id="meeting_link" 
+                       formControlName="meeting_link" 
+                       placeholder="https://meet.google.com/...">
+                <i class="fas fa-link input-icon"></i>
+              </div>
+              <small class="form-help">Lien optionnel vers la salle de réunion</small>
+            </div>
 
-                    <!-- Lien de réunion -->
-                    <div class="form-group full-width">
-                        <label for="meeting_link">Lien de réunion</label>
-                        <input type="url" id="meeting_link" formControlName="meeting_link" placeholder="https://meet.google.com/...">
-                    </div>
-
-                    <!-- Image de couverture -->
-                    <div class="form-group full-width">
-                        <label for="cover_image">Image de couverture</label>
-                        <input type="file" id="cover_image" (change)="onFileSelected($event)" accept="image/*">
-                        <div class="image-preview" *ngIf="imagePreview">
-                            <img [src]="imagePreview" alt="Aperçu de l'image">
-                            <button type="button" class="remove-image" (click)="imagePreview = null; editServiceForm.patchValue({ cover_image: '' })">
-                                <i class="fas fa-times"></i>
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Catégorie -->
-                    <div class="form-group">
-                        <label for="category">Catégorie *</label>
-                        <select id="category" formControlName="category" (change)="onCategoryChange()">
-                            <option value="">Sélectionnez une catégorie</option>
-                            <option *ngFor="let cat of categories" [value]="cat.value">{{ cat.displayName }}</option>
-                        </select>
-                        <div class="error-message" *ngIf="editServiceForm.get('category')?.invalid && editServiceForm.get('category')?.touched">
-                            Catégorie requise
-                        </div>
-                    </div>
-
-                        <!-- Sous-catégorie -->
-                    <div class="form-group">
-                        <label for="subcategory">Sous-catégorie</label>
-                        <select id="subcategory" formControlName="subcategory" (change)="onSubcategoryChange()">
-                            <option value="">Sélectionnez une sous-catégorie</option>
-                            <option *ngFor="let sub of availableSubcategories" [value]="sub.value">
-                                {{ sub.displayName }}
-                            </option>
-                        </select>
-                    </div>
-
-
+            <!-- Cover Image -->
+            <div class="form-group full-width">
+              <label for="cover_image">Image de couverture</label>
+              <div class="file-upload-area">
+                <input type="file" 
+                       id="cover_image" 
+                       (change)="onFileSelected($event)" 
+                       accept="image/*"
+                       #fileInput>
+                <div class="upload-prompt" *ngIf="!imagePreview" (click)="fileInput.click()">
+                  <i class="fas fa-cloud-upload-alt"></i>
+                  <span>Cliquez pour sélectionner une image</span>
+                  <small>JPG, PNG - Max 5MB</small>
                 </div>
-
-                <!-- Actions du modal -->
-                <div class="modal-actions">
-                    <button type="button" class="btn-cancel" (click)="closeEditModal()" [disabled]="isModalLoading">
-                        Annuler
+                <div class="image-preview" *ngIf="imagePreview">
+                  <img [src]="imagePreview" alt="Aperçu de l'image">
+                  <div class="image-overlay">
+                    <button type="button" 
+                            class="change-image" 
+                            (click)="fileInput.click()">
+                      <i class="fas fa-edit"></i>
                     </button>
-                    <button type="submit" class="btn-save" [disabled]=" isModalLoading">
-                        <i class="fas fa-save" *ngIf="!isModalLoading"></i>
-                        <i class="fas fa-spinner fa-spin" *ngIf="isModalLoading"></i>
-                        {{ isModalLoading ? 'Modification...' : 'Modifier le service' }}
+                    <button type="button" 
+                            class="remove-image" 
+                            (click)="imagePreview = null; editServiceForm.patchValue({ cover_image: '' })">
+                      <i class="fas fa-trash"></i>
                     </button>
+                  </div>
                 </div>
+              </div>
+            </div>
 
-            </form>
+          </div>
+        </form>
+      </div>
 
-        </div>
+      <div class="modal-footer">
+        <button type="button" 
+                class="btn btn-secondary" 
+                (click)="closeEditModal()" 
+                [disabled]="isModalLoading">
+          Annuler
+        </button>
+        <button type="button" 
+                class="btn btn-primary" 
+                (click)="onSubmitEdit()"
+                [disabled]="editServiceForm.invalid || isModalLoading">
+          <i class="fas fa-save" *ngIf="!isModalLoading"></i>
+          <i class="fas fa-spinner fa-spin" *ngIf="isModalLoading"></i>
+          {{ isModalLoading ? 'Enregistrement...' : 'Enregistrer' }}
+        </button>
+      </div>
+
     </div>
+  </div>
+
+  <!-- Notifications -->
+  <div class="notifications-container">
+    <div class="notification" 
+         *ngFor="let notification of notifications" 
+         [class]="notification.type"
+         [@slideInRight]>
+      <div class="notification-content">
+        <i class="fas fa-check-circle" *ngIf="notification.type === 'success'"></i>
+        <i class="fas fa-exclamation-triangle" *ngIf="notification.type === 'warning'"></i>
+        <i class="fas fa-times-circle" *ngIf="notification.type === 'error'"></i>
+        <i class="fas fa-info-circle" *ngIf="notification.type === 'info'"></i>
+        <span>{{ notification.message }}</span>
+      </div>
+      <button class="close-notification" (click)="removeNotification(notification.id)">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+  </div>
 
 </div>

@@ -1,254 +1,322 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
+import { Router } from '@angular/router';
+import { trigger, state, style, transition, animate, query, stagger } from '@angular/animations';
+import { Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
 import { Souscription } from '../../models/user/souscription.model';
 import { SouscriptionService } from 'src/app/services/user/souscription.service';
+import { UserService } from 'src/app/services/user/user.service';
+import { IBookingResponse } from 'src/app/Interfaces/iservice';
+
+interface FilterOption {
+  value: string;
+  label: string;
+  count?: number;
+}
+
+interface NotificationMessage {
+  id: string;
+  message: string;
+  type: 'success' | 'error' | 'warning' | 'info';
+}
 
 @Component({
   selector: 'app-user-souscription',
   templateUrl: './user-souscription.component.html',
-  styleUrls: ['./user-souscription.component.scss']
+  styleUrls: ['./user-souscription.component.scss'],
+  animations: [
+    trigger('fadeInUp', [
+      transition(':enter', [
+        style({ opacity: 0, transform: 'translateY(20px)' }),
+        animate('300ms cubic-bezier(0.4, 0, 0.2, 1)', style({ opacity: 1, transform: 'translateY(0)' }))
+      ])
+    ]),
+    trigger('slideInRight', [
+      transition(':enter', [
+        style({ transform: 'translateX(100%)' }),
+        animate('300ms cubic-bezier(0.4, 0, 0.2, 1)', style({ transform: 'translateX(0)' }))
+      ]),
+      transition(':leave', [
+        animate('200ms cubic-bezier(0.4, 0, 0.2, 1)', style({ transform: 'translateX(100%)' }))
+      ])
+    ]),
+    trigger('staggerCards', [
+      transition('* => *', [
+        query('.service-card:enter', [
+          style({ opacity: 0, transform: 'translateY(30px) scale(0.9)' }),
+          stagger(50, animate('400ms cubic-bezier(0.4, 0, 0.2, 1)', 
+            style({ opacity: 1, transform: 'translateY(0) scale(1)' })
+          ))
+        ], { optional: true })
+      ])
+    ])
+  ]
 })
 export class UserSouscriptionComponent implements OnInit {
+  private destroy$ = new Subject<void>();
+  private searchSubject = new Subject<string>();
+
+  // Data
   souscriptions: Souscription[] = [];
+  bookings: IBookingResponse[] = [];
+  filteredBookings: IBookingResponse[] = [];
+  
+  // State
   isSidebarCollapsed = false;
+  isLoading = true;
+  errorMessage = '';
+  searchQuery = '';
+  selectedFilter = 'all';
+  sortBy = 'date_desc';
+  
+  // Pagination
   currentPage = 1;
   itemsPerPage = 6;
   totalItems = 0;
-  isLoading = true;
-  errorMessage = '';
+  totalPages = 1;
+  
+  // View options
+  viewMode: 'grid' | 'list' = 'grid';
+  showFilters = false;
+  
+  // Filters
+  filterOptions = {
+    status: [
+      { value: 'all', label: 'Tous les statuts', count: 0 },
+      { value: 'actif', label: 'Actif', count: 0 },
+      { value: 'expiré', label: 'Expiré', count: 0 },
+      { value: 'annulé', label: 'Annulé', count: 0 }
+    ] as FilterOption[],
+    categories: [] as FilterOption[]
+  };
 
-  constructor(private souscriptionService: SouscriptionService) { }
+  // Notifications
+  notifications: NotificationMessage[] = [];
+
+  constructor(
+    private souscriptionService: SouscriptionService, 
+    private userService: UserService,
+    private router: Router
+  ) {
+    this.initSearchSubscription();
+  }
 
   ngOnInit(): void {
-    this.loadSouscriptions();
+    this.loadUserBookings();
+    this.checkScreenSize();
   }
 
-  loadSouscriptions(): void {
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(): void {
+    this.checkScreenSize();
+  }
+
+  private checkScreenSize(): void {
+    const isMobile = window.innerWidth <= 768;
+    if (isMobile && this.showFilters) {
+      this.showFilters = false;
+    }
+  }
+
+  private initSearchSubscription(): void {
+    this.searchSubject.pipe(
+      debounceTime(300),
+      distinctUntilChanged(),
+      takeUntil(this.destroy$)
+    ).subscribe(searchTerm => {
+      this.performSearch(searchTerm);
+    });
+  }
+
+  loadUserBookings(): void {
     this.isLoading = true;
-    this.souscriptionService.getSouscriptions(this.currentPage, this.itemsPerPage)
-      .subscribe({
-        next: (response) => {
-          this.souscriptions = response.data.map(item => ({
-            ...item,
-            isFavorite: false
-          }));
-          this.totalItems = response.total;
-          this.isLoading = false;
-        },
-        error: (err) => {
-          this.errorMessage = 'Erreur lors du chargement des souscriptions';
-          this.isLoading = false;
-          console.error(err);
-        }
-      });
-  }
+    this.errorMessage = '';
 
-  changePage(page: number): void {
-    this.currentPage = page;
-    this.loadSouscriptions();
-    window.scrollTo(0, 0);
-  }
-
-  getPages(): number[] {
-    const pageCount = Math.ceil(this.totalItems / this.itemsPerPage);
-    return Array.from({length: pageCount}, (_, i) => i + 1);
-  }
-
-  toggleFavorite(service: Souscription, event: Event): void {
-    event.stopPropagation();
-    service.isFavorite = !service.isFavorite;
-  }
-
-  getStars(rating: number): number[] {
-    return Array(Math.floor(rating)).fill(0);
-  }
-
-  onServiceDetails(serviceId: number): void {
-    console.log('Détails du service', serviceId);
-    // this.router.navigate(['/service', serviceId]);
-  }
-
-  getStatusClass(status: string): string {
-    return {
-      'actif': 'status-active',
-      'expiré': 'status-expired',
-      'annulé': 'status-cancelled'
-    }[status] || '';
-  }
-}
-
-
-
-
-
-
-
-
-
-
-/*
-
-import { Component, OnInit } from '@angular/core';
-import { Souscription } from '../../models/user/souscription.model';
-
-@Component({
-  selector: 'app-user-souscription',
-  templateUrl: './user-souscription.component.html',
-  styleUrls: ['./user-souscription.component.scss']
-})
-export class UserSouscriptionComponent implements OnInit {
-  souscriptions: Souscription[] = [];
-  isSidebarCollapsed = false;
-  currentPage = 1;
-  itemsPerPage = 6;
-  totalItems = 12; // Total simulé pour la pagination
-  isLoading = false;
-  errorMessage = '';
-
-  ngOnInit(): void {
-    this.loadMockSouscriptions();
-  }
-
-  loadMockSouscriptions(): void {
-    this.isLoading = true;
-    
-    // Simulation d'un délai de chargement
-    setTimeout(() => {
-      this.souscriptions = this.generateMockSouscriptions();
-      this.isLoading = false;
-    }, 800);
-  }
-
-  private generateMockSouscriptions(): Souscription[] {
-    const mockCategories = ['Nettoyage', 'Jardinage', 'Bricolage', 'Cours particuliers'];
-    const mockExperts = ['Jean Dupont', 'Marie Martin', 'Pierre Durand', 'Sophie Lambert'];
-    
-    return [
-      {
-        id: 1,
-        serviceId: 101,
-        title: 'Nettoyage complet appartement',
-        description: 'Nettoyage approfondi de toutes les pièces avec produits écologiques',
-        category: mockCategories[0],
-        dateSouscription: new Date('2023-06-15'),
-        dateExpiration: new Date('2023-12-15'),
-        status: 'actif',
-        price: 8900,
-        imageUrl: 'https://example.com/clean1.jpg',
-        expertProfil: 'https://randomuser.me/api/portraits/men/32.jpg',
-        expertName: mockExperts[0],
-        averageRating: 4.5,
-        reviewsCount: 24,
-        isFavorite: true
+    this.userService.getUserBookings().subscribe({
+      next: (data: IBookingResponse[]) => {
+        this.bookings = data;
+        this.totalItems = data.length;
+        this.updateFilterCounts();
+        this.applyFilters();
+        console.log('Réservations récupérées:', data);
       },
-      {
-        id: 2,
-        serviceId: 102,
-        title: 'Taille de haie professionnelle',
-        description: 'Taille précise de vos haies avec nettoyage des déchets végétaux',
-        category: mockCategories[1],
-        dateSouscription: new Date('2023-07-20'),
-        dateExpiration: new Date('2023-10-20'),
-        status: 'actif',
-        price: 12000,
-        imageUrl: 'https://example.com/garden1.jpg',
-        expertProfil: 'https://randomuser.me/api/portraits/women/44.jpg',
-        expertName: mockExperts[1],
-        averageRating: 4.8,
-        reviewsCount: 37,
-        isFavorite: false
+      error: (err) => {
+        console.error('Erreur lors du chargement des réservations:', err);
+        this.errorMessage = 'Impossible de charger vos réservations.';
+        this.addNotification('Erreur lors du chargement des réservations', 'error');
       },
-      {
-        id: 3,
-        serviceId: 103,
-        title: 'Cours de mathématiques niveau lycée',
-        description: 'Soutien scolaire en mathématiques pour élèves de seconde à terminale',
-        category: mockCategories[3],
-        dateSouscription: new Date('2023-05-10'),
-        dateExpiration: new Date('2024-05-10'),
-        status: 'actif',
-        price: 5000,
-        imageUrl: 'https://example.com/maths1.jpg',
-        expertProfil: 'https://randomuser.me/api/portraits/men/75.jpg',
-        expertName: mockExperts[2],
-        averageRating: 4.9,
-        reviewsCount: 42,
-        isFavorite: true
-      },
-      {
-        id: 4,
-        serviceId: 104,
-        title: 'Réparation plomberie urgente',
-        description: 'Intervention rapide pour fuites et problèmes de canalisation',
-        category: mockCategories[2],
-        dateSouscription: new Date('2023-08-05'),
-        status: 'expiré',
-        price: 15000,
-        imageUrl: 'https://example.com/plumber1.jpg',
-        expertProfil: 'https://randomuser.me/api/portraits/men/68.jpg',
-        expertName: mockExperts[3],
-        averageRating: 4.3,
-        reviewsCount: 18,
-        isFavorite: false
-      },
-      {
-        id: 5,
-        serviceId: 105,
-        title: 'Nettoyage après déménagement',
-        description: 'Nettoyage complet du logement après votre déménagement',
-        category: mockCategories[0],
-        dateSouscription: new Date('2023-09-12'),
-        status: 'annulé',
-        price: 7500,
-        imageUrl: 'https://example.com/clean2.jpg',
-        expertProfil: 'https://randomuser.me/api/portraits/women/63.jpg',
-        expertName: mockExperts[1],
-        averageRating: 4.6,
-        reviewsCount: 31,
-        isFavorite: false
-      },
-      {
-        id: 6,
-        serviceId: 106,
-        title: 'Élagage arbres dangereux',
-        description: 'Élagage sécurisé des arbres menaçants par professionnel certifié',
-        category: mockCategories[1],
-        dateSouscription: new Date('2023-10-01'),
-        dateExpiration: new Date('2024-04-01'),
-        status: 'actif',
-        price: 18000,
-        imageUrl: 'https://example.com/garden2.jpg',
-        expertProfil: 'https://randomuser.me/api/portraits/men/29.jpg',
-        expertName: mockExperts[0],
-        averageRating: 4.7,
-        reviewsCount: 22,
-        isFavorite: true
+      complete: () => {
+        this.isLoading = false;
       }
-    ];
+    });
   }
 
-  // Les autres méthodes restent inchangées
+  // Search functionality
+  onSearchInput(event: any): void {
+    this.searchQuery = event.target.value;
+    this.searchSubject.next(this.searchQuery);
+  }
+
+  private performSearch(searchTerm: string): void {
+    this.currentPage = 1;
+    this.applyFilters();
+  }
+
+  clearSearch(): void {
+    this.searchQuery = '';
+    this.applyFilters();
+  }
+
+  // Filter functionality
+  toggleFilters(): void {
+    this.showFilters = !this.showFilters;
+  }
+
+  onFilterChange(): void {
+    this.currentPage = 1;
+    this.applyFilters();
+  }
+
+  onSortChange(): void {
+    this.applyFilters();
+  }
+
+  clearAllFilters(): void {
+    this.selectedFilter = 'all';
+    this.sortBy = 'date_desc';
+    this.searchQuery = '';
+    this.applyFilters();
+  }
+
+  private applyFilters(): void {
+    let filtered = [...this.bookings];
+
+    // Search filter
+    if (this.searchQuery.trim()) {
+      const query = this.searchQuery.toLowerCase();
+      filtered = filtered.filter(booking =>
+        booking.name?.toLowerCase().includes(query) ||
+        booking.description?.toLowerCase().includes(query) ||
+        booking.expert.name?.toLowerCase().includes(query)
+      );
+    }
+
+    // Status filter
+    if (this.selectedFilter !== 'all') {
+      filtered = filtered.filter(booking => 
+        booking.status === this.selectedFilter
+      );
+    }
+
+    // Sort
+    filtered = this.sortBookings(filtered, this.sortBy);
+
+    this.filteredBookings = filtered;
+    this.totalPages = Math.ceil(filtered.length / this.itemsPerPage);
+    this.updatePagination();
+  }
+
+  private sortBookings(bookings: IBookingResponse[], sortBy: string): IBookingResponse[] {
+    return bookings.sort((a, b) => {
+      switch (sortBy) {
+        case 'date_desc':
+          return new Date(b.created_at || 0).getTime() - new Date(a.created_at || 0).getTime();
+        case 'date_asc':
+          return new Date(a.created_at || 0).getTime() - new Date(b.created_at || 0).getTime();
+        case 'price_desc':
+          return (b.price || 0) - (a.price || 0);
+        case 'price_asc':
+          return (a.price || 0) - (b.price || 0);
+        case 'name_asc':
+          return (a.name || '').localeCompare(b.name || '');
+        case 'rating_desc':
+          return (b.average_rating || 0) - (a.average_rating || 0);
+        default:
+          return 0;
+      }
+    });
+  }
+
+  private updateFilterCounts(): void {
+    // Update status counts
+    this.filterOptions.status.forEach(option => {
+      if (option.value === 'all') {
+        option.count = this.bookings.length;
+      } else {
+        option.count = this.bookings.filter(b => b.status === option.value).length;
+      }
+    });
+
+    // Update category counts (if categories exist)
+    const categories = [...new Set(this.bookings.map(b => b.category).filter(Boolean))];
+    this.filterOptions.categories = categories.map(cat => ({
+      value: cat!,
+      label: cat!,
+      count: this.bookings.filter(b => b.category === cat).length
+    }));
+  }
+
+  // View mode
+  setViewMode(mode: 'grid' | 'list'): void {
+    this.viewMode = mode;
+  }
+
+  // Pagination
+  private updatePagination(): void {
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    // La pagination sera gérée dans le template avec slice
+  }
+
+  get paginatedBookings(): IBookingResponse[] {
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    return this.filteredBookings.slice(startIndex, startIndex + this.itemsPerPage);
+  }
+
   changePage(page: number): void {
-    this.currentPage = page;
-    this.loadMockSouscriptions();
-    window.scrollTo(0, 0);
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
   }
 
   getPages(): number[] {
-    const pageCount = Math.ceil(this.totalItems / this.itemsPerPage);
-    return Array.from({length: pageCount}, (_, i) => i + 1);
+    const pages = [];
+    const maxVisiblePages = 5;
+    let startPage = Math.max(1, this.currentPage - Math.floor(maxVisiblePages / 2));
+    const endPage = Math.min(this.totalPages, startPage + maxVisiblePages - 1);
+    
+    if (endPage - startPage + 1 < maxVisiblePages) {
+      startPage = Math.max(1, endPage - maxVisiblePages + 1);
+    }
+    
+    for (let i = startPage; i <= endPage; i++) {
+      pages.push(i);
+    }
+    return pages;
   }
 
-  toggleFavorite(service: Souscription, event: Event): void {
+  // Service actions
+  toggleFavorite(service: IBookingResponse, event: Event): void {
     event.stopPropagation();
     service.isFavorite = !service.isFavorite;
+    
+    const message = service.isFavorite ? 
+      'Service ajouté aux favoris' : 
+      'Service retiré des favoris';
+    this.addNotification(message, 'success');
   }
 
   getStars(rating: number): number[] {
-    return Array(Math.floor(rating)).fill(0);
+    return Array(Math.floor(rating || 0)).fill(0);
   }
 
-  onServiceDetails(serviceId: number): void {
-    console.log('Détails du service', serviceId);
+  onServiceDetails(id: number): void {
+    this.router.navigate(['/service-details', id]);
   }
 
   getStatusClass(status: string): string {
@@ -258,5 +326,79 @@ export class UserSouscriptionComponent implements OnInit {
       'annulé': 'status-cancelled'
     }[status] || '';
   }
+
+  selectedFilterLabel = '';
+
+  FilterChange() {
+    const found = this.filterOptions.status.find(s => s.value === this.selectedFilter);
+    this.selectedFilterLabel = found ? found.label : '';
+  }
+
+  get actifCount(): number {
+    return this.filterOptions?.status.find(s => s.value === 'actif')?.count || 0;
+  }
+
+  get favorisCount(): number {
+    return this.bookings?.filter(b => b.isFavorite).length || 0;
+  }
+
+
+
+  onSubscribeToService(booking: IBookingResponse, event: Event): void {
+    if (booking.meeting_link) {
+      window.open(booking.meeting_link, '_blank'); // ouvre dans un nouvel onglet
+    } else {
+      console.warn('Aucun lien de meeting disponible pour cette réservation');
+    }
+  }
+  // Notifications
+  private addNotification(message: string, type: NotificationMessage['type']): void {
+    const notification: NotificationMessage = {
+      id: Date.now().toString(),
+      message,
+      type
+    };
+    this.notifications.push(notification);
+    setTimeout(() => this.removeNotification(notification.id), 5000);
+  }
+
+  removeNotification(id: string): void {
+    this.notifications = this.notifications.filter(n => n.id !== id);
+  }
+
+  // Utility methods
+  getActiveFiltersCount(): number {
+    let count = 0;
+    if (this.selectedFilter !== 'all') count++;
+    if (this.searchQuery.trim()) count++;
+    return count;
+  }
+
+  formatPrice(price: number): string {
+    return new Intl.NumberFormat('fr-FR', {
+      style: 'currency',
+      currency: 'XAF',
+      minimumFractionDigits: 0
+    }).format(price);
+  }
+
+  formatDate(date: string | Date): string {
+    return new Date(date).toLocaleDateString('fr-FR', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric'
+    });
+  }
+
+  retryLoading(): void {
+    this.loadUserBookings();
+  }
+
+  navigateToServices(): void {
+    this.router.navigate(['/services']);
+  }
+
+  trackByBookingId(index: number, booking: IBookingResponse): any {
+    return booking.id || index;
+  }
 }
-  */

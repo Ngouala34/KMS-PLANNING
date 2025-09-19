@@ -45,9 +45,10 @@ export interface IService {
   start_time: string;
   end_time: string;
   preferred_platform: string;
-  price: string;
+  price: number;
   duration: number;
   cover_image: string;
+  cover_image_url: string;
   effective_duration: number;
   category: Category;
   subcategory: Subcategory;
@@ -99,7 +100,9 @@ export interface ISubscritionResponse {
 export interface IBooking {
   date: string;          
   start_time: string;      
-  end_time: string;       
+  end_time: string;  
+  duration: number;       
+  total_price: string;     
   platform?: 'google_meet' | 'zoom'; 
   meeting_link?: string | null;     
 }
@@ -107,22 +110,31 @@ export interface IBooking {
 
 export interface IBookingResponse {
   id: number;
-  service_name: string;
+  name: string;
   expert_name: string;
   client_name: string;
-
+  cover_image: string  ;
+  cover_image_url: string | null;
   date: string;
-  start_time: string;
+  start_time: string; 
   end_time: string;
-
+  isFavorite?: boolean;
   duration: number;
-
+  average_rating: number ;
   platform?: 'google_meet' | 'zoom';
   meeting_link?: string | null;
-
+  reviews_count: number;
   total_price: string;
   status: 'available' | 'booked' | 'completed' | 'canceled';
-
+  description: string;
+  price: number;
+  category: string;
+  
   created_at: string;
   updated_at: string;
+  expert : {
+    id: number; 
+    name: string;
+    expert_profile: string ;
+  }
 }

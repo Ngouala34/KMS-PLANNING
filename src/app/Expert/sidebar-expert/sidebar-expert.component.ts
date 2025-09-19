@@ -1,39 +1,152 @@
-import { Component, EventEmitter, HostListener, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, HostListener, Input, OnInit, Output, OnDestroy } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
-import { filter } from 'rxjs/operators';
+import { filter, takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { trigger, state, style, transition, animate } from '@angular/animations';
+
+interface NavItem {
+  id: string;
+  label: string;
+  icon: string;
+  route: string;
+  badge?: number;
+  isActive?: boolean;
+}
 
 @Component({
   selector: 'app-sidebar-expert',
   templateUrl: './sidebar-expert.component.html',
-  styleUrls: ['./sidebar-expert.component.scss']
+  styleUrls: ['./sidebar-expert.component.scss'],
+  animations: [
+    trigger('slideInOut', [
+      state('collapsed', style({
+        width: '4.5rem',
+      })),
+      state('expanded', style({
+        width: '16rem',
+      })),
+      transition('collapsed <=> expanded', animate('300ms cubic-bezier(0.4, 0, 0.2, 1)'))
+    ]),
+    trigger('fadeInOut', [
+      state('hidden', style({
+        opacity: 0,
+        transform: 'translateX(-10px)'
+      })),
+      state('visible', style({
+        opacity: 1,
+        transform: 'translateX(0)'
+      })),
+      transition('hidden <=> visible', animate('200ms ease-in-out'))
+    ]),
+    trigger('rotateChevron', [
+      state('collapsed', style({
+        transform: 'rotate(180deg)'
+      })),
+      state('expanded', style({
+        transform: 'rotate(0deg)'
+      })),
+      transition('collapsed <=> expanded', animate('300ms ease-in-out'))
+    ])
+  ]
 })
-export class SidebarExpertComponent implements OnInit {
+export class SidebarExpertComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
 
-  @Input() collapsedByDefault = false; // Indique si la sidebar est réduite au départ
-  @Output() sidebarToggle = new EventEmitter<boolean>(); // Envoie l'état de la sidebar au parent
+  @Input() collapsedByDefault = false;
+  @Output() sidebarToggle = new EventEmitter<boolean>();
 
-  isCollapsed = false; // État de la sidebar
-  isMobile = false; // Détection mobile
-  currentRoute = ''; // Route actuelle
+  isCollapsed = false;
+  isMobile = false;
+  currentRoute = '';
+  isHovered = false;
+
+  // Navigation items
+  navItems: NavItem[] = [
+    {
+      id: 'dashboard',
+      label: 'Dashboard',
+      icon: 'fas fa-chart-line',
+      route: '/main-expert/dashboard-expert'
+    },
+    {
+      id: 'services',
+      label: 'Mes Services',
+      icon: 'fas fa-concierge-bell',
+      route: '/main-expert/expert-formation',
+      badge: 3 // Exemple de badge
+    },
+    {
+      id: 'appointments',
+      label: 'Rendez-vous',
+      icon: 'fas fa-calendar-check',
+      route: '/main-expert/expert-rendez-vous',
+      badge: 5
+    },
+    {
+      id: 'history',
+      label: 'Historique',
+      icon: 'fas fa-history',
+      route: '/main-expert/expert-historique'
+    },
+    {
+      id: 'profile',
+      label: 'Mon Profil',
+      icon: 'fas fa-user-circle',
+      route: '/main-expert/expert-profile'
+    },
+    {
+      id: 'settings',
+      label: 'Paramètres',
+      icon: 'fas fa-cog',
+      route: '/main-expert/expert-settings'
+    },
+  ];
+
+  // Actions rapides
+  quickActions = [
+    {
+      id: 'create-service',
+      label: 'Nouveau Service',
+      icon: 'fas fa-plus-circle',
+      action: () => this.onCreateCourse()
+    },
+    {
+      id: 'settings',
+      label: 'Paramètres',
+      icon: 'fas fa-cog',
+      action: () => this.OnSettings()
+    }
+  ];
 
   constructor(
-    private router: Router, 
+    private router: Router,
     private authService: AuthService
   ) {
     this.checkScreenSize();
   }
 
-ngOnInit(): void {
-  this.isCollapsed = this.collapsedByDefault || this.isMobile;
-  
-  // Écouter les changements de route
-  this.router.events.pipe(
-    filter((event): event is NavigationEnd => event instanceof NavigationEnd)
-  ).subscribe(event => {
-    this.currentRoute = event.urlAfterRedirects;
-  });
-}
+  ngOnInit(): void {
+    this.isCollapsed = this.collapsedByDefault || this.isMobile;
+    
+    // Écouter les changements de route
+    this.router.events.pipe(
+      filter((event): event is NavigationEnd => event instanceof NavigationEnd),
+      takeUntil(this.destroy$)
+    ).subscribe(event => {
+      this.currentRoute = event.urlAfterRedirects;
+      this.updateActiveStates();
+    });
+
+    // Initialiser l'état actif
+    this.updateActiveStates();
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
   /**
    * Détection de la taille d'écran
    */
@@ -46,9 +159,19 @@ ngOnInit(): void {
    * Vérifier si on est sur mobile
    */
   private checkScreenSize(): void {
+    const wasMobile = this.isMobile;
     this.isMobile = window.innerWidth <= 768;
-    if (this.isMobile && !this.isCollapsed) {
+    
+    // Auto-collapse sur mobile
+    if (this.isMobile && !wasMobile) {
       this.isCollapsed = true;
+      this.sidebarToggle.emit(this.isCollapsed);
+    }
+    
+    // Auto-expand sur desktop si c'était mobile
+    if (!this.isMobile && wasMobile && !this.collapsedByDefault) {
+      this.isCollapsed = false;
+      this.sidebarToggle.emit(this.isCollapsed);
     }
   }
 
@@ -58,6 +181,19 @@ ngOnInit(): void {
   toggleSidebar(): void {
     this.isCollapsed = !this.isCollapsed;
     this.sidebarToggle.emit(this.isCollapsed);
+  }
+
+  /**
+   * Gestion du hover sur la sidebar
+   */
+  onSidebarMouseEnter(): void {
+    if (this.isCollapsed && !this.isMobile) {
+      this.isHovered = true;
+    }
+  }
+
+  onSidebarMouseLeave(): void {
+    this.isHovered = false;
   }
 
   /**
@@ -83,6 +219,22 @@ ngOnInit(): void {
     } catch (error) {
       console.error('Erreur lors de la navigation:', error);
     }
+  }
+
+  /**
+   * Mettre à jour les états actifs
+   */
+  private updateActiveStates(): void {
+    this.navItems.forEach(item => {
+      item.isActive = this.currentRoute.startsWith(item.route);
+    });
+  }
+
+  /**
+   * Navigation vers un item
+   */
+  navigateToItem(item: NavItem): void {
+    this.navigateWithLoading(item.route);
   }
 
   /**
@@ -135,16 +287,15 @@ ngOnInit(): void {
   }
 
   /**
-   * Déconnexion avec confirmation
+   * Déconnexion avec confirmation moderne
    */
   Ondeconnexion(): void {
-    const confirmLogout = confirm('Êtes-vous sûr de vouloir vous déconnecter ?');
-    
-    if (confirmLogout) {
+    // Utiliser une modal personnalisée au lieu de confirm()
+    if (this.showLogoutConfirmation()) {
       try {
         this.authService.logout();
         this.router.navigateByUrl('/login').then(() => {
-          // Optionnel : afficher un message de déconnexion réussie
+          // Optionnel : toast de succès
         }).catch(error => {
           console.error('Erreur lors de la redirection après déconnexion:', error);
         });
@@ -155,25 +306,42 @@ ngOnInit(): void {
   }
 
   /**
+   * Afficher la confirmation de déconnexion (remplacer par une modal)
+   */
+  private showLogoutConfirmation(): boolean {
+    return confirm('Êtes-vous sûr de vouloir vous déconnecter ?');
+  }
+
+  /**
    * Vérifier si une route est active
    */
   isRouteActive(route: string): boolean {
-    return this.currentRoute === route;
+    return this.currentRoute.startsWith(route);
   }
 
   /**
    * Obtenir le titre de la page courante
    */
   getCurrentPageTitle(): string {
-    const routeTitles: { [key: string]: string } = {
-      '/dashboard-expert': 'Dashboard',
-      '/expert-formation': 'Mes Services',
-      '/expert-rendez-vous': 'Planifications',
-      '/expert-settings': 'Paramètres',
-      '/expert-profile': 'Profil',
-      '/expert-historique': 'Historique'
-    };
-    
-    return routeTitles[this.currentRoute] || 'Expert Panel';
+    const activeItem = this.navItems.find(item => item.isActive);
+    return activeItem ? activeItem.label : 'Expert Panel';
+  }
+
+  /**
+   * Vérifier si la sidebar doit être étendue (hover ou pas collapsed)
+   */
+  shouldShowExpanded(): boolean {
+    return !this.isCollapsed || (this.isCollapsed && this.isHovered && !this.isMobile);
+  }
+
+  /**
+   * TrackBy functions pour optimiser les performances
+   */
+  trackByNavItem(index: number, item: NavItem): string {
+    return item.id;
+  }
+
+  trackByAction(index: number, action: any): string {
+    return action.id;
   }
 }

@@ -121,7 +121,7 @@
            (click)="loadServiceDetails(service.id)">
         
         <div class="service-image-container">
-          <img [src]="service.imageUrl" [alt]="service.title" class="service-image" />
+          <img [src]="service.imageUrl | imageUrl" [alt]="service.title" class="service-image" />
           <button class="favorite-button" (click)="toggleFavorite(service, $event)">
             <i class="fas" 
                [ngClass]="{
@@ -152,8 +152,8 @@
           </div>
         </div>
         
-        <h3 class="service-title">{{ service.title }}</h3>
-        <p class="service-description">{{ service.description }}</p>
+        <h3 class="service-title">{{ service.title |lowercase }}</h3>
+        <p class="service-description">{{ service.description |lowercase }}</p>
         
         <div class="service-footer">
           <div class="price">{{ service.price | currency:'XAF':'symbol':'1.0-0' }}</div>

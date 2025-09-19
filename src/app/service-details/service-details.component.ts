@@ -139,24 +139,13 @@ export class ServiceDetailsComponent implements OnInit {
    * Réserver le service
    */
   subscribeToService(): void {
-    if (!this.service) {
-      this.errorMessage = 'Détails du service introuvables ❌';
-      return;
-    }
-
     this.isLoading = true;
     this.successMessage = '';
     this.errorMessage = '';
 
-    const bookingData = {
-      date: this.service.date, 
-      start_time: this.service.start_time, 
-      end_time: this.service.end_time, 
-      platform: this.service.preferred_platform as 'google_meet' | 'zoom',
-      meeting_link: this.service.meeting_link || null
-    };
+  
 
-    this.userService.subscribeToNewService( bookingData).subscribe({
+    this.userService.subscribeToNewService( this.service.id).subscribe({
       next: (response: ISubscritionResponse) => {
         console.log('Souscription réussie :', response);
         this.successMessage = 'Vous êtes maintenant abonné à ce service ';
@@ -167,9 +156,10 @@ export class ServiceDetailsComponent implements OnInit {
       },
       complete: () => {
         this.isLoading = false;
+        this.router.navigate(['/user-souscriptions']);
       }
     });
-}
+  }
 
 
   /**

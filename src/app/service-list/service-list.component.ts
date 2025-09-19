@@ -184,7 +184,7 @@ export class ServiceListComponent implements OnInit, OnDestroy {
     this.isLoading = true;
     this.error = null;
 
-    this.serviceService.getAllServices()
+    this.serviceService.getAllPublicServices()
       .pipe(
         takeUntil(this.destroy$),
         catchError(error => {
@@ -219,7 +219,7 @@ export class ServiceListComponent implements OnInit, OnDestroy {
         expertName: 'Expert', // Valeur par défaut
         avarage: 4.5, // Valeur par défaut
         reviews: 15, // Valeur par défaut
-        price: parseInt(service.price) || 0,
+        price: (service.price) || 0,
         category: service.category_display || service.category?.name || 'Catégorie inconnue',
         isFavorite: false
       };
@@ -320,7 +320,7 @@ export class ServiceListComponent implements OnInit, OnDestroy {
       const selectedRange = this.priceRanges.find(r => r.checked && r.value !== 'all');
       let matchesPrice = true;
       if (selectedRange) {
-        const servicePrice = parseInt(service.price) || 0;
+        const servicePrice = (service.price) || 0;
         if (selectedRange.min !== undefined && selectedRange.max !== undefined) {
           matchesPrice = servicePrice >= selectedRange.min && servicePrice <= selectedRange.max;
         } else if (selectedRange.min !== undefined) {

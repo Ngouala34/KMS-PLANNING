@@ -56,7 +56,6 @@ import { LoginComponent } from './login/login/login.component';
 // Expert components
 import { SidebarExpertComponent } from './Expert/sidebar-expert/sidebar-expert.component';
 import { DashboardExpertComponent } from './Expert/dashboard-expert/dashboard-expert.component';
-import { ExpertServiceComponent } from './Expert/expert-service/expert-service.component';
 import { HeaderExpertComponent } from './Expert/header-expert/header-expert.component';
 import { ExpertRegisterComponent } from './Expert/expert-register/expert-register.component';
 import { CreateCourseComponent } from './Expert/create-course/create-course.component';
@@ -75,6 +74,9 @@ import { ServiceDetailsAvisComponent } from './service-details-avis/service-deta
 import { AppearOnScrollDirective } from './directives/appear-on-scroll.directive';
 import { SlideInOnScrollDirective } from './directives/app-slide-in-on-scroll.directive';
 import { ZoomInOnScrollDirective } from './directives/zoom-in-on-scroll.directive';
+import { ImageUrlPipe } from './pipes/imageurl.pipe';
+import { MainUserComponent } from './user/_main-user/main-user.component';
+import { MainExpertComponent } from './Expert/_main-expert/main-expert.component';
 
 @NgModule({
   declarations: [
@@ -109,7 +111,6 @@ import { ZoomInOnScrollDirective } from './directives/zoom-in-on-scroll.directiv
     // Expert
     SidebarExpertComponent,
     DashboardExpertComponent,
-    ExpertServiceComponent,
     HeaderExpertComponent,
     ExpertRegisterComponent,
     CreateCourseComponent,
@@ -126,6 +127,9 @@ import { ZoomInOnScrollDirective } from './directives/zoom-in-on-scroll.directiv
     AppearOnScrollDirective,
     SlideInOnScrollDirective,
     ZoomInOnScrollDirective,
+    ImageUrlPipe,
+    MainUserComponent,
+    MainExpertComponent
 
   ],
   imports: [

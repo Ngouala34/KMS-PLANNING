@@ -79,23 +79,26 @@ export class UserService {
   }
 
 
-  subscribeToNewService( bookingData: {
-    date: string;
-    start_time: string;
-    end_time: string;
-    platform: 'google_meet' | 'zoom';
-    meeting_link?: string | null;
-  }): Observable<ISubscritionResponse> {
+  subscribeToNewService( id: number ): Observable<ISubscritionResponse> {
     return this.http.post<ISubscritionResponse>(
-      `${this.apiUrl}bookings/`,
-      bookingData
+      `${this.apiUrl}bookings/${id}/reserve/`,
+      {}
     ).pipe(
       catchError(error => {
         console.error('Error subscribing to service:', error);
         return throwError(() => new Error('Failed to subscribe to service'));
       })
     );
-}
+  }
+
+  getUserBookings(): Observable<IBookingResponse[]> {
+    return this.http.get<IBookingResponse[]>(`${this.apiUrl}bookings/client/`).pipe(
+      catchError(error => { 
+        console.error('Error fetching bookings:', error);
+        return throwError(() => new Error('Failed to fetch bookings'));
+      })
+    );
+  }
 
 
 

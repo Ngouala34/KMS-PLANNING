@@ -1,94 +1,320 @@
+<!-- user-souscription.component.html -->
 <app-header></app-header>
 <app-sidebar (sidebarToggle)="isSidebarCollapsed = $event"></app-sidebar>
 
 <section class="souscription-container" [ngClass]="{ 'expanded': isSidebarCollapsed }">
-  <div class="header">
-  <div class="title">Toutes mes souscriptions</div>
-
-  </div>
-
-  <!-- États spéciaux -->
-  <div *ngIf="isLoading" class="loading-state">
-    <div class="spinner"></div>
-    <p>Chargement de vos souscriptions...</p>
-  </div>
-
-  <div *ngIf="errorMessage" class="error-message">
-    {{ errorMessage }}
-  </div>
-
-  <div *ngIf="!isLoading && souscriptions.length === 0" class="empty-state">
-    <i class="fa-regular fa-folder-open"></i>
-    <h3>Aucune souscription trouvée</h3>
-    <p>Vous n'avez souscrit à aucun service pour le moment</p>
-    <button routerLink="/services" class="btn-explorer">
-      Explorer les services
-    </button>
-  </div>
-
-  <!-- Liste des souscriptions -->
   
-  <div class="services-grid">
-    <div class="service-card" 
-         *ngFor="let service of souscriptions" 
-         (click)="onServiceDetails(service.serviceId)">
+  <!-- Page Header amélioré -->
+  <div class="page-header" [@fadeInUp]>
+    <div class="header-content">
+      <div class="header-info">
+        <h1 class="page-title">
+          <i class="fas fa-bookmark"></i>
+          Mes Souscriptions
+        </h1>
+        <p class="page-subtitle">
+          Gérez vos services souscrits et explorez de nouvelles opportunités
+        </p>
+        <div class="stats-summary" *ngIf="!isLoading">
+          <div class="stat-item">
+            <span class="stat-number">{{ bookings.length }}</span>
+            <span class="stat-label">Services</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number">{{ actifCount }}</span>
+            <span class="stat-label">Actifs</span>
+          </div>
+
+          <div class="stat-item">
+            <span class="stat-number">{{ favorisCount }}</span>
+            <span class="stat-label">Favoris</span>
+          </div>
+
+        </div>
+      </div>
       
-      <div class="service-image-container">
-        <img [src]="service.imageUrl" [alt]="service.title" class="service-image" />
-        <button class="favorite-button" 
-                (click)="toggleFavorite(service, $event)">
-          <i class="fa-heart"
-             [ngClass]="{
-               'far': !service.isFavorite,
-               'fas': service.isFavorite
-             }"></i>
+      <div class="header-actions">
+        <button class="btn btn-primary" (click)="navigateToServices()">
+          <i class="fas fa-plus"></i>
+          Explorer les services
         </button>
-        <span class="status-badge" [ngClass]="getStatusClass(service.status)">
-          {{ service.status | titlecase }}
-        </span>
+        
       </div>
-      
-      <div class="expert">
-        <div class="expert-profile">
-          <img [src]="service.expertProfil" class="expert-avatar">
-          <span class="expert-name">{{ service.expertName }}</span>
+    </div>
+
+    <!-- Search and Filters Bar -->
+    <div class="search-filters-bar" *ngIf="!isLoading && bookings.length > 0">
+      <div class="search-section">
+        <div class="search-input-container">
+          <i class="fas fa-search search-icon"></i>
+          <input type="text" 
+                 class="search-input"
+                 placeholder="Rechercher par nom, expert, description..."
+                 [value]="searchQuery"
+                 (input)="onSearchInput($event)"
+                 aria-label="Rechercher des souscriptions">
+          <button class="clear-search" 
+                  *ngIf="searchQuery"
+                  (click)="clearSearch()"
+                  title="Effacer la recherche">
+            <i class="fas fa-times"></i>
+          </button>
         </div>
-        <div class="rating">
-          <span class="stars">
-            <i class="fa fa-star" *ngFor="let star of getStars(service.averageRating)"></i>
-            <span class="avarage">{{service.averageRating | number:'1.1-1'}}</span>
+      </div>
+
+      <div class="filters-section">
+        <button class="filters-toggle" 
+                (click)="toggleFilters()"
+                [class.active]="showFilters">
+          <i class="fas fa-filter"></i>
+          Filtres
+          <span class="filter-count" *ngIf="getActiveFiltersCount() > 0">
+            {{ getActiveFiltersCount() }}
           </span>
-          <span class="rating-count">({{ service.reviewsCount }})</span>
+        </button>
+
+        <div class="sort-select">
+          <select [(ngModel)]="sortBy" (change)="onSortChange()">
+            <option value="date_desc">Plus récents</option>
+            <option value="date_asc">Plus anciens</option>
+            <option value="price_desc">Prix décroissant</option>
+            <option value="price_asc">Prix croissant</option>
+            <option value="name_asc">Nom A-Z</option>
+            <option value="rating_desc">Mieux notés</option>
+          </select>
         </div>
       </div>
-      
-      <h3 class="service-title">{{ service.title }}</h3>
-      <p class="service-description">{{ service.description }}</p>
-      
-      <div class="price">Prix : {{ service.price | currency:'CFA':'symbol':'1.0-0' }}</div>
-      
-      <div class="subscription-dates">
-        <small>Souscrit le {{ service.dateSouscription | date:'dd/MM/yyyy' }}</small>
-        <small *ngIf="service.dateExpiration">Expire le {{ service.dateExpiration | date:'dd/MM/yyyy' }}</small>
+    </div>
+
+    <!-- Filters Panel -->
+    <div class="filters-panel" *ngIf="showFilters" [@slideInRight]>
+      <div class="filters-content">
+        
+        <!-- Status Filter -->
+        <div class="filter-group">
+          <h4>Statut</h4>
+          <div class="filter-options">
+            <label class="filter-option" *ngFor="let status of filterOptions.status">
+              <input type="radio" 
+                     [(ngModel)]="selectedFilter" 
+                     [value]="status.value"
+                     (change)="onFilterChange()">
+              <span class="option-label">{{ status.label }}</span>
+              <span class="option-count">({{ status.count }})</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Filter Actions -->
+        <div class="filter-actions">
+          <button class="btn-clear" (click)="clearAllFilters()">
+            <i class="fas fa-times"></i>
+            Effacer tous
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Results Summary -->
+    <div class="results-summary" *ngIf="!isLoading && filteredBookings.length > 0">
+      <div class="results-info">
+        <span class="results-count">
+          {{ filteredBookings.length }} souscription{{ filteredBookings.length > 1 ? 's' : '' }}
+          <span *ngIf="searchQuery || getActiveFiltersCount() > 0">trouvée{{ filteredBookings.length > 1 ? 's' : '' }}</span>
+        </span>
+        <div class="active-filters" *ngIf="getActiveFiltersCount() > 0">
+          <span class="filter-tag" *ngIf="searchQuery">
+            Recherche: "{{ searchQuery }}"
+            <button (click)="clearSearch()"><i class="fas fa-times"></i></button>
+          </span>
+          <span class="filter-tag" *ngIf="selectedFilter !== 'all'">
+            {{ selectedFilterLabel }}
+            <button (click)="selectedFilter = 'all'; FilterChange()">
+              <i class="fas fa-times"></i>
+            </button>
+          </span>
+
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- Pagination -->
-  <div *ngIf="!isLoading && souscriptions.length > 0" class="pagination">
-    <button (click)="changePage(currentPage - 1)" [disabled]="currentPage === 1">
-      <i class="fa-solid fa-chevron-left"></i>
-    </button>
+  <!-- Content Area -->
+  <div class="content-area">
     
-    <span *ngFor="let page of getPages()" 
-          (click)="changePage(page)"
-          [class.active]="page === currentPage">
-      {{ page }}
-    </span>
-    
-    <button (click)="changePage(currentPage + 1)" 
-            [disabled]="currentPage * itemsPerPage >= totalItems">
-      <i class="fa-solid fa-chevron-right"></i>
-    </button>
+    <!-- Loading State -->
+    <div *ngIf="isLoading" class="loading-state" [@fadeInUp]>
+      <div class="loading-spinner">
+        <div class="spinner"></div>
+      </div>
+      <p>Chargement de vos souscriptions...</p>
+    </div>
+
+    <!-- Error State -->
+    <div *ngIf="errorMessage" class="error-state" [@fadeInUp]>
+      <div class="error-icon">
+        <i class="fas fa-exclamation-triangle"></i>
+      </div>
+      <h3>Erreur de chargement</h3>
+      <p>{{ errorMessage }}</p>
+      <button class="btn btn-primary" (click)="retryLoading()">
+        <i class="fas fa-refresh"></i>
+        Réessayer
+      </button>
+    </div>
+
+    <!-- Empty State -->
+    <div *ngIf="!isLoading && bookings.length === 0" class="empty-state" [@fadeInUp]>
+      <div class="empty-icon">
+        <i class="fas fa-bookmark"></i>
+      </div>
+      <h3>Aucune souscription trouvée</h3>
+      <p>Vous n'avez souscrit à aucun service pour le moment</p>
+      <button class="btn btn-primary" (click)="navigateToServices()">
+        <i class="fas fa-search"></i>
+        Explorer les services
+      </button>
+    </div>
+
+    <!-- No Results State -->
+    <div *ngIf="!isLoading && bookings.length > 0 && filteredBookings.length === 0" class="empty-state" [@fadeInUp]>
+      <div class="empty-icon">
+        <i class="fas fa-search"></i>
+      </div>
+      <h3>Aucun résultat trouvé</h3>
+      <p>Essayez de modifier vos critères de recherche ou filtres</p>
+      <button class="btn btn-secondary" (click)="clearAllFilters()">
+        <i class="fas fa-times"></i>
+        Effacer les filtres
+      </button>
+    </div>
+
+    <!-- Services Grid (CONSERVÉ TEL QUEL) -->
+    <div class="services-grid" 
+         *ngIf="!isLoading && filteredBookings.length > 0"
+         [@staggerCards]="paginatedBookings.length">
+      
+      <div class="service-card"
+           *ngFor="let item of paginatedBookings; trackBy: trackByBookingId"
+           (click)="onServiceDetails(item.id)">
+               
+        <div class="service-image-container">
+          <img [src]="item.cover_image || 'assets/images/business.jpg'" [alt]="item.name" class="service-image" loading="lazy" />
+          <button class="favorite-button"
+                   (click)="toggleFavorite(item, $event)"
+                   [class.favorited]="item.isFavorite"
+                   [title]="item.isFavorite ? 'Retirer des favoris' : 'Ajouter aux favoris'">
+            <i class="fa-solid fa-heart"></i>
+          </button>
+          
+          <!-- Status Badge -->
+          <div class="status-badge" [class]="getStatusClass(item.status)">
+            <span *ngIf="item.status === 'available'">Actif</span>
+            <span *ngIf="item.status === 'completed'">Expiré</span>
+            <span *ngIf="item.status === 'canceled'">Annulé</span>
+          </div>
+        </div>
+               
+        <div class="expert">
+          <div class="expert-profile">
+            <img [src]="item.expert.expert_profile || 'assets/images/image.png'" 
+                 [alt]="item.expert.name"
+                 class="expert-avatar"
+                 loading="lazy">
+            <span class="expert-name">{{ item.expert.name|| "Nom Expert" }}</span>
+          </div>
+          <div class="rating">
+            <span class="stars">
+              <i class="fa fa-star" *ngFor="let star of getStars(item.average_rating)"></i>
+              <span class="avarage">{{ item.average_rating | number:'1.1-1' }}</span>
+            </span>
+            <span class="rating-count">({{ item.reviews_count || 0 }})</span>
+          </div>
+        </div>
+               
+        <h3 class="service-title">{{ item.name || "Nom du service" }}</h3>
+        <p class="service-description">{{ item.description || "Description du service" }}</p>
+        <p class="add-date">Ajouté le {{ formatDate(item.created_at) }}</p>
+               
+               
+        <div class="favori-date">
+          <div class="price">Prix : {{ formatPrice(item.price) }}</div>
+
+          <button class="souscrire" 
+                  (click)="onSubscribeToService(item, $event)"
+                  [disabled]="item.status === 'canceled' || item.status === 'completed'">
+            Commencer
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pagination améliorée -->
+    <div class="pagination-container" 
+         *ngIf="!isLoading && filteredBookings.length > itemsPerPage" 
+         [@fadeInUp]>
+      <div class="pagination">
+        <button class="pagination-btn" 
+                [disabled]="currentPage === 1"
+                (click)="changePage(1)"
+                title="Première page">
+          <i class="fas fa-angle-double-left"></i>
+        </button>
+        <button class="pagination-btn" 
+                [disabled]="currentPage === 1"
+                (click)="changePage(currentPage - 1)"
+                title="Page précédente">
+          <i class="fas fa-angle-left"></i>
+        </button>
+        
+        <div class="page-numbers">
+          <button *ngFor="let page of getPages()" 
+                  class="page-number" 
+                  [class.active]="page === currentPage"
+                  (click)="changePage(page)">
+            {{ page }}
+          </button>
+        </div>
+        
+        <button class="pagination-btn" 
+                [disabled]="currentPage === totalPages"
+                (click)="changePage(currentPage + 1)"
+                title="Page suivante">
+          <i class="fas fa-angle-right"></i>
+        </button>
+        <button class="pagination-btn" 
+                [disabled]="currentPage === totalPages"
+                (click)="changePage(totalPages)"
+                title="Dernière page">
+          <i class="fas fa-angle-double-right"></i>
+        </button>
+      </div>
+      
+      <div class="pagination-info">
+        Page {{ currentPage }} sur {{ totalPages }} ({{ filteredBookings.length }} souscriptions)
+      </div>
+    </div>
+
   </div>
+
+  <!-- Notifications -->
+  <div class="notifications-container">
+    <div class="notification" 
+         *ngFor="let notification of notifications" 
+         [class]="notification.type"
+         [@slideInRight]>
+      <div class="notification-content">
+        <i class="fas fa-check-circle" *ngIf="notification.type === 'success'"></i>
+        <i class="fas fa-exclamation-triangle" *ngIf="notification.type === 'warning'"></i>
+        <i class="fas fa-times-circle" *ngIf="notification.type === 'error'"></i>
+        <i class="fas fa-info-circle" *ngIf="notification.type === 'info'"></i>
+        <span>{{ notification.message }}</span>
+      </div>
+      <button class="close-notification" (click)="removeNotification(notification.id)">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+  </div>
+
 </section>

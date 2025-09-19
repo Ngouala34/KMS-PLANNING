@@ -300,7 +300,7 @@ export class CreateCourseComponent {
         console.log('Service créé:', response);
         this.isSubmitting = false;
         this.resetForm();
-        this.router.navigate(['/expert-formation']);
+        this.router.navigate(['/main-expert/expert-formation']);
       },
       error: (error) => {
         console.error(' Erreur:', error);

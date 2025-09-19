@@ -6,7 +6,7 @@
     <div class="hero-container">
       <!-- Image principale -->
       <div class="hero-image">
-        <img src="https://i.pinimg.com/736x/cf/f5/e1/cff5e1cba8964bcaeaee87cf0eaecb59.jpg" 
+        <img [src]="service.cover_image_url"
              [alt]="details.title" 
              class="service-image" />
         <div class="image-overlay">
@@ -39,8 +39,8 @@
               </div>
             </div>
             <div class="expert-info">
-              <h3 class="expert-name">{{ avis.nom }}</h3>
-              <p class="expert-role">{{ avis.role }}</p>
+              <h3 class="expert-name">{{ service.expert.name }}</h3>
+              <p class="expert-role">{{ service.expert.id }}</p>
               <div class="expert-rating">
                 <div class="stars">
                   <i class="fas fa-star" *ngFor="let star of getStarsArray(avis.note)"></i>
