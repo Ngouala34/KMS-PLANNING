@@ -58,11 +58,19 @@ export interface DashboardAppointment {
 }
 
 export interface SocialLoginRequest {
+    access_token: string;
+    code: string;
+    id_token: string;
+  };
+
+export interface SocialLoginResponse {
   access_token: string;
   code: string;
   id_token: string;
 }
 
-export interface SocialLoginResponse {
-  access_token: string;
+// Interface pour la réponse de votre backend
+export interface IAuthResponse {
+  access: string;    // Token d'accès
+  refresh: string;   // Token de rafraîchissement
 }

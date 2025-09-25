@@ -3,8 +3,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { registerLocaleData } from '@angular/common';
 import * as fr from '@angular/common/locales/fr';
 
-// AJOUT: Importez les modules d'authentification sociale
-
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -78,16 +76,14 @@ import { MainExpertComponent } from './Expert/_main-expert/main-expert.component
 import { CalendarPageComponent } from './user/calendar-page/calendar-page.component';
 import { DateTimeFormatPipe } from './pipes/date-time-format.pipe';
 import { UserNotificationsComponent } from './user/user-notifications/user-notifications.component';
-import { GoogleLoginProvider, SocialAuthServiceConfig, SocialLoginModule } from 'angularx-social-login';
+import { GoogleAuthService } from './services/google-auth.service.service';
 
 @NgModule({
   declarations: [
     AppComponent,
-    // Shared
     HeaderComponent,
     FooterComponent,
     NotificationIconComponent,
-    // Landing
     LandingPageComponent,
     HeroSectionComponent,
     StatsSectionComponent,
@@ -98,7 +94,6 @@ import { GoogleLoginProvider, SocialAuthServiceConfig, SocialLoginModule } from 
     AProposComponent,
     MapIframeComponent,
     PopularServicesComponent,
-    // User
     SidebarComponent,
     UserServComponent,
     UserRegisterComponent,
@@ -106,7 +101,6 @@ import { GoogleLoginProvider, SocialAuthServiceConfig, SocialLoginModule } from 
     UserParameterComponent,
     UserSouscriptionComponent,
     LoginComponent,
-    // Expert
     SidebarExpertComponent,
     DashboardExpertComponent,
     HeaderExpertComponent,
@@ -117,11 +111,9 @@ import { GoogleLoginProvider, SocialAuthServiceConfig, SocialLoginModule } from 
     ExpertFormationComponent,
     ExpertRendezVousComponent,
     ExpertSettingsComponent,
-    // Services
     ServiceListComponent,
     ServiceDetailsComponent,
     ServiceDetailsAvisComponent,
-    // Directives
     AppearOnScrollDirective,
     SlideInOnScrollDirective,
     ZoomInOnScrollDirective,
@@ -143,9 +135,7 @@ import { GoogleLoginProvider, SocialAuthServiceConfig, SocialLoginModule } from 
     MatBadgeModule,
     NgChartsModule,
     FullCalendarModule,
-    FormsModule,
-    // AJOUT: Module d'authentification sociale
-    SocialLoginModule
+    FormsModule
   ],
   providers: [
     { provide: LOCALE_ID, useValue: 'fr-FR' },
@@ -154,25 +144,8 @@ import { GoogleLoginProvider, SocialAuthServiceConfig, SocialLoginModule } from 
       useClass: AuthInterceptor,
       multi: true
     },
-    // AJOUT: Configuration de l'authentification Google
-    {
-      provide: 'SocialAuthServiceConfig',
-      useValue: {
-        autoLogin: false,
-        providers: [
-          {
-            id: GoogleLoginProvider.PROVIDER_ID,
-            provider: new GoogleLoginProvider(
-              'http://291624581995-fam5326dlblmdvd9frtrj2m2nb4bqgq0.apps.googleusercontent.com' // Remplacez par votre vrai Client ID
-            )
-          }
-        ],
-        onError: (err) => {
-          console.error('Erreur d\'authentification sociale:', err);
-        }
-      } as SocialAuthServiceConfig,
-    },
-    AuthService
+    AuthService,
+    GoogleAuthService // AJOUT
   ],
   bootstrap: [AppComponent]
 })

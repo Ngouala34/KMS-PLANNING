@@ -3,9 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, BehaviorSubject, throwError } from 'rxjs';
 import { tap, catchError } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
-import { IUserRegister, IUserLogin, IAuthResponse, SocialLoginRequest, SocialLoginResponse } from '../Interfaces/iuser';
+import { IUserRegister, IUserLogin, IAuthResponse, SocialLoginRequest } from '../Interfaces/iuser';
 import { IExpertRegister, IExpertResponse } from '../Interfaces/iexpert';
-import { SocialUser } from 'angularx-social-login';
 
 @Injectable({
   providedIn: 'root'
@@ -70,13 +69,14 @@ export class AuthService {
     );
   }
 
-  // MÉTHODES GOOGLE AUTHENTICATION - AJOUT
-  loginWithGoogle(socialUser: SocialUser): Observable<IAuthResponse> {
+  // MÉTHODES GOOGLE AUTHENTICATION - CORRIGÉ
+  loginWithGoogle(idToken: string): Observable<IAuthResponse> {
     const payload: SocialLoginRequest = {
       
-        access_token: socialUser.idToken || '',
-        code: '', // À remplir si nécessaire par votre backend
-        id_token: socialUser.idToken || ''
+        access_token: idToken,
+        code: '',
+        id_token: idToken
+      
     };
 
     return this.http.post<IAuthResponse>(`${this.apiUrl}google/login/`, payload).pipe(
@@ -89,12 +89,11 @@ export class AuthService {
   }
 
   // Callback Google (si nécessaire)
-  googleCallback(socialUser: SocialUser): Observable<IAuthResponse> {
+  googleCallback(idToken: string): Observable<IAuthResponse> {
     const payload: SocialLoginRequest = {
-        access_token: socialUser.idToken || '',
+        access_token: idToken,
         code: '',
-        id_token: socialUser.idToken || ''
-      
+        id_token: idToken
     };
 
     return this.http.post<IAuthResponse>(`${this.apiUrl}google/callback/`, payload).pipe(
@@ -107,10 +106,8 @@ export class AuthService {
   }
 
   // Méthode pour gérer l'authentification sociale
-  handleSocialAuth(socialUser: SocialUser): Observable<IAuthResponse> {
-    // Vous pouvez choisir d'utiliser loginWithGoogle ou googleCallback
-    // selon la logique de votre backend
-    return this.loginWithGoogle(socialUser);
+  handleSocialAuth(idToken: string): Observable<IAuthResponse> {
+    return this.loginWithGoogle(idToken);
   }
 
   // Méthode pour décoder le JWT
@@ -182,8 +179,8 @@ export class AuthService {
         user_type: payload.user_type,
         is_active: payload.is_active,
         domain: payload.domain,
-        name: payload.name, // AJOUT pour Google Auth
-        picture: payload.picture // AJOUT pour Google Auth
+        name: payload.name,
+        picture: payload.picture
       };
     } catch (error) {
       console.error('Erreur décodage token:', error);

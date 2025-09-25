@@ -75,20 +75,30 @@
                     <span class="separator-text">ou</span>
                 </div>
 
-                <!-- AJOUT: Bouton Google avec état de loading -->
-                <button type="button" class="google-btn" 
-                        (click)="signInWithGoogle()"
-                        [disabled]="googleLoading"
-                        [class.loading]="googleLoading">
-                    <span class="button-content">
-                        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google logo" />
-                        <span *ngIf="!googleLoading">Se connecter avec Google</span>
-                        <span *ngIf="googleLoading" class="loading-content">
-                            <i class="fas fa-spinner fa-spin"></i>
-                            Connexion Google...
-                        </span>
-                    </span>
-                </button>
+                <!-- Container pour le bouton Google intégré -->
+                <div id="google-btn-container" class="google-btn-container">
+                     <!-- Le bouton Google sera injecté ici automatiquement -->
+                </div>
+
+                <!-- Bouton de secours si Google ne se charge pas
+                <button type="button" class="google-fallback-btn" 
+                        *ngIf="!googleAuthAvailable && !googleLoading"
+                        (click)="manualGoogleLogin()">
+                    <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google logo" />
+                    Se connecter avec Google
+                </button> -->
+
+                <!-- Message de chargement Google -->
+                <div *ngIf="googleLoading" class="google-loading">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    Connexion Google en cours...
+                </div>
+
+                <!-- Message si Google n'est pas disponible -->
+                <div *ngIf="!googleAuthAvailable && googleLoading" class="warning-message">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    Connexion Google temporairement indisponible
+                </div>
 
                 <!-- Inscription -->
                 <div class="signup-container">
