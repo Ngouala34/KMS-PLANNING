@@ -58,6 +58,8 @@ export interface DashboardAppointment {
 }
 
 export interface SocialLoginRequest {
+  access_token: string;
+  code: string;
   id_token: string;
 }
 

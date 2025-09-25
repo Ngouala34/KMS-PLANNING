@@ -1,4 +1,3 @@
-
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, BehaviorSubject, throwError } from 'rxjs';
@@ -6,6 +5,7 @@ import { tap, catchError } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 import { IUserRegister, IUserLogin, IAuthResponse, SocialLoginRequest, SocialLoginResponse } from '../Interfaces/iuser';
 import { IExpertRegister, IExpertResponse } from '../Interfaces/iexpert';
+import { SocialUser } from 'angularx-social-login';
 
 @Injectable({
   providedIn: 'root'
@@ -46,32 +46,72 @@ export class AuthService {
     return this.http.post<IExpertResponse>(`${this.apiUrl}register/expert/`, data).pipe(
       catchError(error => {
         return throwError(() => error);
-      }   
-    )
-
+      })
     );
   }
 
   // LOGIN
-    loginUser(data: IUserLogin): Observable<IAuthResponse> {
-      return this.http.post<IAuthResponse>(`${this.apiUrl}login/`, data).pipe(
-        tap(response => {
-          if (response.access && response.refresh) {
-            // Sauvegarde les tokens
-            this.setTokens(response.access, response.refresh);
+  loginUser(data: IUserLogin): Observable<IAuthResponse> {
+    return this.http.post<IAuthResponse>(`${this.apiUrl}login/`, data).pipe(
+      tap(response => {
+        if (response.access && response.refresh) {
+          // Sauvegarde les tokens
+          this.setTokens(response.access, response.refresh);
 
-            // Met l'utilisateur courant
-            const user = this.getUserFromToken(response.access);
-            this.currentUserSubject.next(user);
-          }
-        }),
-        catchError(error => {
-          this.clearStorage();
-          return throwError(() => error);
-        })
-      );
-    }
+          // Met l'utilisateur courant
+          const user = this.getUserFromToken(response.access);
+          this.currentUserSubject.next(user);
+        }
+      }),
+      catchError(error => {
+        this.clearStorage();
+        return throwError(() => error);
+      })
+    );
+  }
 
+  // MÉTHODES GOOGLE AUTHENTICATION - AJOUT
+  loginWithGoogle(socialUser: SocialUser): Observable<IAuthResponse> {
+    const payload: SocialLoginRequest = {
+      
+        access_token: socialUser.idToken || '',
+        code: '', // À remplir si nécessaire par votre backend
+        id_token: socialUser.idToken || ''
+    };
+
+    return this.http.post<IAuthResponse>(`${this.apiUrl}google/login/`, payload).pipe(
+      tap(response => this.handleAuthentication(response)),
+      catchError(error => {
+        console.error('Erreur connexion Google:', error);
+        return throwError(() => error);
+      })
+    );
+  }
+
+  // Callback Google (si nécessaire)
+  googleCallback(socialUser: SocialUser): Observable<IAuthResponse> {
+    const payload: SocialLoginRequest = {
+        access_token: socialUser.idToken || '',
+        code: '',
+        id_token: socialUser.idToken || ''
+      
+    };
+
+    return this.http.post<IAuthResponse>(`${this.apiUrl}google/callback/`, payload).pipe(
+      tap(response => this.handleAuthentication(response)),
+      catchError(error => {
+        console.error('Erreur callback Google:', error);
+        return throwError(() => error);
+      })
+    );
+  }
+
+  // Méthode pour gérer l'authentification sociale
+  handleSocialAuth(socialUser: SocialUser): Observable<IAuthResponse> {
+    // Vous pouvez choisir d'utiliser loginWithGoogle ou googleCallback
+    // selon la logique de votre backend
+    return this.loginWithGoogle(socialUser);
+  }
 
   // Méthode pour décoder le JWT
   private decodeJWT(token: string): any {
@@ -95,7 +135,6 @@ export class AuthService {
     const user = this.getCurrentUser();
     return user?.user_type || null;
   }
-
 
   // Gestion de la réponse d'authentification
   private handleAuthentication(response: IAuthResponse): void {
@@ -142,14 +181,15 @@ export class AuthService {
         email: payload.email,
         user_type: payload.user_type,
         is_active: payload.is_active,
-        domain: payload.domain
+        domain: payload.domain,
+        name: payload.name, // AJOUT pour Google Auth
+        picture: payload.picture // AJOUT pour Google Auth
       };
     } catch (error) {
       console.error('Erreur décodage token:', error);
       return null;
     }
   }
-
 
   // Rafraîchissement du token
   refreshToken(): Observable<IAuthResponse> {
@@ -186,11 +226,4 @@ export class AuthService {
     const token = this.getToken();
     return !!token && !this.isTokenExpired(token);
   }
-
-  //Connexion avec google 
-
-  loginWithGoogle(payload: SocialLoginRequest): Observable<SocialLoginResponse> {
-    return this.http.post<SocialLoginResponse>(`${this.apiUrl}/google/login/`, payload);
-  }
-
 }

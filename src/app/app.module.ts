@@ -163,7 +163,7 @@ import { GoogleLoginProvider, SocialAuthServiceConfig, SocialLoginModule } from 
           {
             id: GoogleLoginProvider.PROVIDER_ID,
             provider: new GoogleLoginProvider(
-              'VOTRE_CLIENT_ID_GOOGLE' // Remplacez par votre vrai Client ID
+              'http://291624581995-fam5326dlblmdvd9frtrj2m2nb4bqgq0.apps.googleusercontent.com' // Remplacez par votre vrai Client ID
             )
           }
         ],

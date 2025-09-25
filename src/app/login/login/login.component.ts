@@ -1,29 +1,27 @@
-// login.component.ts
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
-
-declare global {
-  interface Window {
-    handleGoogleCallback: (response: any) => void;
-  }
-}
+import { Subscription } from 'rxjs';
+import { GoogleLoginProvider, SocialAuthService, SocialUser } from 'angularx-social-login';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
   loginForm!: FormGroup; 
   message: string = '';
   loading: boolean = false;
+  googleLoading: boolean = false;
+  private authSubscription!: Subscription;
 
   constructor(
     private authService: AuthService,
     private router: Router,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private socialAuthService: SocialAuthService
   ) {}
 
   ngOnInit(): void {
@@ -32,23 +30,44 @@ export class LoginComponent implements OnInit {
       password: ['', [Validators.required, Validators.minLength(6)]],
     });
 
-     // Attache le callback Google à la fenêtre globale
-    window.handleGoogleCallback = this.handleGoogleCallback.bind(this);
+    this.setupGoogleAuth();
   }
 
-    handleGoogleCallback(response: any) {
-    const id_token = response.credential; //  récupéré depuis Google
+  private setupGoogleAuth(): void {
+    this.authSubscription = this.socialAuthService.authState.subscribe((user: SocialUser) => {
+      if (user) {
+        this.handleGoogleLogin(user);
+      }
+    });
+  }
 
-    this.authService.loginWithGoogle({ id_token }).subscribe({
-      next: (res) => {
-        // Sauvegarde du token applicatif
-        localStorage.setItem('access_token', res.access_token);
+  // CORRECTION: Ajout du providerId
+  signInWithGoogle(): void {
+    this.googleLoading = true;
+    this.socialAuthService.signIn(GoogleLoginProvider.PROVIDER_ID);
+  }
 
-        console.log('Connexion réussie ', res);
-        this.router.navigate(['/dashboard']); // redirige après login
+  handleGoogleLogin(socialUser: SocialUser): void {
+    this.googleLoading = true;
+    this.message = '';
+
+    this.authService.handleSocialAuth(socialUser).subscribe({
+      next: (response) => {
+        this.googleLoading = false;
+        console.log('Connexion Google réussie', response);
+        
+        const userType = this.authService.getUserType();
+        if (userType) {
+          this.handleRedirection(userType);
+        } else {
+          this.message = 'Erreur lors de la récupération du profil utilisateur';
+        }
       },
-      error: (err) => {
-        console.error('Erreur Google login ', err);
+      error: (error) => {
+        this.googleLoading = false;
+        console.error('Erreur lors de la connexion Google', error);
+        this.message = 'Erreur lors de la connexion avec Google. Veuillez réessayer.';
+        this.socialAuthService.signOut();
       }
     });
   }
@@ -60,19 +79,18 @@ export class LoginComponent implements OnInit {
     }
 
     this.loading = true;
+    this.message = '';
 
     this.authService.loginUser(this.loginForm.value).subscribe({
       next: (response) => {
         this.loading = false;
         
-        // Maintenant on récupère le user_type depuis le token décodé
         const userType = this.authService.getUserType();
         console.log('User type from token:', userType);
         
         if (userType) {
           this.handleRedirection(userType);
         } else {
-          console.warn('User type non trouvé dans le token');
           this.message = 'Impossible de déterminer le type d\'utilisateur';
         }
       },
@@ -95,9 +113,14 @@ export class LoginComponent implements OnInit {
         this.router.navigate(['/main-expert/dashboard-expert']);
         break;
       default:
-        console.warn('Type d\'utilisateur inconnu:', userType);
-        this.router.navigate(['/']); // Page d'accueil par défaut
+        this.router.navigate(['/']);
         break;
+    }
+  }
+
+  ngOnDestroy(): void {
+    if (this.authSubscription) {
+      this.authSubscription.unsubscribe();
     }
   }
 }
