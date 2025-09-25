@@ -17,7 +17,6 @@ export class UserService {
   public currentUser$ = this.currentUserSubject.asObservable();
 
   constructor(private http: HttpClient) {
-    this.loadUserFromStorage();
   }
 
   getProfile(): Observable<UserProfile> {
@@ -102,18 +101,7 @@ export class UserService {
 
 
 
-  private loadUserFromStorage(): void {
-    try {
-      const storedUser = localStorage.getItem(this.storageKey);
-      if (storedUser) {
-        const user = JSON.parse(storedUser);
-        this.currentUserSubject.next(user);
-      }
-    } catch (error) {
-      console.error('Error parsing stored user data', error);
-      this.clearUser();
-    }
-  }
+
 
   private handleProfileSuccess(profile: UserProfile): void {
     this.currentUserSubject.next(profile);

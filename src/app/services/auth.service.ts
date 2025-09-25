@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, BehaviorSubject, throwError } from 'rxjs';
 import { tap, catchError } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
-import { IUserRegister, IUserLogin, IAuthResponse } from '../Interfaces/iuser';
+import { IUserRegister, IUserLogin, IAuthResponse, SocialLoginRequest, SocialLoginResponse } from '../Interfaces/iuser';
 import { IExpertRegister, IExpertResponse } from '../Interfaces/iexpert';
 
 @Injectable({
@@ -187,5 +187,10 @@ export class AuthService {
     return !!token && !this.isTokenExpired(token);
   }
 
+  //Connexion avec google 
+
+  loginWithGoogle(payload: SocialLoginRequest): Observable<SocialLoginResponse> {
+    return this.http.post<SocialLoginResponse>(`${this.apiUrl}/google/login/`, payload);
+  }
 
 }

@@ -33,15 +33,8 @@ export interface UserProfile {
   created_at?: string;
   updated_at?: string;
   domain?: string;
+  profil_image: string
   // Ajoute d'autres champs selon ton API
-}
-
-export interface UserNotification {
-  id: string;
-  type: 'appointment' | 'warning' | 'info' | 'success';
-  message: string;
-  timestamp?: string;
-  read?: boolean;
 }
 
 export interface UserStats {
@@ -62,4 +55,12 @@ export interface DashboardAppointment {
   status: 'confirmed' | 'pending' | 'cancelled';
   type: 'consultation' | 'formation';
   imageUrl?: string;
+}
+
+export interface SocialLoginRequest {
+  id_token: string;
+}
+
+export interface SocialLoginResponse {
+  access_token: string;
 }

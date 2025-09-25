@@ -71,7 +71,7 @@ export class UserSouscriptionComponent implements OnInit {
   
   // Pagination
   currentPage = 1;
-  itemsPerPage = 6;
+  itemsPerPage = 8;
   totalItems = 0;
   totalPages = 1;
   
@@ -94,7 +94,6 @@ export class UserSouscriptionComponent implements OnInit {
   notifications: NotificationMessage[] = [];
 
   constructor(
-    private souscriptionService: SouscriptionService, 
     private userService: UserService,
     private router: Router
   ) {
@@ -200,8 +199,8 @@ export class UserSouscriptionComponent implements OnInit {
     if (this.searchQuery.trim()) {
       const query = this.searchQuery.toLowerCase();
       filtered = filtered.filter(booking =>
-        booking.name?.toLowerCase().includes(query) ||
-        booking.description?.toLowerCase().includes(query) ||
+        booking.service.name?.toLowerCase().includes(query) ||
+        booking.service.description?.toLowerCase().includes(query) ||
         booking.expert.name?.toLowerCase().includes(query)
       );
     }
@@ -229,13 +228,13 @@ export class UserSouscriptionComponent implements OnInit {
         case 'date_asc':
           return new Date(a.created_at || 0).getTime() - new Date(b.created_at || 0).getTime();
         case 'price_desc':
-          return (b.price || 0) - (a.price || 0);
+          return (b.service.price || 0) - (a.service.price || 0);
         case 'price_asc':
-          return (a.price || 0) - (b.price || 0);
+          return (a.service.price || 0) - (b.service.price || 0);
         case 'name_asc':
-          return (a.name || '').localeCompare(b.name || '');
+          return (a.service.name || '').localeCompare(b.service.name || '');
         case 'rating_desc':
-          return (b.average_rating || 0) - (a.average_rating || 0);
+          return (b.service.average_rating || 0) - (a.service.average_rating || 0);
         default:
           return 0;
       }
@@ -253,11 +252,11 @@ export class UserSouscriptionComponent implements OnInit {
     });
 
     // Update category counts (if categories exist)
-    const categories = [...new Set(this.bookings.map(b => b.category).filter(Boolean))];
+    const categories = [...new Set(this.bookings.map(b => b.service.category).filter(Boolean))];
     this.filterOptions.categories = categories.map(cat => ({
       value: cat!,
       label: cat!,
-      count: this.bookings.filter(b => b.category === cat).length
+      count: this.bookings.filter(b => b.service.category === cat).length
     }));
   }
 
@@ -303,9 +302,9 @@ export class UserSouscriptionComponent implements OnInit {
   // Service actions
   toggleFavorite(service: IBookingResponse, event: Event): void {
     event.stopPropagation();
-    service.isFavorite = !service.isFavorite;
+    service.service.isFavorite = !service.service.isFavorite;
     
-    const message = service.isFavorite ? 
+    const message = service.service.isFavorite ? 
       'Service ajouté aux favoris' : 
       'Service retiré des favoris';
     this.addNotification(message, 'success');
@@ -339,14 +338,14 @@ export class UserSouscriptionComponent implements OnInit {
   }
 
   get favorisCount(): number {
-    return this.bookings?.filter(b => b.isFavorite).length || 0;
+    return this.bookings?.filter(b => b.service.isFavorite).length || 0;
   }
 
 
 
   onSubscribeToService(booking: IBookingResponse, event: Event): void {
-    if (booking.meeting_link) {
-      window.open(booking.meeting_link, '_blank'); // ouvre dans un nouvel onglet
+    if (booking.service.meeting_link) {
+      window.open(booking.service.meeting_link, '_blank'); // ouvre dans un nouvel onglet
     } else {
       console.warn('Aucun lien de meeting disponible pour cette réservation');
     }

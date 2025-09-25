@@ -1,10 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { I } from '@fullcalendar/core/internal-common';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { IExpertNotifications } from 'src/app/Interfaces/iexpert';
 import { IService } from 'src/app/Interfaces/iservice';
+import { UserProfile } from 'src/app/Interfaces/iuser';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -36,7 +36,7 @@ export class ExpertService {
   }
 
   updateService(id: number, serviceData: any): Observable<IService> {
-    return this.http.put<IService>(`${this.apiUrl}services/${id}/`, serviceData).pipe(
+    return this.http.put<IService>(`${this.apiUrl}services/${id}/update/`, serviceData).pipe(
       catchError(error => {
         console.error('Error updating service:', error);
         throw error;
@@ -44,23 +44,33 @@ export class ExpertService {
     );
   }
 
-getServiceDetails(id: number): Observable<IService> {
-  return this.http.get<IService>(`${this.apiUrl}services/${id}/`).pipe(
-    catchError(error => {
-      console.error('Error fetching service:', error);
-      return throwError(() => error); // bonne pratique RxJS 7+
-    })
-  );
-}
+  getServiceDetails(id: number): Observable<IService> {
+    return this.http.get<IService>(`${this.apiUrl}services/${id}/`).pipe(
+      catchError(error => {
+        console.error('Error fetching service:', error);
+        return throwError(() => error); // bonne pratique RxJS 7+
+      })
+    );
+  }
 
-getExpertNotifications(): Observable<IExpertNotifications> {
-  return this.http.get<IExpertNotifications>(`${this.apiUrl}expert-notifications/`).pipe(
-    catchError(error => {
-      console.error('Error fetching notifications:', error);
-      return throwError(() => error); // bonne pratique RxJS 7+
-    })
-  );
-}
+  getExpertNotifications(): Observable<IExpertNotifications> {
+    return this.http.get<IExpertNotifications>(`${this.apiUrl}notifications/`).pipe(
+      catchError(error => {
+        console.error('Error fetching notifications:', error);
+        return throwError(() => error); // bonne pratique RxJS 7+
+      })
+    );
+  }
+
+  getProfile(): Observable<UserProfile>{
+    return this.http.get<UserProfile>(`${this.apiUrl}profile/`).pipe(
+      catchError(error =>{
+        console.error('error fetching profile:', error);
+        return throwError(() => error)
+      })
+    )
+
+  }
 
 
 }

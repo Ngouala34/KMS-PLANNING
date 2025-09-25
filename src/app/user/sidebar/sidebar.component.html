@@ -1,40 +1,100 @@
-<section class="sidebar-container">
-  <div class="sidebar" [class.collapsed]="isCollapsed">
-    <div class="sidebar-header">
-      <i id="fa-bars" class="fa-solid fa-right-left" (click)="toggleSidebar()"></i>
-      <h3 *ngIf="!isCollapsed"></h3>
+<!-- sidebar-expert.component.html -->
+<section class="sidebar-container"
+         [class.collapsed]="isCollapsed"
+         [class.mobile]="isMobile"
+         [@slideInOut]="isCollapsed ? 'collapsed' : 'expanded'">
+  <!-- Sidebar principale -->
+ 
+    
+    <!-- Header de la sidebar -->
+
+
+    <!-- Navigation principale -->
+    <nav class="sidebar-navigation" role="navigation">
+      <div class="scrollbtn">
+        <button class="toggle-button" 
+                (click)="toggleSidebar()"
+                [attr.aria-label]="isCollapsed ? 'Développer le menu' : 'Réduire le menu'"
+                [attr.aria-expanded]="!isCollapsed">
+          <i class="fas fa-chevron-left toggle-icon" 
+            [@rotateChevron]="isCollapsed ? 'collapsed' : 'expanded'"></i>
+        </button>
+      </div>
+
+      <div class="nav-section">
+        <h4 class="nav-section-title" 
+            *ngIf="shouldShowExpanded()"
+            [@fadeInOut]="shouldShowExpanded() ? 'visible' : 'hidden'">
+          Navigation
+        </h4>
+        
+        <ul class="nav-list" role="menubar">
+          <li class="nav-item" 
+              *ngFor="let item of navItems; trackBy: trackByNavItem"
+              role="none">
+            <a class="nav-link"
+               [routerLink]="item.route"
+               routerLinkActive="active"
+               (click)="navigateToItem(item)"
+               [attr.title]="isCollapsed && !isHovered ? item.label : null"
+               [attr.aria-label]="item.label"
+               role="menuitem">
+              
+              <div class="nav-icon-container">
+                <i [class]="item.icon + ' nav-icon'"></i>
+              </div>
+              
+              <span class="nav-label" 
+                    *ngIf="shouldShowExpanded()"
+                    [@fadeInOut]="shouldShowExpanded() ? 'visible' : 'hidden'">
+                {{ item.label }}
+              </span>
+              
+              <div class="nav-indicator" 
+                   [class.active]="item.isActive"></div>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Section Actions Rapides -->
+      <div class="nav-section">
+        <h4 class="nav-section-title" 
+            *ngIf="shouldShowExpanded()"
+            [@fadeInOut]="shouldShowExpanded() ? 'visible' : 'hidden'">
+          Actions
+        </h4>
+        
+
+      </div>
+    </nav>
+
+    <!-- Footer avec déconnexion -->
+    <div class="sidebar-footer">
+      <button class="logout-button"
+              (click)="Ondeconnexion()"
+              [attr.title]="isCollapsed && !isHovered ? 'Se déconnecter' : null"
+              [attr.aria-label]="'Se déconnecter du compte'">
+        <div class="logout-icon-container">
+          <i class="fas fa-sign-out-alt logout-icon"></i>
+        </div>
+        <span class="logout-label" 
+              *ngIf="shouldShowExpanded()"
+              [@fadeInOut]="shouldShowExpanded() ? 'visible' : 'hidden'">
+          Déconnexion
+        </span>
+      </button>
+      
     </div>
 
-    <ul class="list-unstyled components">
-      <li routerLink="/user-dashboard" routerLinkActive="active" (click)="OnUserdashboard()">
-        <i class="fa-regular fa-chart-bar" style="color: #e67e22;"></i>
-        <a>Dashboard</a>
-      </li>
-
-      <li routerLink="/user-souscriptions" routerLinkActive="active" (click)="OnUserSouscription()">
-        <i class="fa-regular fa-clock" style="color: #8e44ad;"></i>
-        <a>Souscriptions</a>
-      </li>
-
-      <li routerLink="/user-serv" routerLinkActive="active" (click)="OnUserService()">
-        <i class="fa-regular fa-heart" style="color: #2980b9;"></i>
-        <a>Mes Favoris</a>
-      </li>
-
-      <li routerLink="/user-calendrier" routerLinkActive="active" (click)="OnUserCalendrier()">
-        <i class="fa-regular fa-calendar" style="color: #27ae60;"></i>
-        <a>Calendrier</a>
-      </li>
-
-      <li routerLink="/user-parameter" routerLinkActive="active" (click)="OnUserParameter()">
-        <i class="fa-regular fa-circle-user" style="color: #d35400;"></i>
-        <a >Paramètres</a>
-      </li>
-
-      <li routerLink="/user-Deconnexion" routerLinkActive="active" (click)="Ondeconnexion()">
-        <i class="fa-regular fa-circle-xmark" style="color: #c0392b;"></i>
-        <a>Déconnexion</a>
-      </li>
-    </ul>
+  <!-- Overlay pour mobile -->
+  <div class="sidebar-overlay" 
+       *ngIf="!isCollapsed && isMobile"
+       (click)="toggleSidebar()"
+       [@fadeInOut]="'visible'">
   </div>
 </section>
+
+
+
+

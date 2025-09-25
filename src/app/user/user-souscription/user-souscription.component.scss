@@ -19,7 +19,6 @@ $error-color: #ef4444;
 
 // Container principal avec fond blanc
 .souscription-container {
-  margin-left: 220px;
   margin-top: 60px;
   padding: 20px;
   background-color: #ffffff; // Fond blanc
@@ -700,7 +699,7 @@ $error-color: #ef4444;
 
 .services-grid {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   flex-wrap: wrap;
   width: 100%;
   padding: 20px;

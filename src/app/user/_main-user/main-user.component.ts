@@ -9,7 +9,12 @@ export class MainUserComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit(): void {
+  ngOnInit(): void {  
   }
+    isSidebarCollapsed = false;
+  
 
+  onSidebarToggle(isCollapsed: boolean) {
+    this.isSidebarCollapsed = isCollapsed;
+  }
 }

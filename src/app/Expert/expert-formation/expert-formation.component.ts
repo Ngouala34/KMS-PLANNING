@@ -371,6 +371,11 @@ export class ExpertFormationComponent implements OnInit, OnDestroy {
     this.router.navigate(['/create-service']);
   }
 
+  onStartService(): void {
+
+  }
+
+
 
   private updateFilterCounts(): void {
     // Update category counts
@@ -492,6 +497,8 @@ export class ExpertFormationComponent implements OnInit, OnDestroy {
     this.onCategoryChange();
     this.onSubcategoryChange();
   }
+
+
 
   onCategoryChange(): void {
     const categoryValue = this.editServiceForm.get('category')?.value;

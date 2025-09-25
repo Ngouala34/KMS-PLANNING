@@ -33,7 +33,7 @@ export class ServiceListComponent implements OnInit, OnDestroy {
   @ViewChild('priceFilter') priceFilter!: ElementRef;
 
   private destroy$ = new Subject<void>();
-  
+  Math = Math;
   isFavorite = false;
   isMobileMenuOpen = false;
   showPriceDropdown = false;
@@ -45,12 +45,18 @@ export class ServiceListComponent implements OnInit, OnDestroy {
   // Services - chargés depuis l'API
   service: IService[] = [];
   filteredServices: IService[] = [];
+  paginatedServices: IService[] = [];
   selectedCategory: string = 'all';
   selectedSubcategory: string = 'all';
-  serv!: IService; // pour stocker les détails du service sélectionné
+  serv!: IService;
+
+  // Pagination
+  currentPage = 1;
+  servicesPerPage = 20;
+  totalPages = 0;
+  paginationPages: number[] = [];
 
   // Filtres
-
   filters = {
     searchText: '',
     priceRange: 'all',
@@ -69,9 +75,9 @@ export class ServiceListComponent implements OnInit, OnDestroy {
 
   ratingOptions = [
     { value: 0, label: 'Toutes les notes' },
-    { value: 3, label: '★★★☆☆ et plus' },
-    { value: 4, label: '★★★★☆ et plus' },
-    { value: 4.5, label: '★★★★★ seulement' }
+    { value: 3, label: '⭐⭐⭐ et plus' },
+    { value: 4, label: '⭐⭐⭐⭐ et plus' },
+    { value: 4.5, label: '⭐⭐⭐⭐⭐ seulement' }
   ];
 
   categories: Category[] = [
@@ -178,6 +184,55 @@ export class ServiceListComponent implements OnInit, OnDestroy {
     document.removeEventListener('click', this.onDocumentClick.bind(this));
   }
 
+  // Pagination Methods
+  updatePagination(): void {
+    this.totalPages = Math.ceil(this.filteredServices.length / this.servicesPerPage);
+    this.generatePaginationPages();
+    this.updatePaginatedServices();
+  }
+
+  generatePaginationPages(): void {
+    this.paginationPages = [];
+    const maxVisiblePages = 5;
+    let startPage = Math.max(1, this.currentPage - Math.floor(maxVisiblePages / 2));
+    let endPage = Math.min(this.totalPages, startPage + maxVisiblePages - 1);
+
+    if (endPage - startPage < maxVisiblePages - 1) {
+      startPage = Math.max(1, endPage - maxVisiblePages + 1);
+    }
+
+    for (let i = startPage; i <= endPage; i++) {
+      this.paginationPages.push(i);
+    }
+  }
+
+  updatePaginatedServices(): void {
+    const startIndex = (this.currentPage - 1) * this.servicesPerPage;
+    const endIndex = startIndex + this.servicesPerPage;
+    this.paginatedServices = this.filteredServices.slice(startIndex, endIndex);
+  }
+
+  goToPage(page: number): void {
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+      this.updatePaginatedServices();
+      // Scroll vers le haut
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }
+
+  previousPage(): void {
+    if (this.currentPage > 1) {
+      this.goToPage(this.currentPage - 1);
+    }
+  }
+
+  nextPage(): void {
+    if (this.currentPage < this.totalPages) {
+      this.goToPage(this.currentPage + 1);
+    }
+  }
+
   // Chargement des services depuis l'API
   private loadServices(): void {
     console.log(' Début du chargement des services');
@@ -207,18 +262,16 @@ export class ServiceListComponent implements OnInit, OnDestroy {
 
   private transformServices(services: IService[]): any[] {
     return services.map(service => {
-      // Pour debuguer, affichons la structure
       console.log('Service API:', service);
       
       return {
         ...service,
-        // Ajoute les champs manquants pour la compatibilité
         title: service.name,
         imageUrl: service.cover_image || 'https://via.placeholder.com/300x200',
-        expertProfil: 'https://via.placeholder.com/50', // Valeur par défaut
-        expertName: 'Expert', // Valeur par défaut
-        avarage: 4.5, // Valeur par défaut
-        reviews: 15, // Valeur par défaut
+        expertProfil: 'https://via.placeholder.com/50',
+        expertName: 'Expert',
+        avarage: 4.5,
+        reviews: 15,
         price: (service.price) || 0,
         category: service.category_display || service.category || 'Catégorie inconnue',
         isFavorite: false
@@ -229,7 +282,6 @@ export class ServiceListComponent implements OnInit, OnDestroy {
   private handleServicesResponse(services: IService[]): void {
     console.log(' Services reçus de l\'API:', services);
     
-    // Transforme les services pour la compatibilité
     this.service = this.transformServices(services);
     this.filteredServices = [...this.service];
     
@@ -237,15 +289,14 @@ export class ServiceListComponent implements OnInit, OnDestroy {
     
     this.isLoading = false;
     this.showServices = true;
+    this.updatePagination();
   }
 
-  // Recharger les services en cas d'erreur
   reloadServices(): void {
     this.loadServices();
   }
 
   onDocumentClick(event: MouseEvent): void {
-    // Fermer le dropdown si on clique ailleurs
     if (this.showPriceDropdown && this.priceFilter && 
         !this.priceFilter.nativeElement.contains(event.target)) {
       this.showPriceDropdown = false;
@@ -274,12 +325,21 @@ export class ServiceListComponent implements OnInit, OnDestroy {
     dropdown.style.right = '';
 
     const rect = dropdown.getBoundingClientRect();
-    if (rect.right > window.innerWidth) {
+    const viewportWidth = window.innerWidth;
+    
+    // Calculer la position optimale
+    if (rect.right > viewportWidth - 20) {
       dropdown.style.left = 'auto';
       dropdown.style.right = '0';
-    } else if (rect.left < 0) {
+      dropdown.style.transform = 'translateX(0)';
+    } else if (rect.left < 20) {
       dropdown.style.left = '0';
       dropdown.style.right = 'auto';
+      dropdown.style.transform = 'translateX(0)';
+    } else {
+      dropdown.style.left = '50%';
+      dropdown.style.right = 'auto';
+      dropdown.style.transform = 'translateX(-50%)';
     }
   }
 
@@ -298,7 +358,6 @@ export class ServiceListComponent implements OnInit, OnDestroy {
   applyPriceFilter(range: PriceRange, event: Event) {
     event.stopPropagation();
     
-    // Décocher toutes les autres ranges
     this.priceRanges.forEach(r => r.checked = false);
     range.checked = true;
     
@@ -311,10 +370,10 @@ export class ServiceListComponent implements OnInit, OnDestroy {
     console.log('🔍 Application des filtres:', this.filters);
     
     this.filteredServices = this.service.filter(service => {
-      // Filtre par texte - utilise les champs réels de l'API
+      // Filtre par texte
       const matchesSearch = this.filters.searchText === '' || 
-        service.name.toLowerCase().includes(this.filters.searchText.toLowerCase()) || 
-        service.description.toLowerCase().includes(this.filters.searchText.toLowerCase());
+        service.name?.toLowerCase().includes(this.filters.searchText.toLowerCase()) || 
+        service.description?.toLowerCase().includes(this.filters.searchText.toLowerCase());
 
       // Filtre par prix
       const selectedRange = this.priceRanges.find(r => r.checked && r.value !== 'all');
@@ -328,25 +387,25 @@ export class ServiceListComponent implements OnInit, OnDestroy {
         }
       }
 
-      // Filtre par note - désactivé temporairement car non disponible dans l'API
-      const matchesRating = true; // Temporairement toujours vrai
+      // Filtre par note
+      const matchesRating = this.filters.minRating === 0 || 
+        (service.avarage || 0) >= this.filters.minRating;
 
-      // Filtre par catégorie - utilise les champs réels
+      // Filtre par catégorie
       const matchesCategory = this.filters.category === 'all' || 
         service.category_display === this.filters.category ||
         service.category === this.filters.category;
 
-      // Filtre par sous-catégorie - utilise les champs réels
+      // Filtre par sous-catégorie
       const matchesSubcategory = this.filters.subcategory === 'all' || 
         service.subcategory?.name === this.filters.subcategory;
 
-      console.log('Service:', service.name, {
-        matchesSearch, matchesPrice, matchesRating, 
-        matchesCategory, matchesSubcategory
-      });
-
       return matchesSearch && matchesPrice && matchesRating && matchesCategory && matchesSubcategory;
     });
+
+    // Reset pagination après filtrage
+    this.currentPage = 1;
+    this.updatePagination();
 
     console.log('📊 Résultats filtrés:', this.filteredServices.length);
   }
@@ -358,9 +417,9 @@ export class ServiceListComponent implements OnInit, OnDestroy {
 
   onCategoryChange(category: string): void {
     this.filters.category = category;
-    this.filters.subcategory = 'all'; // Reset subcategory filter
+    this.filters.subcategory = 'all';
     this.applyFilters();
-    this.isMobileMenuOpen = false; // Close mobile menu after selection
+    this.isMobileMenuOpen = false;
   }
 
   onSubcategoryChange(subcategory: string, event: Event): void {
@@ -393,7 +452,6 @@ export class ServiceListComponent implements OnInit, OnDestroy {
       stars.push(0.5);
     }
     
-    // Ajouter des étoiles vides pour compléter à 5
     while (stars.length < 5) {
       stars.push(0);
     }
@@ -410,8 +468,6 @@ export class ServiceListComponent implements OnInit, OnDestroy {
   getSubcategories(categoryValue: string): string[] {
     console.log('📋 Recherche des sous-catégories pour:', categoryValue);
     
-    // Cette méthode doit retourner les sous-catégories réelles de l'API
-    // Pour l'instant, retourne toutes les sous-catégories possibles
     const allSubcategories = new Set<string>();
     
     this.service.forEach(service => {
@@ -426,35 +482,33 @@ export class ServiceListComponent implements OnInit, OnDestroy {
     console.log('Sous-catégories trouvées:', result);
     return result;
   }
+
   loadServiceDetails(id: number): void {
-  this.isLoading = true;
-  this.error = null;
+    this.isLoading = true;
+    this.error = null;
 
-  this.serviceService.getServiceDetails(id)
-    .pipe(
-      takeUntil(this.destroy$),
-      catchError(err => {
-        console.error('Erreur lors du chargement du service:', err);
-        this.error = 'Impossible de charger les détails du service';
-        return throwError(() => err);
-      }),
-      finalize(() => {
-        this.isLoading = false;
-      })
-    )
-    .subscribe({
-      next: (serv: IService) => {
-        this.serv = serv; // assignation correcte
-        console.log('Détails du service:', this.serv);
+    this.serviceService.getServiceDetails(id)
+      .pipe(
+        takeUntil(this.destroy$),
+        catchError(err => {
+          console.error('Erreur lors du chargement du service:', err);
+          this.error = 'Impossible de charger les détails du service';
+          return throwError(() => err);
+        }),
+        finalize(() => {
+          this.isLoading = false;
+        })
+      )
+      .subscribe({
+        next: (serv: IService) => {
+          this.serv = serv;
+          console.log('Détails du service:', this.serv);
 
-        // navigation avec l'objet reçu
-        this.router.navigate(
-          ['/service-details', serv.id],
-          { state: { service: serv } }
-        );
-      }
-    });
-}
-
-
+          this.router.navigate(
+            ['/service-details', serv.id],
+            { state: { service: serv } }
+          );
+        }
+      });
+  }
 }

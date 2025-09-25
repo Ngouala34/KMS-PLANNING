@@ -9,8 +9,6 @@ import { RevenueChartComponent } from './Expert/charts/revenue-chart/revenue-cha
 import { UserRegisterComponent } from './user/user-register/user-register.component';
 import { LoginComponent } from './login/login/login.component';
 import { UserDashboardComponent } from './user/user-dashboard/user-dashboard.component';
-import { UserHistoriqueComponent } from './user/user-historique/user-historique.component';
-import { UserCalendrierComponent } from './user/user-calendrier/user-calendrier.component';
 import { DashboardExpertComponent } from './Expert/dashboard-expert/dashboard-expert.component';
 import { HeaderExpertComponent } from './Expert/header-expert/header-expert.component';
 import { ServiceListComponent } from './service-list/service-list.component';
@@ -24,6 +22,10 @@ import { ContactComponent } from './landing/contact/contact.component';
 import { AProposComponent } from './landing/a-propos/a-propos.component';
 import { AuthGuard } from './guards/auth.guard';
 import { MainExpertComponent } from './Expert/_main-expert/main-expert.component';
+import { MainUserComponent } from './user/_main-user/main-user.component';
+import { CalendarPageComponent } from './user/calendar-page/calendar-page.component';
+import { UserNotificationService } from './services/user/userNotification.service';
+import { UserNotificationsComponent } from './user/user-notifications/user-notifications.component';
 
 const routes: Routes = [
  
@@ -41,12 +43,18 @@ const routes: Routes = [
 
   { path: 'user-register', component: UserRegisterComponent },
   { path: 'sidebar',canActivate : [AuthGuard],  component: SidebarComponent },
-  { path: 'user-souscriptions',canActivate : [AuthGuard],  component: UserSouscriptionComponent },
-  { path: 'user-dashboard',canActivate : [AuthGuard],  component: UserDashboardComponent },
   { path: 'user-serv', canActivate : [AuthGuard], component: UserServComponent },
-  { path: 'user-historique',canActivate : [AuthGuard],  component: UserHistoriqueComponent },
-  { path: 'user-calendrier',canActivate : [AuthGuard],  component: UserCalendrierComponent },
-  { path: 'user-parameter',canActivate : [AuthGuard],  component: UserParameterComponent },
+
+  { path: 'main-user', canActivate : [AuthGuard], component: MainUserComponent,
+    children : [
+        { path: 'user-dashboard',canActivate : [AuthGuard],  component: UserDashboardComponent },
+        { path: 'user-settings',canActivate : [AuthGuard],  component: UserParameterComponent },
+        { path: 'user-souscriptions',canActivate : [AuthGuard],  component: UserSouscriptionComponent },
+        { path: 'user-calendar',component : CalendarPageComponent},
+        { path: 'user-notification', component : UserNotificationsComponent}
+
+    ]
+  },
 
  
   { path: 'expert-register', component: ExpertRegisterComponent },

@@ -156,7 +156,7 @@ export class ServiceDetailsComponent implements OnInit {
       },
       complete: () => {
         this.isLoading = false;
-        this.router.navigate(['/user-souscriptions']);
+        this.router.navigate(['/main-user/user-souscriptions']);
       }
     });
   }

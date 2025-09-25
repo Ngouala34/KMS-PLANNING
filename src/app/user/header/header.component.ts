@@ -16,9 +16,9 @@ interface MenuItem {
 }
 
 @Component({
-  selector: 'app-header-expert',
-  templateUrl: './header-expert.component.html',
-  styleUrls: ['./header-expert.component.scss'],
+  selector: 'app-header',
+  templateUrl: './header.component.html',
+  styleUrls: ['./header.component.scss'],
   animations: [
     trigger('slideDown', [
       state('hidden', style({
@@ -55,7 +55,7 @@ interface MenuItem {
     ])
   ]
 })
-export class HeaderExpertComponent implements OnInit, OnDestroy {
+export class HeaderComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
   private lastScrollTop = 0;
 

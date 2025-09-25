@@ -1,7 +1,6 @@
 // sidebar-expert.component.scss
 
 // Variables avec vos couleurs
-$primary-color: #4361ee;
 $primary-dark: #3a0ca3;
 $third: #0e0f49;
 $secondary-color: #f72585;
@@ -12,10 +11,9 @@ $text-light: #f8f9fa;
 $sidebar-bg: #ffffff;
 $sidebar-border: #e9ecef;
 $sidebar-shadow: rgba(0, 0, 0, 0.1);
-$sidebar-width-expanded: 8rem;
-$sidebar-width-collapsed: 4.5rem;
+$sidebar-width-expanded: 13rem !important;
+$sidebar-width-collapsed: 3.5rem !important;
 $hover-bg: #f8f9ff;
-$active-bg: linear-gradient(135deg, $primary-color 0%, $secondary-color 100%);
 $text-muted: #6c757d;
 $success-color: #28a745;
 $danger-color: #dc3545;
@@ -41,7 +39,6 @@ $danger-color: #dc3545;
 @mixin button-hover {
   &:hover {
     transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba($primary-color, 0.15);
   }
 
   &:active {
@@ -81,7 +78,6 @@ $danger-color: #dc3545;
 
   &.hovered:not(.mobile) {
     width: $sidebar-width-expanded;
-    box-shadow: 4px 0 20px rgba($primary-color, 0.15);
   }
 
   &:not(.collapsed) {
@@ -130,22 +126,13 @@ $danger-color: #dc3545;
     @include flex-center;
     cursor: pointer;
     @include transition();
-    background-color: $primary-color;
-    &:hover {
-      color: $primary-color;
-    }
-
     .toggle-icon {
       font-size: 0.875rem;
       scale: 1.1;
       color: $text-light;
       @include transition(transform);
     }
-    
   }
-
-
-
 }
 
 
@@ -193,13 +180,13 @@ $danger-color: #dc3545;
   cursor: pointer;
 
   &:hover {
-    background: $active-bg;
+    background: rgba($secondary-color,0.5);
     color: $text-light;
     transform: translateX(2px);
   }
 
   &.active {
-    background: $active-bg;
+    background: rgba($secondary-color,0.5);
     color: white;
 
     .nav-icon {
@@ -243,7 +230,7 @@ $danger-color: #dc3545;
     transform: translateY(-50%);
     width: 3px;
     height: 1.5rem;
-    background: $secondary-color;
+    background: rgba($secondary-color,0.5);
     border-radius: 0 2px 2px 0;
     opacity: 0;
     @include transition(opacity);
@@ -286,13 +273,10 @@ $danger-color: #dc3545;
   }
 
   &.primary-action {
-    background: $active-bg;
+    background: rgba($secondary-color,0.5);
     color: white;
-    box-shadow: 0 2px 8px rgba($primary-color, 0.25);
 
-    &:hover {
-      box-shadow: 0 4px 16px rgba($primary-color, 0.35);
-    }
+
   }
 
   &.secondary-action {
@@ -301,8 +285,6 @@ $danger-color: #dc3545;
 
     &:hover {
       background: darken($hover-bg, 5%);
-      color: $primary-color;
-      box-shadow: 0 4px 12px rgba($primary-color, 0.1);
     }
   }
 }
@@ -310,9 +292,8 @@ $danger-color: #dc3545;
 // Statistiques
 .sidebar-stats {
   margin: 1rem 0.5rem;
-  background: linear-gradient(135deg, #390ca397 25%, $third 100%);
+  background: linear-gradient(90deg, #e58eb549 25%, $third 100%);
   border-radius: 0.75rem;
-  border: 1px solid rgba($primary-color, 0.1);
   display: flex;
   align-items: center;
   padding: 0.5rem;
@@ -324,7 +305,7 @@ $danger-color: #dc3545;
     .stat-value {
       font-size: 1.25rem;
       font-weight: 700;
-      color: $secondary-color;
+      color: $text-light;
       line-height: 1;
     }
 
@@ -338,7 +319,6 @@ $danger-color: #dc3545;
   .stat-divider {
     width: 1px;
     height: 2rem;
-    background: rgba($primary-color, 0.2);
     margin: 0 0.5rem;
   }
 }
@@ -495,7 +475,6 @@ $danger-color: #dc3545;
       }
 
       &.active {
-        background: $active-bg;
       }
     }
 
@@ -531,11 +510,10 @@ $danger-color: #dc3545;
   left: 100%;
   top: 50%;
   transform: translateY(-50%);
-  background: $text-dark;
   color: white;
   padding: 0.5rem 0.75rem;
   border-radius: 0.5rem;
-  font-size: 0.75rem;
+  font-size: 5rem;
   white-space: nowrap;
   margin-left: 0.5rem;
   z-index: 1001;
@@ -586,7 +564,6 @@ $danger-color: #dc3545;
 .nav-link:focus,
 .action-button:focus,
 .logout-button:focus {
-  outline: 2px solid $primary-color;
   outline-offset: 2px;
 }
 

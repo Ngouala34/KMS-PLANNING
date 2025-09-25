@@ -1,1 +1,9 @@
-<p>main-user works!</p>
+<app-header></app-header>
+
+<app-sidebar (sidebarToggle)="isSidebarCollapsed = $event"[collapsedByDefault]="false"></app-sidebar>
+
+<div class="main-user-container" [class.collapsed]="isSidebarCollapsed">
+  <router-outlet></router-outlet>
+</div>
+
+

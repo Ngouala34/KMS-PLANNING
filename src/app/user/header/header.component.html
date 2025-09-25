@@ -14,8 +14,6 @@
     <!-- Barre de recherche (desktop) -->
     <div class="search-container" *ngIf="showSearch">
       <div class="search-wrapper">
-        <i class="fas fa-search search-icon" 
-           [class.focused]="isSearchFocused"></i>
         <input 
           type="text" 
           class="search-input"
@@ -74,7 +72,6 @@
         </div>
         <div class="user-info">
           <div class="user-name">{{ userProfile.name | slice:0:6 }}{{ userProfile.name.length > 6 ? '.' : '' }}</div>
-          <div class="user-role">{{ userProfile.user_type }}</div>
         </div>
         <i class="fas fa-chevron-down dropdown-icon"></i>
       </div>

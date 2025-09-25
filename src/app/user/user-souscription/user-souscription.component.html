@@ -1,6 +1,4 @@
 <!-- user-souscription.component.html -->
-<app-header></app-header>
-<app-sidebar (sidebarToggle)="isSidebarCollapsed = $event"></app-sidebar>
 
 <section class="souscription-container" [ngClass]="{ 'expanded': isSidebarCollapsed }">
   
@@ -200,11 +198,11 @@
            (click)="onServiceDetails(item.id)">
                
         <div class="service-image-container">
-          <img [src]="item.cover_image || 'assets/images/business.jpg'" [alt]="item.name" class="service-image" loading="lazy" />
+          <img [src]="item.service.cover_image" [alt]="item.service" class="service-image" loading="lazy" />
           <button class="favorite-button"
                    (click)="toggleFavorite(item, $event)"
-                   [class.favorited]="item.isFavorite"
-                   [title]="item.isFavorite ? 'Retirer des favoris' : 'Ajouter aux favoris'">
+                   [class.favorited]="item.service.isFavorite"
+                   [title]="item.service.isFavorite ? 'Retirer des favoris' : 'Ajouter aux favoris'">
             <i class="fa-solid fa-heart"></i>
           </button>
           
@@ -212,13 +210,13 @@
           <div class="status-badge" [class]="getStatusClass(item.status)">
             <span *ngIf="item.status === 'available'">Actif</span>
             <span *ngIf="item.status === 'completed'">Expiré</span>
-            <span *ngIf="item.status === 'canceled'">Annulé</span>
+            <span *ngIf="item.status === 'cancelled'">Annulé</span>
           </div>
         </div>
                
         <div class="expert">
           <div class="expert-profile">
-            <img [src]="item.expert.expert_profile || 'assets/images/image.png'" 
+            <img [src]="item.expert.profile_picture || 'assets/images/image.png'" 
                  [alt]="item.expert.name"
                  class="expert-avatar"
                  loading="lazy">
@@ -226,24 +224,24 @@
           </div>
           <div class="rating">
             <span class="stars">
-              <i class="fa fa-star" *ngFor="let star of getStars(item.average_rating)"></i>
-              <span class="avarage">{{ item.average_rating | number:'1.1-1' }}</span>
+              <i class="fa fa-star" *ngFor="let star of getStars(item.service.average_rating)"></i>
+              <span class="avarage">{{ item.service.average_rating | number:'1.1-1' }}</span>
             </span>
-            <span class="rating-count">({{ item.reviews_count || 0 }})</span>
+            <span class="rating-count">({{ item.expert.reviews_count || 0 }})</span>
           </div>
         </div>
                
-        <h3 class="service-title">{{ item.name || "Nom du service" }}</h3>
-        <p class="service-description">{{ item.description || "Description du service" }}</p>
+        <h3 class="service-title">{{ item.service.name || "Nom du service" }}</h3>
+        <p class="service-description">{{ item.service.description || "Description du service" }}</p>
         <p class="add-date">Ajouté le {{ formatDate(item.created_at) }}</p>
                
                
         <div class="favori-date">
-          <div class="price">Prix : {{ formatPrice(item.price) }}</div>
+          <div class="price">Prix : {{ formatPrice(item.service.price) }}</div>
 
           <button class="souscrire" 
                   (click)="onSubscribeToService(item, $event)"
-                  [disabled]="item.status === 'canceled' || item.status === 'completed'">
+                  [disabled]="item.status === 'cancelled' || item.status === 'completed'">
             Commencer
           </button>
         </div>

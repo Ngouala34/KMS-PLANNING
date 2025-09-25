@@ -4,7 +4,7 @@
 }
 
 // Variables
-$primary-color: #4361ee;
+$primary-color: #3a0ca3;
 $primary-dark: #3a0ca3;
 $secondary-color:#f72585;
 $third: #0e0f49;
@@ -106,10 +106,6 @@ body {
   .brand-text {
     font-size: 1.25rem;
     font-weight: 700;
-    background: linear-gradient(135deg, $primary-color 0%, $secondary-color 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
     letter-spacing: -0.025em;
   }
 }
@@ -270,7 +266,7 @@ body {
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  padding: 0.5rem;
+  padding: 0.2rem;
   background: $background-light;
   border: 2px solid $border-color;
   border-radius: 1rem;

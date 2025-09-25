@@ -3,6 +3,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { registerLocaleData } from '@angular/common';
 import * as fr from '@angular/common/locales/fr';
 
+// AJOUT: Importez les modules d'authentification sociale
+
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -24,7 +26,7 @@ import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { AuthService } from './services/auth.service';
 
 // Shared components
-import { HeaderComponent } from './shared/header/header.component';
+import { HeaderComponent } from './user/header/header.component';
 import { FooterComponent } from './shared/footer/footer.component';
 import { NotificationIconComponent } from './shared/notification-icon/notification-icon.component';
 
@@ -44,11 +46,7 @@ import { PopularServicesComponent } from './landing/popular-services/popular-ser
 import { SidebarComponent } from './user/sidebar/sidebar.component';
 import { UserServComponent } from './user/user-favoris/user-serv.component';
 import { UserRegisterComponent } from './user/user-register/user-register.component';
-import { UserDashboardComponent } from './user/user-dashboard/user-dashboard.component';
-import { UserDashboardStatsComponent } from './user/user-dashboard/user-dashboard-stats/user-dashboard-stats.component';
-import { UserDashboardRendezVousComponent } from './user/user-dashboard/user-dashboard-rendez-vous/user-dashboard-rendez-vous.component';
 import { UserHistoriqueComponent } from './user/user-historique/user-historique.component';
-import { UserCalendrierComponent } from './user/user-calendrier/user-calendrier.component';
 import { UserParameterComponent } from './user/user-parameter/user-parameter.component';
 import { UserSouscriptionComponent } from './user/user-souscription/user-souscription.component';
 import { LoginComponent } from './login/login/login.component';
@@ -77,6 +75,10 @@ import { ZoomInOnScrollDirective } from './directives/zoom-in-on-scroll.directiv
 import { ImageUrlPipe } from './pipes/imageurl.pipe';
 import { MainUserComponent } from './user/_main-user/main-user.component';
 import { MainExpertComponent } from './Expert/_main-expert/main-expert.component';
+import { CalendarPageComponent } from './user/calendar-page/calendar-page.component';
+import { DateTimeFormatPipe } from './pipes/date-time-format.pipe';
+import { UserNotificationsComponent } from './user/user-notifications/user-notifications.component';
+import { GoogleLoginProvider, SocialAuthServiceConfig, SocialLoginModule } from 'angularx-social-login';
 
 @NgModule({
   declarations: [
@@ -100,11 +102,7 @@ import { MainExpertComponent } from './Expert/_main-expert/main-expert.component
     SidebarComponent,
     UserServComponent,
     UserRegisterComponent,
-    UserDashboardComponent,
-    UserDashboardStatsComponent,
-    UserDashboardRendezVousComponent,
     UserHistoriqueComponent,
-    UserCalendrierComponent,
     UserParameterComponent,
     UserSouscriptionComponent,
     LoginComponent,
@@ -129,8 +127,10 @@ import { MainExpertComponent } from './Expert/_main-expert/main-expert.component
     ZoomInOnScrollDirective,
     ImageUrlPipe,
     MainUserComponent,
-    MainExpertComponent
-
+    MainExpertComponent,
+    CalendarPageComponent,
+    DateTimeFormatPipe,
+    UserNotificationsComponent
   ],
   imports: [
     BrowserModule,
@@ -142,7 +142,10 @@ import { MainExpertComponent } from './Expert/_main-expert/main-expert.component
     MatIconModule,
     MatBadgeModule,
     NgChartsModule,
-    FullCalendarModule
+    FullCalendarModule,
+    FormsModule,
+    // AJOUT: Module d'authentification sociale
+    SocialLoginModule
   ],
   providers: [
     { provide: LOCALE_ID, useValue: 'fr-FR' },
@@ -150,7 +153,26 @@ import { MainExpertComponent } from './Expert/_main-expert/main-expert.component
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
       multi: true
-    }
+    },
+    // AJOUT: Configuration de l'authentification Google
+    {
+      provide: 'SocialAuthServiceConfig',
+      useValue: {
+        autoLogin: false,
+        providers: [
+          {
+            id: GoogleLoginProvider.PROVIDER_ID,
+            provider: new GoogleLoginProvider(
+              'VOTRE_CLIENT_ID_GOOGLE' // Remplacez par votre vrai Client ID
+            )
+          }
+        ],
+        onError: (err) => {
+          console.error('Erreur d\'authentification sociale:', err);
+        }
+      } as SocialAuthServiceConfig,
+    },
+    AuthService
   ],
   bootstrap: [AppComponent]
 })

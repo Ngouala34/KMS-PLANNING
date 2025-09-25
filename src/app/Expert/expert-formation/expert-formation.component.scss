@@ -1,24 +1,22 @@
 // expert-formation.component.scss
 
 // Variables avec vos couleurs
-$primary-color: #4361ee;
-$primary-dark: #3a0ca3;
-$third: #0e0f49;
+$primary-color: #3a0ca3;
 $secondary-color: #f72585;
 $text-dark: #000000;
 $text-light: #f8f9fa;
+$error-color: #ef4444;
+$success-color: #10b98190;
 
 // Variables supplémentaires
 $background-primary: #ffffff;
 $background-secondary: #f8fafc;
 $background-tertiary: #f9f1f1;
-$border-color: #e2e8f0;
+$border-color: #ffffff;
 $border-hover: #cbd5e1;
 $text-muted: #64748b;
 $text-secondary: #475569;
-$success-color: #10b981;
 $warning-color: #f59e0b;
-$error-color: #ef4444;
 $info-color: #06b6d4;
 
 // Mixins
@@ -27,7 +25,7 @@ $info-color: #06b6d4;
 }
 
 @mixin gradient-primary {
-  background: linear-gradient(135deg, $primary-color 0%, $primary-dark 100%);
+  background: linear-gradient(135deg, $primary-color 0%, $primary-color 100%);
 }
 
 @mixin gradient-secondary {

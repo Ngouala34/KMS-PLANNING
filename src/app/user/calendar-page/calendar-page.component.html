@@ -1,0 +1,111 @@
+<div class="page-container">
+  <div class="header">
+    <h1> Calendrier des Rendez-vous</h1>
+    <p>Gérez vos consultations et planifiez votre emploi du temps</p>
+  </div>
+
+  <div class="main-content">
+    <div class="calendar-section">
+      <div class="calendar-header">
+        <h3 class="calendar-title">
+           Planning
+        </h3>
+        <div class="calendar-controls">
+          <button class="calendar-btn" (click)="openNewAppointmentDialog()">
+            <i class="fas fa-plus"></i> Nouveau RDV
+          </button>
+          <button class="calendar-btn" (click)="openFilterDialog()">
+            <i class="fas fa-filter"></i> Filtrer
+          </button>
+          <button class="calendar-btn" (click)="exportCalendar()">
+            <i class="fas fa-download"></i> Exporter
+          </button>
+        </div>
+      </div>
+
+      <div class="calendar-container">
+        <full-calendar [options]="calendarOptions"></full-calendar>
+      </div>
+    </div>
+
+    <div class="sidebar">
+      <div class="stats-card">
+        <h3>
+          <i class="fas fa-chart-bar"></i> Statistiques du mois
+        </h3>
+        <div class="stats-grid">
+          <div class="stat-item">
+            <span class="stat-number">{{ monthlyStats.total}}</span>
+            <span class="stat-label">RDV ce mois</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number">{{ weeklyStats.total }}</span>
+            <span class="stat-label">RDV cette semaine</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number">{{ todayStats.total }}</span>
+            <span class="stat-label">Aujourd'hui</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number">{{ activeExperts }}</span>
+            <span class="stat-label">Experts actifs</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="appointment-details" *ngIf="selectedBookings.length > 0">
+        <div class="details-header">
+          <h3>RDV du {{ formatSelectedDate(selectedDate) }}</h3>
+        </div>
+        <div class="details-content">
+          <div class="appointment-item" *ngFor="let booking of selectedBookings">
+            <div class="appointment-time">
+              <i class="fas fa-clock"></i> 
+                {{ booking.service.date | dateTimeFormat:booking.service.start_time:booking.service.end_time:({showDate:false}) }}
+
+            </div>
+            <div class="appointment-service">{{ booking.service.name |lowercase}}</div>
+            <div class="appointment-expert">
+              <i class="fas fa-user-md"></i> {{ booking.expert.name |lowercase }}
+            </div>
+            <div class="appointement-action">
+                <span class="appointment-platform" *ngIf="booking.service.preferred_platform === 'google_meet'">Google Meet</span>
+                <span class="appointment-platform" *ngIf="booking.service.preferred_platform === 'zoom'">Zoom</span>
+                <button class="btncommencer" (click)="StartMeet(booking)">Commencer</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="appointment-details" *ngIf="selectedBookings.length === 0 && selectedDate">
+        <div class="details-header">
+          <h3>{{ formatSelectedDate(selectedDate) }}</h3>
+        </div>
+        <div class="details-content">
+          <div class="no-appointment">
+            <i class="fas fa-calendar-times"></i>
+            <p>Aucun rendez-vous prévu pour cette date.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="legend">
+        <h4 class="legend-title">
+          <i class="fas fa-info-circle"></i> Légende
+        </h4>
+        <div class="legend-item">
+          <div class="legend-color available"></div>
+          <span>Jour avec RDV</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-color today"></div>
+          <span>Aujourd'hui</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-color selected"></div>
+          <span>Date sélectionnée</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
