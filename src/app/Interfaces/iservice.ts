@@ -35,6 +35,9 @@ export interface Expert {
   name: string;
   email: string;
   expert_profile: ExpertProfile | null;
+  average_rating: number,
+  reviews_count: number,
+  domain: string
 }
 
 export interface IService {
@@ -57,6 +60,8 @@ export interface IService {
   meeting_link: string ;
   subscription: string;
   expert: Expert;
+  average_rating: number,
+  reviews_count: number
 
   // Propriétés pour la compatibilité avec l'ancien code
   title?: string;

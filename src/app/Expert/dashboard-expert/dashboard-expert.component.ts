@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CourseService } from 'src/app/services/course.service';
+import { ExpertService } from 'src/app/services/expert/expert.service';
 
 interface DashboardStats {
   coursesCreated: number;
@@ -56,16 +57,47 @@ export class DashboardExpertComponent implements OnInit {
   // Chargement des données
   isLoading: boolean = true;
   error: string | null = null;
+  totalServices: number = 0;
+
 
   constructor(
     private router: Router, 
-    private courseService: CourseService
+    private courseService: CourseService,
+    private expertService: ExpertService
   ) {}
 
   ngOnInit(): void {
     this.loadDashboardData();
     this.loadCategories();
+    this.lordservices();
   }
+
+  upcomingServices: number = 0;    // Services à venir
+
+  lordservices(): void {
+    this.expertService.getAllServices().subscribe({
+      next: (services) => {
+        this.totalServices = services.length;
+
+        const today = new Date();
+
+        // Filtrer les services dont la date est ultérieure à aujourd'hui
+        this.upcomingServices = services.filter((service: any) => {
+          if (!service.date) return false;
+
+          // Convertir "dd-MM-yyyy" en objet Date
+          const [day, month, year] = service.date.split("-").map(Number);
+          const serviceDate = new Date(year, month - 1, day);
+
+          return serviceDate > today; // service futur
+        }).length;
+      },
+      error: (err) => {
+        console.error("Erreur lors du chargement des services :", err);
+      }
+    });
+  }
+
 
   // Charger les données du dashboard
   private loadDashboardData(): void {
@@ -74,7 +106,6 @@ export class DashboardExpertComponent implements OnInit {
     // À remplacer par des appels API réels
     this.mockLoadStats();
     this.mockLoadCourses();
-    this.mockLoadAppointments();
     
     this.isLoading = false;
   }
@@ -97,22 +128,12 @@ export class DashboardExpertComponent implements OnInit {
     // Remplacer par: this.courseService.getDashboardStats().subscribe(...)
     setTimeout(() => {
       this.stats = {
-        coursesCreated: 12,
-        participantsEnrolled: 345,
-        revenueGenerated: 12500,
-        upcomingSessions: 5
+        coursesCreated: 0,
+        participantsEnrolled: 0,
+        revenueGenerated: 0,
+        upcomingSessions: 0
       };
     }, 500);
-  }
-
-
-  private mockLoadAppointments(): void {
-    // Remplacer par: this.courseService.getUpcomingAppointments().subscribe(...)
-    setTimeout(() => {
-      this.upcomingAppointments = [
-        // Exemple de données de rendez-vous
-      ];
-    }, 1000);
   }
 
   // --- Méthodes d'action ---

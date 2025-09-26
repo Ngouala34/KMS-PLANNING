@@ -1,105 +1,322 @@
-<div [ngClass]="{ expanded : isSidebarCollapsed}" class="user-historique">
-
-
-
-<div class="settings-container">
-    <header class="settings-header">
-      <h1>Paramètres du compte</h1>
-      <p>Gérez vos informations personnelles et préférences</p>
-    </header>
+<!-- user-parameter.component.html -->
+<div [ngClass]="{ expanded: isSidebarCollapsed }" class="user-historique">
   
-    <div class="settings-body">
-      <nav class="settings-nav">
-        <button class="nav-item" [class.active]="activeTab === 'profile'" (click)="changeTab('profile')">
-          <i class="fas fa-user-circle"></i>
-          <span>Profil</span>
-        </button>
-        <button class="nav-item" [class.active]="activeTab === 'security'" (click)="changeTab('security')">
-          <i class="fas fa-shield-alt"></i>
-          <span>Sécurité</span>
-        </button>
-        <button class="nav-item" [class.active]="activeTab === 'notifications'" (click)="changeTab('notifications')">
-          <i class="fas fa-bell"></i>
-          <span>Notifications</span>
-        </button>
-        <button class="nav-item" [class.active]="activeTab === 'preferences'" (click)="changeTab('preferences')">
-          <i class="fas fa-cog"></i>
-          <span>Préférences</span>
-        </button>
-      </nav>
-  
-      <main class="settings-content">
-        <!-- Section Profil -->
-        <section *ngIf="activeTab === 'profile'">
-          <h2><i class="fas fa-user-circle"></i> Profil Public</h2>
-          
-          <div class="avatar-upload">
-            <img [src]="settingsForm.get('profile.avatar')?.value || 'assets/images/default-avatar.jpg'" 
-                 alt="Avatar" class="avatar-preview">
-            <label class="upload-btn">
-              <i class="fas fa-camera"></i> Changer
-              <input type="file" accept="image/*" (change)="onFileSelected($event)" hidden>
-            </label>
-          </div>
-  
-          <div class="form-group">
-            <label>Nom complet</label>
-            <input type="text" formControlName="fullName" placeholder="Votre nom">
-          </div>
-  
-          <div class="form-group">
-            <label>Email</label>
-            <input type="email" formControlName="email" placeholder="email@exemple.com">
-          </div>
-  
-          <div class="form-group">
-            <label>Bio</label>
-            <textarea formControlName="bio" rows="3" placeholder="Décrivez-vous en quelques mots..."></textarea>
-          </div>
-        </section>
-  
-        <!-- Section Sécurité -->
-        <section *ngIf="activeTab === 'security'">
-          <h2><i class="fas fa-shield-alt"></i> Sécurité du compte</h2>
-          
-          <div class="form-group">
-            <label>Mot de passe actuel</label>
-            <input type="password" formControlName="currentPassword" placeholder="••••••••">
-          </div>
-  
-          <div class="form-group">
-            <label>Nouveau mot de passe</label>
-            <input type="password" formControlName="newPassword" placeholder="••••••••">
-            <small class="hint">Minimum 8 caractères</small>
-          </div>
-  
-          <div class="form-group">
-            <label>Confirmer le mot de passe</label>
-            <input type="password" formControlName="confirmPassword" placeholder="••••••••">
-          </div>
-  
-          <div class="security-item">
-            <div>
-              <h3>Authentification à deux facteurs</h3>
-              <p>Ajoutez une couche de sécurité supplémentaire</p>
-            </div>
-            <label class="toggle-switch">
-              <input type="checkbox" formControlName="twoFactorEnabled">
-              <span class="slider"></span>
-            </label>
-          </div>
-        </section>
-  
-        <!-- Autres sections... -->
-      </main>
-    </div>
-  
-    <footer class="settings-footer">
-      <button class="save-btn" [disabled]="isSaving || settingsForm.invalid">
-        <span *ngIf="!isSaving">Enregistrer les modifications</span>
-        <span *ngIf="isSaving"><i class="fas fa-spinner fa-spin"></i> Enregistrement...</span>
-      </button>
-    </footer>
+  <!-- Loading Overlay -->
+  <div *ngIf="isLoading" class="loading-overlay">
+    <div class="spinner"></div>
   </div>
 
+  <div class="settings-container">
+    <header class="settings-header">
+      <h1>Paramètres du compte</h1>
+      <p>Gérez vos informations personnelles et préférences de réservation</p>
+    </header>
+
+    <form [formGroup]="settingsForm" (ngSubmit)="saveAllSettings()">
+      <div class="settings-body">
+        
+        <!-- Navigation -->
+        <nav class="settings-nav">
+          <button 
+            type="button"
+            class="nav-item" 
+            [class.active]="activeTab === 'profile'" 
+            (click)="changeTab('profile')">
+            <i class="fas fa-user-circle"></i>
+            <span>Profil</span>
+          </button>
+          
+          <button 
+            type="button"
+            class="nav-item" 
+            [class.active]="activeTab === 'notifications'" 
+            (click)="changeTab('notifications')">
+            <i class="fas fa-bell"></i>
+            <span>Notifications</span>
+          </button>
+          
+          <button 
+            type="button"
+            class="nav-item" 
+            [class.active]="activeTab === 'preferences'" 
+            (click)="changeTab('preferences')">
+            <i class="fas fa-cog"></i>
+            <span>Préférences</span>
+          </button>
+        </nav>
+
+        <!-- Content -->
+        <main class="settings-content">
+          
+          <!-- Section Profil -->
+          <section *ngIf="activeTab === 'profile'" class="profile-section" formGroupName="profile">
+            <h2>
+              <i class="fas fa-user-circle"></i> 
+              Profil Public
+            </h2>
+            
+            <!-- Avatar Upload -->
+            <div class="avatar-upload">
+              <img 
+                [src]="currentAvatarUrl" 
+                alt="Avatar de profil" 
+                class="avatar-preview">
+              
+              <label class="upload-btn">
+                <i class="fas fa-camera"></i> 
+                Changer la photo
+                <input 
+                  #fileInput
+                  type="file" 
+                  accept="image/*" 
+                  (change)="onFileSelected($event)" 
+                  hidden>
+              </label>
+            </div>
+
+            <!-- Informations personnelles -->
+            <div class="form-row">
+              <div class="form-group">
+                <label for="fullName">Nom complet *</label>
+                <input 
+                  type="text" 
+                  id="fullName"
+                  formControlName="fullName" 
+                  placeholder="Entrez votre nom complet"
+                  [class.ng-invalid]="isFieldInvalid('profile.fullName')"
+                  [class.ng-valid]="settingsForm.get('profile.fullName')?.valid && settingsForm.get('profile.fullName')?.touched">
+                
+                <span *ngIf="getFieldError('profile.fullName')" class="form-error">
+                  {{ getFieldError('profile.fullName') }}
+                </span>
+              </div>
+
+              <div class="form-group">
+                <label for="email">Email *</label>
+                <input 
+                  type="email" 
+                  id="email"
+                  formControlName="email" 
+                  placeholder="votre@email.com"
+                  [class.ng-invalid]="isFieldInvalid('profile.email')"
+                  [class.ng-valid]="settingsForm.get('profile.email')?.valid && settingsForm.get('profile.email')?.touched">
+                
+                <span *ngIf="getFieldError('profile.email')" class="form-error">
+                  {{ getFieldError('profile.email') }}
+                </span>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="phone">Téléphone</label>
+                <input 
+                  type="tel" 
+                  id="phone"
+                  formControlName="phone" 
+                  placeholder="+237 6 72 34 56 78"
+                  [class.ng-invalid]="isFieldInvalid('profile.phone')"
+                  [class.ng-valid]="settingsForm.get('profile.phone')?.valid && settingsForm.get('profile.phone')?.touched">
+                
+                <span *ngIf="getFieldError('profile.phone')" class="form-error">
+                  {{ getFieldError('profile.phone') }}
+                </span>
+              </div>
+
+              <div class="form-group">
+                <label for="location">Localisation</label>
+                <input 
+                  type="text" 
+                  id="location"
+                  formControlName="location" 
+                  placeholder="Ville, Pays">
+                <small class="hint">Ville et pays de résidence</small>
+              </div>
+            </div>
+
+
+          </section>
+
+          <!-- Section Notifications -->
+          <section *ngIf="activeTab === 'notifications'" formGroupName="notifications">
+            <h2>
+              <i class="fas fa-bell"></i> 
+              Préférences de notification
+            </h2>
+            
+            <div class="notification-item">
+              <div>
+                <h3>Notifications par email</h3>
+                <p>Recevez des emails pour les confirmations et rappels de réservation</p>
+              </div>
+              <label class="toggle-switch">
+                <input 
+                  type="checkbox" 
+                  formControlName="emailNotifications">
+                <span class="slider"></span>
+              </label>
+            </div>
+
+            <div class="notification-item">
+              <div>
+                <h3>Notifications SMS</h3>
+                <p>Recevez des SMS pour les rappels urgents et confirmations</p>
+              </div>
+              <label class="toggle-switch">
+                <input 
+                  type="checkbox" 
+                  formControlName="smsNotifications">
+                <span class="slider"></span>
+              </label>
+            </div>
+
+            <div class="notification-item">
+              <div>
+                <h3>Notifications push</h3>
+                <p>Recevez des notifications directement dans votre navigateur</p>
+              </div>
+              <label class="toggle-switch">
+                <input 
+                  type="checkbox" 
+                  formControlName="pushNotifications">
+                <span class="slider"></span>
+              </label>
+            </div>
+
+            <div class="form-group">
+              <label for="reminderTime">Délai de rappel avant rendez-vous</label>
+              <select 
+                id="reminderTime"
+                formControlName="reminderTime">
+                <option *ngFor="let option of reminderOptions" 
+                        [value]="option.value">
+                  {{ option.label }}
+                </option>
+              </select>
+              <small class="hint">Vous recevrez un rappel automatique</small>
+            </div>
+
+            <div class="notification-item">
+              <div>
+                <h3>Newsletter promotionnelle</h3>
+                <p>Recevez nos offres spéciales, nouveautés et conseils</p>
+              </div>
+              <label class="toggle-switch">
+                <input 
+                  type="checkbox" 
+                  formControlName="promotionalEmails">
+                <span class="slider"></span>
+              </label>
+            </div>
+          </section>
+
+          <!-- Section Préférences -->
+          <section *ngIf="activeTab === 'preferences'" formGroupName="preferences">
+            <h2>
+              <i class="fas fa-cog"></i> 
+              Préférences générales
+            </h2>
+            
+            <div class="preference-grid">
+              <div class="preference-card">
+                <h3>Langue de l'interface</h3>
+                <select 
+                  id="language"
+                  formControlName="language">
+                  <option *ngFor="let option of languageOptions" 
+                          [value]="option.value">
+                    {{ option.label }}
+                  </option>
+                </select>
+              </div>
+
+              <div class="preference-card">
+                <h3>Fuseau horaire</h3>
+                <select 
+                  id="timezone"
+                  formControlName="timezone">
+                  <option *ngFor="let option of timezoneOptions" 
+                          [value]="option.value">
+                    {{ option.label }}
+                  </option>
+                </select>
+              </div>
+
+              <div class="preference-card">
+                <h3>Devise préférée</h3>
+                <select 
+                  id="currency"
+                  formControlName="currency">
+                  <option *ngFor="let option of currencyOptions" 
+                          [value]="option.value">
+                    {{ option.label }}
+                  </option>
+                </select>
+              </div>
+            </div>
+
+            <div class="notification-item">
+              <div>
+                <h3>Mode sombre</h3>
+                <p>Utiliser le thème sombre pour réduire la fatigue oculaire</p>
+              </div>
+              <label class="toggle-switch">
+                <input 
+                  type="checkbox" 
+                  formControlName="darkMode">
+                <span class="slider"></span>
+              </label>
+            </div>
+
+            <div class="notification-item">
+              <div>
+                <h3>Réservations récurrentes</h3>
+                <p>Permettre les réservations automatiques pour vos rendez-vous réguliers</p>
+              </div>
+              <label class="toggle-switch">
+                <input 
+                  type="checkbox" 
+                  formControlName="autoBooking">
+                <span class="slider"></span>
+              </label>
+            </div>
+          </section>
+        </main>
+      </div>
+
+      <!-- Footer avec boutons d'action -->
+      <footer class="settings-footer">
+        <button 
+          type="submit" 
+          class="save-btn" 
+          [class.saving]="isSaving"
+          [disabled]="isSaving || settingsForm.invalid">
+          <span *ngIf="!isSaving">
+            <i class="fas fa-save"></i> 
+            Enregistrer les modifications
+          </span>
+          <span *ngIf="isSaving">
+            <div class="spinner"></div>
+            Enregistrement...
+          </span>
+        </button>
+      </footer>
+    </form>
+  </div>
+</div>
+
+<!-- Notifications Toast (si pas de service de notification externe) -->
+<div 
+  *ngIf="showNotification" 
+  class="notification-toast"
+  [ngClass]="notificationType">
+  <div class="content">
+    <i class="icon" 
+       [ngClass]="{
+         'fas fa-check-circle': notificationType === 'success',
+         'fas fa-exclamation-circle': notificationType === 'error',
+         'fas fa-info-circle': notificationType === 'info'
+       }"></i>
+    <span class="message">{{ notificationMessage }}</span>
+  </div>
 </div>

@@ -24,7 +24,6 @@ import { AuthGuard } from './guards/auth.guard';
 import { MainExpertComponent } from './Expert/_main-expert/main-expert.component';
 import { MainUserComponent } from './user/_main-user/main-user.component';
 import { CalendarPageComponent } from './user/calendar-page/calendar-page.component';
-import { UserNotificationService } from './services/user/userNotification.service';
 import { UserNotificationsComponent } from './user/user-notifications/user-notifications.component';
 
 const routes: Routes = [
@@ -51,7 +50,7 @@ const routes: Routes = [
         { path: 'user-settings',canActivate : [AuthGuard],  component: UserParameterComponent },
         { path: 'user-souscriptions',canActivate : [AuthGuard],  component: UserSouscriptionComponent },
         { path: 'user-calendar',component : CalendarPageComponent},
-        { path: 'user-notification', component : UserNotificationsComponent}
+        { path: 'user-notification', component : UserNotificationsComponent},
 
     ]
   },

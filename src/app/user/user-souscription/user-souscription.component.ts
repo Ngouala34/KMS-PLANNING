@@ -5,8 +5,8 @@ import { Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
 import { Souscription } from '../../models/user/souscription.model';
 import { SouscriptionService } from 'src/app/services/user/souscription.service';
-import { UserService } from 'src/app/services/user/user.service';
 import { IBookingResponse } from 'src/app/Interfaces/iservice';
+import { UserService } from 'src/app/services/user/user.service';
 
 interface FilterOption {
   value: string;
@@ -394,7 +394,7 @@ export class UserSouscriptionComponent implements OnInit {
   }
 
   navigateToServices(): void {
-    this.router.navigate(['/services']);
+    this.router.navigate(['/service-list']);
   }
 
   trackByBookingId(index: number, booking: IBookingResponse): any {

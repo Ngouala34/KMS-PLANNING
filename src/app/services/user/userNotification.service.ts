@@ -24,7 +24,7 @@ export class UserNotificationService {
   }
 
   markAsRead(notificationId: number): Observable<any> {
-    return this.http.patch(`${this.apiUrl}notifications/${notificationId}/mark-read/`, {}).pipe(
+    return this.http.patch(`${this.apiUrl}notifications/${notificationId}/read/`, {}).pipe(
       catchError(error => {
         console.error('Error marking notification as read:', error);
         return throwError(() => new Error('Failed to mark notification as read'));
@@ -44,7 +44,7 @@ export class UserNotificationService {
   }
 
   deleteNotification(notificationId: number): Observable<any> {
-    return this.http.delete(`${this.apiUrl}notifications/${notificationId}/`).pipe(
+    return this.http.delete(`${this.apiUrl}notifications/${notificationId}/delete/`).pipe(
       catchError(error => {
         console.error('Error deleting notification:', error);
         return throwError(() => new Error('Failed to delete notification'));

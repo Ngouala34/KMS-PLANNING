@@ -18,6 +18,15 @@ type NotificationType = AppNotification['type'];
 
 @Injectable({ providedIn: 'root' })
 export class NotificationService {
+  showError(arg0: string) {
+    throw new Error('Method not implemented.');
+  }
+  showSuccess(arg0: string) {
+    throw new Error('Method not implemented.');
+  }
+  showInfo(arg0: string, arg1: number) {
+    throw new Error('Method not implemented.');
+  }
   private _notifications = new BehaviorSubject<AppNotification[]>([]);
   private _unreadCount = new BehaviorSubject<number>(0);
 

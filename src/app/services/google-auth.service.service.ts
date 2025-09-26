@@ -31,26 +31,45 @@ export class GoogleAuthService {
     });
   }
 
-  private initializeGoogleButton(): void {
-    try {
-      google.accounts.id.initialize({
-        client_id: this.clientId,
-        callback: (response: any) => this.handleCredentialResponse(response)
-      });
+private initializeGoogleButton(): void {
+  try {
+    google.accounts.id.initialize({
+      client_id: this.clientId,
+      callback: (response: any) => this.handleCredentialResponse(response),
+      auto_select: false,
+      cancel_on_tap_outside: true,
+      // PERSONNALISATION
+      ux_mode: 'popup', // 'popup' ou 'redirect'
+      context: 'signin',
+      login_uri: window.location.origin, // URL de retour si redirect
+      itp_support: true
+    });
 
-      google.accounts.id.renderButton(
-        document.getElementById('google-btn-container'),
-        { 
-          theme: 'outline', 
-          size: 'large',
-          width: 300,
-          text: 'signin_with'
-        }
-      );
-    } catch (error) {
-      console.error('Erreur initialisation Google Auth:', error);
-    }
+    google.accounts.id.renderButton(
+      document.getElementById('google-btn-container'),
+      { 
+        theme: 'outline', 
+        size: 'large',
+        width: 400,
+        text: 'signin_with',
+        shape: 'rectangular',
+        logo_alignment: 'center',
+        // Plus d'options de personnalisation
+        type: 'standard'
+      }
+    );
+
+    // Optionnel: Afficher le One Tap automatiquement
+    google.accounts.id.prompt((notification: any) => {
+      if (notification.isNotDisplayed() || notification.isSkipped()) {
+        console.log('One Tap non affiché');
+      }
+    });
+
+  } catch (error) {
+    console.error('Erreur initialisation Google Auth:', error);
   }
+}
 
   private handleCredentialResponse(response: any): void {
     const event = new CustomEvent('googleSignIn', { 

@@ -368,7 +368,7 @@ export class ExpertFormationComponent implements OnInit, OnDestroy {
   }
 
   oncreateService(): void {
-    this.router.navigate(['/create-service']);
+    this.router.navigate(['/create-course']);
   }
 
   onStartService(): void {

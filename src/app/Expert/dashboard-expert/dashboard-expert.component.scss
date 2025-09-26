@@ -49,7 +49,7 @@
     }
 
     #book {
-      color: #74C0FC;
+      color: #3a0ca3;
       background-color: #74c1fc38;
     }
 
@@ -59,7 +59,7 @@
     }
 
     #dollar {
-      color: #74C0FC;
+      color: #3a0ca3;
       background-color: #74c1fc38;
     }
 
@@ -195,7 +195,7 @@
   position: fixed;
   bottom: 30px;
   right: 30px;
-  background: linear-gradient(to left, #0e0f49, #74C0FC);
+  background: #f72585;
   color: white;
   border: none;
   border-radius: 20px;
@@ -213,7 +213,7 @@
   }
 
   &:hover {
-    background: linear-gradient(to right, #0e0f49, #74C0FC);
+    background: #d72877;
     transform: translateY(-2px);
   }
 }

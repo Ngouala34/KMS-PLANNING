@@ -53,53 +53,53 @@ export class RevenueChartComponent implements OnInit {
   public kpis = [
     {
       title: 'Revenu Mensuel',
-      value: 450000,
+      value: 0,
       type: 'currency',
-      trend: 8.5,
+      trend: 0,
       icon: 'fas fa-wallet',
-      color: '#4361ee',
-      tooltip: '+8.5% vs mois dernier',
+      color: '#3a0ca3',
+      tooltip: '0% vs mois dernier',
       highlight: true
     },
     {
       title: 'Souscriptions',
-      value: 248,
+      value: 0,
       type: 'number',
-      trend: -2.3,
+      trend: 0,
       icon: 'fas fa-users',
-      color: '#f72585',
-      tooltip: '-2.3% vs trimestre dernier'
+      color: '#3a0ca3',
+      tooltip: '0% vs trimestre dernier'
     },
     {
       title: 'Revenu Moyen',
-      value: 24500,
+      value: 0,
       type: 'currency',
-      trend: 12.1,
+      trend: 0,
       icon: 'fas fa-chart-line',
-      color: '#4cc9f0',
-      tooltip: '+12.1% vs 2024'
+      color: '#3a0ca3',
+      tooltip: '0% vs 2024'
     },
     {
       title: 'Rendez-vous',
-      value: 153,
+      value: 0,
       type: 'number',
-      trend: 6.2,
+      trend: 0,
       icon: 'fas fa-calendar-check',
-      color: '#f8961e',
-      tooltip: '+6.2% vs mois dernier'
+      color: '#3a0ca3',
+      tooltip: '0% vs mois dernier'
     },
     {
       title: 'Satisfaction',
-      value: 4.7,
+      value: 0,
       type: 'rating',
-      trend: 0.2,
+      trend: 0,
       icon: 'fas fa-star',
-      color: '#4895ef',
-      tooltip: '+0.2 depuis la semaine dernière'
+      color: '#3a0ca3',
+      tooltip: '+0 depuis la semaine dernière'
     },
     {
       title: 'Revenu Cumulé',
-      value: 85000000,
+      value: 0,
       type: 'currency',
       trend: 0,
       icon: 'fas fa-chart-pie',
@@ -134,12 +134,12 @@ export class RevenueChartComponent implements OnInit {
       labels: labels[period as keyof typeof labels],
       datasets: [{
         data: sampleData[period as keyof typeof sampleData],
-        borderColor: '#4361ee',
-        backgroundColor: '#74c1fc76',
+        borderColor: '#390ca39d',
+        backgroundColor: '#f7258491',
         tension: 0.4,
         fill: true,
         pointBackgroundColor: '#fff',
-        pointBorderColor: '#4361ee',
+        pointBorderColor: '#390ca39d',
         pointHoverRadius: 1,
         borderWidth: 1
       }]

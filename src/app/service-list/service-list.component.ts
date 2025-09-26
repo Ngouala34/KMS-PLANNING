@@ -4,6 +4,7 @@ import { Subject, throwError } from 'rxjs';
 import { takeUntil, catchError, finalize } from 'rxjs/operators';
 import { IService } from 'src/app/Interfaces/iservice';
 import { ExpertService } from '../services/expert/expert.service';
+import { UserService } from '../services/user/user.service';
 
 interface PriceRange {
   value: string;
@@ -33,7 +34,7 @@ export class ServiceListComponent implements OnInit, OnDestroy {
   @ViewChild('priceFilter') priceFilter!: ElementRef;
 
   private destroy$ = new Subject<void>();
-  Math = Math;
+  
   isFavorite = false;
   isMobileMenuOpen = false;
   showPriceDropdown = false;
@@ -45,16 +46,15 @@ export class ServiceListComponent implements OnInit, OnDestroy {
   // Services - chargés depuis l'API
   service: IService[] = [];
   filteredServices: IService[] = [];
-  paginatedServices: IService[] = [];
   selectedCategory: string = 'all';
   selectedSubcategory: string = 'all';
   serv!: IService;
 
   // Pagination
-  currentPage = 1;
-  servicesPerPage = 20;
-  totalPages = 0;
-  paginationPages: number[] = [];
+  currentPage: number = 1;
+  itemsPerPage: number = 20;
+  totalPages: number = 1;
+  paginatedServices: IService[] = [];
 
   // Filtres
   filters = {
@@ -75,9 +75,9 @@ export class ServiceListComponent implements OnInit, OnDestroy {
 
   ratingOptions = [
     { value: 0, label: 'Toutes les notes' },
-    { value: 3, label: '⭐⭐⭐ et plus' },
-    { value: 4, label: '⭐⭐⭐⭐ et plus' },
-    { value: 4.5, label: '⭐⭐⭐⭐⭐ seulement' }
+    { value: 3, label: '★★★☆☆ et plus' },
+    { value: 4, label: '★★★★☆ et plus' },
+    { value: 4.5, label: '★★★★★ seulement' }
   ];
 
   categories: Category[] = [
@@ -167,14 +167,14 @@ export class ServiceListComponent implements OnInit, OnDestroy {
   constructor(
     private router: Router, 
     private elementRef: ElementRef,
-    private serviceService: ExpertService
+    private expertService: ExpertService,
+    private userService : UserService
   ) {}
 
   ngOnInit(): void {
     this.checkMobileView();
     this.loadServices();
     
-    // Écouter les clics pour fermer le dropdown
     document.addEventListener('click', this.onDocumentClick.bind(this));
   }
 
@@ -184,66 +184,16 @@ export class ServiceListComponent implements OnInit, OnDestroy {
     document.removeEventListener('click', this.onDocumentClick.bind(this));
   }
 
-  // Pagination Methods
-  updatePagination(): void {
-    this.totalPages = Math.ceil(this.filteredServices.length / this.servicesPerPage);
-    this.generatePaginationPages();
-    this.updatePaginatedServices();
-  }
-
-  generatePaginationPages(): void {
-    this.paginationPages = [];
-    const maxVisiblePages = 5;
-    let startPage = Math.max(1, this.currentPage - Math.floor(maxVisiblePages / 2));
-    let endPage = Math.min(this.totalPages, startPage + maxVisiblePages - 1);
-
-    if (endPage - startPage < maxVisiblePages - 1) {
-      startPage = Math.max(1, endPage - maxVisiblePages + 1);
-    }
-
-    for (let i = startPage; i <= endPage; i++) {
-      this.paginationPages.push(i);
-    }
-  }
-
-  updatePaginatedServices(): void {
-    const startIndex = (this.currentPage - 1) * this.servicesPerPage;
-    const endIndex = startIndex + this.servicesPerPage;
-    this.paginatedServices = this.filteredServices.slice(startIndex, endIndex);
-  }
-
-  goToPage(page: number): void {
-    if (page >= 1 && page <= this.totalPages) {
-      this.currentPage = page;
-      this.updatePaginatedServices();
-      // Scroll vers le haut
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-  }
-
-  previousPage(): void {
-    if (this.currentPage > 1) {
-      this.goToPage(this.currentPage - 1);
-    }
-  }
-
-  nextPage(): void {
-    if (this.currentPage < this.totalPages) {
-      this.goToPage(this.currentPage + 1);
-    }
-  }
-
-  // Chargement des services depuis l'API
   private loadServices(): void {
-    console.log(' Début du chargement des services');
+    console.log('Début du chargement des services');
     this.isLoading = true;
     this.error = null;
 
-    this.serviceService.getAllPublicServices()
+    this.expertService.getAllPublicServices()
       .pipe(
         takeUntil(this.destroy$),
         catchError(error => {
-          console.error(' Erreur lors du chargement des services:', error);
+          console.error('Erreur lors du chargement des services:', error);
           this.error = 'Impossible de charger les services';
           this.isLoading = false;
           return [];
@@ -251,11 +201,11 @@ export class ServiceListComponent implements OnInit, OnDestroy {
       )
       .subscribe({
         next: (services) => {
-          console.log(' Services reçus de l\'API', services);
+          console.log('Services reçus de l\'API', services);
           this.handleServicesResponse(services);
         },
         error: (error) => {
-          console.error(' Erreur dans la subscription:', error);
+          console.error('Erreur dans la subscription:', error);
         }
       });
   }
@@ -267,12 +217,12 @@ export class ServiceListComponent implements OnInit, OnDestroy {
       return {
         ...service,
         title: service.name,
-        imageUrl: service.cover_image || 'https://via.placeholder.com/300x200',
-        expertProfil: 'https://via.placeholder.com/50',
-        expertName: 'Expert',
-        avarage: 4.5,
-        reviews: 15,
-        price: (service.price) || 0,
+        imageUrl: service.cover_image ,
+        expertProfil: service.expert?.expert_profile || 'https://via.placeholder.com/50',
+        expertName: service.expert?.name || 'Expert',
+        avarage: service.expert.average_rating || 4.5,
+        reviews: service.expert.reviews_count || 15,
+        price: service.price || 0,
         category: service.category_display || service.category || 'Catégorie inconnue',
         isFavorite: false
       };
@@ -280,16 +230,67 @@ export class ServiceListComponent implements OnInit, OnDestroy {
   }
 
   private handleServicesResponse(services: IService[]): void {
-    console.log(' Services reçus de l\'API:', services);
+    console.log('Services reçus de l\'API:', services);
     
     this.service = this.transformServices(services);
     this.filteredServices = [...this.service];
+    this.updatePagination();
     
-    console.log(' Services transformés:', this.service);
+    console.log('Services transformés:', this.service);
     
     this.isLoading = false;
     this.showServices = true;
-    this.updatePagination();
+  }
+
+  // Pagination methods
+  updatePagination(): void {
+    this.totalPages = Math.ceil(this.filteredServices.length / this.itemsPerPage);
+    this.currentPage = 1;
+    this.updatePaginatedServices();
+  }
+
+  updatePaginatedServices(): void {
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    const endIndex = startIndex + this.itemsPerPage;
+    this.paginatedServices = this.filteredServices.slice(startIndex, endIndex);
+  }
+
+  goToPage(page: number): void {
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+      this.updatePaginatedServices();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }
+
+  nextPage(): void {
+    if (this.currentPage < this.totalPages) {
+      this.goToPage(this.currentPage + 1);
+    }
+  }
+
+  previousPage(): void {
+    if (this.currentPage > 1) {
+      this.goToPage(this.currentPage - 1);
+    }
+  }
+
+  getPageNumbers(): number[] {
+    const pages = [];
+    const maxVisiblePages = 5;
+    
+    let startPage = Math.max(1, this.currentPage - Math.floor(maxVisiblePages / 2));
+    let endPage = Math.min(this.totalPages, startPage + maxVisiblePages - 1);
+    
+    if (endPage - startPage + 1 < maxVisiblePages) {
+      startPage = Math.max(1, endPage - maxVisiblePages + 1);
+    }
+    
+    for (let i = startPage; i <= endPage; i++) {
+      pages.push(i);
+    }
+    
+    return pages;
   }
 
   reloadServices(): void {
@@ -325,21 +326,12 @@ export class ServiceListComponent implements OnInit, OnDestroy {
     dropdown.style.right = '';
 
     const rect = dropdown.getBoundingClientRect();
-    const viewportWidth = window.innerWidth;
-    
-    // Calculer la position optimale
-    if (rect.right > viewportWidth - 20) {
+    if (rect.right > window.innerWidth) {
       dropdown.style.left = 'auto';
       dropdown.style.right = '0';
-      dropdown.style.transform = 'translateX(0)';
-    } else if (rect.left < 20) {
+    } else if (rect.left < 0) {
       dropdown.style.left = '0';
       dropdown.style.right = 'auto';
-      dropdown.style.transform = 'translateX(0)';
-    } else {
-      dropdown.style.left = '50%';
-      dropdown.style.right = 'auto';
-      dropdown.style.transform = 'translateX(-50%)';
     }
   }
 
@@ -367,19 +359,17 @@ export class ServiceListComponent implements OnInit, OnDestroy {
   }
 
   applyFilters(): void {
-    console.log('🔍 Application des filtres:', this.filters);
+    console.log('Application des filtres:', this.filters);
     
     this.filteredServices = this.service.filter(service => {
-      // Filtre par texte
       const matchesSearch = this.filters.searchText === '' || 
-        service.name?.toLowerCase().includes(this.filters.searchText.toLowerCase()) || 
-        service.description?.toLowerCase().includes(this.filters.searchText.toLowerCase());
+        service.name.toLowerCase().includes(this.filters.searchText.toLowerCase()) || 
+        service.description.toLowerCase().includes(this.filters.searchText.toLowerCase());
 
-      // Filtre par prix
       const selectedRange = this.priceRanges.find(r => r.checked && r.value !== 'all');
       let matchesPrice = true;
       if (selectedRange) {
-        const servicePrice = (service.price) || 0;
+        const servicePrice = service.price || 0;
         if (selectedRange.min !== undefined && selectedRange.max !== undefined) {
           matchesPrice = servicePrice >= selectedRange.min && servicePrice <= selectedRange.max;
         } else if (selectedRange.min !== undefined) {
@@ -387,27 +377,20 @@ export class ServiceListComponent implements OnInit, OnDestroy {
         }
       }
 
-      // Filtre par note
-      const matchesRating = this.filters.minRating === 0 || 
-        (service.avarage || 0) >= this.filters.minRating;
+      const matchesRating = service.avarage >= this.filters.minRating;
 
-      // Filtre par catégorie
       const matchesCategory = this.filters.category === 'all' || 
         service.category_display === this.filters.category ||
         service.category === this.filters.category;
 
-      // Filtre par sous-catégorie
       const matchesSubcategory = this.filters.subcategory === 'all' || 
         service.subcategory?.name === this.filters.subcategory;
 
       return matchesSearch && matchesPrice && matchesRating && matchesCategory && matchesSubcategory;
     });
 
-    // Reset pagination après filtrage
-    this.currentPage = 1;
     this.updatePagination();
-
-    console.log('📊 Résultats filtrés:', this.filteredServices.length);
+    console.log('Résultats filtrés:', this.filteredServices.length);
   }
 
   onSearchChange(searchText: string): void {
@@ -433,11 +416,33 @@ export class ServiceListComponent implements OnInit, OnDestroy {
     this.applyFilters();
   }
 
-  toggleFavorite(service: IService, event: Event) {
-    event.stopPropagation();
-    service.isFavorite = !service.isFavorite;
-    console.log('Favori:', service.name, 'état:', service.isFavorite);
+toggleFavorite(service: IService, event: Event): void {
+  event.stopPropagation();
+
+  const previousState = service.isFavorite;
+  service.isFavorite = !service.isFavorite; // UI update optimiste
+
+  if (service.isFavorite) {
+    // Ajout en favori
+    this.userService.markAsFavorite(service.id!).subscribe({
+      next: () => console.log(`Service ${service.name} ajouté aux favoris`),
+      error: () => {
+        console.error('Erreur ajout favori');
+        service.isFavorite = previousState; // rollback
+      }
+    });
+  } else {
+    // Suppression du favori
+    this.userService.removeFavorite(service.id!).subscribe({
+      next: () => console.log(`Service ${service.name} retiré des favoris`),
+      error: () => {
+        console.error('Erreur suppression favori');
+        service.isFavorite = previousState; // rollback
+      }
+    });
   }
+}
+
 
   getStars(rating: number): number[] {
     const stars = [];
@@ -466,8 +471,6 @@ export class ServiceListComponent implements OnInit, OnDestroy {
   }
 
   getSubcategories(categoryValue: string): string[] {
-    console.log('📋 Recherche des sous-catégories pour:', categoryValue);
-    
     const allSubcategories = new Set<string>();
     
     this.service.forEach(service => {
@@ -478,16 +481,14 @@ export class ServiceListComponent implements OnInit, OnDestroy {
       }
     });
     
-    const result = Array.from(allSubcategories);
-    console.log('Sous-catégories trouvées:', result);
-    return result;
+    return Array.from(allSubcategories);
   }
 
   loadServiceDetails(id: number): void {
     this.isLoading = true;
     this.error = null;
 
-    this.serviceService.getServiceDetails(id)
+    this.expertService.getServiceDetails(id)
       .pipe(
         takeUntil(this.destroy$),
         catchError(err => {
@@ -502,8 +503,6 @@ export class ServiceListComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (serv: IService) => {
           this.serv = serv;
-          console.log('Détails du service:', this.serv);
-
           this.router.navigate(
             ['/service-details', serv.id],
             { state: { service: serv } }

@@ -1,10 +1,10 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { trigger, transition, style, animate } from '@angular/animations';
 import { forkJoin, Subscription, throwError } from 'rxjs';
-import { UserService } from '../services/user/user.service';
 import { tap, catchError, finalize } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
 import { ICommentResponse } from '../Interfaces/iservice';
+import { UserService } from '../services/user/user.service';
 
 interface Review {
   id: number;

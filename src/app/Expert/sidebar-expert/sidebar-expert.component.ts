@@ -4,6 +4,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { filter, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { trigger, state, style, transition, animate } from '@angular/animations';
+import { ExpertService } from 'src/app/services/expert/expert.service';
 
 interface NavItem {
   id: string;
@@ -121,10 +122,47 @@ export class SidebarExpertComponent implements OnInit, OnDestroy {
 
   constructor(
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
+    private expertService:ExpertService
   ) {
     this.checkScreenSize();
   }
+
+upcomingServices: number = 1;
+todayServices: number = 0;
+loadSidebarStats(): void {
+  this.expertService.getAllServices().subscribe({
+    next: (services) => {
+      const today = new Date();
+      const todayStr = today.toISOString().split("T")[0]; // yyyy-MM-dd pour comparaison simplifiée
+
+      this.upcomingServices = 0;
+      this.todayServices = 0;
+
+      services.forEach((service: any) => {
+        if (!service.date) return;
+
+        // Convertir la date au format dd-MM-yyyy
+        const [day, month, year] = service.date.split("-").map(Number);
+        const serviceDate = new Date(year, month - 1, day);
+
+        // Comparaison simple
+        if (serviceDate > today) {
+          this.upcomingServices++;
+        } else if (
+          serviceDate.getDate() === today.getDate() &&
+          serviceDate.getMonth() === today.getMonth() &&
+          serviceDate.getFullYear() === today.getFullYear()
+        ) {
+          this.todayServices++;
+        }
+      });
+    },
+    error: (err) => {
+      console.error("Erreur lors du chargement des stats sidebar :", err);
+    }
+  });
+}
 
   ngOnInit(): void {
     this.isCollapsed = this.collapsedByDefault || this.isMobile;
@@ -140,6 +178,7 @@ export class SidebarExpertComponent implements OnInit, OnDestroy {
 
     // Initialiser l'état actif
     this.updateActiveStates();
+    this.loadSidebarStats();
   }
 
   ngOnDestroy(): void {

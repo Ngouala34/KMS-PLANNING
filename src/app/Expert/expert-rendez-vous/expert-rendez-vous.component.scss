@@ -1,210 +1,477 @@
-.rendez-vous-container.expanded  {
-    margin-left: 60px;
-    margin-top: 50px;
+// Variables
+$primary-dark: #3a0ca3;
+$secondary-color: #f72585;
+$text-dark: #212529;
+$text-light: #f8f9fa;
+$border-radius: 12px;
+$shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+$shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+
+// Mixins
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin card-style {
+  background: white;
+  border-radius: $border-radius;
+  box-shadow: $shadow;
+  padding: 1.5rem;
+}
+
+@mixin responsive($breakpoint) {
+  @if $breakpoint == tablet {
+    @media (max-width: 1024px) { @content; }
   }
-  
-  .rendez-vous-container {
-      margin-top: 65px;
-      transition: 0.3s ease-in-out;
-      padding: 20px;
-      background-color: #f5f7fa;
-      min-height: 100vh;
-
-      h1{
-        font-weight: normal;
-      }
+  @if $breakpoint == mobile {
+    @media (max-width: 768px) { @content; }
   }
+  @if $breakpoint == small-mobile {
+    @media (max-width: 480px) { @content; }
+  }
+}
 
+// Styles principaux
+.page-container {
+  min-height: 100vh;
+  background: #f5f7fa ;
+  padding: 1rem;
+  margin-top: 4rem;
+}
 
+.header {
+  margin-bottom: 2rem;
+  color: $text-dark;
 
-  .calendar-section {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 30px;
-    align-items: start;
-  
-    @media (max-width: 992px) {
-      grid-template-columns: 1fr;
+  h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    i {
+      color: $primary-dark;
     }
   }
-  
-  .calendar-wrapper {
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    padding: 20px;
-    
-    // Réduire la taille du calendrier
+
+  p {
+    font-size: 1.1rem;
+    opacity: 0.8;
+  }
+
+  @include responsive(mobile) {
+    h1 {
+      font-size: 2rem;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+  }
+}
+
+.main-content {
+  display: grid;
+  grid-template-columns: 1fr 400px;
+  gap: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+
+  @include responsive(tablet) {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+}
+
+// Section Calendrier
+.calendar-section {
+  @include card-style;
+}
+
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+
+  @include responsive(mobile) {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+.calendar-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  i {
+    font-size: 1.3rem;
+  }
+}
+
+.calendar-controls {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+
+  @include responsive(small-mobile) {
+    flex-direction: column;
+  }
+}
+
+.calendar-btn {
+  @include flex-center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background: $primary-dark;
+  color: white;
+  border: none;
+  border-radius: $border-radius;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.9rem;
+
+  &:hover {
+    background: darken($primary-dark, 10%);
+    transform: translateY(-2px);
+    box-shadow: $shadow-lg;
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+
+  i {
+    font-size: 0.9rem;
+  }
+}
+
+.calendar-container {
+  background: white;
+  border-radius: $border-radius;
+  overflow: hidden;
+
+  ::ng-deep {
     .fc {
-      width: 100%;
-      max-width: 800px;
-      background-color: #74c1fc0a;
-      margin: 0 auto;
-      
+      font-family: inherit;
+
+      .fc-toolbar {
+        flex-direction: column;
+        gap: 1rem;
+        padding: 1rem;
+
+        @include responsive(mobile) {
+          .fc-toolbar-chunk {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            width: 100%;
+          }
+        }
+      }
+
+      .fc-button {
+        background: $primary-dark;
+        border: none;
+        border-radius: $border-radius;
+        transition: all 0.3s ease;
+
+        &:hover {
+          background: darken($primary-dark, 10%);
+        }
+
+        &:focus {
+          box-shadow: none;
+        }
+      }
+
+      .fc-daygrid-day {
+        transition: all 0.3s ease;
+
+        &:hover {
+          background: lighten($primary-dark, 60%);
+        }
+      }
+
+      .fc-day-today {
+        background: lighten($secondary-color, 45%) !important;
+      }
+
+      .fc-event {
+        background: $secondary-color;
+        border: none;
+        border-radius: 6px;
+        padding: 0.2rem 0.5rem;
+        font-size: 0.8rem;
+        color: white;
+      }
     }
   }
-  
-  .service-details-container {
-    position: sticky;
-    top: 20px;
+}
+
+// Sidebar
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+
+  @include responsive(tablet) {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
   }
-  
-  .service-details-card {
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    padding: 25px;
+
+  @include responsive(mobile) {
+    grid-template-columns: 1fr;
   }
-  
-  .service-header {
+}
+
+.stats-card, .appointment-details, .legend {
+  @include card-style;
+}
+
+.stats-card {
+  h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+
+  @include responsive(small-mobile) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.stat-item {
+  text-align: center;
+  padding: 1rem;
+  background: lighten($primary-dark,60%);
+  border-radius: $border-radius;
+  transition: transform 0.3s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+  }
+}
+
+.stat-number {
+  display: block;
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+}
+
+.stat-label {
+  font-size: 0.9rem;
+  color: $text-dark;
+  opacity: 0.8;
+}
+
+// Détails des rendez-vous
+.appointment-details {
+  .details-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+
+    h3 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin: 0;
+    }
+
+    i {
+      color: $secondary-color;
+    }
+  }
+}
+
+.appointment-item {
+  background: lighten($primary-dark,60%);
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: translateX(4px);
+    box-shadow: $shadow;
+  }
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.appointment-time {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.appointment-service {
+  font-weight: 500;
+  color: $text-dark;
+  margin-bottom: 0.25rem;
+}
+
+.appointment-expert {
+  color: $text-dark;
+  opacity: 0.8;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.25rem;
+}
+
+.appointement-action{
     display: flex;
     justify-content: space-between;
-    align-items: center;
-  
-    h3 {
-      margin: 0;
-      color: #1f1f20;
-      font-size: 1.2rem;
-    }
-  }
-  
-  .service-badge {
-    padding: 5px 12px;
-    border-radius: 20px;
-    font-size: 0.8rem;
-    font-weight: 500;
-    color: white;
-  
-    &.zoom {
-      background: #74C0FC;
-    }
-  
-    &.google-meet {
-      background: #00897b;
-    }
-  }
-  
-  .service-meta {
-    margin-bottom: 20px;
-  
-    .meta-item {
-      display: flex;
-      align-items: center;
-      margin-bottom: 10px;
-      color: #555;
-  
-      i {
-        margin-right: 10px;
-        width: 20px;
-        color: #00000091;
-        background-color: rgba(0, 34, 255, 0.125);
-        height: 30px;
-        width: 30px;
-        border-radius: 50%;
-        display: flex;  
-        align-items: center;
-        justify-content: space-around;
-      }
-    }
-  }
-  
-  .service-description {
-    position: relative;
-    margin: 1rem 0;
-  }
-  
-  .service-description p {
-    line-height: 1.5;
-    transition: all 0.3s ease;
-  }
-  
-  .service-description p.collapsed {
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-  
-  .description-toggle {
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 0.25rem 0;
-    padding: 4px;
-
-
-  }
-  
-  .description-toggle:hover {
-    background-color:rgba(0, 34, 255, 0.125);
-    padding: 5px;
-    transform: 0.3s ease-out;
-    border-radius: 10px;
-  }
-  
-  .join-button {
-    box-sizing: border-box;
-
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 10px 20px;
-    background: #74C0FC;
-    color: white;
-    text-decoration: none;
-    border-radius: 6px;
-    transition: all 0.3s;
-    font-weight: 500;
-    width: 100%;
-    text-align: center;
-  
-    i {
-      margin-right: 8px;
-    }
-  
-    &:hover {
-      background:#5fb5f7;
-      transform: translateY(-2px);
-      box-shadow: 0 4px 8px rgba(58, 134, 255, 0.3);
-    }
-  }
-  
-  .no-service {
-    text-align: center;
-    padding: 40px 20px;
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  
-    i {
-      font-size: 3rem;
-      color: #ddd;
-      margin-bottom: 15px;
-    }
-  
-    p {
-      color: #888;
-      margin: 0;
-    }
-  }
-  
-  // Style pour la date actuelle dans le calendrier
-  .fc .fc-daygrid-day.fc-day-today {
-    background-color: rgba(58, 134, 255, 0.1) !important;
-  }
-
-
-
-@media screen and (min-width: 300px) and (max-width: 450px) {
-    app-sidebar{
-        display: none;
-    }
-    .calendar-container {
-        margin-left: 0px; /* Ajustement pour la sidebar */
-        margin-top: 60px; 
-    }
-    .legend {
-        flex-wrap: wrap;
-        justify-content: center;
-      }
 }
- 
+.appointment-platform {
+  display: inline-block;
+  background: rgb($primary-dark ,0.3 );
+  color: white;
+  padding: 0.2rem 0.5rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.btncommencer{
+  display: inline-block;
+  background: $secondary-color;
+  color: white;
+  padding: 0.2rem 0.5rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 500;
+
+  :hover{
+    cursor: pointer;
+    font-size: larger;
+  }
+}
+
+.no-appointment {
+  text-align: center;
+  padding: 2rem;
+  color: $text-dark;
+  opacity: 0.6;
+
+  i {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    color: lighten($text-dark, 40%);
+  }
+
+  p {
+    margin: 0;
+    font-size: 1rem;
+  }
+}
+
+// Légende
+.legend {
+  h4 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: $primary-dark;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.legend-color {
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+  flex-shrink: 0;
+
+  &.available {
+    background: $secondary-color;
+  }
+
+  &.today {
+    background: lighten($secondary-color, 40%);
+    border: 2px solid $secondary-color;
+  }
+
+  &.selected {
+    background: $primary-dark;
+  }
+}
+
+// Animations
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.page-container {
+  animation: fadeIn 0.5s ease-out;
+}
+
+.calendar-section, .sidebar > * {
+  animation: fadeIn 0.6s ease-out 0.2s both;
+}
+
+.appointment-item {
+  animation: fadeIn 0.4s ease-out;
+}
+
+// États de chargement
+.loading {
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+// Accessibilité
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+// Focus visible pour l'accessibilité
+button:focus-visible {
+  outline: 2px solid $primary-dark;
+  outline-offset: 2px;
+}

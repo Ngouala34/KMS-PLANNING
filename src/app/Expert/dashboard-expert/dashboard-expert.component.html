@@ -6,7 +6,7 @@
     <div class="card">
       <i class="fa-solid fa-book" id="book"></i>
       <div class="info">
-        <h3>{{ stats.coursesCreated }}</h3>
+        <h3>{{ totalServices }}</h3>
         <p>Formations créées</p>
       </div>
     </div>
@@ -27,7 +27,7 @@
     <div class="card">
       <i class="fa-solid fa-calendar" style="color: green;" id="calendar"></i>
       <div class="info">
-        <h3>{{ stats.upcomingSessions }}</h3>
+        <h3>{{ upcomingServices }}</h3>
         <p>Sessions à venir</p>
       </div>
     </div>
@@ -38,36 +38,8 @@
     <app-revenue-chart></app-revenue-chart>
   </div>
 
-<h1 class="h1">Mes formations</h1>
-<div class="services-container" *ngIf="!isLoading">
-  <div class="services-grid">
-    <div class="service-card" *ngFor="let course of displayedCourses"> 
-      <div class="service-image-container">
-        <img [src]="course.imageUrl" [alt]="course.title" class="service-image" />
-      </div>
-      <h3 class="service-title">{{ course.title }}</h3>
-      <div>Date: {{ course.date }}</div>
-      <div>
-        <span class="rating-count">Souscriptions : {{ course.subscriptions }}</span>
-      </div>
-      <div class="price">Prix : {{ course.price | currency:'CFA':'symbol':'1.0-0' }}</div>
-    </div> 
-  </div>
-  <!-- Bouton Voir plus si nécessaire -->
-    <div class="see-more"  *ngIf="courses.length > coursesToShow" (click)="showMoreCourses()">
-      <button class="see-more-btn">
-        Voir plus ...
-      </button>
-    </div>
-</div>
 
-  <!-- Section Prochains Rendez-vous -->
-  <div class="dashboard-section" *ngIf="!isLoading">
-    <h3 class="section-title">Prochains Rendez-vous</h3>
-    <div class="appointments-grid">
-      <app-prochain-rendez-vous ></app-prochain-rendez-vous>
-    </div>
-  </div>
+
 
   <!-- Bouton flottant -->
   <button class="floating-action-btn" (click)="onCreateCourse()">

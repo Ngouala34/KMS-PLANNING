@@ -84,20 +84,24 @@
       </div>
     </nav>
 
-    <!-- Statistiques rapides (optionnel) -->
+    <!-- Statistiques rapides -->
     <div class="sidebar-stats" 
-         *ngIf="shouldShowExpanded()"
-         [@fadeInOut]="shouldShowExpanded() ? 'visible' : 'hidden'">
+        *ngIf="shouldShowExpanded()"
+        [@fadeInOut]="shouldShowExpanded() ? 'visible' : 'hidden'">
+
       <div class="stat-item">
-        <div class="stat-value">24</div>
-        <div class="stat-label">Services actifs</div>
+        <div class="stat-value">{{ upcomingServices }}</div>
+        <div class="stat-label">services à venir</div>
       </div>
+
       <div class="stat-divider"></div>
+
       <div class="stat-item">
-        <div class="stat-value">12</div>
+        <div class="stat-value">{{ todayServices }}</div>
         <div class="stat-label">RDV aujourd'hui</div>
       </div>
     </div>
+
 
     <!-- Footer avec déconnexion -->
     <div class="sidebar-footer">

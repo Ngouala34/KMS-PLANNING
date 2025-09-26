@@ -6,7 +6,6 @@
   display: block;
   background: #f9f9fb;
   min-height: 100vh;
-  font-family: 'Segoe UI', sans-serif;
 }
 
 /* Sidebar
@@ -89,7 +88,7 @@
     }
 
     &.active {
-      background-color: #3498dba0;
+      background-color: #3a0ca3;
       color: #fff;
     }
   }
@@ -111,7 +110,7 @@
 
     i {
       margin-right: 10px;
-      color: #3498dba0;
+      color: #3a0ca3;
     }
   }
 }
@@ -249,7 +248,7 @@ select {
   gap: 0.75rem;
 
   i {
-    color: #3498db;
+    color:  #3a0ca3;
     font-size: 1.3em;
   }
 }
@@ -289,7 +288,7 @@ select {
 
 .avatar-upload-btn {
   cursor: pointer;
-  background: #3498db;
+  background:  #3a0ca3;
   color: white;
   padding: 0.5rem 1rem;
   border-radius: 25px;
@@ -329,7 +328,7 @@ select {
   gap: 0.75rem;
 
   i {
-    color: #3498db;
+    color:  #3a0ca3;
     font-size: 1.1em;
   }
 }

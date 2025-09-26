@@ -225,62 +225,14 @@ $bg-gradient: linear-gradient(135deg, #0a1f44 0%, #1e3a8a 100%);
   justify-content: center;
   margin-bottom: 16px;
   min-height: 44px; // Hauteur minimale pour éviter le flash
-  
-  // Style pour s'assurer que le bouton Google s'affiche correctement
-  div {
-    border-radius: 8px !important;
-    
-    iframe {
-      border-radius: 8px !important;
-    }
-  }
-}
-
-.google-fallback-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
   width: 100%;
-  padding: 12px 16px;
-  background: white;
-  border: 2px solid #e0e0e0;
-  border-radius: 8px;
-  color: #3c4043;
-  font-size: 14px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  margin-bottom: 16px;
-
-  &:hover {
-    background: #f8f9fa;
-    border-color: #dadce0;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  }
-
-  img {
-    width: 18px;
-    height: 18px;
-    margin-right: 12px;
-  }
-}
-
-.google-loading {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 12px;
-  background: #f8f9fa;
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
-  color: #6b7280;
-  font-size: 14px;
-  margin-bottom: 16px;
   
-  i {
-    margin-right: 8px;
-  }
+
 }
+
+
+
+
 
 .warning-message {
   display: flex;
@@ -299,39 +251,9 @@ $bg-gradient: linear-gradient(135deg, #0a1f44 0%, #1e3a8a 100%);
   }
 }
 
-// Animation de chargement pour le container Google
-.google-btn-container.loading {
-  background: #f8f9fa;
-  border: 1px dashed #e0e0e0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #6b7280;
-}
 
-// Responsive
-@media (max-width: 480px) {
-  .google-btn-container {
-    div {
-      width: 100% !important;
-      
-      iframe {
-        width: 100% !important;
-      }
-    }
-  }
-  
-  .google-fallback-btn {
-    padding: 10px 14px;
-    font-size: 13px;
-    
-    img {
-      width: 16px;
-      height: 16px;
-      margin-right: 8px;
-    }
-  }
-}
+
+
       // Amélioration du séparateur
       .separator {
         display: flex;

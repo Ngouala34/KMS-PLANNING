@@ -266,7 +266,7 @@ export class UserDashboardComponent implements OnInit, OnDestroy {
 
   // Navigation methods
   navigateToCalendar(): void {
-    this.router.navigate(['/main-user/calendar-page']);
+    this.router.navigate(['/main-user/user-calendar']);
   }
 
   navigateToProfile(): void {
@@ -287,7 +287,7 @@ export class UserDashboardComponent implements OnInit, OnDestroy {
 
   // Action methods
   openBookingModal(): void {
-    console.log('Ouvrir modal réservation');
+    this.router.navigate(['/service-list'])
   }
 
   rescheduleAppointment(appointment: IBookingResponse): void {

@@ -1,124 +1,362 @@
+// calendar-page.component.ts
 import { Component, OnInit } from '@angular/core';
-import { CalendarOptions, DateSelectArg, EventClickArg } from '@fullcalendar/core';
+import { CalendarOptions, EventInput } from '@fullcalendar/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
-import interactionPlugin, { DateClickArg } from '@fullcalendar/interaction';
-import frLocale from '@fullcalendar/core/locales/fr';
-
-interface Service {
-  id: string;
-  title: string;
-  date: string;
-  heureDebut: string;
-  heureFin: string;
-  nbreSouscriptions: number;
-  platform: 'zoom' | 'google-meet';
-  link: string;
-  description: string;
-}
+import interactionPlugin from '@fullcalendar/interaction';
+import { IBookingResponse, IService } from 'src/app/Interfaces/iservice';
+import timeGridPlugin from '@fullcalendar/timegrid';
+import { Router } from '@angular/router';
+import { ExpertService } from 'src/app/services/expert/expert.service';
 
 @Component({
   selector: 'app-expert-rendez-vous',
   templateUrl: './expert-rendez-vous.component.html',
-  styleUrls: ['./expert-rendez-vous.component.scss']
+  styleUrls: ['./expert-rendez-vous.component.scss'],
 })
 export class ExpertRendezVousComponent implements OnInit {
-  isSidebarCollapsed = true; // État de la sidebar
-  collapsedByDefault = false; // Indique si la sidebar est réduite au départ
+  bookings: IService[] = [];
+  selectedBookings: IService[] = [];
+  selectedDate: string | null = null;
+  
+  // Statistiques
+  monthlyStats = { total: 0 };
+  weeklyStats = { total: 0 };
+  todayStats = { total: 0 };
+  activeExperts = 0;
+
   calendarOptions: CalendarOptions = {
-    plugins: [dayGridPlugin, interactionPlugin],
+    plugins: [dayGridPlugin, interactionPlugin, timeGridPlugin],
     initialView: 'dayGridMonth',
-    locale: frLocale,
-    headerToolbar: {
-      left: 'prev,next',
-      center: 'title',
-      right: 'dayGridMonth,dayGridWeek'
-    },
-    contentHeight: 'auto',
-    aspectRatio: 1.2,
-    selectable: true,
-    dateClick: (arg: DateClickArg) => this.handleDateClick(arg),
-    eventClick: (info) => this.handleEventClick(info)
+    locale: 'fr',
+    firstDay: 1, // Lundi comme premier jour
+    headerToolbar: false, // Désactiver la barre d'outils par défaut
+    height: 'auto',
+    events: [],
+    dateClick: this.onDateClick.bind(this),
+    eventClick: this.onEventClick.bind(this),
+    eventDidMount: this.onEventMount.bind(this),
+    dayCellDidMount: this.onDayCellMount.bind(this),
+    // Couleurs et styles personnalisés
+    eventClassNames: ['custom-event'],
+    dayMaxEvents: 3, // Limite d'événements par jour
+    moreLinkClick: 'popover',
+    // Configuration responsive
+    windowResize: this.handleWindowResize.bind(this)
   };
 
-  // Ajoutez ces propriétés à votre composant
-isDescriptionExpanded: boolean = false;
-descriptionMaxLength: number = 150; // Ajustez selon vos besoins
-
-// Méthode pour basculer l'état
-toggleDescription() {
-  this.isDescriptionExpanded = !this.isDescriptionExpanded;
-}
-
-// Méthode pour déterminer le texte à afficher
-getDisplayDescription(description: string): string {
-  if (!description) return '';
-  return this.isDescriptionExpanded || description.length <= this.descriptionMaxLength 
-    ? description 
-    : description.slice(0, this.descriptionMaxLength) + '...';
-}
-
-  services: Service[] = [];
-  selectedService: Service | null = null;
-  selectedDate: Date | null = null;
+  constructor(private expertService: ExpertService, private router: Router) {}
 
   ngOnInit(): void {
-    this.isSidebarCollapsed =  this.collapsedByDefault ; // Appliquer la configuration initiale
-    this.loadServices();
+    this.loadBookings();
+    this.setTodayAsSelected();
   }
 
-  private loadServices(): void {
-    // Remplacer par un appel API réel
-    this.services = [
-      {
-        id: '1',
-        title: 'Consultation Marketing Digital',
-        date: new Date().toISOString().split('T')[0], // Aujourd'hui
-        heureDebut: '14:00',
-        heureFin: '16:00',
-        nbreSouscriptions: 27,
-        platform: 'zoom',
-        link: 'https://zoom.us/j/123456789',
-        description: 'Session de consultation pour améliorer votre stratégie marketing digitale consultation pour améliorer votre stratégie marketing digitaleconsultation pour améliorer votre stratégie marketing digitaleconsultation pour améliorer votre stratégie marketing digitaleconsultation pour améliorer votre stratégie marketing digitaleconsultation pour améliorer votre stratégie marketing digitale.'
+  loadBookings(): void {
+    this.expertService.getAllServices().subscribe({
+      next: (data) => {
+        console.log('Données reçues:', data);
+        console.log('Nombre de bookings:', data.length);
+        
+        if (data && data.length > 0) {
+          console.log('Premier booking:', data[0]);
+          console.log('Date du premier booking:', data[0].date);
+          console.log('Heure début:', data[0].start_time);
+        }
+        
+        this.bookings = data;
+        this.updateCalendarEvents();
+        this.calculateStats();
       },
-      // Ajouter d'autres services...
-    ];
-
-    this.calendarOptions.events = this.services.map(service => ({
-      id: service.id,
-      title: service.title,
-      start: service.date,
-      color: '#3a86ff',
-      extendedProps: {
-        ...service
-      }
-    }));
-
-    // Afficher automatiquement les services du jour
-    this.showTodaysServices();
+      error: (err) => {
+        console.error('Erreur récupération bookings', err);
+        console.error('Détails erreur:', err.error);
+      },
+    });
   }
 
-  private showTodaysServices(): void {
-    const today = new Date().toISOString().split('T')[0];
-    const todaysServices = this.services.filter(s => s.date === today);
+  // Fonction pour convertir le format de date DD-MM-YYYY en YYYY-MM-DD
+  private convertDateFormat(dateString: string): string {
+    if (!dateString) return '';
     
-    if (todaysServices.length > 0) {
-      this.selectedService = todaysServices[0];
-    } else {
-      this.selectedDate = new Date();
+    // Convertir "22-09-2025" en "2025-09-22"
+    const parts = dateString.split('-');
+    if (parts.length === 3) {
+      // Vérifier si le format est DD-MM-YYYY (le jour a 2 chiffres)
+      if (parts[0].length === 2 && parts[1].length === 2 && parts[2].length === 4) {
+        return `${parts[2]}-${parts[1]}-${parts[0]}`;
+      }
+    }
+    
+    return dateString; // Retourner tel quel si format non reconnu
+  }
+
+  // Fonction utilitaire pour formater les dates en YYYY-MM-DD
+  private formatDateForComparison(date: Date): string {
+    return date.toISOString().split('T')[0]; // Format YYYY-MM-DD
+  }
+
+  updateCalendarEvents(): void {
+    // CORRECTION : Filtrer les null avant de définir le type
+    const events = this.bookings.map(booking => {
+      console.log('Processing booking:', booking);
+      
+      // Vérification des données requises
+      if (!booking.date || !booking.start_time || !booking.end_time) {
+        console.warn('Booking avec données manquantes:', booking);
+        return null;
+      }
+      
+      // CONVERSION DE LA DATE
+      const convertedDate = this.convertDateFormat(booking.date);
+      console.log('Date originale:', booking.date, '→ convertie:', convertedDate);
+      
+      // Nettoyage des heures (enlever les secondes si présentes)
+      const startTime = booking.start_time.split(':').slice(0, 2).join(':');
+      const endTime = booking.end_time.split(':').slice(0, 2).join(':');
+      
+      const startDateTime = new Date(`${convertedDate}T${startTime}`);
+      const endDateTime = new Date(`${convertedDate}T${endTime}`);
+      
+      console.log('Start DateTime:', startDateTime);
+      console.log('End DateTime:', endDateTime);
+      
+      // Vérification de validité des dates
+      if (isNaN(startDateTime.getTime()) || isNaN(endDateTime.getTime())) {
+        console.warn('Date/heure invalide pour booking:', booking);
+        return null;
+      }
+      
+      return {
+        id: booking.id?.toString(),
+        title: `${booking.name}`,
+        start: startDateTime,
+        end: endDateTime,
+        backgroundColor: this.getEventColor(booking.preferred_platform),
+        borderColor: this.getEventColor(booking.preferred_platform),
+        textColor: '#ffffff',
+        extendedProps: {
+          expertName: booking.expert?.name || 'Non spécifié',
+          platform: booking.preferred_platform,
+          booking: booking
+        }
+      };
+    }).filter(event => event !== null) as EventInput[]; // CORRECTION : Filtrer et typer
+
+    console.log('Événements générés:', events);
+    
+    this.calendarOptions = {
+      ...this.calendarOptions,
+      events: events
+    };
+  }
+
+  getEventColor(platform: string): string {
+    const colors: { [key: string]: string } = {
+      'google_meet': '#ef4444',    // Meet → google_meet
+      'zoom': '#4f46e5',           // Zoom → zoom
+      'teams': '#10b981',          // Teams → teams
+      'présentiel': '#f59e0b',     // Présentiel
+      'phone': '#8b5cf6'           // Phone
+    };
+    return colors[platform] || '#64748b';
+  }
+
+  onDateClick(info: any): void {
+    this.selectedDate = info.dateStr;
+    
+    // Comparer avec les dates converties
+    this.selectedBookings = this.bookings.filter(b => 
+      this.convertDateFormat(b.date) === info.dateStr
+    );
+    
+    console.log('Date sélectionnée:', info.dateStr);
+    console.log('Bookings correspondants:', this.selectedBookings);
+    
+    this.highlightSelectedDate(info.dateStr);
+  }
+
+  onEventClick(info: any): void {
+    const booking = info.event.extendedProps.booking;
+    console.log('Event click - booking:', booking);
+    
+    // CORRECTION : utiliser booking.date directement
+    this.selectedDate = this.convertDateFormat(booking.date);
+    this.selectedBookings = this.bookings.filter(b => 
+      this.convertDateFormat(b.date) === this.selectedDate
+    );
+    
+    // Optionnel: ouvrir une modal avec les détails
+    this.openAppointmentDetails(booking);
+  }
+
+  onEventMount(info: any): void {
+    // Personnaliser l'apparence des événements
+    const element = info.el;
+    element.style.borderRadius = '6px';
+    element.style.border = 'none';
+    element.style.fontSize = '0.85rem';
+    element.style.fontWeight = '500';
+    
+    // Ajouter tooltip
+    element.title = `${info.event.title} - ${info.event.extendedProps.expertName}`;
+  }
+
+  onDayCellMount(info: any): void {
+    // Personnaliser l'apparence des cellules de jour
+    const element = info.el;
+    const date = info.date.toISOString().split('T')[0];
+    
+    // Marquer les jours avec rendez-vous (avec conversion de date)
+    const hasAppointments = this.bookings.some(b => 
+      this.convertDateFormat(b.date) === date
+    );
+    
+    if (hasAppointments) {
+      element.classList.add('has-appointments');
+    }
+    
+    // Marquer aujourd'hui
+    const today = new Date().toISOString().split('T')[0];
+    if (date === today) {
+      element.classList.add('today');
     }
   }
 
-  handleDateClick(arg: DateClickArg): void {
-    const clickedDate = arg.dateStr;
-    this.selectedDate = new Date(clickedDate);
+  highlightSelectedDate(dateStr: string): void {
+    // Retirer la classe selected de tous les éléments
+    document.querySelectorAll('.fc-day.selected').forEach(el => {
+      el.classList.remove('selected');
+    });
     
-    const servicesForDate = this.services.filter(s => s.date === clickedDate);
-    this.selectedService = servicesForDate.length > 0 ? servicesForDate[0] : null;
+    // Ajouter la classe selected à la date cliquée
+    const selectedElement = document.querySelector(`[data-date="${dateStr}"]`);
+    if (selectedElement) {
+      selectedElement.classList.add('selected');
+    }
   }
 
-  handleEventClick(info: EventClickArg): void {
-    const serviceId = info.event.id;
-    this.selectedService = this.services.find(s => s.id === serviceId) || null;
-    this.selectedDate = new Date(info.event.startStr);
+  setTodayAsSelected(): void {
+    const today = this.formatDateForComparison(new Date()); // YYYY-MM-DD
+    this.selectedDate = today;
+    
+    this.selectedBookings = this.bookings.filter(b => 
+      this.convertDateFormat(b.date) === today
+    );
+    
+    console.log('Aujourd\'hui:', today);
+    console.log('RDVs aujourd\'hui:', this.selectedBookings);
   }
+
+  StartMeet(booking: IService): void {
+    if (booking.meeting_link) {
+      window.open(booking.meeting_link, '_blank');
+    } else {
+      alert('Aucun lien de réunion disponible pour ce rendez-vous.');
+    }
+  }
+
+  calculateStats(): void {
+    const now = new Date();
+    const todayFormatted = this.formatDateForComparison(now);
+    
+    console.log('Aujourd\'hui formaté pour stats:', todayFormatted);
+    
+    // Stats du jour (avec dates converties)
+    this.todayStats.total = this.bookings.filter(b => {
+      const bookingDate = this.convertDateFormat(b.date);
+      return bookingDate === todayFormatted;
+    }).length;
+    
+    // Stats de la semaine (avec dates converties)
+    const startOfWeek = new Date(now);
+    startOfWeek.setDate(now.getDate() - now.getDay() + 1); // Lundi
+    const endOfWeek = new Date(startOfWeek);
+    endOfWeek.setDate(startOfWeek.getDate() + 6); // Dimanche
+    
+    this.weeklyStats.total = this.bookings.filter(b => {
+      const bookingDate = new Date(this.convertDateFormat(b.date));
+      return bookingDate >= startOfWeek && bookingDate <= endOfWeek;
+    }).length;
+    
+    // Stats du mois (avec dates converties)
+    const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+    const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+    
+    this.monthlyStats.total = this.bookings.filter(b => {
+      const bookingDate = new Date(this.convertDateFormat(b.date));
+      return bookingDate >= startOfMonth && bookingDate <= endOfMonth;
+    }).length;
+    
+    console.log('Stats calculées - Aujourd\'hui:', this.todayStats.total);
+    console.log('Stats calculées - Semaine:', this.weeklyStats.total);
+    console.log('Stats calculées - Mois:', this.monthlyStats.total);
+  }
+
+  formatSelectedDate(dateStr: string | null): string {
+    if (!dateStr) return '';
+    
+    const date = new Date(dateStr);
+    const options: Intl.DateTimeFormatOptions = { 
+      day: 'numeric', 
+      month: 'long',
+      year: 'numeric'
+    };
+    
+    return date.toLocaleDateString('fr-FR', options);
+  }
+
+  handleWindowResize(): void {
+    // Adapter la vue selon la taille de l'écran
+    if (window.innerWidth < 768) {
+      this.calendarOptions.initialView = 'listWeek';
+    } else {
+      this.calendarOptions.initialView = 'dayGridMonth';
+    }
+  }
+
+  // Fonctions pour les boutons d'action
+  openNewAppointmentDialog(): void {
+    this.router.navigateByUrl('/service-list');
+  }
+
+  openFilterDialog(): void {
+    // Implémenter l'ouverture d'une modal pour filtrer
+    console.log('Ouvrir dialog filtre');
+  }
+
+  exportCalendar(): void {
+    // Implémenter l'export du calendrier
+    this.generateCalendarExport();
+  }
+
+  openAppointmentDetails(booking: IBookingResponse): void {
+    // Implémenter l'ouverture des détails d'un RDV
+    console.log('Ouvrir détails RDV:', booking);
+  }
+
+  private generateCalendarExport(): void {
+    const csvContent = this.bookings.map(booking => [
+      booking.date,
+      booking.start_time,
+      booking.end_time,
+      booking.name,
+      booking.expert?.name || 'Non spécifié',
+      booking.preferred_platform
+    ]);
+    
+    const headers = ['Date', 'Heure début', 'Heure fin', 'Service', 'Expert', 'Plateforme'];
+    const csvData = [headers, ...csvContent];
+    
+    const csvString = csvData.map(row => row.join(',')).join('\n');
+    const blob = new Blob([csvString], { type: 'text/csv' });
+    const url = window.URL.createObjectURL(blob);
+    
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `calendrier-rdv-${new Date().toISOString().split('T')[0]}.csv`;
+    a.click();
+    
+    window.URL.revokeObjectURL(url);
+  }
+
 }
