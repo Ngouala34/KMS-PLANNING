@@ -85,10 +85,10 @@ export class SidebarExpertComponent implements OnInit, OnDestroy {
       badge: 5
     },
     {
-      id: 'history',
-      label: 'Historique',
-      icon: 'fas fa-history',
-      route: '/main-expert/expert-historique'
+      id: 'notifications',
+      label: 'Notifications',
+      icon: 'fas fa-bell',
+      route: '/main-expert/expert-notifications',
     },
     {
       id: 'profile',

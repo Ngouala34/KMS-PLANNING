@@ -142,9 +142,9 @@ $info-color: #06b6d4;
         text-decoration: none;
 
         &.btn-primary {
-          @include gradient-primary;
           color: white;
           box-shadow: 0 2px 8px rgba($primary-color, 0.25);
+          background-color: $secondary-color;
 
           &:hover {
             transform: translateY(-2px);
@@ -231,7 +231,7 @@ $info-color: #06b6d4;
         .search-input {
           width: 100%;
           padding: 0.75rem 1rem 0.75rem 2.75rem;
-          border: 2px solid $border-color;
+          border: 2px solid $primary-color;
           border-radius: 0.75rem;
           background: $background-primary;
           font-size: 0.875rem;
@@ -597,11 +597,13 @@ $info-color: #06b6d4;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  justify-content: center;
   gap: 1.5rem;
 
   @media (max-width: 768px) {
   .service-card {
     width: 40%;
+    
   }
   
     
@@ -613,7 +615,6 @@ $info-color: #06b6d4;
   background: $background-primary;
   border-radius: 1rem;
   overflow: hidden;
-  border: 1px solid $border-color;
   @include transition();
   @include card-shadow;
   position: relative;
@@ -625,7 +626,6 @@ $info-color: #06b6d4;
 
   // Status-based styling
   &.past {
-    opacity: 0.8;
     
     .status-badge {
       background: $text-muted;
@@ -650,7 +650,6 @@ $info-color: #06b6d4;
   .service-image-container {
     position: relative;
     height: 180px;
-    overflow: hidden;
 
     .service-image {
       width: 100%;
@@ -668,7 +667,6 @@ $info-color: #06b6d4;
       border-radius: 1rem;
       font-size: 0.75rem;
       font-weight: 600;
-      backdrop-filter: blur(10px);
     }
 
     .hover-actions {
@@ -691,7 +689,7 @@ $info-color: #06b6d4;
         cursor: pointer;
         color: $text-dark;
         @include transition();
-        backdrop-filter: blur(10px);
+
 
         &:hover {
           background: $primary-color;
@@ -766,7 +764,6 @@ $info-color: #06b6d4;
         i {
           width: 1rem;
           text-align: center;
-          color: $primary-color;
         }
       }
     }
@@ -774,22 +771,18 @@ $info-color: #06b6d4;
     .service-footer {
       display: flex;
       align-items: center;
+      flex-wrap: wrap;
       justify-content: space-between;
-      padding-top: 1rem;
       border-top: 1px solid $border-color;
 
       .price {
         font-size: 1.125rem;
         font-weight: 700;
-        @include gradient-primary;
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
+        color: $text-dark;
       }
 
       .edit-btn {
         padding: 0.5rem 1rem;
-        @include gradient-primary;
         color: white;
         border: none;
         border-radius: 0.5rem;
@@ -800,6 +793,7 @@ $info-color: #06b6d4;
         align-items: center;
         gap: 0.5rem;
         @include transition();
+        background-color: $secondary-color;
 
         &:hover {
           transform: translateY(-1px);
@@ -1748,4 +1742,16 @@ $info-color: #06b6d4;
 .service-card,
 .service-list-item {
   will-change: transform, box-shadow;
+}
+
+@media (max-width: 1300px) {
+  .service-card {
+    width: 30%;
+  }
+}
+
+@media (max-width: 1050px) {
+  .service-card {
+    width: 45%;
+  }
 }

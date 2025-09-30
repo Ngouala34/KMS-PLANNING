@@ -1,6 +1,3 @@
-
-
-
 <div class="settings-container" [ngClass]="{ 'expanded': isSidebarCollapsed }">
   <header class="settings-header">
     <h1>Paramètres du compte</h1>
@@ -8,11 +5,6 @@
 
   <div class="settings-body">
     <nav class="settings-nav-horizontal">
-      <button class="nav-item" 
-              [class.active]="activeTab === 'profile'" 
-              (click)="changeTab('profile')">
-        <i class="fas fa-user-circle"></i> <span>Profil</span>
-      </button>
       <button class="nav-item" 
               [class.active]="activeTab === 'security'" 
               (click)="changeTab('security')">
@@ -26,105 +18,7 @@
     </nav>
 
     <main class="settings-content">
-   <!-- Dans le template (remplacer la partie profil actuelle) -->
-<div *ngIf="activeTab === 'profile'" class="profile-section">
-  <section [formGroup]="profileForm" class="profile-form">
-    <h2 class="profile-title"><i class="fas fa-user-circle"></i> Profil Public</h2>
-
-    <div class="profile-header">
-      <div class="avatar-container">
-        <img [src]="profileForm.get('avatar')?.value || 'assets/images/default-avatar.jpg'" 
-             alt="Avatar" class="avatar-image">
-        <label class="avatar-upload-btn">
-          <i class="fas fa-camera"></i> Changer la photo
-          <input type="file" accept="image/*" (change)="onFileSelected($event)" hidden>
-        </label>
-      </div>
-
-      <div class="profile-basic-info">
-        <div class="form-row">
-          <div class="form-group">
-            <label class="form-label">Prénom</label>
-            <input type="text" formControlName="firstName" class="form-input"
-                   placeholder="Votre prénom">
-            <div *ngIf="firstName.invalid && (firstName.dirty || firstName.touched)" class="error-message">
-              <div *ngIf="firstName.errors?.required">Le prénom est requis</div>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label class="form-label">Nom</label>
-            <input type="text" formControlName="lastName" class="form-input"
-                   placeholder="Votre nom">
-            <div *ngIf="lastName.invalid && (lastName.dirty || lastName.touched)" class="error-message">
-              <div *ngIf="lastName.errors?.required">Le nom est requis</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label class="form-label">Email</label>
-          <input type="email" formControlName="email" class="form-input"
-                 placeholder="email@exemple.com">
-          <div *ngIf="email.invalid && (email.dirty || email.touched)" class="error-message">
-            <div *ngIf="email.errors?.required">L'email est requis</div>
-            <div *ngIf="email.errors?.email">Format d'email invalide</div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="profile-details">
-      <h3 class="details-title"><i class="fas fa-address-card"></i> Informations personnelles</h3>
-
-      <div class="form-row">
-        <div class="form-group">
-          <label class="form-label">Téléphone</label>
-          <input type="tel" formControlName="phone" class="form-input"
-                 placeholder="+123 456 7890">
-          <div *ngIf="phone.invalid && (phone.dirty || phone.touched)" class="error-message">
-            <div *ngIf="phone.errors?.pattern">Format de téléphone invalide</div>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label class="form-label">Pays</label>
-          <select formControlName="country" class="form-select">
-            <option value="" disabled>Sélectionnez un pays</option>
-            <option *ngFor="let country of countries" [value]="country.code">
-              {{ country.name }}
-            </option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label class="form-label">Ville</label>
-          <input type="text" formControlName="city" class="form-input"
-                 placeholder="Votre ville">
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label class="form-label">Domaine d'expertise</label>
-        <select formControlName="expertise" class="form-select">
-          <option value="" disabled>Sélectionnez votre expertise</option>
-          <option *ngFor="let domain of expertiseDomains" [value]="domain">
-            {{ domain }}
-          </option>
-        </select>
-      </div>
-
-      <div class="form-group">
-        <label class="form-label">Bio</label>
-        <textarea formControlName="bio" rows="4" class="form-textarea"
-                  placeholder="Décrivez votre expertise, vos compétences et votre expérience..."></textarea>
-        <div class="char-counter">{{ profileForm.get('bio')?.value?.length || 0 }}/500</div>
-      </div>
-    </div>
-  </section>
-</div>
-
-      <!-- Sécurité -->
+      <!-- Section Sécurité -->
       <section *ngIf="activeTab === 'security'" [formGroup]="securityForm">
         <h2><i class="fas fa-shield-alt"></i> Sécurité du compte</h2>
 
@@ -161,8 +55,8 @@
         </div>
       </section>
 
-      <!-- Notifications -->
-      <section *ngIf="activeTab === 'notifications'" [formGroup]="notificationsForm">
+      <!-- Section Notifications -->
+      <section *ngIf="activeTab === 'notifications'">
         <div class="notification-settings-container">
           <h2><i class="fas fa-bell"></i> Paramètres de notification</h2>
           
@@ -196,9 +90,8 @@
         </div>
       </section>
       
-      <footer class="settings-footer">
-        <button class="save-btn" 
-               >
+      <footer class="settings-footer" *ngIf="activeTab !== 'profile'">
+        <button class="save-btn" (click)="saveAllSettings()" [disabled]="isSaving">
           <span *ngIf="!isSaving"><i class="fas fa-save"></i> Sauvegarder</span>
           <span *ngIf="isSaving"><i class="fas fa-spinner fa-spin"></i> Enregistrement...</span>
         </button>

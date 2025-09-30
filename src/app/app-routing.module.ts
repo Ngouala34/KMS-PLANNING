@@ -25,6 +25,8 @@ import { MainExpertComponent } from './Expert/_main-expert/main-expert.component
 import { MainUserComponent } from './user/_main-user/main-user.component';
 import { CalendarPageComponent } from './user/calendar-page/calendar-page.component';
 import { UserNotificationsComponent } from './user/user-notifications/user-notifications.component';
+import { ExpertProfileComponent } from './Expert/expert-profile/expert-profile.component';
+import { ExpertNotificationsComponent } from './Expert/expert-notifications/expert-notifications.component';
 
 const routes: Routes = [
  
@@ -70,7 +72,9 @@ const routes: Routes = [
       { path: 'dashboard-expert', component: DashboardExpertComponent,  },
       { path: 'expert-formation', component: ExpertFormationComponent,   },
       { path: 'expert-rendez-vous', component: ExpertRendezVousComponent,  },
+      { path: 'expert-notifications', component: ExpertNotificationsComponent,  },
       { path: 'expert-settings', component: ExpertSettingsComponent,  },
+      { path: 'expert-profile', component: ExpertProfileComponent,  },
       { path: '', redirectTo: 'dashboard-expert', pathMatch: 'full' } // par défaut
     ]
   },

@@ -1,0 +1,232 @@
+<div class="notifications-container">
+  <!-- Header -->
+  <header class="notifications-header">
+    <div class="header-content">
+      <div class="header-left">
+        <div class="header-title">
+          <h1>
+            <i class="fas fa-bell"></i>
+            Notifications
+          </h1>
+          <p *ngIf="totalNotifications > 0">
+            {{ unreadCount }} non lue{{ unreadCount > 1 ? 's' : '' }} 
+            sur {{ totalNotifications }}
+          </p>
+          <p *ngIf="totalNotifications === 0">
+            Aucune notification
+          </p>
+        </div>
+      </div>
+      
+      <div class="header-actions">
+        <button 
+          class="action-btn filter-btn" 
+          [class.active]="showFilterMenu"
+          (click)="toggleFilterMenu()"
+          aria-label="Filtrer"
+        >
+          <i class="fas fa-filter"></i>
+          <span class="btn-text">Filtrer</span>
+        </button>
+        
+        <button 
+          class="action-btn mark-all-btn" 
+          (click)="markAllAsRead()"
+          [disabled]="unreadCount === 0 || isLoading"
+          aria-label="Marquer tout comme lu"
+        >
+          <i class="fas fa-check-double"></i>
+          <span class="btn-text">Tout marquer</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Filter Menu -->
+    <div class="filter-menu" [class.show]="showFilterMenu">
+      <div class="filter-options">
+        <button 
+          class="filter-option" 
+          [class.active]="activeFilter === 'all'"
+          (click)="setFilter('all')"
+        >
+          <i class="fas fa-list"></i>
+          Toutes ({{ totalNotifications }})
+        </button>
+        
+        <button 
+          class="filter-option" 
+          [class.active]="activeFilter === 'unread'"
+          (click)="setFilter('unread')"
+        >
+          <i class="fas fa-eye-slash"></i>
+          Non lues ({{ unreadCount }})
+        </button>
+        
+        <button 
+          class="filter-option" 
+          [class.active]="activeFilter === 'service'"
+          (click)="setFilter('service')"
+        >
+          <i class="fas fa-user-md"></i>
+          Services ({{ getNotificationCountByType('service') }})
+        </button>
+        
+        <button 
+          class="filter-option" 
+          [class.active]="activeFilter === 'reservation'"
+          (click)="setFilter('reservation')"
+        >
+          <i class="fas fa-calendar-check"></i>
+          Réservations ({{ getNotificationCountByType('reservation') }})
+        </button>
+        
+        <button 
+          class="filter-option" 
+          [class.active]="activeFilter === 'reminder'"
+          (click)="setFilter('reminder')"
+        >
+          <i class="fas fa-clock"></i>
+          Rappels ({{ getNotificationCountByType('reminder') }})
+        </button>
+        
+        <button 
+          class="filter-option" 
+          [class.active]="activeFilter === 'general'"
+          (click)="setFilter('general')"
+        >
+          <i class="fas fa-info-circle"></i>
+          Générales ({{ getNotificationCountByType('general') }})
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="loading-container">
+    <div class="loading-spinner">
+      <i class="fas fa-spinner fa-spin"></i>
+      <p>Chargement des notifications...</p>
+    </div>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="errorMessage && !isLoading" class="error-state">
+    <i class="fas fa-exclamation-triangle"></i>
+    <p>{{ errorMessage }}</p>
+    <button class="retry-btn">Réessayer</button>
+  </div>
+
+  <!-- Empty State -->
+  <div *ngIf="!isLoading && !errorMessage && filteredNotifications.length === 0" class="empty-state">
+    <div class="empty-icon">
+      <i class="fas fa-bell-slash"></i>
+    </div>
+    <h2>{{ getEmptyStateTitle() }}</h2>
+    <p>{{ getEmptyStateMessage() }}</p>
+    <button 
+      *ngIf="activeFilter !== 'all'" 
+      class="reset-filter-btn"
+      (click)="setFilter('all')"
+    >
+      Voir toutes les notifications
+    </button>
+  </div>
+
+  <!-- Notifications Content -->
+  <div 
+    *ngIf="!isLoading && !errorMessage && filteredNotifications.length > 0" 
+    class="notifications-content"
+  >
+    <div 
+      *ngFor="let group of groupedNotifications; trackBy: trackByDate" 
+      class="notification-group"
+    >
+      <div class="group-header">
+        <h3 class="group-date">{{ formatGroupDate(group.date) }}</h3>
+        <span class="group-count">
+          {{ group.notifications.length }} notification{{ group.notifications.length > 1 ? 's' : '' }}
+        </span>
+      </div>
+
+      <div class="notifications-list">
+        <div 
+          *ngFor="let notification of group.notifications; trackBy: trackByNotification"
+          class="notification-item"
+          [class.unread]="!notification.is_read"
+          [class.read]="notification.is_read"
+          [class]="'type-' + notification.notif_type"
+          tabindex="0"
+          role="button"
+          [attr.aria-label]="getNotificationAriaLabel(notification)"
+          (click)="markAsRead(notification)"
+        >
+          <div class="notification-icon">
+            <i [class]="getNotificationIcon(notification.notif_type)"></i>
+          </div>
+
+          <div class="notification-content">
+            <div class="notification-header">
+              <h4 class="notification-title">{{ notification.title }}</h4>
+              <div class="notification-meta">
+                <span class="notification-time">{{ formatTime(notification.created_at) }}</span>
+                <span class="notification-type-badge" [class]="'badge-' + notification.notif_type">
+                  {{ getTypeLabel(notification.notif_type) }}
+                </span>
+              </div>
+            </div>
+            
+            <p class="notification-message">{{ notification.message }}</p>
+          </div>
+
+          <div class="notification-actions">
+            <div class="read-indicator" *ngIf="!notification.is_read">
+              <span class="unread-dot"></span>
+            </div>
+            
+            <button 
+              class="action-btn-small delete-btn" 
+              (click)="deleteNotification(notification); $event.stopPropagation()"
+              [attr.aria-label]="'Supprimer la notification: ' + notification.title"
+            >
+              <i class="fas fa-trash"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Load More Button -->
+    <div class="load-more-container" *ngIf="hasMoreNotifications">
+      <button 
+        class="load-more-btn" 
+        (click)="loadMore()"
+        [disabled]="isLoadingMore"
+      >
+        <span *ngIf="!isLoadingMore">Charger plus de notifications</span>
+        <span *ngIf="isLoadingMore">
+          <i class="fas fa-spinner fa-spin"></i> Chargement...
+        </span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Floating Action Button -->
+  <div class="fab-container" *ngIf="unreadCount > 0 && !isLoading">
+    <button 
+      class="fab" 
+      (click)="markAllAsRead()"
+      [attr.aria-label]="'Marquer ' + unreadCount + ' notifications comme lues'"
+    >
+      <i class="fas fa-check-double"></i>
+      <span class="fab-count">{{ unreadCount }}</span>
+    </button>
+  </div>
+</div>
+
+<!-- Toast Notifications -->
+<div class="toast-container" [class.show]="showToast">
+  <div class="toast" [class]="toastType">
+    <i [class]="getToastIcon()"></i>
+    <span>{{ toastMessage }}</span>
+  </div>
+</div>

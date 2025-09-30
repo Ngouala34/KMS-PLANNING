@@ -135,31 +135,44 @@ export class ServiceDetailsComponent implements OnInit {
     this.activeTab = tab;
   }
 
-  /**
-   * Réserver le service
-   */
-  subscribeToService(): void {
-    this.isLoading = true;
-    this.successMessage = '';
-    this.errorMessage = '';
+/**
+ * Réserver le service
+ */
+subscribeToService(): void {
+  this.isLoading = true;
+  this.successMessage = '';
+  this.errorMessage = '';
 
-  
-
-    this.userService.subscribeToNewService( this.service.id).subscribe({
-      next: (response: ISubscritionResponse) => {
-        console.log('Souscription réussie :', response);
-        this.successMessage = 'Vous êtes maintenant abonné à ce service ';
-      },
-      error: (err) => {
-        console.error('Erreur lors de la souscription:', err);
-        this.errorMessage = 'Impossible de souscrire au service. Réessayez plus tard ';
-      },
-      complete: () => {
+  this.userService.subscribeToNewService(this.service.id).subscribe({
+    next: (response: ISubscritionResponse) => {
+      console.log('Souscription réussie :', response);
+      this.successMessage = 'Redirection vers le paiement...';
+      
+      // Redirection vers le lien de paiement Flutterwave
+      if (response.payment_link) {
+        // Option 1: Redirection simple
+        window.location.href = response.payment_link;
+        
+        // Option 2: Ouvrir dans un nouvel onglet
+        // window.open(response.payment_link, '_blank');
+        
+        // Option 3: Redirection avec délai pour voir le message
+        // setTimeout(() => {
+        //   window.location.href = response.payment_link;
+        // }, 2000);
+      } else {
+        this.errorMessage = 'Lien de paiement non disponible';
         this.isLoading = false;
-        this.router.navigate(['/main-user/user-souscriptions']);
       }
-    });
-  }
+    },
+    error: (err) => {
+      console.error('Erreur lors de la souscription:', err);
+      this.errorMessage = 'Impossible de souscrire au service. Réessayez plus tard';
+      this.isLoading = false;
+    }
+    // Note: Supprimer le complete() car la redirection se fait dans next()
+  });
+}
 
 
   /**

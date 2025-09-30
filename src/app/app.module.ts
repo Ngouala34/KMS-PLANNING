@@ -77,6 +77,8 @@ import { CalendarPageComponent } from './user/calendar-page/calendar-page.compon
 import { DateTimeFormatPipe } from './pipes/date-time-format.pipe';
 import { UserNotificationsComponent } from './user/user-notifications/user-notifications.component';
 import { GoogleAuthService } from './services/google-auth.service.service';
+import { ExpertProfileComponent } from './Expert/expert-profile/expert-profile.component';
+import { ExpertNotificationsComponent } from './Expert/expert-notifications/expert-notifications.component';
 
 @NgModule({
   declarations: [
@@ -122,7 +124,9 @@ import { GoogleAuthService } from './services/google-auth.service.service';
     MainExpertComponent,
     CalendarPageComponent,
     DateTimeFormatPipe,
-    UserNotificationsComponent
+    UserNotificationsComponent,
+    ExpertProfileComponent,
+    ExpertNotificationsComponent
   ],
   imports: [
     BrowserModule,

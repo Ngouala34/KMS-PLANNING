@@ -100,6 +100,10 @@ export interface ISubscritionResponse {
   expert: number; // ID de l'expert
   expert_name: string; // Nom de l'expert
   created_at: string; // Date de création
+  reservation_id: number;
+  payment_id: number;
+  tx_ref: string;
+  payment_link: string;
 }
 
 export interface IBooking {

@@ -1,7 +1,7 @@
-/* =============================================
-   STRUCTURE PRINCIPALE
-   ============================================= */
 
+
+$primary-dark: #3a0ca3;
+$secondary-color: #f72585;
 :host {
   display: block;
   background: #f9f9fb;
@@ -25,7 +25,6 @@
   margin-top: 65px;
 
   &.expanded {
-    margin-left: 60px;
   }
 }
 
@@ -140,7 +139,7 @@
 
   .upload-btn {
     cursor: pointer;
-    background: #153470;
+    background: $secondary-color;
     color: #fff;
     padding: 0.5rem 1rem;
     border-radius: 8px;
@@ -288,10 +287,10 @@ select {
 
 .avatar-upload-btn {
   cursor: pointer;
-  background:  #3a0ca3;
+  background:  $secondary-color;
   color: white;
   padding: 0.5rem 1rem;
-  border-radius: 25px;
+  border-radius: 8px;
   font-size: 0.85rem;
   display: flex;
   align-items: center;
@@ -484,7 +483,7 @@ select {
   }
 
   input:checked + .slider {
-    background-color: #153470;
+    background-color: $primary-dark;
   }
 
   input:checked + .slider::before {
@@ -572,7 +571,7 @@ select {
   }
 
   input:checked + .slider {
-    background-color: #153470;
+    background-color: $primary-dark;
   }
 
   input:checked + .slider:before {
@@ -594,10 +593,10 @@ select {
 .save-btn {
   margin-top: 2rem;
   padding: 0.75rem 1.5rem;
-  background-color: #153470;
+  background-color: $secondary-color;
   color: #fff;
   border: none;
-  border-radius: 25px;
+  border-radius: 8px;
   font-size: 1rem;
   cursor: pointer;
   transition: background 0.3s ease;
@@ -614,7 +613,7 @@ select {
 
 /* Responsive
 ============================================= */
-@media (max-width: 768px) {
+@media (max-width: 500px) {
   .settings-container {
     margin-left: 0;
     padding: 1rem;

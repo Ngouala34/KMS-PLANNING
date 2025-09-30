@@ -32,9 +32,10 @@
   border-radius: var(--radius);
   padding: 20px;
   box-shadow: var(--shadow);
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  width: 55%;
+  width: 60%;
   border-radius: 8px;
 }
 
@@ -42,6 +43,7 @@
   display: flex;
   gap: 8px;
   margin-bottom: 16px;
+  flex-wrap: wrap;
 
   button {
     padding: 8px 16px;
@@ -136,17 +138,16 @@
   display: flex;
   justify-content: space-between;
   padding:0 20px 0 20px ;
-
   flex-direction: row;
   flex-wrap: wrap;
-  gap: 16px;
-  width: 40%;
+  width: 38%;
+  background: rgb(255, 255, 255);
   box-sizing: border-box;
 }
 
 .kpi-card-header{
   display: flex;
-  gap: 16px;
+  gap: 8px;
   
   
 }
@@ -154,13 +155,12 @@
 .kpi-card {
   width: 45%;
   height: 25%;
-  background: rgba(229, 217, 244, 0.348);
+  background: rgb(255, 255, 255);
   border-radius: var(--radius);
   display: flex;
   flex-direction: column;
   padding: 10px;
   align-items: center;
-  gap: 15px;
   transition: var(--transition);
   position: relative;
   overflow: hidden;
@@ -257,5 +257,54 @@
     border-width: 6px;
     border-style: solid;
     border-color: var(--dark) transparent transparent transparent;
+  }
+}
+
+@media (max-width: 1250px) {
+  .revenue-chart-container {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+
+  .kpi-grid {
+    width: 100%;
+    background-color: white;
+    gap: 10px;
+
+
+    .kpi-card {
+      width: 30%;
+      height: 50%;
+    }
+
+  }
+}
+@media (max-width: 768px) {
+  .dashboard-container {
+    flex-direction: column;
+    padding: 10px;
+  }
+
+  .revenue-chart-container, .kpi-grid {
+    width: 100%;
+    gap: 8px;
+  }
+
+
+}
+@media (max-width: 600px) {
+  .kpi-grid {
+    width: 100%;
+    background-color: rgb(255, 255, 255);
+    gap: 10px;
+
+
+    .kpi-card {
+      width: 30%;
+    }
+    .kpi-icon {
+      display: none;
+    }
+
   }
 }
