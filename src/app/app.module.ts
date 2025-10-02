@@ -79,6 +79,7 @@ import { UserNotificationsComponent } from './user/user-notifications/user-notif
 import { GoogleAuthService } from './services/google-auth.service.service';
 import { ExpertProfileComponent } from './Expert/expert-profile/expert-profile.component';
 import { ExpertNotificationsComponent } from './Expert/expert-notifications/expert-notifications.component';
+import { PaymentVerifyComponent } from './user/payment-verify/payment-verify.component';
 
 @NgModule({
   declarations: [
@@ -126,7 +127,8 @@ import { ExpertNotificationsComponent } from './Expert/expert-notifications/expe
     DateTimeFormatPipe,
     UserNotificationsComponent,
     ExpertProfileComponent,
-    ExpertNotificationsComponent
+    ExpertNotificationsComponent,
+    PaymentVerifyComponent
   ],
   imports: [
     BrowserModule,

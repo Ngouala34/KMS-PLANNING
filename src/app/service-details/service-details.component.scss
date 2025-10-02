@@ -644,6 +644,14 @@ $transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 }
 
+
+  .alert{
+    margin-top: 1rem;
+    font-size: 0.9rem;
+    color: $accent;
+    font-weight: 600;
+    text-align: center;
+  }
 // Responsive adjustments
 @media (max-width: 768px) {
   .hero-section {

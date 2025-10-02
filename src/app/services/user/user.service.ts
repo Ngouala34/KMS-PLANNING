@@ -377,6 +377,15 @@ removeFavorite(serviceId: number): Observable<any> {
   );
 }
 
+verifyPayment() {
+  // Appel vers ton backend pour vérifier la transaction
+  return this.http.get<any>(`${this.apiUrl}payments/verify/`).pipe(
+    catchError(error => {
+      console.error('Erreur lors de la vérification du paiement:', error);
+      return throwError(() => new Error('Vérification échouée'));
+    })
+  );
+}
 
 
 }

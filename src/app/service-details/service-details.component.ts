@@ -150,16 +150,7 @@ subscribeToService(): void {
       
       // Redirection vers le lien de paiement Flutterwave
       if (response.payment_link) {
-        // Option 1: Redirection simple
         window.location.href = response.payment_link;
-        
-        // Option 2: Ouvrir dans un nouvel onglet
-        // window.open(response.payment_link, '_blank');
-        
-        // Option 3: Redirection avec délai pour voir le message
-        // setTimeout(() => {
-        //   window.location.href = response.payment_link;
-        // }, 2000);
       } else {
         this.errorMessage = 'Lien de paiement non disponible';
         this.isLoading = false;
@@ -167,10 +158,9 @@ subscribeToService(): void {
     },
     error: (err) => {
       console.error('Erreur lors de la souscription:', err);
-      this.errorMessage = 'Impossible de souscrire au service. Réessayez plus tard';
+      this.errorMessage = 'Vous êtes déjà inscrit à ce service.';
       this.isLoading = false;
     }
-    // Note: Supprimer le complete() car la redirection se fait dans next()
   });
 }
 

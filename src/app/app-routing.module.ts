@@ -27,6 +27,7 @@ import { CalendarPageComponent } from './user/calendar-page/calendar-page.compon
 import { UserNotificationsComponent } from './user/user-notifications/user-notifications.component';
 import { ExpertProfileComponent } from './Expert/expert-profile/expert-profile.component';
 import { ExpertNotificationsComponent } from './Expert/expert-notifications/expert-notifications.component';
+import { PaymentVerifyComponent } from './user/payment-verify/payment-verify.component';
 
 const routes: Routes = [
  
@@ -53,6 +54,7 @@ const routes: Routes = [
         { path: 'user-souscriptions',canActivate : [AuthGuard],  component: UserSouscriptionComponent },
         { path: 'user-calendar',component : CalendarPageComponent},
         { path: 'user-notification', component : UserNotificationsComponent},
+        { path: 'payment/verify', component: PaymentVerifyComponent }
 
     ]
   },
