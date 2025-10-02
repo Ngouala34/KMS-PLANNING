@@ -4,15 +4,8 @@ import { UserService } from 'src/app/services/user/user.service';
 
 @Component({
   selector: 'app-payment-verify',
-  template: `
-    <div *ngIf="loading">Vérification du paiement...</div>
-    <div *ngIf="success" class="success">Paiement réussi !</div>
-    <div *ngIf="error" class="error">Erreur de paiement : {{ error }}</div>
-  `,
-  styles: [`
-    .success { color: green; font-weight: bold; }
-    .error { color: red; font-weight: bold; }
-  `]
+  templateUrl: './payment-verify.component.html',
+  styleUrls: ['./payment-verify.component.scss']
 })
 export class PaymentVerifyComponent implements OnInit {
   loading = true;
@@ -26,6 +19,7 @@ export class PaymentVerifyComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    // Récupération des paramètres tx_ref et status de Flutterwave
     this.route.queryParams.subscribe(params => {
       const tx_ref = params['tx_ref'];
       const status = params['status'];
@@ -36,17 +30,18 @@ export class PaymentVerifyComponent implements OnInit {
         return;
       }
 
-      this.verifyPayment(tx_ref);
+      // Appel du service pour vérifier le paiement côté backend
+      this.verifyPayment();
     });
   }
 
-  verifyPayment(tx_ref: string) {
+  private verifyPayment() {
     this.userService.verifyPayment().subscribe({
       next: (res) => {
         this.success = true;
         this.loading = false;
 
-        // Optionnel : redirection automatique vers dashboard après 3 secondes
+        // Redirection automatique vers le dashboard après 3 secondes
         setTimeout(() => this.router.navigate(['/main-user/user-dashboard']), 3000);
       },
       error: (err) => {

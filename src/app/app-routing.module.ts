@@ -46,6 +46,8 @@ const routes: Routes = [
   { path: 'user-register', component: UserRegisterComponent },
   { path: 'sidebar',canActivate : [AuthGuard],  component: SidebarComponent },
   { path: 'user-serv', canActivate : [AuthGuard], component: UserServComponent },
+  { path: 'payment/verify', component: PaymentVerifyComponent },
+
 
   { path: 'main-user', canActivate : [AuthGuard], component: MainUserComponent,
     children : [
@@ -54,7 +56,6 @@ const routes: Routes = [
         { path: 'user-souscriptions',canActivate : [AuthGuard],  component: UserSouscriptionComponent },
         { path: 'user-calendar',component : CalendarPageComponent},
         { path: 'user-notification', component : UserNotificationsComponent},
-        { path: 'payment/verify', component: PaymentVerifyComponent }
 
     ]
   },
