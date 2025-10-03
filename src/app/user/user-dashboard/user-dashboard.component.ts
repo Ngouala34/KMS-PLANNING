@@ -13,8 +13,6 @@ interface DashboardStats {
   uniqueExperts: number;
 }
 
-
-
 interface Activity {
   id: number;
   type: 'booking' | 'completion' | 'cancellation' | 'payment';
@@ -33,6 +31,7 @@ interface Expert {
   isOnline: boolean;
 }
 
+// Interface corrigée basée sur vos données réelles
 
 
 @Component({
@@ -44,8 +43,7 @@ export class UserDashboardComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
   // Data properties
-  userProfile!: UserProfile ;
-  userData!: UserProfile
+  userData!: UserProfile;
   dashboardStats: DashboardStats = {
     totalAppointments: 0,
     upcomingAppointments: 0,
@@ -53,23 +51,24 @@ export class UserDashboardComponent implements OnInit, OnDestroy {
     uniqueExperts: 0
   };
 
-  upcomingAppointments: IBookingResponse[] = [];
+  upcomingApp: IBookingResponse[] = [];
   recentActivity: Activity[] = [];
   favoriteExperts: Expert[] = [];
   isLoading: boolean = true;
 
+  greetingMessage: string = '';
+  private greetingInterval: any;
+
   constructor(
     private router: Router,
-    private userService: UserService // Remplacez par votre service réel
+    private userService: UserService
   ) {}
 
   ngOnInit(): void {
     this.loadUserProfile();
     this.loadDashboardData();
-        // Mettre à jour la salutation dès le chargement
     this.greetingMessage = this.getGreeting();
 
-    // Vérifier et mettre à jour la salutation toutes les minutes
     this.greetingInterval = setInterval(() => {
       this.greetingMessage = this.getGreeting();
     }, 60 * 1000);
@@ -83,11 +82,6 @@ export class UserDashboardComponent implements OnInit, OnDestroy {
     }
   }
 
-
-  greetingMessage: string = '';
-  private greetingInterval: any;
-
-
   private loadUserProfile(): void {
     this.userService.getProfile().subscribe({
       next: (user) => {
@@ -100,7 +94,7 @@ export class UserDashboardComponent implements OnInit, OnDestroy {
     });
   }
 
-    private loadDashboardData(): void {
+  private loadDashboardData(): void {
     this.isLoading = true;
     
     this.userService.getUserBookings()
@@ -129,11 +123,10 @@ export class UserDashboardComponent implements OnInit, OnDestroy {
     }
   }
 
-
   private processBookingsData(bookings: IBookingResponse[]): void {
+    console.log('Données brutes reçues:', bookings);
+    
     const now = new Date();
-    const currentMonth = now.getMonth();
-    const currentYear = now.getFullYear();
     
     // Calcul des statistiques
     this.dashboardStats.totalAppointments = bookings.length;
@@ -141,54 +134,59 @@ export class UserDashboardComponent implements OnInit, OnDestroy {
       booking.status === 'completed'
     ).length;
     
-    this.dashboardStats.upcomingAppointments = bookings.filter(booking => {
-      if (booking.status !== 'reserved') return false;
-      
-        const bookingDate = new Date(booking.service.date);
-        bookingDate.setHours(0, 0, 0, 0); // mettre à minuit
-        const today = new Date();
-        today.setHours(0, 0, 0, 0);
-        const nextWeek = new Date(today);
-        nextWeek.setDate(today.getDate() + 7);
+    // RDV à venir (7 prochains jours)
+    this.upcomingApp = bookings
+      .filter(booking => {
+        const validStatuses = ['reserved', 'confirmed', 'pending'];
+        if (!validStatuses.includes(booking.status)) return false;
+        
+        try {
+          const [day, month, year] = booking.service.date.split('-');
+          const bookingDate = new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
+          const today = new Date();
+          today.setHours(0, 0, 0, 0);
+          const nextWeek = new Date(today);
+          nextWeek.setDate(today.getDate() + 7);
+          
+          return bookingDate >= today && bookingDate <= nextWeek;
+        } catch (error) {
+          console.error('Erreur de parsing date:', booking.service.date);
+          return false;
+        }
+      })
+      .sort((a, b) => {
+        try {
+          const [dayA, monthA, yearA] = a.service.date.split('-');
+          const [dayB, monthB, yearB] = b.service.date.split('-');
+          const dateA = new Date(parseInt(yearA), parseInt(monthA) - 1, parseInt(dayA));
+          const dateB = new Date(parseInt(yearB), parseInt(monthB) - 1, parseInt(dayB));
+          return dateA.getTime() - dateB.getTime();
+        } catch (error) {
+          return 0;
+        }
+      })
+      .slice(0, 5);
 
-        return bookingDate >= today && bookingDate <= nextWeek;
-
-    }).length;
-
+    console.log('RDV à venir filtrés:', this.upcomingApp);
+    
     // Calcul des experts uniques
-    const expertSet = new Set<string>();
+    const expertSet = new Set<number>();
     bookings.forEach(booking => {
-      if (booking.expert?.email) {
-        expertSet.add(booking.expert.email); // ou booking.expert.name si email absent
+      if (booking.service.expert?.id) {
+        expertSet.add(booking.service.expert.id);
       }
     });
     this.dashboardStats.uniqueExperts = expertSet.size;
+    this.dashboardStats.upcomingAppointments = this.upcomingApp.length;
 
-
-    // Rendez-vous à venir (prochains 7 jours)
-    this.upcomingAppointments = bookings
-      .filter(booking => {
-        if (booking.status !== 'reserved') return false;
-        
-        const bookingDate = new Date(booking.service.date);
-        const today = new Date();
-        const nextWeek = new Date(today);
-        nextWeek.setDate(today.getDate() + 7);
-        
-        return bookingDate >= today && bookingDate <= nextWeek;
-      })
-      // .map(booking => this.mapBookingToAppointment(booking))
-      .sort((a, b) => new Date(a.service.date).getTime() - new Date(b.service.date).getTime())
-      .slice(0, 5); // Limiter à 5 rendez-vous
-
-    // Activité récente (30 derniers jours)
+    // Activité récente
     this.recentActivity = this.generateRecentActivity(bookings);
-
-    // Experts favoris (ceux avec le plus de rendez-vous)
+    console.log('Activité récente générée:', this.recentActivity);
+    
+    // Experts favoris
     this.favoriteExperts = this.generateFavoriteExperts(bookings);
+    console.log('Experts favoris générés:', this.favoriteExperts);
   }
-
-
 
   private generateRecentActivity(bookings: IBookingResponse[]): Activity[] {
     const thirtyDaysAgo = new Date();
@@ -205,20 +203,21 @@ export class UserDashboardComponent implements OnInit, OnDestroy {
       let description: string;
 
       switch (booking.status) {
-        case 'available':
+        case 'reserved':
+        case 'confirmed':
           type = 'booking';
           title = 'Nouveau rendez-vous réservé';
-          description = `Consultation avec ${booking.expert.name}`;
+          description = `Consultation avec ${booking.service.expert?.name || 'expert'}`;
           break;
         case 'completed':
           type = 'completion';
           title = 'Rendez-vous terminé';
-          description = `${booking.service.name} avec ${booking.expert.name}`;
+          description = `${booking.service.name} avec ${booking.service.expert?.name || 'expert'}`;
           break;
         case 'cancelled':
           type = 'cancellation';
           title = 'Rendez-vous annulé';
-          description = `${booking.service.name} avec ${booking.expert.name}`;
+          description = `${booking.service.name} avec ${booking.service.expert?.name || 'expert'}`;
           break;
         default:
           type = 'booking';
@@ -240,28 +239,37 @@ export class UserDashboardComponent implements OnInit, OnDestroy {
     const expertMap = new Map<number, { expert: any, count: number }>();
 
     bookings.forEach(booking => {
-      if (!expertMap.has(booking.expert.id)) {
-        expertMap.set(booking.expert.id, {
-          expert: booking.expert,
-          count: 0
-        });
+      const expert = booking.service.expert;
+      if (expert && expert.id) {
+        if (!expertMap.has(expert.id)) {
+          expertMap.set(expert.id, {
+            expert: expert,
+            count: 0
+          });
+        }
+        const expertData = expertMap.get(expert.id)!;
+        expertData.count++;
       }
-      const expertData = expertMap.get(booking.expert.id)!;
-      expertData.count++;
     });
 
-    return Array.from(expertMap.values())
+    const experts = Array.from(expertMap.values())
       .sort((a, b) => b.count - a.count)
-      .slice(0, 3) // Top 3 experts
-      .map(data => ({
-        id: data.expert.id,
-        name: data.expert.name,
-        specialty: data.expert.specialty,
-        avatar: data.expert.avatar,
-        rating: data.expert.rating,
-        reviewCount: data.expert.review_count,
-        isOnline: data.expert.is_online
-      }));
+      .slice(0, 3)
+      .map(data => {
+        const expert = data.expert;
+        return {
+          id: expert.id,
+          name: expert.name || 'Expert',
+          specialty: expert.domain || 'Spécialité non définie',
+          avatar: expert.profile_picture || '/assets/default-avatar.png',
+          rating: 0, // À implémenter si disponible dans l'API
+          reviewCount: 0, // À implémenter si disponible dans l'API
+          isOnline: Math.random() > 0.5 // Simulation - à remplacer par des données réelles
+        };
+      });
+
+    console.log('Experts transformés:', experts);
+    return experts;
   }
 
   // Navigation methods
@@ -269,37 +277,44 @@ export class UserDashboardComponent implements OnInit, OnDestroy {
     this.router.navigate(['/main-user/user-calendar']);
   }
 
-  navigateToProfile(): void {
+  navigateToProfile(event: Event): void {
+    event.preventDefault();
     this.router.navigate(['/profile']);
   }
 
-  navigateToPayments(): void {
+  navigateToPayments(event: Event): void {
+    event.preventDefault();
     this.router.navigate(['/payments']);
   }
 
-  navigateToReviews(): void {
+  navigateToReviews(event: Event): void {
+    event.preventDefault();
     this.router.navigate(['/reviews']);
   }
 
-  navigateToSupport(): void {
+  navigateToSupport(event: Event): void {
+    event.preventDefault();
     this.router.navigate(['/support']);
   }
 
   // Action methods
   openBookingModal(): void {
-    this.router.navigate(['/service-list'])
+    this.router.navigate(['/service-list']);
   }
 
   rescheduleAppointment(appointment: IBookingResponse): void {
     console.log('Reprogrammer RDV:', appointment);
+    // Implémentez la logique de reprogrammation
   }
 
   cancelAppointment(appointment: IBookingResponse): void {
     console.log('Annuler RDV:', appointment);
+    // Implémentez la logique d'annulation
   }
 
   bookWithExpert(expert: Expert): void {
     console.log('Réserver avec expert:', expert);
+    // Implémentez la logique de réservation
   }
 
   // Utility methods
@@ -316,25 +331,62 @@ export class UserDashboardComponent implements OnInit, OnDestroy {
   }
 
   isToday(dateStr: string): boolean {
-    const today = new Date();
-    const date = new Date(dateStr);
-    return date.toDateString() === today.toDateString();
+    if (!dateStr) return false;
+    try {
+      const [day, month, year] = dateStr.split('-');
+      const date = new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
+      const today = new Date();
+      return date.toDateString() === today.toDateString();
+    } catch (error) {
+      console.error('Erreur isToday:', dateStr);
+      return false;
+    }
   }
 
   isTomorrow(dateStr: string): boolean {
-    const tomorrow = new Date();
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    const date = new Date(dateStr);
-    return date.toDateString() === tomorrow.toDateString();
+    if (!dateStr) return false;
+    try {
+      const [day, month, year] = dateStr.split('-');
+      const date = new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
+      const tomorrow = new Date();
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      return date.toDateString() === tomorrow.toDateString();
+    } catch (error) {
+      console.error('Erreur isTomorrow:', dateStr);
+      return false;
+    }
   }
 
   formatDay(dateStr: string): string {
-    return new Date(dateStr).getDate().toString();
+    if (!dateStr) return '';
+    try {
+      const [day, month, year] = dateStr.split('-');
+      const date = new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
+      return date.getDate().toString();
+    } catch (error) {
+      return '?';
+    }
   }
 
   formatMonth(dateStr: string): string {
-    const months = ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Jun', 'Jul', 'Aoû', 'Sep', 'Oct', 'Nov', 'Déc'];
-    return months[new Date(dateStr).getMonth()];
+    if (!dateStr) return '';
+    try {
+      const [day, month, year] = dateStr.split('-');
+      const months = ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Jun', 'Jul', 'Aoû', 'Sep', 'Oct', 'Nov', 'Déc'];
+      const date = new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
+      return months[date.getMonth()];
+    } catch (error) {
+      return '???';
+    }
+  }
+
+  formatTime(timeStr: string): string {
+    if (!timeStr) return '??:??';
+    try {
+      return timeStr.substring(0, 5); // Format "HH:MM"
+    } catch (error) {
+      return '??:??';
+    }
   }
 
   formatRelativeDate(date: Date): string {
@@ -349,7 +401,18 @@ export class UserDashboardComponent implements OnInit, OnDestroy {
   }
 
   getPlatformClass(platform: string): string {
-    return platform.toLowerCase().replace(/\s+/g, '-');
+    return platform?.toLowerCase().replace(/\s+/g, '-') || 'unknown';
+  }
+
+  getPlatformLabel(platform: string): string {
+    const platforms: { [key: string]: string } = {
+      'google_meet': 'Google Meet',
+      'zoom': 'Zoom',
+      'teams': 'Microsoft Teams',
+      'phone': 'Téléphone',
+      'other': 'Autre'
+    };
+    return platforms[platform] || platform || 'Non spécifié';
   }
 
   getActivityIcon(type: string): string {
@@ -362,7 +425,8 @@ export class UserDashboardComponent implements OnInit, OnDestroy {
     return icons[type as keyof typeof icons] || 'fas fa-info-circle';
   }
 
-  getStars(rating: number): number[] {
-    return Array(Math.floor(rating)).fill(0);
+  handleImageError(event: Event): void {
+    const img = event.target as HTMLImageElement;
+    img.src = '/assets/default-avatar.png';
   }
 }

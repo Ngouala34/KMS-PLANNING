@@ -237,7 +237,8 @@
                
                
         <div class="favori-date">
-          <div class="price">Prix : {{ formatPrice(item.service.price) }}</div>
+          <div class="price">Prix : {{ formatPrice(+item.service.price) }}</div>
+
 
           <button class="souscrire" 
                   (click)="onSubscribeToService(item, $event)"

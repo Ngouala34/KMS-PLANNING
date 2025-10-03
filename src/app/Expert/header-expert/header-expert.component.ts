@@ -75,14 +75,41 @@ export class HeaderExpertComponent implements OnInit, OnDestroy {
   userProfile! : UserProfile
 
   // Menu items
-  menuItems: MenuItem[] = [
-    { icon: 'fas fa-tachometer-alt', label: 'Dashboard', route: '/expert/dashboard', active: true },
-    { icon: 'fas fa-concierge-bell', label: 'Services', route: '/expert/services' },
-    { icon: 'fas fa-history', label: 'Historique', route: '/expert/historique' },
-    { icon: 'fas fa-calendar', label: 'Calendrier', route: '/expert/calendrier' },
-    { icon: 'fas fa-cog', label: 'Paramètres', route: '/expert/settings' },
-    { icon: 'fas fa-sign-out-alt', label: 'Déconnexion', route: '/logout' }
+
+
+ menuItems: MenuItem[] = [
+    {
+      label: 'Dashboard',
+      icon: 'fas fa-chart-line',
+      route: '/main-expert/dashboard-expert'
+    },
+    {
+      label: 'Mes Services',
+      icon: 'fas fa-concierge-bell',
+      route: '/main-expert/expert-formation',
+    },
+    {
+      label: 'Rendez-vous',
+      icon: 'fas fa-calendar-check',
+      route: '/main-expert/expert-rendez-vous',
+    },
+    {
+      label: 'Notifications',
+      icon: 'fas fa-bell',
+      route: '/main-expert/expert-notifications',
+    },
+    {
+      label: 'Mon Profil',
+      icon: 'fas fa-user-circle',
+      route: '/main-expert/expert-profile'
+    },
+    {
+      label: 'Paramètres',
+      icon: 'fas fa-cog',
+      route: '/main-expert/expert-settings'
+    },
   ];
+
 
   constructor(private router: Router, private expertService: ExpertService) { }
 
