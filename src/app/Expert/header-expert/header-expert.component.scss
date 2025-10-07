@@ -340,7 +340,6 @@ body {
   flex-direction: column;
   gap: 0.25rem;
   padding: 0.75rem;
-  background: $background-lighter;
   border: none;
   border-radius: 0.75rem;
   cursor: pointer;
@@ -354,9 +353,10 @@ body {
   span {
     width: 1.25rem;
     height: 0.125rem;
-    background: $text-secondary;
+    background:white;
     border-radius: 0.0625rem;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
   }
 
   &.active {
@@ -400,6 +400,7 @@ body {
     }
   }
 
+
   .mobile-menu-item {
     display: flex;
     align-items: center;
@@ -424,11 +425,10 @@ body {
     }
 
     &.active {
-      background: linear-gradient(135deg, $primary-color 0%, $secondary-color 100%);
-      color: white;
+      color: $secondary-color;
 
       i {
-        color: white;
+        color: rgb(0, 0, 0);
       }
 
       .item-arrow {
@@ -581,14 +581,7 @@ body {
   }
 
   .notification-btn,
-  .mobile-toggle {
-    background: #334155;
-    color: #e2e8f0;
 
-    &:hover {
-      background: #475569;
-    }
-  }
 
   .user-profile {
     background: #1e293b;

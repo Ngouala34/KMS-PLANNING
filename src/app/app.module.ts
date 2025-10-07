@@ -1,6 +1,6 @@
 import { NgModule, LOCALE_ID } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { registerLocaleData } from '@angular/common';
+import {  registerLocaleData } from '@angular/common';
 import * as fr from '@angular/common/locales/fr';
 
 import { AppComponent } from './app.component';
@@ -128,7 +128,8 @@ import { PaymentVerifyComponent } from './user/payment-verify/payment-verify.com
     UserNotificationsComponent,
     ExpertProfileComponent,
     ExpertNotificationsComponent,
-    PaymentVerifyComponent
+    PaymentVerifyComponent,
+
   ],
   imports: [
     BrowserModule,
@@ -141,7 +142,7 @@ import { PaymentVerifyComponent } from './user/payment-verify/payment-verify.com
     MatBadgeModule,
     NgChartsModule,
     FullCalendarModule,
-    FormsModule
+    FormsModule,
   ],
   providers: [
     { provide: LOCALE_ID, useValue: 'fr-FR' },

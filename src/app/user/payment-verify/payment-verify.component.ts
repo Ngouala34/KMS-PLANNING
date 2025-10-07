@@ -31,24 +31,24 @@ export class PaymentVerifyComponent implements OnInit {
       }
 
       // Appel du service pour vérifier le paiement côté backend
-      this.verifyPayment();
+      // this.verifyPayment();
     });
   }
 
-  private verifyPayment() {
-    this.userService.verifyPayment().subscribe({
-      next: (res) => {
-        this.success = true;
-        this.loading = false;
+  // private verifyPayment() {
+  //   this.userService.verifyPayment().subscribe({
+  //     next: (res) => {
+  //       this.success = true;
+  //       this.loading = false;
 
-        // Redirection automatique vers le dashboard après 3 secondes
-        setTimeout(() => this.router.navigate(['/main-user/user-dashboard']), 3000);
-      },
-      error: (err) => {
-        this.error = 'Impossible de vérifier le paiement. Réessayez plus tard.';
-        console.error(err);
-        this.loading = false;
-      }
-    });
-  }
+  //       // Redirection automatique vers le dashboard après 3 secondes
+  //       setTimeout(() => this.router.navigate(['/main-user/user-dashboard']), 3000);
+  //     },
+  //     error: (err) => {
+  //       this.error = 'Impossible de vérifier le paiement. Réessayez plus tard.';
+  //       console.error(err);
+  //       this.loading = false;
+  //     }
+  //   });
+  // }
 }

@@ -17,6 +17,12 @@ $info-color: #3b82f6;
   transition: all 0.3s ease;
 }
 
+*{
+  *:not(i):not(.fa):not(.material-icons) {
+  font-family: 'Montserrat', sans-serif;
+}
+}
+
 @mixin flex-center {
   display: flex;
   align-items: center;
@@ -35,8 +41,7 @@ $info-color: #3b82f6;
 
 /* Header */
 .notifications-header {
-  background: linear-gradient(135deg, $primary-dark);
-  color: white;
+  color: $primary-dark;
   border-radius: 12px;
   padding: 1.5rem;
   
@@ -84,7 +89,8 @@ $info-color: #3b82f6;
       p {
         margin: 0;
         opacity: 0.9;
-        font-size: 0.9rem;
+        color: $text-dark;
+        font-size: 1rem;
       }
     }
   }
@@ -97,9 +103,9 @@ $info-color: #3b82f6;
     .action-btn {
       @include flex-center;
       gap: 0.5rem;
-      background: rgba(white, 0.2);
+      background: rgba(rgb(213, 213, 213), 0.5);
       border: none;
-      color: white;
+      color: $text-dark;
       padding: 0.75rem 1rem;
       border-radius: 8px;
       cursor: pointer;
@@ -107,7 +113,7 @@ $info-color: #3b82f6;
       font-size: 0.9rem;
       
       &:hover:not(:disabled) {
-        background: rgba(white, 0.3);
+        background: rgba(rgb(213, 213, 213), 0.5);
         transform: translateY(-1px);
       }
       
@@ -117,7 +123,7 @@ $info-color: #3b82f6;
       }
       
       &.active {
-        background: rgba(white, 0.3);
+        background: $secondary-color;
       }
       
       i {
@@ -140,28 +146,29 @@ $info-color: #3b82f6;
   
   .filter-options {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
     gap: 0.5rem;
     
     .filter-option {
       @include flex-center;
       gap: 0.5rem;
-      background: rgba(white, 0.1);
+      background: $primary-dark;
       border: 1px solid rgba(white, 0.2);
       color: white;
-      padding: 0.75rem 1rem;
+      padding: 0.75rem ;
       border-radius: 8px;
       cursor: pointer;
       transition: all 0.3s ease;
       font-size: 0.9rem;
       
       &:hover {
-        background: rgba(white, 0.2);
+        background: $secondary-color;
       }
       
       &.active {
         background: $secondary-color;
         border-color: $secondary-color;
+        color: white;
       }
     }
   }
@@ -539,11 +546,11 @@ $info-color: #3b82f6;
   }
   
   .filter-menu .filter-options {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr 1fr;
   }
   
   .notification-item {
-    flex-direction: column;
+    flex-direction: row;
     gap: 0.75rem;
     
     .notification-header {
@@ -551,10 +558,20 @@ $info-color: #3b82f6;
       align-items: flex-start;
       
       .notification-meta {
+        margin-top: -14px;
         flex-direction: row;
         align-items: center;
         width: 100%;
         justify-content: space-between;
+
+
+        .notification-time {
+          font-size: 0.75rem;
+          white-space: nowrap;
+        }
+        .notification-type-badge {
+          display: none;
+        }
       }
     }
     

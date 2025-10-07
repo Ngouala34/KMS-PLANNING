@@ -67,6 +67,7 @@ export class ServiceDetailsComponent implements OnInit {
   serviceId!: number; // tu récupères ça via la route ou autre
   successMessage = '';
   errorMessage = '';
+  paymentSuccess: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -138,31 +139,97 @@ export class ServiceDetailsComponent implements OnInit {
 /**
  * Réserver le service
  */
-subscribeToService(): void {
-  this.isLoading = true;
-  this.successMessage = '';
-  this.errorMessage = '';
 
-  this.userService.subscribeToNewService(this.service.id).subscribe({
-    next: (response: ISubscritionResponse) => {
-      console.log('Souscription réussie :', response);
-      this.successMessage = 'Redirection vers le paiement...';
-      
-      // Redirection vers le lien de paiement Flutterwave
-      if (response.payment_link) {
-        window.location.href = response.payment_link;
-      } else {
-        this.errorMessage = 'Lien de paiement non disponible';
+subscribeToService(): void {
+    this.isLoading = true;
+    this.successMessage = '';
+    this.errorMessage = '';
+    this.paymentSuccess = false;
+
+    this.userService.subscribeToNewService(this.service.id).subscribe({
+      next: (response: ISubscritionResponse) => {
         this.isLoading = false;
-      }
-    },
-    error: (err) => {
-      console.error('Erreur lors de la souscription:', err);
-      this.errorMessage = 'Vous êtes déjà inscrit à ce service.';
-      this.isLoading = false;
-    }
-  });
-}
+
+        if (response && response.tx_ref) {
+          this.successMessage = 'Ouverture du paiement Flutterwave...';
+          this.launchFlutterwavePayment(response.tx_ref, this.service.price);
+        } else {
+          this.errorMessage = 'Référence de transaction manquante.';
+        }
+      },
+      error: (err) => {
+        console.error('Erreur lors de la souscription:', err);
+        this.errorMessage = err?.error?.message || 'Vous êtes déjà inscrit à ce service.';
+        this.isLoading = false;
+      },
+    });
+  }
+
+  launchFlutterwavePayment(tx_ref: string, amount: number) {
+    // @ts-ignore
+    FlutterwaveCheckout({
+      public_key: 'FLWPUBK_TEST-682480fcb1d6eb90583b5da24e5f8ef9-X',
+      amount: amount,
+      currency: 'XAF',
+      payment_options: 'card, mobilemoney, ussd',
+      customer: {
+        email: 'meetExpert@gmail.com',
+        name: this.userService.currentUserName || 'Client',
+      },
+      customizations: {
+        title: 'Paiement du service',
+        description: `Souscription à ${this.service.title}`,
+        logo: 'assets/icons/MeetExpert.png',
+      },
+      tx_ref: tx_ref,
+
+      callback: (data: any) => {
+        console.log('Résultat du paiement Flutterwave:', data);
+
+        if (data.status === 'successful') {
+          this.successMessage = 'Paiement réussi. Vérification en cours...';
+
+          this.userService.verifyPayment(data.tx_ref, data.transaction_id).subscribe({
+            next: (res) => {
+              console.log('Paiement confirmé côté serveur:', res);
+
+              if (res.status === 'success') {
+                this.successMessage = `Souscription confirmée ! Montant payé : ${res.amount} XAF`;
+                this.paymentSuccess = true; // Paiement réussi
+              } else {
+                this.errorMessage = 'Le paiement n’a pas pu être confirmé.';
+                this.paymentSuccess = false;
+              }
+            },
+            error: (err) => {
+              console.error('Erreur vérification backend:', err);
+              this.errorMessage = 'Erreur lors de la vérification du paiement.';
+              this.paymentSuccess = false;
+            },
+          });
+        } else {
+          this.errorMessage = 'Paiement annulé ou échoué.';
+          this.paymentSuccess = false;
+        }
+      },
+
+      onclose: () => {
+        console.log('Fenêtre Flutterwave fermée');
+
+        if (this.paymentSuccess) {
+          // Paiement réussi → redirection vers page des souscriptions
+          this.router.navigate(['/main-user/user-souscriptions']);
+        } else {
+          // Paiement échoué ou en attente → rester sur la même page
+          if (!this.errorMessage) {
+            this.errorMessage = 'Le paiement est en attente ou a échoué. Vous pouvez réessayer.';
+          }
+        }
+      },
+    });
+  }
+
+
 
 
   /**

@@ -220,26 +220,27 @@ export class UserSouscriptionComponent implements OnInit {
     this.updatePagination();
   }
 
-  private sortBookings(bookings: IBookingResponse[], sortBy: string): IBookingResponse[] {
-    return bookings.sort((a, b) => {
-      switch (sortBy) {
-        case 'date_desc':
-          return new Date(b.created_at || 0).getTime() - new Date(a.created_at || 0).getTime();
-        case 'date_asc':
-          return new Date(a.created_at || 0).getTime() - new Date(b.created_at || 0).getTime();
-        case 'price_desc':
-          return (b.service.price || 0) - (a.service.price || 0);
-        case 'price_asc':
-          return (a.service.price || 0) - (b.service.price || 0);
-        case 'name_asc':
-          return (a.service.name || '').localeCompare(b.service.name || '');
-        case 'rating_desc':
-          return (b.service.average_rating || 0) - (a.service.average_rating || 0);
-        default:
-          return 0;
-      }
-    });
-  }
+private sortBookings(bookings: IBookingResponse[], sortBy: string): IBookingResponse[] {
+  return bookings.sort((a, b) => {
+    switch (sortBy) {
+      case 'date_desc':
+        return new Date(b.created_at || 0).getTime() - new Date(a.created_at || 0).getTime();
+      case 'date_asc':
+        return new Date(a.created_at || 0).getTime() - new Date(b.created_at || 0).getTime();
+      case 'price_desc':
+        return (parseFloat(b.service.price) || 0) - (parseFloat(a.service.price) || 0);
+      case 'price_asc':
+        return (parseFloat(a.service.price) || 0) - (parseFloat(b.service.price) || 0);
+      case 'name_asc':
+        return (a.service.name || '').localeCompare(b.service.name || '');
+      case 'rating_desc':
+        return (b.service.average_rating || 0) - (a.service.average_rating || 0);
+      default:
+        return 0;
+    }
+  });
+}
+
 
   private updateFilterCounts(): void {
     // Update status counts

@@ -773,6 +773,10 @@ $info-color: #3b82f6;
 
 // Responsive Design
 @media (max-width: 768px) {
+
+  .dashboard-container {
+    margin-top: 60px;
+  }
   .dashboard-header {
     padding: 20px;
     margin-bottom: 20px;
@@ -791,7 +795,7 @@ $info-color: #3b82f6;
   }
 
   .stats-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr 1fr;
   }
 
   .stat-card {
@@ -858,7 +862,7 @@ $info-color: #3b82f6;
     }
 
     .quick-actions {
-      flex-direction: column;
+      flex-direction: row;
       gap: 10px;
     }
   }
@@ -896,6 +900,11 @@ $info-color: #3b82f6;
   }
 
   .stat-card {
-    padding: 15px;
+    padding: 10px;
+
+    .stat-content h3 {
+      font-size: 1.5rem;
+    }
+
   }
 }

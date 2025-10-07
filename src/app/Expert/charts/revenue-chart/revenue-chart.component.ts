@@ -47,7 +47,7 @@ export class RevenueChartComponent implements OnInit {
   ];
 
   public selectedPeriod = 'week';
-  public currentRevenue = 24500000;
+  public currentRevenue = 245000;
   public revenueChange = 8.5;
 
   public kpis = [

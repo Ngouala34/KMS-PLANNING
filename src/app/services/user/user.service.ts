@@ -377,15 +377,29 @@ removeFavorite(serviceId: number): Observable<any> {
   );
 }
 
-verifyPayment() {
-  // Appel vers ton backend pour vérifier la transaction
-  return this.http.get<any>(`${this.apiUrl}payments/verify/`).pipe(
+verifyPayment(tx_ref: string, transaction_id?: string) {
+  const params: any = { tx_ref };
+  if (transaction_id) {
+    params.transaction_id = transaction_id;
+  }
+
+  return this.http.get<any>(`${this.apiUrl}payments/verify/`, { params }).pipe(
     catchError(error => {
       console.error('Erreur lors de la vérification du paiement:', error);
       return throwError(() => new Error('Vérification échouée'));
     })
   );
 }
+
+
+
+  get currentUserName(): string | null {
+    return this.currentUserSubject.value?.name || null;
+  }
+
+  get currentUserEmail(): string | null {
+    return this.currentUserSubject.value?.email || null;
+  }
 
 
 }

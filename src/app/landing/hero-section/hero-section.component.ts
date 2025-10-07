@@ -32,7 +32,7 @@ import { trigger, transition, style, animate, query, stagger } from '@angular/an
 export class HeroSectionComponent implements OnInit, OnDestroy {
   images = [
     { 
-      url: 'assets/images/th.jpg', 
+      url: 'https://g.foolcdn.com/editorial/images/699983/cropped-shot-of-two-young-businessmen-working-together-on-a-laptop-in-their-office-late-at-night.jpg', 
       title: 'Trouvez des experts certifiés pour tous vos besoins', 
       subtitle: 'Gagnez du temps, travaillez avec les meilleurs.' 
     },

@@ -40,7 +40,6 @@
         <div class="stat-content">
           <h3>{{ dashboardStats.upcomingAppointments }}</h3>
           <p>Prochains RDV</p>
-          <span class="stat-change">Cette semaine</span>
         </div>
       </div>
 
@@ -79,7 +78,7 @@
           </button>
         </div>
         <div class="card-content">
-          <div *ngIf="upcomingAppointments.length === 0" class="empty-state">
+          <div *ngIf="upcomingApp.length === 0" class="empty-state">
             <i class="fas fa-calendar-times"></i>
             <h3>Aucun RDV à venir</h3>
             <p>Planifiez votre prochain rendez-vous</p>
@@ -88,30 +87,31 @@
             </button>
           </div>
           
-          <div *ngIf="upcomingAppointments.length > 0" class="appointments-list">
+          <div *ngIf="upcomingApp.length > 0" class="appointments-list">
             <div 
-              *ngFor="let appointment of upcomingAppointments; trackBy: trackAppointment"
+              *ngFor="let appointment of upcomingApp; trackBy: trackAppointment"
               class="appointment-item"
-              [class.today]="isToday(appointment.service.date)"
-              [class.tomorrow]="isTomorrow(appointment.service.date)"
+              [class.today]="isToday(appointment.service?.date)"
+              [class.tomorrow]="isTomorrow(appointment.service?.date)"
             >
               <div class="appointment-date">
-                <span class="day">{{ formatDay(appointment.service.date) }}</span>
-                <span class="month">{{ formatMonth(appointment.service.date) }}</span>
+                <span class="day">{{ formatDay(appointment.service?.date) }}</span>
+                <span class="month">{{ formatMonth(appointment.service?.date) }}</span>
               </div>
               <div class="appointment-details">
-                <h4>{{ appointment.service.name }}</h4>
+                <h4>{{ appointment.service?.name }}</h4>
                 <p class="expert">
                   <i class="fas fa-user-md"></i>
-                  {{ appointment.expert.name }}
+                  {{ appointment.expert?.name }}
                 </p>
                 <p class="time">
                   <i class="fas fa-clock"></i>
-                  {{ appointment.service.start_time }} - {{ appointment.service.end_time }}
+                  {{ appointment.service?.start_time }} - {{ appointment.service?.end_time }}
                 </p>
-                <span class="platform-badge" [class]="getPlatformClass(appointment.service.platform)">
-                  {{ appointment.service.platform }}
+                <span class="platform-badge" [class]="getPlatformClass(appointment.service?.preferred_platform)">
+                  {{ appointment.service?.preferred_platform }}
                 </span>
+
               </div>
               <div class="appointment-actions">
                 <button class="action-icon" (click)="rescheduleAppointment(appointment)" title="Reprogrammer">
@@ -186,32 +186,7 @@
         </div>
       </div>
 
-      <!-- Quick Links -->
-      <div class="content-card">
-        <div class="card-header">
-          <h2><i class="fas fa-link"></i> Liens Rapides</h2>
-        </div>
-        <div class="card-content">
-          <div class="quick-links">
-            <a href="#" class="quick-link" (click)="navigateToProfile()">
-              <i class="fas fa-user-edit"></i>
-              <span>Profil</span>
-            </a>
-            <a href="#" class="quick-link" (click)="navigateToPayments()">
-              <i class="fas fa-credit-card"></i>
-              <span>Paiements</span>
-            </a>
-            <a href="#" class="quick-link" (click)="navigateToReviews()">
-              <i class="fas fa-comment-alt"></i>
-              <span>Avis</span>
-            </a>
-            <a href="#" class="quick-link" (click)="navigateToSupport()">
-              <i class="fas fa-headset"></i>
-              <span>Support</span>
-            </a>
-          </div>
-        </div>
-      </div>
+
     </div>
   </div>
 </div>

@@ -137,6 +137,10 @@ private checkForOAuthResponse(): void {
     });
   }
 
+  onRegister(): void {
+    this.router.navigate(['/register']);
+  }
+
   private handleRedirection(userType: string): void {
     const type = userType.toLowerCase();
     

@@ -33,6 +33,8 @@ $transition: all 0.3s ease;
 .container {
   min-height: 100vh;
   background: $light;
+  width: 100%;
+  overflow-x: hidden;
 }
 
 /* Navbar */
@@ -231,8 +233,8 @@ $transition: all 0.3s ease;
   @include flex-center;
   flex-direction: column;
   gap: 1.5rem;
-  margin-bottom: 2rem;
-  padding: 2rem;
+  margin-bottom: 1rem;
+  padding: 1rem;
   background: rgba(255, 255, 255, 0.95);
   border-radius: 16px;
   backdrop-filter: blur(10px);
@@ -374,7 +376,7 @@ $transition: all 0.3s ease;
 .services-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 1.5rem;
+  gap: 1rem;
   padding: 2rem 0;
 }
 
@@ -411,7 +413,7 @@ $transition: all 0.3s ease;
   height: 100%;
   display: flex;
   flex-direction: column;
-  
+  width: 90%;  
   &::before {
     content: '';
     position: absolute;

@@ -119,41 +119,47 @@ export interface IBooking {
 
 export interface IBookingResponse {
   id: number;
-  service : {
-    id: string ; 
+  service: {
+    isFavorite: boolean;
+    id: number;
     name: string;
-    date: string;
-    cover_image_url: string | null;
-    start_time: string; 
+    date: string; // Format: "DD-MM-YYYY"
+    cover_image: string;
+    start_time: string;
     end_time: string;
-    preferred_platform: 'google_meet' | 'zoom';
+    preferred_platform: string;
     meeting_link?: string | null;
     description: string;
-    price: number;
+    price: string;
     category: string;
-    cover_image: string;
     subcategory: string;
-    subsubcategory:string;
+    subsubcategory: string;
     average_rating: number;
-    isFavorite: boolean
-
+    expert: {
+      id: number;
+      email: string;
+      phone: string | null;
+      name: string;
+      user_type: string;
+      profile_picture: string | null;
+      domain: string;
+    }
   }
-    created_at: string;
-    updated_at: string;
-    status: 'available' | 'reserved' | 'completed' | 'cancelled';
-    reservations_count: number
-
-  expert : {
-    id: number; 
-    name: string;
-    profile_picture: string ;
-    user_type: string;
-    domain: string;
+  expert: {
+    reviews_count: any;
     email: string;
-    reviews_count: number
+    name: string;
+    domain: string;
+    phone: string | null;
+    profile_picture: string | null;
+    user_type: string;
   }
+  status: string;
+  clients: string[];
+  reservations_count: number;
+  created_at: string;
+  updated_at: string;
 }
-
 
 export interface INotification {
   id: number;

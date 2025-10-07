@@ -277,7 +277,6 @@ $bg-gradient: linear-gradient(135deg, #0a1f44 0%, #1e3a8a 100%);
       }
 
       // États de loading pour tous les boutons
-      .login-button.loading,
       .google-btn.loading {
         position: relative;
         color: transparent;
@@ -290,7 +289,7 @@ $bg-gradient: linear-gradient(135deg, #0a1f44 0%, #1e3a8a 100%);
           display: flex;
           align-items: center;
           gap: 8px;
-          color: inherit;
+          color: $text-light;
         }
       }
 
