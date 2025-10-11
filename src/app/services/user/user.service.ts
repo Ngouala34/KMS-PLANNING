@@ -84,9 +84,9 @@ export class UserService {
     );
   }
 
-  addRating(serviceId: number, score: number): Observable<IRatingResponse> {
+  addRating(expertId: number, score: number): Observable<IRatingResponse> {
     return this.http.post<IRatingResponse>(
-      `${this.apiUrl}add_rating/${serviceId}/`,
+      `${this.apiUrl}expert/${expertId}/add_rating/`,
       { score }
     ).pipe(
       catchError(error => {

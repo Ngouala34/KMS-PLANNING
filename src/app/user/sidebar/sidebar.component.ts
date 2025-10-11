@@ -79,7 +79,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
         {
       id: 'Aganda',
       label: 'Agenda',
-      icon: 'fas fa-bell',
+      icon: 'fas fa-calendar',
       route: '/main-user/user-calendar'
     },
 

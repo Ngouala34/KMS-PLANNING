@@ -3,7 +3,7 @@ import { trigger, transition, style, animate } from '@angular/animations';
 import { forkJoin, Subscription, throwError } from 'rxjs';
 import { tap, catchError, finalize } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
-import { ICommentResponse } from '../Interfaces/iservice';
+import { ICommentResponse, IService } from '../Interfaces/iservice';
 import { UserService } from '../services/user/user.service';
 
 interface Review {
@@ -55,10 +55,11 @@ interface ReviewsStats {
 export class ServiceDetailsAvisComponent implements OnInit, OnDestroy {
 
   serviceId!: number;
-  @Input() expertId!: string;
+  @Input() expertId!: number;
   @Input() currentUserId!: number;
   @Output() reviewSubmitted = new EventEmitter<Review>();
-
+  
+  @Input() service!: IService;
   reviews: Review[] = [];
   filteredReviews: Review[] = [];
   pagedReviews: Review[] = [];
@@ -141,7 +142,7 @@ export class ServiceDetailsAvisComponent implements OnInit, OnDestroy {
     );
 
     const rating$ = this.userService.addRating(
-      this.serviceId,
+      this.service.expert.id, // Utiliser expertId pour la note
       this.userRating
     );
 
