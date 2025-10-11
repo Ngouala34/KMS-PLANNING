@@ -202,29 +202,7 @@ export class UserService {
     );
   }
 
-  /**
-   * Upload d'avatar (si votre API le supporte)
-   */
-  uploadAvatar(file: File): Observable<{ avatarUrl: string }> {
-    const formData = new FormData();
-    formData.append('avatar', file);
 
-    return this.http.post<{ avatarUrl: string }>(`${this.apiUrl}profile/avatar/`, formData).pipe(
-      tap(response => {
-        // Mettre à jour le profil avec la nouvelle URL d'avatar
-        const currentUser = this.currentUserSubject.value;
-        if (currentUser) {
-          currentUser.avatar = response.avatarUrl;
-          this.currentUserSubject.next(currentUser);
-          this.saveUserToStorage(currentUser);
-        }
-      }),
-      catchError(error => {
-        console.error('Error uploading avatar:', error);
-        return throwError(() => new Error('Erreur lors de l\'upload de l\'avatar'));
-      })
-    );
-  }
 
 /**
  * Récupère les paramètres de notification

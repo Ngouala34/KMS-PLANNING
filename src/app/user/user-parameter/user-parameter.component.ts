@@ -301,57 +301,11 @@ notificationMessage: any;
     this.activeTab = tab;
   }
 
-  async onFileSelected(event: Event): Promise<void> {
-    const input = event.target as HTMLInputElement;
-    const file = input.files?.[0];
-    
-    if (file) {
-      // Validation du fichier
-      if (!this.isValidImageFile(file)) {
-        this.notificationService.showError('Format d\'image non valide. Utilisez JPG, PNG ou GIF.');
-        return;
-      }
-
-      if (file.size > 5 * 1024 * 1024) { // 5MB max
-        this.notificationService.showError('L\'image est trop volumineuse. Maximum 5MB.');
-        return;
-      }
-
-      try {
-        this.isLoading = true;
-        
-        // Utiliser votre service d'upload existant ou créer une URL temporaire
-        const imageUrl = await this.uploadImage(file);
-        this.settingsForm.get('profile.avatar')?.setValue(imageUrl);
-        this.notificationService.showSuccess('Photo de profil mise à jour');
-      } catch (error) {
-        this.notificationService.showError('Erreur lors de l\'upload de l\'image');
-        console.error('Image upload error:', error);
-      } finally {
-        this.isLoading = false;
-      }
-    }
-  }
+  
 
   private isValidImageFile(file: File): boolean {
     const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
     return validTypes.includes(file.type);
-  }
-
-  private async uploadImage(file: File): Promise<string> {
-    try {
-      // Essayer d'utiliser votre service d'upload si disponible
-      const response = await this.userService.uploadAvatar(file).toPromise();
-      return response!.avatarUrl;
-    } catch (error) {
-      // Fallback : créer une URL temporaire pour la démo
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = () => resolve(reader.result as string);
-        reader.onerror = reject;
-        reader.readAsDataURL(file);
-      });
-    }
   }
 
   async saveAllSettings(): Promise<void> {
