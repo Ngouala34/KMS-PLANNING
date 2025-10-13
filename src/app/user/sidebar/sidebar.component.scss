@@ -57,10 +57,10 @@ $danger-color: #dc3545;
   flex-direction: column;
   z-index: 1000;
   overflow: hidden;
-  @include transition();
   margin-top: 63px;
   width: $sidebar-width-expanded;
   background: $third;
+  transition: margin-left 0.3s ease-in-out!important;
 
 
   // États

@@ -46,7 +46,7 @@
       
       <!-- Notifications -->
       <button class="notification-btn" 
-              (click)="onNotifications()"
+              routerLink="/main-user/user-notification"
               [attr.aria-label]="hasNotifications() ? 'Notifications (' + getNotificationNumber() + ')' : 'Aucune notification'">
         <i class="fas fa-bell"></i>
         <div class="notification-badge" 
@@ -57,7 +57,7 @@
 
       <!-- Profil utilisateur -->
       <div class="user-profile" 
-           (click)="onProfile()"
+           routerLink="/main-user/user-settings"
            role="button" 
            tabindex="0"
            [attr.aria-label]="'Profil de ' + userProfile.name">

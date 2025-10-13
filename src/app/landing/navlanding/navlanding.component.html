@@ -2,6 +2,7 @@
   <div class="nav-content">
     <div class="topnav-logo">
       <div class="logo"></div>
+
     </div>
 
     <div class="navul">
@@ -15,11 +16,31 @@
     </div>
 
     <div class="navbtn">
-      <div class="auth-buttons">
+      <div class="auth-buttons" *ngIf="!user || !user.id">
         <button class="btn-login" (click)="OnConnexion()">Se connecter</button>
         <button class="btn-register" (click)="OnInscription()">S'inscrire</button>
       </div>
     </div>
+      <div class="user-profile "
+           (click)="onProfile()"
+           role="button" 
+           tabindex="0"
+           *ngIf="user && user.id"
+           [attr.aria-label]="'Profil de ' + user.name">
+        <div class="user-avatar">
+          <img *ngIf="user.profil_image; else initialsTemplate" 
+               [src]="userAvatar" 
+               [alt]="user.name"
+               >
+          <ng-template #initialsTemplate >
+           <span> {{ getUserInitials() }}</span>
+          </ng-template>
+        </div>
+        <div class="user-info">
+          <div class="user-name">{{ user.name | slice:0:6 }}{{ user.name.length > 6 ? '.' : '' }}</div>
+        </div>
+        <i class="fas fa-chevron-down dropdown-icon"></i>
+      </div>
 
     <div class="toggle-menu" (click)="toggleMenu()">
       <i class="fas" [class.fa-bars]="!toggleMenuVisible" [class.fa-times]="toggleMenuVisible"></i>
@@ -32,7 +53,7 @@
     <a (click)="OnContact(); closeMenu()"><i class="fa fa-envelope"></i> Contact</a>
     <a (click)="OnApropos(); closeMenu()"><i class="fa fa-info-circle"></i> À propos</a>
     <a (click)="OnBecomeExpert(); closeMenu()"><i class="fa fa-user-plus"></i> Devenir expert</a>
-    <div class="mobile-auth-buttons">
+    <div class="mobile-auth-buttons" *ngIf="!user || !user.id">
       <a (click)="OnConnexion(); closeMenu()"><i class="fa fa-sign-in-alt"></i> Se connecter</a>
       <a (click)="OnInscription(); closeMenu()"><i class="fa fa-user-plus"></i> S'inscrire</a>
     </div>

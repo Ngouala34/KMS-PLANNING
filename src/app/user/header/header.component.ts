@@ -76,11 +76,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   // Menu items
   menuItems: MenuItem[] = [
-    { icon: 'fas fa-tachometer-alt', label: 'Dashboard', route: '/expert/dashboard', active: true },
-    { icon: 'fas fa-concierge-bell', label: 'Services', route: '/expert/services' },
-    { icon: 'fas fa-history', label: 'Historique', route: '/expert/historique' },
-    { icon: 'fas fa-calendar', label: 'Calendrier', route: '/expert/calendrier' },
-    { icon: 'fas fa-cog', label: 'Paramètres', route: '/expert/settings' },
+    { icon: 'fas fa-tachometer-alt', label: 'Dashboard', route: '/main-user/user-dashboard', active: true },
+    { icon: 'fas fa-concierge-bell', label: 'souscriptions', route: '/main-user/user-souscriptions' },
+    { icon: 'fas fa-history', label: 'Notification', route: '/main-user/user-notification' },
+    { icon: 'fas fa-calendar', label: 'Calendrier', route: '/main-user/user-calendar' },
+    { icon: 'fas fa-cog', label: 'Paramètres', route: '/main-user/user-settings' },
     { icon: 'fas fa-sign-out-alt', label: 'Déconnexion', route: '/logout' }
   ];
 
@@ -203,7 +203,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   onDashboard(): void {
-    this.router.navigateByUrl('/expert/dashboard');
+    this.router.navigateByUrl('/main-user/user-dashboard');
     this.updateActiveMenuItem();
   }
 
@@ -227,9 +227,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.updateActiveMenuItem();
   }
 
-  onNotifications(): void {
-    this.router.navigateByUrl('/expert/notifications');
-  }
+
 
   onProfile(): void {
     this.router.navigateByUrl('/expert/profile');

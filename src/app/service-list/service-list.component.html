@@ -7,31 +7,41 @@
       <i class="fas fa-bars"></i>
     </div>
 
-    <div class="navbar-links desktop-only">
-      <div class="navbar-item" *ngFor="let category of categories" 
-           (mouseenter)="adjustDropdownPosition($event)" 
-           (mouseleave)="hideDropdown($event)">
-        <span class="navbar-link">{{ category.title }}</span>
-        <div class="dropdown">
-          <div *ngFor="let item of category.items" class="dropdown-section">
-            <h4>{{ item.section }}</h4>
-            <div class="dropdown-subitems">
-              <a *ngFor="let sub of item.subitems" 
-                 (click)="onSubcategoryChange(sub, $event)"
-                 class="dropdown-link">
-                {{ sub }}
-              </a>
-            </div>
-          </div>
+<div class="navbar-links desktop-only">
+  <div
+    class="navbar-item"
+    *ngFor="let category of categories"
+    (mouseenter)="adjustDropdownPosition($event)"
+    (mouseleave)="hideDropdown($event)"
+  >
+    <!-- Clic sur le titre de catégorie -->
+    <span class="navbar-link" (click)="onCategorySelect(category.value)">
+      {{ category.title }}
+    </span>
+
+    <div class="dropdown">
+      <div *ngFor="let item of category.items" class="dropdown-section">
+        <h4>{{ item.section }}</h4>
+        <div class="dropdown-subitems">
+          <a
+            *ngFor="let sub of item.subitems"
+            (click)="onSubcategoryChange(sub, $event)"
+            class="dropdown-link"
+          >
+            {{ sub }}
+          </a>
         </div>
       </div>
     </div>
+  </div>
+</div>
+
 
     <!-- Menu Mobile -->
     <div class="mobile-menu" [class.open]="isMobileMenuOpen">
       <div class="mobile-category" *ngFor="let category of categories">
         <details>
-          <summary (click)="onCategoryChange(category.value)">{{ category.title }}</summary>
+          <summary (click)="onSubcategoryChange(category.value)">{{ category.title }}</summary>
           <div class="mobile-subsection" *ngFor="let item of category.items">
             <strong (click)="onSubcategoryChange(item.section, $event)">{{ item.section }}</strong>
             <ul>
@@ -64,29 +74,21 @@
       <div class="filters-container">
         <!-- Filtre par catégorie -->
         <div class="filters">
-          <select [(ngModel)]="filters.category" (change)="onCategoryChange(filters.category)">
+          <select [(ngModel)]="filters.category" (change)="onSubcategoryChange(filters.category)">
             <option value="all">Toutes les catégories</option>
             <option *ngFor="let cat of categories" [value]="cat.value">{{ cat.title }}</option>
           </select>
         </div>
 
         <!-- Filtre par prix -->
-        <div class="filters price-filter" #priceFilter>
-          <button (click)="togglePriceDropdown($event)" class="price-filter-button">
-            Budget <i class="fas fa-chevron-down"></i>
-          </button>
-
-          <div class="price-dropdown" *ngIf="showPriceDropdown">
-            <div *ngFor="let range of priceRanges" class="range">
-              <label>
-                <input type="radio" 
-                       [checked]="range.checked"
-                       (change)="applyPriceFilter(range, $event)" />
-                {{ range.label }}
-              </label>
-            </div>
-          </div>
+        <div class="filters">
+          <select [(ngModel)]="filters.priceRange" (change)="applyFilters()">
+            <option *ngFor="let range of priceRanges" [value]="range.value">
+              {{ range.label }}
+            </option>
+          </select>
         </div>
+
 
         <!-- Filtre par note -->
         <div class="filters">

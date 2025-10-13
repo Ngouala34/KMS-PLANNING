@@ -1,5 +1,7 @@
-import { Component, HostListener, OnInit, OnDestroy } from '@angular/core';
+import { Component, HostListener, OnInit, OnDestroy, Input } from '@angular/core';
 import { Router } from '@angular/router';
+import { IAuthResponse, UserProfile } from 'src/app/Interfaces/iuser';
+import { UserService } from 'src/app/services/user/user.service';
 
 @Component({
   selector: 'app-navlanding',
@@ -9,52 +11,33 @@ import { Router } from '@angular/router';
 export class NavlandingComponent implements OnInit, OnDestroy {
   isSticky = false;
   toggleMenuVisible = false;
-  
-  // Propriétés pour l'animation de texte
-  typedText = '';
-  fullText = 'Développez vos compétences avec des experts';
-  isTyping = true;
-  private typingTimer: any;
-  private cursorTimer: any;
+  user!:UserProfile
 
-  constructor(private router: Router) {}
 
-  ngOnInit(): void {
-    this.startTypingAnimation();
-  }
+  constructor(private router: Router, private userService : UserService) {}
+
+  @Input() userAvatar?: string;
+
+
+ngOnInit(): void {
+  this.loadUser();
+}
 
   ngOnDestroy(): void {
-    if (this.typingTimer) {
-      clearTimeout(this.typingTimer);
-    }
-    if (this.cursorTimer) {
-      clearInterval(this.cursorTimer);
-    }
+
   }
 
-  startTypingAnimation(): void {
-    let i = 0;
-    const typingSpeed = 100; // ms par caractère
-    
-    const type = () => {
-      if (i < this.fullText.length) {
-        this.typedText += this.fullText.charAt(i);
-        i++;
-        this.typingTimer = setTimeout(type, typingSpeed);
-      } else {
-        this.isTyping = false;
-        // Redémarrer l'animation après un délai
-        setTimeout(() => {
-          this.typedText = '';
-          this.isTyping = true;
-          i = 0;
-          type();
-        }, 3000);
-      }
-    };
-    
-    type();
-  }
+loadUser(): void {
+  this.userService.getProfile().subscribe({
+    next: (user) => {
+      this.user = user;
+      console.log('Utilisateur chargé :', this.user);
+    },
+    error: (error) => {
+      console.error('Erreur lors du chargement de l\'utilisateur', error);
+    }
+  });
+}
 
   @HostListener('window:scroll', [])
   onWindowScroll(): void {
@@ -71,6 +54,17 @@ export class NavlandingComponent implements OnInit, OnDestroy {
         !toggle.contains(event.target as Node)) {
       this.closeMenu();
     }
+  }
+
+    getUserInitials(): string {
+    if (!this.user.name) return 'U';
+    
+    const names = this.user.name.split(' ');
+    if (names.length === 1) {
+      return names[0].substring(0, 2).toUpperCase();
+    }
+    
+    return (names[0].charAt(0) + names[1].charAt(0)).toUpperCase();
   }
 
   toggleMenu(): void {
@@ -108,4 +102,13 @@ export class NavlandingComponent implements OnInit, OnDestroy {
   OnApropos(): void {
     this.router.navigateByUrl('/a-propos');
   }
+  onProfile(): void {
+
+    if (this.user.user_type === 'client') {
+    this.router.navigateByUrl('/main-user/user-settings');
+  }
+  else if (this.user.user_type === 'expert') {
+    this.router.navigateByUrl('/main-expert/expert-profile');
+  }
+}
 }

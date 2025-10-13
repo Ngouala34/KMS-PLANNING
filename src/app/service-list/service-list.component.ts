@@ -11,7 +11,6 @@ interface PriceRange {
   label: string;
   min?: number;
   max?: number;
-  checked: boolean;
 }
 
 interface Category {
@@ -42,6 +41,7 @@ export class ServiceListComponent implements OnInit, OnDestroy {
   isMobileView = false;
   isLoading = true;
   error: string | null = null;
+  
 
   // Services - chargés depuis l'API
   service: IService[] = [];
@@ -65,13 +65,14 @@ export class ServiceListComponent implements OnInit, OnDestroy {
     subcategory: 'all'
   };
 
-  priceRanges: PriceRange[] = [
-    { value: 'all', label: 'Tous les prix', checked: true },
-    { value: 'economy', label: '5,000XAF - 20,000XAF', min: 5000, max: 20000, checked: false },
-    { value: 'standard', label: '20,000XAF - 50,000XAF', min: 20000, max: 50000, checked: false },
-    { value: 'premium', label: '50,000XAF - 100,000XAF', min: 50000, max: 100000, checked: false },
-    { value: 'enterprise', label: '100,000XAF +', min: 100000, max: undefined, checked: false }
-  ];
+priceRanges: PriceRange[] = [
+  { value: 'all', label: 'Tous les prix' },
+  { value: 'economy', label: '5,000XAF - 20,000XAF', min: 5000, max: 20000 },
+  { value: 'standard', label: '20,000XAF - 50,000XAF', min: 20000, max: 50000 },
+  { value: 'premium', label: '50,000XAF - 100,000XAF', min: 50000, max: 100000 },
+  { value: 'enterprise', label: '100,000XAF +', min: 100000 }
+];
+
 
   ratingOptions = [
     { value: 0, label: 'Toutes les notes' },
@@ -242,6 +243,10 @@ export class ServiceListComponent implements OnInit, OnDestroy {
     this.showServices = true;
   }
 
+
+
+
+
   // Pagination methods
   updatePagination(): void {
     this.totalPages = Math.ceil(this.filteredServices.length / this.itemsPerPage);
@@ -347,69 +352,77 @@ export class ServiceListComponent implements OnInit, OnDestroy {
     this.showPriceDropdown = !this.showPriceDropdown;
   }
 
-  applyPriceFilter(range: PriceRange, event: Event) {
-    event.stopPropagation();
-    
-    this.priceRanges.forEach(r => r.checked = false);
-    range.checked = true;
-    
-    this.filters.priceRange = range.value;
-    this.applyFilters();
-    this.showPriceDropdown = false;
-  }
 
-  applyFilters(): void {
-    console.log('Application des filtres:', this.filters);
-    
-    this.filteredServices = this.service.filter(service => {
-      const matchesSearch = this.filters.searchText === '' || 
-        service.name.toLowerCase().includes(this.filters.searchText.toLowerCase()) || 
-        service.description.toLowerCase().includes(this.filters.searchText.toLowerCase());
 
-      const selectedRange = this.priceRanges.find(r => r.checked && r.value !== 'all');
-      let matchesPrice = true;
-      if (selectedRange) {
-        const servicePrice = service.price || 0;
-        if (selectedRange.min !== undefined && selectedRange.max !== undefined) {
-          matchesPrice = servicePrice >= selectedRange.min && servicePrice <= selectedRange.max;
-        } else if (selectedRange.min !== undefined) {
-          matchesPrice = servicePrice >= selectedRange.min;
-        }
+applyFilters(): void {
+  console.log('Application des filtres:', this.filters);
+
+  this.filteredServices = this.service.filter(service => {
+    // 🔍 Filtre par texte
+    const matchesSearch =
+      !this.filters.searchText ||
+      service.name.toLowerCase().includes(this.filters.searchText.toLowerCase()) ||
+      service.description.toLowerCase().includes(this.filters.searchText.toLowerCase());
+
+    // 💰 Filtre par prix
+    const selectedRange = this.priceRanges.find(
+      r => r.value === this.filters.priceRange && r.value !== 'all'
+    );
+    let matchesPrice = true;
+    if (selectedRange) {
+      const servicePrice = service.price || 0;
+      if (selectedRange.min !== undefined && selectedRange.max !== undefined) {
+        matchesPrice = servicePrice >= selectedRange.min && servicePrice <= selectedRange.max;
+      } else if (selectedRange.min !== undefined) {
+        matchesPrice = servicePrice >= selectedRange.min;
       }
+    }
 
-      const matchesRating = service.avarage >= this.filters.minRating;
+    // ⭐ Filtre par note minimale
+    const matchesRating = service.avarage >= this.filters.minRating;
 
-      const matchesCategory = this.filters.category === 'all' || 
-        service.category_display === this.filters.category ||
-        service.category === this.filters.category;
+    // 🧩 Filtre par catégorie
+    const matchesCategory =
+      this.filters.category === 'all' ||
+      service.category === this.filters.category ||
+      service.category_display === this.filters.category;
 
-      const matchesSubcategory = this.filters.subcategory === 'all' || 
-        service.subcategory?.name === this.filters.subcategory;
+    // 🧩 Filtre par sous-catégorie
+    const matchesSubcategory =
+      this.filters.subcategory === 'all' ||
+      service.subcategory?.name === this.filters.subcategory;
 
-      return matchesSearch && matchesPrice && matchesRating && matchesCategory && matchesSubcategory;
-    });
+    return (
+      matchesSearch &&
+      matchesPrice &&
+      matchesRating &&
+      matchesCategory &&
+      matchesSubcategory
+    );
+  });
 
-    this.updatePagination();
-    console.log('Résultats filtrés:', this.filteredServices.length);
-  }
+  this.updatePagination();
+  console.log('Résultats filtrés:', this.filteredServices.length);
+}
+
 
   onSearchChange(searchText: string): void {
     this.filters.searchText = searchText;
     this.applyFilters();
   }
 
-  onCategoryChange(category: string): void {
+  onCategorySelect(category: string): void {
     this.filters.category = category;
-    this.filters.subcategory = 'all';
+    this.filters.subcategory = 'all'; // réinitialiser la sous-catégorie
     this.applyFilters();
-    this.isMobileMenuOpen = false;
   }
 
-  onSubcategoryChange(subcategory: string, event: Event): void {
-    event.stopPropagation();
+  onSubcategoryChange(subcategory: string, event?: Event): void {
+    if (event) event.preventDefault();
     this.filters.subcategory = subcategory;
     this.applyFilters();
   }
+
 
   onRatingChange(minRating: number): void {
     this.filters.minRating = minRating;
