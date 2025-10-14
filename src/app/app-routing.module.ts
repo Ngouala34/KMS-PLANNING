@@ -34,7 +34,7 @@ const routes: Routes = [
 
 
 
-  { path: '', component: LandingPageComponent },
+  { path: '', redirectTo: '/landing', pathMatch: 'full' },
   { path: 'landing', component: LandingPageComponent },
   { path: 'login', component: LoginComponent },  
   { path: 'contact', component: ContactComponent },
@@ -78,7 +78,6 @@ const routes: Routes = [
       { path: 'expert-notifications', component: ExpertNotificationsComponent,  },
       { path: 'expert-settings', component: ExpertSettingsComponent,  },
       { path: 'expert-profile', component: ExpertProfileComponent,  },
-      { path: '', redirectTo: 'dashboard-expert', pathMatch: 'full' } // par défaut
     ]
   },
 
